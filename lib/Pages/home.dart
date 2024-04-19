@@ -4,7 +4,7 @@ import 'package:niefeko/Components/Carte/recherche/recherche.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key});
+  const MyHomePage({Key? key});
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -14,15 +14,25 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-          child: SingleChildScrollView(
-              child: Column(
+      body: Stack(
         children: [
-          search(),
-          carte(),
-          search()
+          // First section
+          Positioned(
+            top: 0,
+            left: 0,
+            right: 0,
+            child: search(),
+          ),
+          // Second section
+          Positioned.fill(
+           top: 0/* ajustez la hauteur de la première section */,
+            left: 0,
+            right: 0,
+            bottom: 250,
+            child: carte(),
+          ),
         ],
-      ))),
+      ),
     );
   }
 }

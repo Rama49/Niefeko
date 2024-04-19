@@ -11,31 +11,47 @@ class _searchState extends State<search> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 650,
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          image: AssetImage("../../assets/imagedecouverture.jpg"),
-          fit: BoxFit.cover,
-        ),
-      ),
+       color: Color(0xFF593070),
+      height: 300,
+      // decoration: BoxDecoration(
+      //   image: DecorationImage(
+      //     image: AssetImage("../../assets/imagedecouverture.jpg"),
+      //     fit: BoxFit.cover,
+      //   ),
+      // ),
+
       child: Padding(
-        padding: const EdgeInsets.only(top: 250, right: 5, left: 5),
+        padding: const EdgeInsets.all(20),
         child: SizedBox(
-          height: 45,
-          child: TextField(
-            decoration: InputDecoration(
-              filled: true,
-              fillColor: const Color(0xfff1f1f1),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8),
-                borderSide: BorderSide.none,
+            height: 60,
+            child: Container(
+              child: Column(
+                children: [
+                  Text(
+                  "Bienvenu",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 22,
+                    
+                  )),
+                  SizedBox(height: 20),
+                  TextField(
+                    decoration: InputDecoration(
+                          contentPadding: EdgeInsets.symmetric(vertical: 2), // Ajustez le rembourrage vertical
+
+                      filled: true,
+                      fillColor: const Color(0xfff1f1f1),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        borderSide: BorderSide.none,
+                      ),
+                      hintText: "recherche un produit",
+                      prefixIconColor: Colors.black,
+                    ),
+                  ),
+                ],
               ),
-              hintText: "recherche un produit",
-              prefixIcon: const Icon(Icons.search),
-              prefixIconColor: Colors.black,
-            ),
-          ),
-        ),
+            )),
       ),
     );
   }
