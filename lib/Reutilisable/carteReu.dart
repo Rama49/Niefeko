@@ -1,46 +1,35 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
 
+class carteReu extends StatelessWidget {
+  final Image image;
+  final String title;
+  final String paragraph;
+  final String texte;
 
-class carteReu extends StatefulWidget {
-  const carteReu({super.key});
+  const carteReu(
+      {super.key,
+      required this.image,
+      required this.title,
+      required this.paragraph,
+      required this.texte});
 
-  @override
-  State<carteReu> createState() => _carteReuState();
-}
-
-class _carteReuState extends State<carteReu> {
   @override
   Widget build(BuildContext context) {
-    return 
-     Column(
-      children: [
-        FlutterCarousel(
-  options: CarouselOptions(
-    height: 800.0, 
-    showIndicator: true,
-    slideIndicator: CircularSlideIndicator(),
-  ),
-  items: [1,2,3,4,5].map((i) {
-    return Builder(
-      builder: (BuildContext context) {
-        return Container(
-          width: MediaQuery.of(context).size.width,
-          margin: EdgeInsets.symmetric(horizontal: 5.0),
-         
-          child: 
-           Image.asset(
-                    '../../assets/logoNiefeko.png', // Remplacez par le chemin de votre logo
-                    width: 100, // Ajustez la hauteur du logo selon vos besoins
-                  ),
-        );
-      },
-    );
-  }).toList(),
-)
-
-      ],
+    return Container(
+      color: Colors.white,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          image,
+          Container(
+            padding: EdgeInsets.only(left: 20),
+            child: Text(title, style: TextStyle(fontWeight: FontWeight.w700)),
+          ),
+          Container(padding: EdgeInsets.only(left: 20), child: Text(paragraph)),
+          SizedBox(height: 20),
+          Container(padding: EdgeInsets.only(left: 20), child: Text(texte)),
+        ],
+      ),
     );
   }
-  
 }
