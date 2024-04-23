@@ -45,13 +45,13 @@ class _inscriptionState extends State<inscription> {
                 ),
                 Image.asset(
                   "logoNiefeko.png",
-                  width: 50,
-                  height: 50,
+                  width: 80,
+                  height: 80,
                 ),
                 Container(
-                  margin: EdgeInsets.only(left: 30),
+                  margin: EdgeInsets.all(5),
                   child: Text(
-                      "Rejoignez notre communauté ! Inscrivez-vous pour vivre une expérience unique.",
+                      "Inscrivez-vous pour vivre une expérience unique.",
                       style: TextStyle(fontSize: 15, color: Colors.white)),
                 ),
                 //  const Text("Bienvenu a Niefeko",
@@ -63,7 +63,7 @@ class _inscriptionState extends State<inscription> {
                   child: Column(children: [
                     Padding(
                       padding:
-                          const EdgeInsets.only(top: 25, left: 40, right: 40),
+                          const EdgeInsets.only(top:10, left: 40, right: 40),
                       child: TextFormField(
                         style: TextStyle(
                             color: Colors.white), // Couleur du texte

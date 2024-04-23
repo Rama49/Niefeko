@@ -1,5 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:niefeko/Components/Carte/Navbar/menu.dart';
 import 'package:niefeko/Reutilisable/carteReu.dart';
 
 class search extends StatefulWidget {
@@ -14,6 +15,8 @@ class _searchState extends State<search> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
+        
+      
         children: [
           // First section
           Positioned(
@@ -148,6 +151,7 @@ class _searchState extends State<search> {
                       ),
                     ),
                   ]),
+                  
                 ],
                 //Slider Container properties
                 options: CarouselOptions(

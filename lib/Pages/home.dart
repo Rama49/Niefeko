@@ -36,7 +36,7 @@ class _MyHomePageState extends State<MyHomePage> {
             child: Column(
               children: [
                 inscription(),
-                search()
+                search(),
               ],
             ),
           ),
