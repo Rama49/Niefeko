@@ -35,9 +35,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: const MyHomePage(),
-      routes: {
-        '/CategorieHeader': (context) => CategorieHeader(), // Route pour la page "Catégorie"
-      },
+      // routes: {
+      //   '/CategorieHeader': (context) => CategorieHeader(), // Route pour la page "Catégorie"
+      // },
     );
   }
 }
