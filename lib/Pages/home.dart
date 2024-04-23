@@ -1,4 +1,11 @@
 import 'package:flutter/material.dart';
+<<<<<<< HEAD
+=======
+import 'package:niefeko/Components/Carte/carte.dart';
+import 'package:niefeko/Components/Carte/recherche/recherche.dart';
+import 'package:carousel_slider/carousel_slider.dart';
+import 'package:niefeko/Pages/Inscription/inscription.dart';
+>>>>>>> 9e9c4a9d7b32e8825bd1b20fbe3581f22668eb9d
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
@@ -11,6 +18,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+<<<<<<< HEAD
       appBar: AppBar(
         title: const Text('Page dec connexion'),
       ),
@@ -36,5 +44,15 @@ class _MyHomePageState extends State<MyHomePage> {
         ],
       ),
     );
+=======
+       body: Column(children: [inscription()],)
+       //Stack(
+      //   children: [
+          
+      //     search(),
+      //   ],
+      );
+   
+>>>>>>> 9e9c4a9d7b32e8825bd1b20fbe3581f22668eb9d
   }
 }

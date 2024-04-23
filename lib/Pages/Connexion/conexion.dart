@@ -10,11 +10,7 @@ class conexion extends StatefulWidget {
 class _conexionState extends State<conexion> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Page dec connexion'),
-      ),
-      body: Column(
+    return Column(
         children: [
           const TextField(
             decoration: InputDecoration(
@@ -34,7 +30,6 @@ class _conexionState extends State<conexion> {
             child: const Text('Login'),
           ),
         ],
-      ),
-    );
+      );
   }
 }
