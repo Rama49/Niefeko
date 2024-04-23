@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:niefeko/Components/Carte/Recherche/recherche.dart';
 import 'package:niefeko/Reutilisable/buttonReu.dart';
 
 class conexion extends StatefulWidget {
@@ -100,7 +101,7 @@ class _conexionState extends State<conexion> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => conexion()),
+                            builder: (context) => search()),
                       );
                     },
                   )
