@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: const MyHomePage(),
+      home:  MyHomePage(),
       // routes: {
       //   '/CategorieHeader': (context) => CategorieHeader(), // Route pour la page "Catégorie"
       // },

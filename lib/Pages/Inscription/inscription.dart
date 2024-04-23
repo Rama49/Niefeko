@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:niefeko/Components/Carte/recherche/recherche.dart';
 import 'package:niefeko/Reutilisable/buttonReu.dart';
 
 class inscription extends StatefulWidget {
@@ -15,7 +16,7 @@ class inscriptionState extends State<inscription> {
   @override
   Widget build(BuildContext context) {
     return Container(
-    color: Color(0xFF612C7D),
+      color: Color(0xFF612C7D),
       child: Container(
           height: 660,
           child: Column(
@@ -28,6 +29,17 @@ class inscriptionState extends State<inscription> {
                 width: 80,
                 height: 80,
               ),
+              Padding(
+                padding: const EdgeInsets.all(28),
+                child: Text("bienvenue a la page d inscription", style: TextStyle(
+                                         fontSize: 20,
+                                         color: Colors.white
+                                       )),
+              ),
+
+
+
+
               //  const Text("Bienvenu a Niefeko",
               //                       style: TextStyle(
               //                         fontSize: 20,
@@ -39,7 +51,8 @@ class inscriptionState extends State<inscription> {
                     padding:
                         const EdgeInsets.only(top: 25, left: 40, right: 40),
                     child: TextFormField(
-                      style: TextStyle(color: Color(0xFF5B2B75)), // Couleur du texte
+                      style: TextStyle(
+                          color: Color(0xFF5B2B75)), // Couleur du texte
                       decoration: InputDecoration(
                         labelText: 'Nom',
                         labelStyle: TextStyle(
@@ -162,10 +175,11 @@ class inscriptionState extends State<inscription> {
                   BoutonR(
                     titre: "S'inscrire",
                     onPressed: () {
-                      // Navigator.push(
-                      //   context
-                      //   // MaterialPageRoute(builder: (context) => carteReu()),
-                      // );
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => search()),
+                      );
                     },
                   )
                 ]),

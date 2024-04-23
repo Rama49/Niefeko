@@ -1,34 +1,45 @@
 import 'package:flutter/material.dart';
 import 'package:niefeko/Pages/Inscription/inscription.dart';
+import 'package:niefeko/Pages/Splash/splash.dart';
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key});
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  bool _showSplash = true; 
+
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(Duration(seconds: 3), () {
+      setState(() {
+        _showSplash = false;
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-       body: Column(children: [inscription(),  
-      //  ElevatedButton(
-      //             onPressed: () {
-      //               Navigator.pushNamed(context, '/CategorieHeader');
-      //             },
-      //             style: ElevatedButton.styleFrom(
-      //               primary: Color(0xFFF44336), // Couleur rouge
-      //             ),
-      //             child: Text('Voir catégorie'),
-      //           ),
-                ],
-       )
-       //Stack(
-      //   children: [
-          
-      //     search(),
-      //   ],
-      );
+      body: Stack(
+        children: [
+          if (_showSplash) SplashScreen(),
+
+          AnimatedOpacity(
+            opacity: _showSplash ? 0.0 : 1.0,
+            duration: Duration(milliseconds: 500),
+            curve: Curves.easeInOut,
+            child: Column(
+              children: [
+                inscription(),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
