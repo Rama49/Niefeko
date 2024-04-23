@@ -107,21 +107,6 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-<<<<<<< HEAD
-  flutter_web_plugins:
-    dependency: transitive
-    description: flutter
-    source: sdk
-    version: "0.0.0"
-  js:
-    dependency: transitive
-    description:
-      name: js
-      sha256: f2c445dce49627136094980615a031419f7f3eb393237e4ecd97ac15dea343f3
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.6.7"
-=======
   leak_tracker:
     dependency: transitive
     description:
@@ -146,7 +131,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.1"
->>>>>>> f0ecbfd784c0815b96a6b5988bbca53c65eca45b
   lints:
     dependency: transitive
     description:
@@ -186,19 +170,7 @@ packages:
       sha256: "087ce49c3f0dc39180befefc60fdb4acd8f8620e5682fe2476afd0b3688bb4af"
       url: "https://pub.dev"
     source: hosted
-<<<<<<< HEAD
-    version: "1.8.3"
-  plugin_platform_interface:
-    dependency: transitive
-    description:
-      name: plugin_platform_interface
-      sha256: "4820fbfdb9478b1ebae27888254d445073732dae3d6ea81f0b7e06d5dedc3f02"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.1.8"
-=======
     version: "1.9.0"
->>>>>>> f0ecbfd784c0815b96a6b5988bbca53c65eca45b
   sky_engine:
     dependency: transitive
     description: flutter
