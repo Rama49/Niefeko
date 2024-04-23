@@ -5,7 +5,8 @@ class BoutonR extends StatelessWidget {
   final String titre;
   final VoidCallback onPressed;
   final Color? couleur; // Nouvelle propriété pour la couleur du bouton
-  final double? fontSize; // Nouvelle propriété pour la taille de police du texte
+  final double?
+      fontSize; // Nouvelle propriété pour la taille de police du texte
 
   const BoutonR({
     Key? key,
@@ -29,7 +30,8 @@ class BoutonR extends StatelessWidget {
       child: Text(
         titre,
         style: TextStyle(
-          fontSize: fontSize ?? 14, // Utiliser la taille de police fournie ou 14 par défaut
+          fontSize: fontSize ??
+              14,
           color: Color.fromARGB(255, 71, 3, 82),
         ),
       ),
