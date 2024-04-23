@@ -281,7 +281,7 @@ class _inscriptionState extends State<inscription> {
                       onPressed: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => search()),
+                          MaterialPageRoute(builder: (context) => conexion()),
                         );
                       },
                       style: ElevatedButton.styleFrom(

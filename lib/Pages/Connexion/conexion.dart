@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:niefeko/Components/Carte/Recherche/recherche.dart';
+import 'package:niefeko/Pages/Inscription/inscription.dart';
 import 'package:niefeko/Reutilisable/buttonReu.dart';
+
+
+
 
 class conexion extends StatefulWidget {
   const conexion({super.key});
@@ -22,6 +26,7 @@ class _conexionState extends State<conexion> {
               SizedBox(
                 height: 10,
               ),
+              const Padding(padding: EdgeInsets.only(top: 30)),
               Image.asset(
                 "logoNiefeko.png",
                 width: 80,
@@ -35,7 +40,7 @@ class _conexionState extends State<conexion> {
                                        )),
               ),
 
-
+            const Padding(padding: EdgeInsets.only(top: 10)),
 
 
               //  const Text("Bienvenu a Niefeko",
@@ -49,8 +54,8 @@ class _conexionState extends State<conexion> {
                     padding:
                         const EdgeInsets.only(top: 15, left: 40, right: 40),
                     child: TextFormField(
-                      style: TextStyle(color: Colors.white), // Couleur du texte
-                      decoration: InputDecoration(
+                      style: const TextStyle(color: Colors.white), // Couleur du texte
+                      decoration: const InputDecoration(
                         labelText: 'Email',
                         labelStyle: TextStyle(
                             color: Colors.white), // Couleur du placeholder
@@ -69,13 +74,14 @@ class _conexionState extends State<conexion> {
                       ),
                     ),
                   ),
+                  const Padding(padding: EdgeInsets.only(top: 10)),
                   // SizedBox(height: 20),
                   Padding(
                     padding:
                         const EdgeInsets.only(top: 15, left: 40, right: 40),
                     child: TextFormField(
-                      style: TextStyle(color: Colors.white), // Couleur du texte
-                      decoration: InputDecoration(
+                      style: const TextStyle(color: Colors.white), // Couleur du texte
+                      decoration: const InputDecoration(
                         labelText: 'Mot de passe',
                         labelStyle: TextStyle(
                             color: Colors.white), // Couleur du placeholder
@@ -94,6 +100,34 @@ class _conexionState extends State<conexion> {
                       ),
                     ),
                   ),
+
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => inscription()),
+                      );
+                    },
+      style: TextButton.styleFrom(
+        backgroundColor: Color(0xFF612C7D),
+        padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
+        shape: RoundedRectangleBorder( borderRadius: BorderRadius.circular(5)
+        ),
+      ),
+      child: const Text(
+        "Mot de passe oublié",
+        textAlign: TextAlign.left,
+        style: TextStyle(
+          fontSize: 13,
+          
+
+          color: Color.fromRGBO(255, 255, 255, 1),
+        ),
+      ),
+    ),
+
+                  const Padding(padding: EdgeInsets.only(top: 30)),
                   // SizedBox(height: 20),
                    BoutonR(
                     titre: "Se Connecter",
@@ -104,12 +138,17 @@ class _conexionState extends State<conexion> {
                             builder: (context) => search()),
                       );
                     },
-                  )
+                  ),
+                  const Padding(padding: EdgeInsets.only(top: 30)),
                 ]),
               ),
             ],
-          )),
+          ),
+
+          ),
     ),
+    
 );
+
   }
 }
