@@ -19,12 +19,9 @@ class carteReu extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: Color.fromARGB(255, 85, 58, 112),
-      height: 200,
-      width: 450,
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        // crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(child: image),
           // Container(child: image, color: Colors.white,),
           Column(
             children: [
@@ -36,6 +33,7 @@ class carteReu extends StatelessWidget {
                         fontSize: 30)),
               ),
               Container(
+                padding: EdgeInsets.only(left: 5),
                 child: Text(paragraph,
                     style: TextStyle(
                         fontWeight: FontWeight.w700,
@@ -44,28 +42,26 @@ class carteReu extends StatelessWidget {
                 width: 100,
               ),
               Container(
+                  padding: EdgeInsets.only(left: 25, bottom: 20, top: 5),
                   child: Text(texte,
                       style: TextStyle(
-                          fontWeight: FontWeight.w700,
-                          color: Colors.white)),
+                          fontWeight: FontWeight.w700, color: Colors.white)),
                   width: 180),
-                  SizedBox(height: 10,),
-                 BoutonR(
-  titre: "Ajouter au panier",
-  onPressed: () {
-    // Navigator.push(
-    //   context
-    //   // MaterialPageRoute(builder: (context) => carteReu()),
-    // );
-  },
-),
-SizedBox(height: 20,)
-
-
-
-
+              BoutonR(
+                titre: "Ajouter au panier",
+                onPressed: () {
+                  // Navigator.push(
+                  //   context
+                  //   // MaterialPageRoute(builder: (context) => carteReu()),
+                  // );
+                },
+              ),
+              SizedBox(
+                height: 20,
+              )
             ],
-          )
+          ),
+          Flexible(child: image),
         ],
       ),
     );
