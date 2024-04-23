@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:niefeko/Components/Carte/recherche/recherche.dart';
+import 'package:niefeko/Pages/Connexion/conexion.dart';
 import 'package:niefeko/Reutilisable/buttonReu.dart';
 
 class inscription extends StatefulWidget {
@@ -31,7 +32,7 @@ class inscriptionState extends State<inscription> {
               ),
               Padding(
                 padding: const EdgeInsets.all(28),
-                child: Text("bienvenue a la page d inscription", style: TextStyle(
+                child: Text("bienvenue a la page d'inscription", style: TextStyle(
                                          fontSize: 20,
                                          color: Colors.white
                                        )),
@@ -178,7 +179,7 @@ class inscriptionState extends State<inscription> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => search()),
+                            builder: (context) => conexion()),
                       );
                     },
                   )
