@@ -25,11 +25,31 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
           // Second section
           Positioned.fill(
-           top: 0/* ajustez la hauteur de la première section */,
+            top: 0,
             left: 0,
             right: 0,
             bottom: 250,
             child: carte(),
+          ),
+          // Row
+          Positioned(
+            bottom: 0, // Aligné en bas
+            left: 0,
+            right: 0,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center, // Centré horizontalement
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/CategorieHeader');
+                  },
+                  style: ElevatedButton.styleFrom(
+                    primary: Color(0xFFF44336), // Couleur rouge
+                  ),
+                  child: Text('Voir catégorie'),
+                ),
+              ],
+            ),
           ),
         ],
       ),
