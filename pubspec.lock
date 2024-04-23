@@ -69,10 +69,17 @@ packages:
     dependency: "direct main"
     description:
       name: firebase_core
+<<<<<<< HEAD
       sha256: "6b1152a5af3b1cfe7e45309e96fc1aa14873f410f7aadb3878aa7812acfa7531"
       url: "https://pub.dev"
     source: hosted
     version: "2.30.0"
+=======
+      sha256: "53316975310c8af75a96e365f9fccb67d1c544ef0acdbf0d88bbe30eedd1c4f9"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.27.0"
+>>>>>>> f4fa97910b9104626d7b95450e88fdb06fc57721
   firebase_core_platform_interface:
     dependency: transitive
     description:
@@ -85,10 +92,17 @@ packages:
     dependency: transitive
     description:
       name: firebase_core_web
+<<<<<<< HEAD
       sha256: c8b02226e548f35aace298e2bb2e6c24e34e8a203d614e742bb1146e5a4ad3c8
       url: "https://pub.dev"
     source: hosted
     version: "2.15.0"
+=======
+      sha256: c8e1d59385eee98de63c92f961d2a7062c5d9a65e7f45bdc7f1b0b205aab2492
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.11.5"
+>>>>>>> f4fa97910b9104626d7b95450e88fdb06fc57721
   flutter:
     dependency: "direct main"
     description: flutter
@@ -107,11 +121,27 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> f4fa97910b9104626d7b95450e88fdb06fc57721
   flutter_web_plugins:
     dependency: transitive
     description: flutter
     source: sdk
     version: "0.0.0"
+<<<<<<< HEAD
+=======
+  js:
+    dependency: transitive
+    description:
+      name: js
+      sha256: f2c445dce49627136094980615a031419f7f3eb393237e4ecd97ac15dea343f3
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.6.7"
+=======
+>>>>>>> f4fa97910b9104626d7b95450e88fdb06fc57721
   leak_tracker:
     dependency: transitive
     description:
@@ -136,6 +166,7 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.1"
+>>>>>>> f0ecbfd784c0815b96a6b5988bbca53c65eca45b
   lints:
     dependency: transitive
     description:
@@ -175,7 +206,8 @@ packages:
       sha256: "087ce49c3f0dc39180befefc60fdb4acd8f8620e5682fe2476afd0b3688bb4af"
       url: "https://pub.dev"
     source: hosted
-    version: "1.9.0"
+<<<<<<< HEAD
+    version: "1.8.3"
   plugin_platform_interface:
     dependency: transitive
     description:
@@ -184,6 +216,20 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.8"
+=======
+    version: "1.9.0"
+<<<<<<< HEAD
+  plugin_platform_interface:
+    dependency: transitive
+    description:
+      name: plugin_platform_interface
+      sha256: "4820fbfdb9478b1ebae27888254d445073732dae3d6ea81f0b7e06d5dedc3f02"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.1.8"
+=======
+>>>>>>> f0ecbfd784c0815b96a6b5988bbca53c65eca45b
+>>>>>>> f4fa97910b9104626d7b95450e88fdb06fc57721
   sky_engine:
     dependency: transitive
     description: flutter
@@ -262,5 +308,9 @@ packages:
     source: hosted
     version: "0.5.1"
 sdks:
+<<<<<<< HEAD
   dart: ">=3.3.0 <4.0.0"
+=======
+  dart: ">=3.2.0 <4.0.0"
+>>>>>>> f4fa97910b9104626d7b95450e88fdb06fc57721
   flutter: ">=3.3.0"
