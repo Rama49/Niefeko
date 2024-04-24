@@ -148,7 +148,7 @@ class _inscriptionState extends State<inscription> {
                           _confirmPasswordController.clear();
                         } catch (e) {
                           print('Erreur lors de l\'inscription : $e');
-                        }
+                         }
                       }
                     },
                   ),
