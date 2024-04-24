@@ -178,8 +178,7 @@ class _connexionState extends State<connexion> {
                       onPressed: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(
-                              builder: (context) => search()),
+                          MaterialPageRoute(builder: (context) => search()),
                         );
                       },
                       style: ElevatedButton.styleFrom(

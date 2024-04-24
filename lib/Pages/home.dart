@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:niefeko/Components/Carte/Recherche/recherche.dart';
 import 'package:niefeko/Pages/Inscription/inscription.dart';
 import 'package:niefeko/Pages/Splash/splash.dart';
-import '';
+import 'package:niefeko/Pages/pageAcceuil/PageAcceuil.dart';
 
 class MyHomePage extends StatefulWidget {
 
@@ -37,7 +36,7 @@ class _MyHomePageState extends State<MyHomePage> {
             child: Column(
               children: [
                 inscription(),
-                search(),
+                pageAcceuil(),
               ],
             ),
           ),

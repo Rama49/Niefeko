@@ -13,6 +13,9 @@ class _categorieState extends State<categorie> {
   Widget build(BuildContext context) {
     return 
     Container(
+      color: Colors.amber,
+      height: 1000,
+      width: 1000,
       child: Column(
         children: [
           Text(
