@@ -18,7 +18,8 @@ class _conexionState extends State<conexion> {
   // Fonction pour se connecter avec Firebase
   Future<void> _signInWithEmailAndPassword() async {
     try {
-      UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+      UserCredential userCredential =
+          await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: _emailController.text,
         password: _passwordController.text,
       );
@@ -44,10 +45,10 @@ class _conexionState extends State<conexion> {
           child: Column(
             children: [
               Image.asset(
-                  "logoNiefeko.png",
-                  width: 80,
-                  height: 80,
-                ),
+                "logoNiefeko.png",
+                width: 80,
+                height: 80,
+              ),
               SizedBox(height: 10),
               Padding(
                 padding: const EdgeInsets.all(28),
@@ -65,7 +66,8 @@ class _conexionState extends State<conexion> {
                 child: Column(
                   children: [
                     Padding(
-                      padding: const EdgeInsets.only(top: 15, left: 40, right: 40),
+                      padding:
+                          const EdgeInsets.only(top: 15, left: 40, right: 40),
                       child: TextFormField(
                         controller: _emailController,
                         style: TextStyle(color: Colors.white),
@@ -81,12 +83,12 @@ class _conexionState extends State<conexion> {
                             borderSide: BorderSide(color: Colors.white),
                           ),
                         ),
-                           validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Veuillez entrer votre email';
-                      }
-                      return null;
-                    },
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Veuillez entrer votre email';
+                          }
+                          return null;
+                        },
                         // validator: (value) {
                         //   if (value.isEmpty) {
                         //     return 'Veuillez entrer votre email';
@@ -95,9 +97,10 @@ class _conexionState extends State<conexion> {
                         // },
                       ),
                     ),
-                    //SizedBox(height: 20),
+                    SizedBox(height: 10),
                     Padding(
-                      padding: const EdgeInsets.only(top: 15, left: 40, right: 40),
+                      padding:
+                          const EdgeInsets.only(top: 15, left: 40, right: 40),
                       child: TextFormField(
                         controller: _passwordController,
                         style: TextStyle(color: Colors.white),
@@ -114,12 +117,12 @@ class _conexionState extends State<conexion> {
                             borderSide: BorderSide(color: Colors.white),
                           ),
                         ),
-                         validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Veuillez entrer votre mot de passe';
-                      }
-                      return null;
-                    },
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Veuillez entrer votre mot de passe';
+                          }
+                          return null;
+                        },
                         // validator: (value) {
                         //   if (value.isEmpty) {
                         //     return 'Veuillez entrer votre mot de passe';
@@ -128,7 +131,51 @@ class _conexionState extends State<conexion> {
                         // },
                       ),
                     ),
-                    
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => inscription()),
+                        );
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Color(0xFF612C7D),
+                        //padding:
+                            //EdgeInsets.symmetric(horizontal: -50, vertical: 20),
+                           // EdgeInsets.only(left: 10, right: 10),
+                        //EdgeInsets.all(0.50),
+                        //EdgeInsets.symmetric(horizontal: 50),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                      ),
+                      child: Container(
+                        //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        
+                        width: 140,
+                        child:
+                             Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                               children: [
+                                Align(
+                                alignment: Alignment.bottomRight,
+                                child: Text(
+                                  "Mot de passe oublié ?",
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.white,
+                                  ),
+                                  
+                                )
+                                ),
+                               ]
+                             )
+                      ),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
                     ElevatedButton(
                       onPressed: () {
                         // Vérifiez la validation du formulaire avant de se connecter
@@ -137,10 +184,7 @@ class _conexionState extends State<conexion> {
                         }
                       },
                       style: ElevatedButton.styleFrom(
-                        //primary: Color(0xFF612C7D),
-                        backgroundColor: Colors.white,
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 50, vertical: 20),
+                        backgroundColor: Color.fromARGB(255, 247, 246, 248),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(5),
                         ),
@@ -148,38 +192,15 @@ class _conexionState extends State<conexion> {
                       child: const Text(
                         "Se connecter",
                         style: TextStyle(
-                          fontSize: 18,
-                          //color: Colors.white,
-                          color: Colors.purple
+                          fontSize: 16.0,
+                          backgroundColor: Colors.white,
+                          color: Colors.purple,
                         ),
                       ),
                     ),
-                    SizedBox(height: 30),
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => inscription()),
-                        );
-                      },
-                      style: ElevatedButton.styleFrom(
-                        //primary: Color(0xFF612C7D),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                      ),
-                      child: const Text(
-                        "Créer un compte",
-                        style: TextStyle(
-                          fontSize: 18,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 30),
-                    
+                    SizedBox(height: 20),
+                    SizedBox(height: 10),
                   ],
-                  
                 ),
               ),
             ],

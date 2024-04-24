@@ -298,6 +298,7 @@ class _inscriptionState extends State<inscription> {
                     ),
                   ]),
                 ),
+              
               ],
             )),
       ),
