@@ -1,36 +1,57 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:niefeko/Components/Carte/Recherche/recherche.dart';
 import 'package:niefeko/Pages/Inscription/inscription.dart';
 
-class conexion extends StatefulWidget {
-  const conexion({Key? key}) : super(key: key);
+class connexion extends StatefulWidget {
+  const connexion({Key? key}) : super(key: key);
 
   @override
-  State<conexion> createState() => _conexionState();
+  State<connexion> createState() => _connexionState();
 }
 
-class _conexionState extends State<conexion> {
+class _connexionState extends State<connexion> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  bool _isObscure = true; // Variable pour gérer la visibilité du mot de passe
 
   // Fonction pour se connecter avec Firebase
   Future<void> _signInWithEmailAndPassword() async {
     try {
-      UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+      UserCredential userCredential =
+          await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: _emailController.text,
         password: _passwordController.text,
       );
-      // Connexion réussie, rediriger l'utilisateur vers la page de recherche par exemple
+      // Connexion réussie, afficher le toast correspondant
+      Fluttertoast.showToast(
+        msg: "Connexion réussie avec succès",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 3,
+        backgroundColor: Colors.green, // Couleur de fond pour une connexion réussie
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+      // Rediriger l'utilisateur vers la page de recherche
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => search()),
       );
     } catch (e) {
-      // Erreur de connexion
+      // Erreur de connexion, afficher le toast correspondant
       print("Erreur de connexion: $e");
-      // Gérer l'erreur ici, comme afficher un message à l'utilisateur
+      Fluttertoast.showToast(
+        msg: "Erreur de connexion: $e",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 3,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
     }
   }
 
@@ -44,10 +65,10 @@ class _conexionState extends State<conexion> {
           child: Column(
             children: [
               Image.asset(
-                  "logoNiefeko.png",
-                  width: 80,
-                  height: 80,
-                ),
+                "logoNiefeko.png",
+                width: 80,
+                height: 80,
+              ),
               SizedBox(height: 10),
               Padding(
                 padding: const EdgeInsets.all(28),
@@ -65,7 +86,8 @@ class _conexionState extends State<conexion> {
                 child: Column(
                   children: [
                     Padding(
-                      padding: const EdgeInsets.only(top: 15, left: 40, right: 40),
+                      padding:
+                          const EdgeInsets.only(top: 15, left: 40, right: 40),
                       child: TextFormField(
                         controller: _emailController,
                         style: TextStyle(color: Colors.white),
@@ -81,28 +103,23 @@ class _conexionState extends State<conexion> {
                             borderSide: BorderSide(color: Colors.white),
                           ),
                         ),
-                           validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Veuillez entrer votre email';
-                      }
-                      return null;
-                    },
-                        // validator: (value) {
-                        //   if (value.isEmpty) {
-                        //     return 'Veuillez entrer votre email';
-                        //   }
-                        //   return null;
-                        // },
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Veuillez entrer votre email';
+                          }
+                          return null;
+                        },
                       ),
                     ),
                     SizedBox(height: 10),
                     Padding(
-                      padding: const EdgeInsets.only(top: 15, left: 40, right: 40),
+                      padding:
+                          const EdgeInsets.only(top: 15, left: 40, right: 40),
                       child: TextFormField(
                         controller: _passwordController,
                         style: TextStyle(color: Colors.white),
-                        obscureText: true,
-                        decoration: const InputDecoration(
+                        obscureText: _isObscure, // Utilisation de la variable pour masquer ou montrer le mot de passe
+                        decoration: InputDecoration(
                           labelText: 'Mot de passe',
                           labelStyle: TextStyle(color: Colors.white),
                           filled: true,
@@ -113,21 +130,28 @@ class _conexionState extends State<conexion> {
                           focusedBorder: OutlineInputBorder(
                             borderSide: BorderSide(color: Colors.white),
                           ),
+                          // Ajout de l'icône œil pour montrer ou masquer le mot de passe
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              _isObscure ? Icons.visibility : Icons.visibility_off,
+                              color: Colors.white,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                _isObscure = !_isObscure; // Inversion de l'état de visibilité du mot de passe
+                              });
+                            },
+                          ),
                         ),
-                         validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Veuillez entrer votre mot de passe';
-                      }
-                      return null;
-                    },
-                        // validator: (value) {
-                        //   if (value.isEmpty) {
-                        //     return 'Veuillez entrer votre mot de passe';
-                        //   }
-                        //   return null;
-                        // },
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Veuillez entrer votre mot de passe';
+                          }
+                          return null;
+                        },
                       ),
                     ),
+                    SizedBox(height: 20),
                     ElevatedButton(
                       onPressed: () {
                         // Vérifiez la validation du formulaire avant de se connecter
@@ -154,7 +178,8 @@ class _conexionState extends State<conexion> {
                       onPressed: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => inscription()),
+                          MaterialPageRoute(
+                              builder: (context) => inscription()),
                         );
                       },
                       style: ElevatedButton.styleFrom(
