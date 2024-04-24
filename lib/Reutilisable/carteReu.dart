@@ -7,10 +7,12 @@ class carteReu extends StatelessWidget {
   final String title;
   final String paragraph;
   final String texte;
+   final double borderRadius;
 
   const carteReu(
       {super.key,
       required this.image,
+      this.borderRadius = 20,
       required this.title,
       required this.paragraph,
       required this.texte});
@@ -18,7 +20,11 @@ class carteReu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Color.fromARGB(255, 85, 58, 112),
+      decoration: BoxDecoration(
+    color: Color.fromARGB(255, 85, 58, 112),
+    borderRadius: BorderRadius.circular(borderRadius),
+  ),
+
       child: Row(
         // crossAxisAlignment: CrossAxisAlignment.start,
         children: [

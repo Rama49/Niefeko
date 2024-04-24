@@ -5,9 +5,9 @@ class BoutonR extends StatelessWidget {
   final String titre;
   final VoidCallback onPressed;
    final double borderRadius;
-  final Color? couleur; // Nouvelle propriété pour la couleur du bouton
+  final Color? couleur; 
   final double?
-      fontSize; // Nouvelle propriété pour la taille de police du texte
+      fontSize; 
 
   const BoutonR({
     Key? key,
@@ -24,7 +24,7 @@ class BoutonR extends StatelessWidget {
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
         backgroundColor: couleur ?? Colors.white,
-        padding: EdgeInsets.symmetric(horizontal: 50, vertical: 20),
+        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
         shape: RoundedRectangleBorder( borderRadius: BorderRadius.circular(borderRadius)
         ),
       ),

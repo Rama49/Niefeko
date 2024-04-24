@@ -71,7 +71,7 @@ class _searchState extends State<search> {
             left: 0,
             right: 0,
             top: 0,
-            bottom: 150,
+            bottom: 390,
             child: Container(
               //  width: 400,
               child: CarouselSlider(
@@ -86,7 +86,7 @@ class _searchState extends State<search> {
                         ),
                         title: "Nouveau",
                         paragraph: "50%",
-                        texte: "avoir le produit dans vos panier.",
+                        texte: "Trouvez ce que vous aimez, à prix malins !",
                       ),
                     ),
                   ]),
@@ -102,7 +102,7 @@ class _searchState extends State<search> {
                         ),
                         title: "Nouveau",
                         paragraph: "50%",
-                        texte: "avoir le produit dans vos panier.",
+                        texte: "Trouvez ce que vous aimez, à prix malins !",
                       ),
                     ),
                   ]),
@@ -118,7 +118,7 @@ class _searchState extends State<search> {
                         ),
                         title: "Nouveau",
                         paragraph: "50%",
-                        texte: "avoir le produit dans vos panier.",
+                        texte: "Trouvez ce que vous aimez, à prix malins !",
                       ),
                     ),
                   ]),
@@ -133,7 +133,7 @@ class _searchState extends State<search> {
                         ),
                         title: "Nouveau",
                         paragraph: "50%",
-                        texte: "avoir le produit dans vos panier.",
+                        texte: "Trouvez ce que vous aimez, à prix malins !",
                       ),
                     ),
                   ]),
@@ -147,7 +147,7 @@ class _searchState extends State<search> {
                         ),
                         title: "Nouveau",
                         paragraph: "50%",
-                        texte: "avoir le produit dans vos panier.",
+                        texte: "Trouvez ce que vous aimez, à prix malins !",
                       ),
                     ),
                   ]),
@@ -169,6 +169,5 @@ class _searchState extends State<search> {
         ],
       ),
     );
-    ;
   }
 }
