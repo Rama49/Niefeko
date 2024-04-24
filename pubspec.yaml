@@ -68,13 +68,13 @@ flutter:
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
       - assets/chaussure.jpg
-      - assets/coquillage.jpg
-      - assets/gourde.jpg
-      - assets/lunnete1.jpg
-      - assets/pantalon.jpg
+      - assets/coquillage.png
+      - assets/gourde.png
+      - assets/lunnete1.png
+      - assets/pantalon.png
       - assets/pot.jpg
-      - assets/sac.jpg
-      - assets/torche.jpg
+      - assets/sac.png
+      - assets/torche.png
       - assets/tshirt-polo.jpg
       - assets/tshirt1.jpg
 
