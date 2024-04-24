@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:niefeko/Components/Carte/Recherche/recherche.dart';
+import 'package:niefeko/Components/Carte/Recherche/recherche.dart'; // Assurez-vous que c'est le bon import pour la classe search
 import 'package:niefeko/Pages/Inscription/inscription.dart';
 import 'package:niefeko/Pages/Splash/splash.dart';
-import '';
 
 class MyHomePage extends StatefulWidget {
 
@@ -36,8 +35,8 @@ class _MyHomePageState extends State<MyHomePage> {
             curve: Curves.easeInOut,
             child: Column(
               children: [
-                inscription(),
-                search(),
+                inscription(), // Assurez-vous que c'est le bon nom de classe pour l'inscription
+                search(), // Assurez-vous que c'est le bon nom de classe pour la recherche
               ],
             ),
           ),

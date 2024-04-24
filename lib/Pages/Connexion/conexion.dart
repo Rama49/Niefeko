@@ -179,7 +179,7 @@ class _connexionState extends State<connexion> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => inscription()),
+                              builder: (context) => search()),
                         );
                       },
                       style: ElevatedButton.styleFrom(
