@@ -109,7 +109,7 @@ class _categorieState extends State<categorie> {
               viewportFraction: 0.4, // Une image à la fois
             ),
           ),
-    SizedBox(height: 200)
+                    // SizedBox(height: 500)
         ],
       ),
     );
