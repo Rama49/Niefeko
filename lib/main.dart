@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-// import 'package:niefeko/Components/Category/CategorieHeader.dart';
 import 'package:niefeko/Pages/home.dart';
 
 void main() {
@@ -61,10 +60,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: const MyHomePage(),
+      home:  MyHomePage(),
       // routes: {
-      //   '/CategorieHeader': (context) =>
-      //       CategorieHeader(), // Route pour la page "Catégorie"
+      //   '/CategorieHeader': (context) => CategorieHeader(), // Route pour la page "Catégorie"
       // },
     );
   }

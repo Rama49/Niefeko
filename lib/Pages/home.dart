@@ -1,27 +1,48 @@
 import 'package:flutter/material.dart';
-import 'package:niefeko/Components/Carte/carte.dart';
-import 'package:niefeko/Components/Carte/recherche/recherche.dart';
-import 'package:carousel_slider/carousel_slider.dart';
+import 'package:niefeko/Components/Carte/Recherche/recherche.dart';
 import 'package:niefeko/Pages/Inscription/inscription.dart';
+import 'package:niefeko/Pages/Splash/splash.dart';
+import '';
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key});
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  bool _showSplash = true; 
+
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(Duration(seconds: 3), () {
+      setState(() {
+        _showSplash = false;
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-       body: Column(children: [inscription()],)
-       //Stack(
-      //   children: [
-          
-      //     search(),
-      //   ],
-      );
-   
+      body: Stack(
+        children: [
+          if (_showSplash) SplashScreen(),
+
+          AnimatedOpacity(
+            opacity: _showSplash ? 0.0 : 1.0,
+            duration: Duration(milliseconds: 500),
+            curve: Curves.easeInOut,
+            child: Column(
+              children: [
+                inscription(),
+                search(),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
