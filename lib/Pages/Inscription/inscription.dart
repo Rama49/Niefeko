@@ -264,7 +264,10 @@ class _inscriptionState extends State<inscription> {
                             textColor: Colors.purple,
                             fontSize: 16.0,
                           );
-
+Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => conexion()),
+                        );
                           // Vider tous les champs du formulaire après l'inscription réussie
                           _nomController.clear();
                           _prenomController.clear();
