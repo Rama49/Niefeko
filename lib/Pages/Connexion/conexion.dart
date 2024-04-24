@@ -95,7 +95,7 @@ class _conexionState extends State<conexion> {
                         // },
                       ),
                     ),
-                    SizedBox(height: 10),
+                    //SizedBox(height: 20),
                     Padding(
                       padding: const EdgeInsets.only(top: 15, left: 40, right: 40),
                       child: TextFormField(
@@ -128,6 +128,7 @@ class _conexionState extends State<conexion> {
                         // },
                       ),
                     ),
+                    
                     ElevatedButton(
                       onPressed: () {
                         // Vérifiez la validation du formulaire avant de se connecter
@@ -136,7 +137,10 @@ class _conexionState extends State<conexion> {
                         }
                       },
                       style: ElevatedButton.styleFrom(
-                        primary: Color(0xFF612C7D),
+                        //primary: Color(0xFF612C7D),
+                        backgroundColor: Colors.white,
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 50, vertical: 20),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(5),
                         ),
@@ -145,7 +149,8 @@ class _conexionState extends State<conexion> {
                         "Se connecter",
                         style: TextStyle(
                           fontSize: 18,
-                          color: Colors.white,
+                          //color: Colors.white,
+                          color: Colors.purple
                         ),
                       ),
                     ),
@@ -158,7 +163,7 @@ class _conexionState extends State<conexion> {
                         );
                       },
                       style: ElevatedButton.styleFrom(
-                        primary: Color(0xFF612C7D),
+                        //primary: Color(0xFF612C7D),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(5),
                         ),
@@ -172,7 +177,9 @@ class _conexionState extends State<conexion> {
                       ),
                     ),
                     SizedBox(height: 30),
+                    
                   ],
+                  
                 ),
               ),
             ],
