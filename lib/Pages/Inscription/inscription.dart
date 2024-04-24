@@ -206,72 +206,38 @@ class _inscriptionState extends State<inscription> {
                                 'confirmPassword': _confirmPasswordController.text,
                               });
 
-                              Fluttertoast.showToast(
-                                msg: "Inscription réussie avec succès",
-                                toastLength: Toast.LENGTH_SHORT,
-                                gravity: ToastGravity.CENTER,
-                                timeInSecForIosWeb: 3,
-                                backgroundColor: Colors.white,
-                                textColor: Colors.purple,
-                                fontSize: 16.0,
-                              );
-
-                              // Vider tous les champs du formulaire après l'inscription réussie
-                              _nomController.clear();
-                              _prenomController.clear();
-                              _emailController.clear();
-                              _passwordController.clear();
-                              _confirmPasswordController.clear();
-                            } catch (e) {
-                              print('Erreur lors de l\'inscription : $e');
-                              showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return AlertDialog(
-                                    title: Text("Erreur d'inscription"),
-                                    content: Text("Une erreur s'est produite lors de l'inscription. Veuillez réessayer."),
-                                    actions: [
-                                      TextButton(
-                                        onPressed: () {
-                                          Navigator.of(context).pop();
-                                        },
-                                        child: Text("OK"),
-                                      ),
-                                    ],
-                                  );
-                                },
-                              );
-                            }
-                          }
-                        },
-                      ),
-                      ElevatedButton(
-                        onPressed: () {
-                          // Navigator.push(
-                          //   context,
-                          //   MaterialPageRoute(builder: (context) => Conexion()),
-                          // );
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Color(0xFF612C7D),
-                          padding: EdgeInsets.symmetric(horizontal: 50, vertical: 20),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                        ),
-                        child: Text(
-                          "Vous avez déjà un compte ? Connectez-vous",
-                          style: TextStyle(fontSize: 14, color: Colors.white),
-                        ),
-                      ),
-                    ],
+                          Fluttertoast.showToast(
+                            msg: "Inscription réussie avec succès",
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.CENTER,
+                            timeInSecForIosWeb: 3, // Durée d'affichage de 3 secondes
+                            backgroundColor: Colors.white,
+                            textColor: Colors.purple,
+                            fontSize: 16.0,
+                          );
+Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => conexion()),
+                        );
+                          // Vider tous les champs du formulaire après l'inscription réussie
+                          _nomController.clear();
+                          _prenomController.clear();
+                          _emailController.clear();
+                          _passwordController.clear();
+                          _confirmPasswordController.clear();
+                        } catch (e) {
+                          print('Erreur lors de l\'inscription : $e');
+                         }
+                      }
+                    },
                   ),
-                ),
               ],
+                ),
             ),
-          ),
+          ],
         ),
       ),
+    ),
     );
   }
 
