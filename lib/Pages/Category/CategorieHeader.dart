@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class Categorie extends StatelessWidget {
+class CategorieHeader extends StatelessWidget {
   final List<String> imageUrls = [
     '../assets/tshirt1.jpg',
     '../assets/tshirt1.jpg',
@@ -14,7 +14,7 @@ class Categorie extends StatelessWidget {
     '../assets/tshirt1.jpg',
     '../assets/tshirt1.jpg',
     '../assets/tshirt1.jpg',
-    '../../assets/tshirt1.jpg',
+    '../assets/tshirt1.jpg',
     '../assets/tshirt1.jpg',
     '../assets/tshirt1.jpg',
     '../assets/tshirt1.jpg',
@@ -23,11 +23,11 @@ class Categorie extends StatelessWidget {
     '../assets/tshirt1.jpg',
   ];
 
-  Categorie({Key? key}) : super(key: key);
+  CategorieHeader({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-   return Scaffold(
+    return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.green, // Couleur verte de la barre d'en-tête
         iconTheme: IconThemeData(color: Colors.white), // Couleur blanche pour les icônes
@@ -80,6 +80,80 @@ class Categorie extends StatelessWidget {
         ),
       ),
       // body: CategorieBody(imageUrls: imageUrls),
+    );
+  }
+}
+
+class CategorieBody extends StatelessWidget {
+  final List<String> imageUrls;
+
+  CategorieBody({required this.imageUrls});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: Colors.green, // Couleur verte pour le fond du body
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          if (constraints.maxWidth < 600) {
+            // Affichage en mode portrait sur mobile
+            return SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: imageUrls.map((imageUrl) {
+                  return Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: _buildStory(imageUrl),
+                  );
+                }).toList(),
+              ),
+            );
+          } else {
+            // Affichage en mode paysage sur tablette
+            return SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: imageUrls.map((imageUrl) {
+                  return Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: _buildStory(imageUrl),
+                  );
+                }).toList(),
+              ),
+            );
+          }
+        },
+      ),
+    );
+  }
+
+  Widget _buildStory(String imageUrl) {
+    return Container(
+      width: 150, // Largeur de la carte d'image
+      height: 150, // Hauteur de la carte d'image
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(8.0), // Bordure arrondie
+            child: Image.asset(
+              imageUrl,
+              width: 100, // Largeur de l'image
+              height: 100, // Hauteur de l'image
+              fit: BoxFit.cover,
+            ),
+          ),
+          SizedBox(height: 8),
+          Text(
+            'Tee-shirt', // Titre
+            style: TextStyle(
+              color: Colors.white, // Couleur du texte
+              fontSize: 16, // Taille de la police
+              fontWeight: FontWeight.bold, // Gras
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:niefeko/Components/Carte/Navbar/menu.dart';
-import 'package:niefeko/Components/Category/Categorie.dart';
-import 'package:niefeko/Components/Category/CategorieHeader.dart';
+// import 'package:niefeko/Components/Category/Categorie.dart';
+// import 'package:niefeko/Components/Category/CategorieHeader.dart';
+import 'package:niefeko/Pages/Category/CategoriePage.dart';
 import 'package:niefeko/Reutilisable/buttonReu.dart';
 import 'package:niefeko/Reutilisable/carteReu.dart';
 import 'package:niefeko/Pages/Connexion/conexion.dart';
@@ -206,7 +207,7 @@ class _searchState extends State<search> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => CategorieHeader(),
+                          builder: (context) => CategoryPage(),
                         ),
                       );
                     },
