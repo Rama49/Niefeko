@@ -16,16 +16,42 @@ class _dealState extends State<deal> {
       child: Column(
         children: [
           Row(
-            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
                 "Special Vente",
                 style: TextStyle(
-                  fontSize: 30,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20,
                 ),
-              )
+              ),
+              GestureDetector(
+                onTap: () {
+                  // Action à effectuer lorsque "Voir Plus" est cliqué
+                  print("Voir Plus");
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Voir Plus",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                        color: Colors.black,
+                      ),
+                    ),
+                    Icon(
+                      Icons.arrow_forward,
+                      color: Colors.black, // Couleur de la flèche
+                      size: 20, // Taille de la flèche
+                    ),
+                  ],
+                ),
+              ),
             ],
           ),
+SizedBox(height: 20),
           // SizedBox(height: 10),
           CarouselSlider(
             items: [
@@ -34,10 +60,7 @@ class _dealState extends State<deal> {
                 decoration: BoxDecoration(
                   color: Color.fromARGB(255, 215, 194, 233),
                 ),
-                child: Image.asset(
-                  "casque.png",
-                  fit: BoxFit.contain
-                ),
+                child: Image.asset("casque.png", fit: BoxFit.contain),
               ),
               //2nd Image of Slider
               Container(

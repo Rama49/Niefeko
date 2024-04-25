@@ -35,6 +35,7 @@ class _searchState extends State<search> {
                     "Bienvenue à Niefeko",
                     style: TextStyle(
                       color: Colors.white,
+                      fontWeight: FontWeight.bold,
                       fontSize: 20,
                     ),
                   ),
@@ -167,7 +168,14 @@ class _searchState extends State<search> {
         ),
       ),
       bottomNavigationBar: BottomAppBar(
+        // shape: RoundedRectangleBorder(
+        //   borderRadius: BorderRadius.only(
+        //     topLeft: Radius.circular(40.0),
+        //     topRight: Radius.circular(40.0),
+        //   ),
+
         color: Color(0xFF593070),
+
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [

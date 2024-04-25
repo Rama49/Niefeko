@@ -21,12 +21,13 @@ class _categorieState extends State<categorie> {
               Text(
                 "Categories",
                 style: TextStyle(
-                  fontSize: 30,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20,
                 ),
               ),
             ],
           ),
-          // SizedBox(height: 30),
+          SizedBox(height: 20),
           CarouselSlider(
             items: [
               //1st Image of Slider
@@ -44,7 +45,7 @@ class _categorieState extends State<categorie> {
             options: CarouselOptions(
               enlargeCenterPage: true,
               autoPlay: true,
-              aspectRatio: 16 / 9,
+              aspectRatio: 23 / 9,
               autoPlayCurve: Curves.fastOutSlowIn,
               enableInfiniteScroll: true,
               autoPlayAnimationDuration: Duration(milliseconds: 500),
@@ -58,19 +59,20 @@ class _categorieState extends State<categorie> {
 
   Widget buildCarouselItem(String imagePath, String text) {
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 8),
+      // padding: EdgeInsets.symmetric(vertical: 0),
+      // color: Colors.amber,
       child: Column(
         children: [
           Container(
-            height: 150,
+            height: 80, // Hauteur du background mauve
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(40.0),
               color: Color.fromARGB(255, 215, 194, 233),
             ),
             child: Image.asset(
               imagePath,
-              width: 120,
-              height: 60,
+              // width: 120,
+              height: 100,
             ),
           ),
           SizedBox(height: 8), // Espacement entre l'image et le texte
@@ -78,7 +80,6 @@ class _categorieState extends State<categorie> {
             text,
             style: TextStyle(
               fontSize: 16,
-              fontWeight: FontWeight.bold,
             ),
           ),
         ],
