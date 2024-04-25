@@ -1,10 +1,8 @@
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:niefeko/Components/Carte/Categories/categorie.dart';
-import 'package:niefeko/Components/Carte/Navbar/menu.dart';
-import 'package:niefeko/Pages/Connexion/conexion.dart';
-import 'package:niefeko/Pages/Inscription/inscription.dart';
+import 'package:niefeko/Components/Deals/deal.dart';
 import 'package:niefeko/Reutilisable/carteReu.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 
 class search extends StatefulWidget {
   const search({Key? key}) : super(key: key);
@@ -71,7 +69,8 @@ class _searchState extends State<search> {
                               ),
                               title: "Nouveau",
                               paragraph: "50%",
-                              texte: "Trouvez ce que vous aimez, à prix malins !",
+                              texte:
+                                  "Trouvez ce que vous aimez, à prix malins !",
                             ),
                           ),
                         ],
@@ -86,7 +85,8 @@ class _searchState extends State<search> {
                               ),
                               title: "Nouveau",
                               paragraph: "50%",
-                              texte: "Trouvez ce que vous aimez, à prix malins !",
+                              texte:
+                                  "Trouvez ce que vous aimez, à prix malins !",
                             ),
                           ),
                         ],
@@ -101,7 +101,8 @@ class _searchState extends State<search> {
                               ),
                               title: "Nouveau",
                               paragraph: "50%",
-                              texte: "Trouvez ce que vous aimez, à prix malins !",
+                              texte:
+                                  "Trouvez ce que vous aimez, à prix malins !",
                             ),
                           ),
                         ],
@@ -116,7 +117,8 @@ class _searchState extends State<search> {
                               ),
                               title: "Nouveau",
                               paragraph: "50%",
-                              texte: "Trouvez ce que vous aimez, à prix malins !",
+                              texte:
+                                  "Trouvez ce que vous aimez, à prix malins !",
                             ),
                           ),
                         ],
@@ -131,7 +133,8 @@ class _searchState extends State<search> {
                               ),
                               title: "Nouveau",
                               paragraph: "50%",
-                              texte: "Trouvez ce que vous aimez, à prix malins !",
+                              texte:
+                                  "Trouvez ce que vous aimez, à prix malins !",
                             ),
                           ),
                         ],
@@ -151,13 +154,52 @@ class _searchState extends State<search> {
                 ],
               ),
             ),
-            
+
             // Votre Container contenant la catégorie
-            Positioned(
-              child: Column(children: [SizedBox(height: 120),
-                categorie(),SizedBox(height: 120), categorie(),categorie(),  ],))
+            Column(
+              children: [
+                SizedBox(height: 120),
+                categorie(),
+                deal(),
+              ],
+            ),
           ],
-       
+        ),
+      ),
+      bottomNavigationBar: BottomAppBar(
+        color: Color(0xFF593070),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            IconButton(
+              onPressed: () {
+                // Action pour le premier bouton du menu
+                print("Premier bouton du menu cliqué");
+              },
+              icon: Icon(Icons.home, color: Colors.white),
+            ),
+            IconButton(
+              onPressed: () {
+                // Action pour le deuxième bouton du menu
+                print("Deuxième bouton du menu cliqué");
+              },
+              icon: Icon(Icons.shopping_cart, color: Colors.white),
+            ),
+            IconButton(
+              onPressed: () {
+                // Action pour le troisième bouton du menu
+                print("Troisième bouton du menu cliqué");
+              },
+              icon: Icon(Icons.favorite, color: Colors.white),
+            ),
+            IconButton(
+              onPressed: () {
+                // Action pour le quatrième bouton du menu
+                print("Quatrième bouton du menu cliqué");
+              },
+              icon: Icon(Icons.settings, color: Colors.white),
+            ),
+          ],
         ),
       ),
     );

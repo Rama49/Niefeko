@@ -2,7 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
 class categorie extends StatefulWidget {
-  const categorie({super.key});
+  const categorie({Key? key});
 
   @override
   State<categorie> createState() => _categorieState();
@@ -12,6 +12,7 @@ class _categorieState extends State<categorie> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
+      padding: EdgeInsets.all(10),
       child: Column(
         children: [
           Row(
@@ -22,81 +23,22 @@ class _categorieState extends State<categorie> {
                 style: TextStyle(
                   fontSize: 30,
                 ),
-              )
+              ),
             ],
           ),
+          // SizedBox(height: 30),
           CarouselSlider(
             items: [
               //1st Image of Slider
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(
-                        const Radius.circular(40.0),
-                      ),
-                  color: Color.fromARGB(255, 178, 126, 231),
-                ),
-                child: Image.asset(
-                  "gourde.png",
-                  width: 120,
-                  height: 60,
-                ),
-              ),
+              buildCarouselItem("gourde.png", "Gourde"),
               //2nd Image of Slider
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(
-                        const Radius.circular(40.0),
-                      ),
-                  color: Color.fromARGB(255, 178, 126, 231),
-                ),
-                child: Image.asset(
-                  "pantalon.png",
-                  width: 120,
-                  height: 60,
-                ),
-              ),
+              buildCarouselItem("pantalon.png", "Pantalon"),
               //3rd Image of Slider
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(
-                        const Radius.circular(40.0),
-                      ),
-                  color: Color.fromARGB(255, 178, 126, 231),
-                ),
-                child: Image.asset(
-                  "lunnete1.png",
-                  width: 120,
-                  height: 60,
-                ),
-              ),
+              buildCarouselItem("lunnete1.png", "Lunettes"),
               //4th Image of Slider
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(
-                        const Radius.circular(40.0),
-                      ),
-                  color: Color.fromARGB(255, 178, 126, 231),
-                ),
-                child: Image.asset(
-                  "torche.png",
-                  width: 120,
-                  height: 60,
-                ),
-              ),
+              buildCarouselItem("torche.png", "Torche"),
               //5th Image of Slider
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(
-                        const Radius.circular(40.0),
-                      ),
-                  color: Color.fromARGB(255, 178, 126, 231),
-                ),
-                child: Image.asset(
-                  "maronshoes.png",
-                  width: 120,
-                  height: 60,
-                ),
-              ),
+              buildCarouselItem("maronshoes.png", "Chaussures"),
             ],
             //Slider Container properties
             options: CarouselOptions(
@@ -109,7 +51,36 @@ class _categorieState extends State<categorie> {
               viewportFraction: 0.4, // Une image à la fois
             ),
           ),
-                    // SizedBox(height: 500)
+        ],
+      ),
+    );
+  }
+
+  Widget buildCarouselItem(String imagePath, String text) {
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 8),
+      child: Column(
+        children: [
+          Container(
+            height: 150,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(40.0),
+              color: Color.fromARGB(255, 215, 194, 233),
+            ),
+            child: Image.asset(
+              imagePath,
+              width: 120,
+              height: 60,
+            ),
+          ),
+          SizedBox(height: 8), // Espacement entre l'image et le texte
+          Text(
+            text,
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
         ],
       ),
     );
