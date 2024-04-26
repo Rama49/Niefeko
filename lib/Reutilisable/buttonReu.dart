@@ -30,6 +30,7 @@ class BoutonR extends StatelessWidget {
       ),
       child: Text(
         titre,
+        
         style: TextStyle(
           fontSize: fontSize ??
               14,

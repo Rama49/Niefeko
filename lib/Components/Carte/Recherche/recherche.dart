@@ -54,242 +54,218 @@ class _searchState extends State<search> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            // Section de recherche
-            Container(
-              decoration: BoxDecoration(
-                color: Color(0xFF593070),
-                borderRadius: BorderRadius.only(
-                  bottomLeft: const Radius.circular(40.0),
-                  bottomRight: const Radius.circular(40.0),
-                ),
-              ),
-              padding: const EdgeInsets.all(20),
-              height: 250,
-              child: Column(
-                children: [
-                  const Text(
-                    "Bienvenue à Niefeko",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              // Section de recherche
+              Container(
+                  decoration: BoxDecoration(
+                    color: Color(0xFF593070),
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: const Radius.circular(40.0),
+                      bottomRight: const Radius.circular(40.0),
+                      topLeft: const Radius.circular(5.0),
+                      topRight: const Radius.circular(55.0),
                     ),
                   ),
-                  SizedBox(height: 20),
-                  TextField(
-                    decoration: InputDecoration(
-                      contentPadding: EdgeInsets.symmetric(
-                        vertical: 2,
+                  padding: const EdgeInsets.all(20),
+                  height: 250,
+                  child: Column(
+                    children: [
+                      const Text(
+                        "Bienvenue à Niefeko",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                        ),
                       ),
-                      filled: true,
-                      fillColor: const Color(0xfff1f1f1),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
-                        borderSide: BorderSide.none,
+                      SizedBox(height: 20),
+                      TextField(
+                        decoration: InputDecoration(
+                          contentPadding: EdgeInsets.symmetric(
+                            vertical: 2,
+                          ),
+                          filled: true,
+                          fillColor: const Color(0xfff1f1f1),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                            borderSide: BorderSide.none,
+                          ),
+                          hintText: "Recherche un produit",
+                          prefixIcon: const Icon(Icons.search),
+                          prefixIconColor: Colors.black,
+                        ),
                       ),
-                      hintText: "Recherche un produit",
-                      prefixIcon: const Icon(Icons.search),
-                      prefixIconColor: Colors.black,
-                    ),
-                  ),
-                  SizedBox(height: 20),
-                  // Carousel
-                  CarouselSlider(
-                    items: [
-                      //1st Image of Slider
-                      Column(
-                        children: [
-                          Flexible(
-                            child: carteReu(
-                              image: Image.asset(
-                                "sac.png",
+                      SizedBox(height: 20),
+                      // Carousel
+                      CarouselSlider(
+                        items: [
+                          //1st Image of Slider
+                          Column(
+                            children: [
+                              Flexible(
+                                child: carteReu(
+                                  image: Image.asset(
+                                    "sac.png",
+                                  ),
+                                  title: "Nouveau",
+                                  paragraph: "50%",
+                                  texte:
+                                      "Trouvez ce que vous aimez, à prix malins !",
+                                ),
                               ),
-                              title: "Nouveau",
-                              paragraph: "50%",
-                              texte:
-                                  "Trouvez ce que vous aimez, à prix malins !",
-                            ),
+                            ],
+                          ),
+                          //2nd Image of Slider
+                          Column(
+                            children: [
+                              Flexible(
+                                child: carteReu(
+                                  image: Image.asset(
+                                    "lunette.png",
+                                  ),
+                                  title: "Nouveau",
+                                  paragraph: "50%",
+                                  texte:
+                                      "Trouvez ce que vous aimez, à prix malins !",
+                                ),
+                              ),
+                            ],
+                          ),
+                          //3rd Image of Slider
+                          Column(
+                            children: [
+                              Flexible(
+                                child: carteReu(
+                                  image: Image.asset(
+                                    "shoes.png",
+                                  ),
+                                  title: "Nouveau",
+                                  paragraph: "50%",
+                                  texte:
+                                      "Trouvez ce que vous aimez, à prix malins !",
+                                ),
+                              ),
+                            ],
+                          ),
+                          //4th Image of Slider
+                          Column(
+                            children: [
+                              Flexible(
+                                child: carteReu(
+                                  image: Image.asset(
+                                    "t-shirt.png",
+                                  ),
+                                  title: "Nouveau",
+                                  paragraph: "50%",
+                                  texte:
+                                      "Trouvez ce que vous aimez, à prix malins !",
+                                ),
+                              ),
+                            ],
+                          ),
+                          //5th Image of Slider
+                          Column(
+                            children: [
+                              Flexible(
+                                child: carteReu(
+                                  image: Image.asset(
+                                    "sac.png",
+                                  ),
+                                  title: "Nouveau",
+                                  paragraph: "50%",
+                                  texte:
+                                      "Trouvez ce que vous aimez, à prix malins !",
+                                ),
+                              ),
+                            ],
                           ),
                         ],
-                      ),
-                      //2nd Image of Slider
-                      Column(
-                        children: [
-                          Flexible(
-                            child: carteReu(
-                              image: Image.asset(
-                                "lunette.png",
-                              ),
-                              title: "Nouveau",
-                              paragraph: "50%",
-                              texte:
-                                  "Trouvez ce que vous aimez, à prix malins !",
-                            ),
-                          ),
-                        ],
-                      ),
-                      //3rd Image of Slider
-                      Column(
-                        children: [
-                          Flexible(
-                            child: carteReu(
-                              image: Image.asset(
-                                "shoes.png",
-                              ),
-                              title: "Nouveau",
-                              paragraph: "50%",
-                              texte:
-                                  "Trouvez ce que vous aimez, à prix malins !",
-                            ),
-                          ),
-                        ],
-                      ),
-                      //4th Image of Slider
-                      Column(
-                        children: [
-                          Flexible(
-                            child: carteReu(
-                              image: Image.asset(
-                                "t-shirt.png",
-                              ),
-                              title: "Nouveau",
-                              paragraph: "50%",
-                              texte:
-                                  "Trouvez ce que vous aimez, à prix malins !",
-                            ),
-                          ),
-                        ],
-                      ),
-                      //5th Image of Slider
-                      Column(
-                        children: [
-                          Flexible(
-                            child: carteReu(
-                              image: Image.asset(
-                                "sac.png",
-                              ),
-                              title: "Nouveau",
-                              paragraph: "50%",
-                              texte:
-                                  "Trouvez ce que vous aimez, à prix malins !",
-                            ),
-                          ),
-                        ],
+                        //Slider Container properties
+                        options: CarouselOptions(
+                          enlargeCenterPage: true,
+                          autoPlay: true,
+                          aspectRatio: 16 / 9,
+                          autoPlayCurve: Curves.fastOutSlowIn,
+                          enableInfiniteScroll: true,
+                          autoPlayAnimationDuration:
+                              Duration(milliseconds: 800),
+                          viewportFraction: 0.8,
+                        ),
                       ),
                     ],
-                    //Slider Container properties
-                    options: CarouselOptions(
-                      enlargeCenterPage: true,
-                      autoPlay: true,
-                      aspectRatio: 16 / 9,
-                      autoPlayCurve: Curves.fastOutSlowIn,
-                      enableInfiniteScroll: true,
-                      autoPlayAnimationDuration: Duration(milliseconds: 800),
-                      viewportFraction: 0.8,
-                    ),
-                  ),
-                
-               Center( // Centrer le bouton
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => CategoryPage(),
-                        ),
-                      );
-                    },
-                    style: ElevatedButton.styleFrom(
-                      primary: Color(0xFF612C7D),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                    ),
-                    child: const Text(
-                      "Créer un compte",
-                      style: TextStyle(
-                        fontSize: 18,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            )),
+                  )),
 
-            // Votre Container contenant la catégorie
-            Column(
-              children: [
-                SizedBox(height: 120),
-                categorie(),
-                deal(),
-              ],
-            ),
-          ],
+              // Votre Container contenant la catégorie
+              Column(
+                children: [
+                  SizedBox(height: 120),
+                  categorie(),
+                  deal(),
+                ],
+              ),
+            ],
+          ),
         ),
-      ),
-      bottomNavigationBar: BottomAppBar(
-        // shape: RoundedRectangleBorder(
-        //   borderRadius: BorderRadius.only(
-        //     topLeft: Radius.circular(40.0),
-        //     topRight: Radius.circular(40.0),
-        //   ),
+        bottomNavigationBar: BottomAppBar(
+          // shape: RoundedRectangleBorder(
+          //   borderRadius: BorderRadius.only(
+          //     topLeft: Radius.circular(40.0),
+          //     topRight: Radius.circular(40.0),
+          //   ),
 
-        color: Color(0xFF593070),
+          color: Color(0xFF593070),
 
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            IconButton(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              IconButton(
                 onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => search(),
-                        ),
-                      );
-                    },
-              icon: Icon(Icons.home, color: Colors.white),
-            ),
-            IconButton(
-               onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => CategoryPage(),
-                        ),
-                      );
-                    },
-              icon: Icon(Icons.shopping_cart, color: Colors.white),
-            ),
-            IconButton(
-               onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => CategoryPage(),
-                        ),
-                      );
-                    },
-              icon: Icon(Icons.favorite, color: Colors.white),
-            ),
-            IconButton(
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => search(),
+                    ),
+                  );
+                },
+                icon: Icon(Icons.home, color: Colors.white),
+              ),
+              IconButton(
                 onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => CategoryPage(),
-                        ),
-                      );
-                    },
-              icon: Icon(Icons.settings, color: Colors.white),
-            ),
-          ],
-        ),
-      ));
-  
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => CategoryPage(),
+                    ),
+                  );
+                },
+                icon: Icon(Icons.shopping_cart, color: Colors.white),
+              ),
+              IconButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => CategoryPage(),
+                    ),
+                  );
+                },
+                icon: Icon(Icons.favorite, color: Colors.white),
+              ),
+              IconButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => CategoryPage(),
+                    ),
+                  );
+                },
+                icon: Icon(Icons.settings, color: Colors.white),
+              ),
+            ],
+          ),
+        ));
   }
 }
