@@ -244,35 +244,52 @@ class _searchState extends State<search> {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             IconButton(
-              onPressed: () {
-                // Action pour le premier bouton du menu
-                print("Premier bouton du menu cliqué");
-              },
+                onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => search(),
+                        ),
+                      );
+                    },
               icon: Icon(Icons.home, color: Colors.white),
             ),
             IconButton(
-              onPressed: () {
-                // Action pour le deuxième bouton du menu
-                print("Deuxième bouton du menu cliqué");
-              },
+               onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => CategoryPage(),
+                        ),
+                      );
+                    },
               icon: Icon(Icons.shopping_cart, color: Colors.white),
             ),
             IconButton(
-              onPressed: () {
-                // Action pour le troisième bouton du menu
-                print("Troisième bouton du menu cliqué");
-              },
+               onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => CategoryPage(),
+                        ),
+                      );
+                    },
               icon: Icon(Icons.favorite, color: Colors.white),
             ),
             IconButton(
-              onPressed: () {
-                // Action pour le quatrième bouton du menu
-                print("Quatrième bouton du menu cliqué");
-              },
+                onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => CategoryPage(),
+                        ),
+                      );
+                    },
               icon: Icon(Icons.settings, color: Colors.white),
             ),
           ],
         ),
       ));
+  
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:niefeko/Components/Carte/Recherche/recherche.dart';
 
 class CategoryPage extends StatefulWidget {
   @override
@@ -83,7 +84,65 @@ class _CategoryPageState extends State<CategoryPage> {
           ],
         ),
       ),
-    );
+       bottomNavigationBar: BottomAppBar(
+        // shape: RoundedRectangleBorder(
+        //   borderRadius: BorderRadius.only(
+        //     topLeft: Radius.circular(40.0),
+        //     topRight: Radius.circular(40.0),
+        //   ),
+
+        color: Color(0xFF593070),
+
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            IconButton(
+                onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => search(),
+                        ),
+                      );
+                    },
+              icon: Icon(Icons.home, color: Colors.white),
+            ),
+            IconButton(
+               onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => CategoryPage(),
+                        ),
+                      );
+                    },
+              icon: Icon(Icons.shopping_cart, color: Colors.white),
+            ),
+            IconButton(
+               onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => CategoryPage(),
+                        ),
+                      );
+                    },
+              icon: Icon(Icons.favorite, color: Colors.white),
+            ),
+            IconButton(
+                onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => CategoryPage(),
+                        ),
+                      );
+                    },
+              icon: Icon(Icons.settings, color: Colors.white),
+            ),
+          ],
+        ),
+      ));
   }
 
   Widget buildCard(int index) {
