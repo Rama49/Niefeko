@@ -1,6 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:niefeko/Components/Carte/Categories/categorie.dart';
 import 'package:niefeko/Components/Deals/deal.dart';
+import 'package:niefeko/Pages/Category/CategoriePage.dart';
+import 'package:niefeko/Pages/Connexion/conexion.dart';
 import 'package:niefeko/Reutilisable/carteReu.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
@@ -12,6 +16,41 @@ class search extends StatefulWidget {
 }
 
 class _searchState extends State<search> {
+  bool _isLoggedOut = false;
+
+  Future<void> _signOut() async {
+    try {
+      await FirebaseAuth.instance.signOut();
+      setState(() {
+        _isLoggedOut = true;
+      });
+      Fluttertoast.showToast(
+        msg: "Vous vous êtes déconnecté avec succès",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 3,
+        backgroundColor: Colors.green,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => connexion()),
+      );
+    } catch (e) {
+      print("Erreur lors de la déconnexion: $e");
+      Fluttertoast.showToast(
+        msg: "Erreur lors de la déconnexion: $e",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 3,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -152,9 +191,39 @@ class _searchState extends State<search> {
                       viewportFraction: 0.8,
                     ),
                   ),
-                ],
-              ),
-            ),
+                
+                // SizedBox(height: 20),
+                Container(
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                         // Navigator.push(
+                  //   context
+                  //   // MaterialPageRoute(builder: (context) => carteReu()),
+                  // );
+                                          MaterialPageRoute(builder: (context) => CategoryPage()),
+
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      primary: Color(0xFF612C7D),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                    ),
+                    child: const Text(
+                      "Créer un compte",
+                      style: TextStyle(
+                        fontSize: 18,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ),
+             
+              ],
+            )),
 
             // Votre Container contenant la catégorie
             Column(
@@ -209,7 +278,6 @@ class _searchState extends State<search> {
             ),
           ],
         ),
-      ),
-    );
+      ));
   }
 }
