@@ -43,13 +43,13 @@ class _categorieState extends State<categorie> {
             ],
             //Slider Container properties
             options: CarouselOptions(
-              enlargeCenterPage: true,
+              enlargeCenterPage: false,
               autoPlay: true,
               aspectRatio: 23 / 9,
               autoPlayCurve: Curves.fastOutSlowIn,
               enableInfiniteScroll: true,
               autoPlayAnimationDuration: Duration(milliseconds: 500),
-              viewportFraction: 0.4, // Une image à la fois
+              viewportFraction: 0.25, // Une image à la fois
             ),
           ),
         ],
