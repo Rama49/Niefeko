@@ -192,18 +192,14 @@ class _searchState extends State<search> {
                     ),
                   ),
                 
-                // SizedBox(height: 20),
-                Container(
+               Center( // Centrer le bouton
                   child: ElevatedButton(
                     onPressed: () {
                       Navigator.push(
                         context,
-                         // Navigator.push(
-                  //   context
-                  //   // MaterialPageRoute(builder: (context) => carteReu()),
-                  // );
-                                          MaterialPageRoute(builder: (context) => CategoryPage()),
-
+                        MaterialPageRoute(
+                          builder: (context) => CategoryPage(),
+                        ),
                       );
                     },
                     style: ElevatedButton.styleFrom(
@@ -221,7 +217,6 @@ class _searchState extends State<search> {
                     ),
                   ),
                 ),
-             
               ],
             )),
 
