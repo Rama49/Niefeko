@@ -40,7 +40,8 @@ class _inscriptionState extends State<inscription> {
       child: Container(
         color: Color(0xFF612C7D),
         child: Container(
-            height: 660,
+            height: 1000,
+          
             child: Column(
               children: [
                 SizedBox(
@@ -266,7 +267,7 @@ class _inscriptionState extends State<inscription> {
                           );
 Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => conexion()),
+                          MaterialPageRoute(builder: (context) => connexion()),
                         );
                           // Vider tous les champs du formulaire après l'inscription réussie
                           _nomController.clear();
@@ -284,7 +285,7 @@ Navigator.push(
                       onPressed: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => conexion()),
+                          MaterialPageRoute(builder: (context) => connexion()),
                         );
                       },
                       style: ElevatedButton.styleFrom(

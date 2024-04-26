@@ -1,18 +1,20 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:niefeko/Components/Carte/Recherche/recherche.dart';
 
-class conexion extends StatefulWidget {
-  const conexion({Key? key}) : super(key: key);
+class connexion extends StatefulWidget {
+  const connexion({Key? key}) : super(key: key);
 
   @override
-  State<conexion> createState() => _conexionState();
+  State<connexion> createState() => _connexionState();
 }
 
-class _conexionState extends State<conexion> {
+class _connexionState extends State<connexion> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  bool _isObscure = true; // Variable pour gérer la visibilité du mot de passe
 
   // Fonction pour se connecter avec Firebase
   Future<void> _signInWithEmailAndPassword() async {
@@ -22,15 +24,33 @@ class _conexionState extends State<conexion> {
         email: _emailController.text,
         password: _passwordController.text,
       );
-      // Connexion réussie, rediriger l'utilisateur vers la page de recherche par exemple
+      // Connexion réussie, afficher le toast correspondant
+      Fluttertoast.showToast(
+        msg: "Connexion réussie avec succès",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 3,
+        backgroundColor: Colors.green, // Couleur de fond pour une connexion réussie
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+      // Rediriger l'utilisateur vers la page de recherche
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => search()),
       );
     } catch (e) {
-      // Erreur de connexion
+      // Erreur de connexion, afficher le toast correspondant
       print("Erreur de connexion: $e");
-      // Gérer l'erreur ici, comme afficher un message à l'utilisateur
+      Fluttertoast.showToast(
+        msg: "Erreur de connexion: $e",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 3,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
     }
   }
 
@@ -88,12 +108,6 @@ class _conexionState extends State<conexion> {
                           }
                           return null;
                         },
-                        // validator: (value) {
-                        //   if (value.isEmpty) {
-                        //     return 'Veuillez entrer votre email';
-                        //   }
-                        //   return null;
-                        // },
                       ),
                     ),
                     SizedBox(height: 10),
@@ -103,8 +117,8 @@ class _conexionState extends State<conexion> {
                       child: TextFormField(
                         controller: _passwordController,
                         style: TextStyle(color: Colors.white),
-                        obscureText: true,
-                        decoration: const InputDecoration(
+                        obscureText: _isObscure, // Utilisation de la variable pour masquer ou montrer le mot de passe
+                        decoration: InputDecoration(
                           labelText: 'Mot de passe',
                           labelStyle: TextStyle(color: Colors.white),
                           filled: true,
@@ -115,6 +129,18 @@ class _conexionState extends State<conexion> {
                           focusedBorder: OutlineInputBorder(
                             borderSide: BorderSide(color: Colors.white),
                           ),
+                          // Ajout de l'icône œil pour montrer ou masquer le mot de passe
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              _isObscure ? Icons.visibility : Icons.visibility_off,
+                              color: Colors.white,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                _isObscure = !_isObscure; // Inversion de l'état de visibilité du mot de passe
+                              });
+                            },
+                          ),
                         ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -122,14 +148,9 @@ class _conexionState extends State<conexion> {
                           }
                           return null;
                         },
-                        // validator: (value) {
-                        //   if (value.isEmpty) {
-                        //     return 'Veuillez entrer votre mot de passe';
-                        //   }
-                        //   return null;
-                        // },
                       ),
                     ),
+                    SizedBox(height: 20),
                     ElevatedButton(
                       onPressed: () {
                         Navigator.push(
@@ -197,8 +218,30 @@ class _conexionState extends State<conexion> {
                         ),
                       ),
                     ),
-                    SizedBox(height: 20),
-                    SizedBox(height: 10),
+                    SizedBox(height: 30),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => search()),
+                        );
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Color(0xFF612C7D),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                      ),
+                      child: const Text(
+                        "Créer un compte",
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 30),
                   ],
                 ),
               ),
