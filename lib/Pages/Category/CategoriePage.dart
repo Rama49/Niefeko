@@ -66,27 +66,27 @@ class _CategoryPageState extends State<CategoryPage> {
           },
         ),
         actions: [
-          IconButton(
-            icon: Stack(
-              children: [
-                Icon(Icons.shopping_cart, color: Colors.white),
-                Positioned(
-                  right: 8,
-                  top: 8,
-                  child: CircleAvatar(
-                    backgroundColor: Colors.red,
-                    radius: 10,
-                    child: Text(
-                      cartItemCount.toString(),
-                      style: TextStyle(color: Colors.white, fontSize: 12),
-                    ),
+          Stack(
+            children: [
+              IconButton(
+                icon: Icon(Icons.shopping_cart, color: Colors.white, size: 30),
+                onPressed: () {
+                  // Action à exécuter lors du clic sur l'icône de panier
+                },
+              ),
+              Positioned(
+                right: 8,
+                top: 8,
+                child: CircleAvatar(
+                  backgroundColor: Colors.red,
+                  radius: 10,
+                  child: Text(
+                    cartItemCount.toString(),
+                    style: TextStyle(color: Colors.white, fontSize: 12),
                   ),
                 ),
-              ],
-            ),
-            onPressed: () {
-              // Action à exécuter lors du clic sur l'icône de panier
-            },
+              ),
+            ],
           ),
         ],
       ),
@@ -250,9 +250,7 @@ class _CategoryPageState extends State<CategoryPage> {
               SizedBox(height: 8),
               Center(
                 child: ElevatedButton(
-                  onPressed: () {
-                    addToCart(); // Ajouter au panier
-                  },
+                  onPressed: addToCart,
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
