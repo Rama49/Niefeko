@@ -44,7 +44,9 @@ class _CategoryPageState extends State<CategoryPage> {
 
   void searchProduct(String query) {
     setState(() {
-      filteredImagePaths = imagePaths.where((path) => path.contains(query)).toList();
+      filteredImagePaths = imagePaths
+          .where((path) => path.toLowerCase().contains(query.toLowerCase()))
+          .toList();
     });
   }
 
@@ -217,7 +219,8 @@ class _CategoryPageState extends State<CategoryPage> {
   }
 
   Widget buildCard(int index) {
-    String imageName = filteredImagePaths[index].split('/').last.split('.').first;
+    String imageName =
+        filteredImagePaths[index].split('/').last.split('.').first;
     double price = prices[index];
     return Card(
       child: Stack(
@@ -242,7 +245,8 @@ class _CategoryPageState extends State<CategoryPage> {
                     SizedBox(height: 4),
                     Text(
                       '\$$price',
-                      style: TextStyle(fontWeight: FontWeight.bold, color: Colors.green),
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, color: Colors.green),
                     ),
                   ],
                 ),
