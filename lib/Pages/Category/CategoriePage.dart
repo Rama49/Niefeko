@@ -7,10 +7,7 @@ class CategoryPage extends StatefulWidget {
 }
 
 class _CategoryPageState extends State<CategoryPage> {
-  // Liste de booléens pour suivre l'état de favori de chaque élément
   List<bool> isFavoritedList = List.generate(20, (index) => false);
-
-  // Liste des chemins des nouvelles images
   List<String> imagePaths = [
     '../assets/casque.png',
     '../assets/chaussure.png',
@@ -35,9 +32,27 @@ class _CategoryPageState extends State<CategoryPage> {
     '../assets/tshirt1.jpg',
     '../assets/tshirtRouge.png',
   ];
-
-  // Liste des prix correspondant à chaque produit
   List<double> prices = List.generate(20, (index) => 1000.0);
+  List<String> filteredImagePaths = [];
+  int cartItemCount = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    filteredImagePaths.addAll(imagePaths);
+  }
+
+  void searchProduct(String query) {
+    setState(() {
+      filteredImagePaths = imagePaths.where((path) => path.contains(query)).toList();
+    });
+  }
+
+  void addToCart() {
+    setState(() {
+      cartItemCount++;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +67,23 @@ class _CategoryPageState extends State<CategoryPage> {
         ),
         actions: [
           IconButton(
-            icon: Icon(Icons.shopping_cart, color: Colors.white),
+            icon: Stack(
+              children: [
+                Icon(Icons.shopping_cart, color: Colors.white),
+                Positioned(
+                  right: 8,
+                  top: 8,
+                  child: CircleAvatar(
+                    backgroundColor: Colors.red,
+                    radius: 10,
+                    child: Text(
+                      cartItemCount.toString(),
+                      style: TextStyle(color: Colors.white, fontSize: 12),
+                    ),
+                  ),
+                ),
+              ],
+            ),
             onPressed: () {
               // Action à exécuter lors du clic sur l'icône de panier
             },
@@ -71,10 +102,10 @@ class _CategoryPageState extends State<CategoryPage> {
                   color: Colors.white,
                 ),
                 child: TextField(
+                  onChanged: searchProduct,
                   decoration: InputDecoration(
                     hintText: 'Search...',
                     prefixIcon: Icon(Icons.search, color: Colors.grey),
-                    // suffixIcon: Icon(Icons.shopping_cart, color: Colors.purple), // Ajouter une icône de panier à droite du champ de recherche
                     border: InputBorder.none,
                   ),
                 ),
@@ -88,12 +119,12 @@ class _CategoryPageState extends State<CategoryPage> {
                 padding: EdgeInsets.all(8.0),
                 child: Row(
                   children: List.generate(
-                    imagePaths.length,
+                    filteredImagePaths.length,
                     (index) => Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: CircleAvatar(
                         radius: 50,
-                        backgroundImage: AssetImage(imagePaths[index]),
+                        backgroundImage: AssetImage(filteredImagePaths[index]),
                       ),
                     ),
                   ),
@@ -101,19 +132,32 @@ class _CategoryPageState extends State<CategoryPage> {
               ),
             ),
             SizedBox(height: 10),
-            GridView.builder(
-              shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                crossAxisSpacing: 8,
-                mainAxisSpacing: 8,
-              ),
-              itemCount: 20,
-              itemBuilder: (context, index) {
-                return buildCard(index);
-              },
-            ),
+            // Condition pour afficher "Produit non trouvé" si la liste filtrée est vide
+            filteredImagePaths.isEmpty
+                ? Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      "Produit non trouvé",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                        color: Colors.red,
+                      ),
+                    ),
+                  )
+                : GridView.builder(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 8,
+                      mainAxisSpacing: 8,
+                    ),
+                    itemCount: filteredImagePaths.length,
+                    itemBuilder: (context, index) {
+                      return buildCard(index);
+                    },
+                  ),
           ],
         ),
       ),
@@ -173,9 +217,7 @@ class _CategoryPageState extends State<CategoryPage> {
   }
 
   Widget buildCard(int index) {
-    // Extraire le nom du fichier de l'image
-    String imageName = imagePaths[index].split('/').last.split('.').first;
-    // Extraire le prix correspondant à l'index
+    String imageName = filteredImagePaths[index].split('/').last.split('.').first;
     double price = prices[index];
     return Card(
       child: Stack(
@@ -184,7 +226,7 @@ class _CategoryPageState extends State<CategoryPage> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Image.asset(
-                imagePaths[index], // Utiliser le chemin d'image correspondant à l'index
+                filteredImagePaths[index],
                 width: 90,
                 height: 90,
                 fit: BoxFit.cover,
@@ -194,12 +236,12 @@ class _CategoryPageState extends State<CategoryPage> {
                 child: Column(
                   children: [
                     Text(
-                      imageName, // Utiliser le nom de l'image comme titre
+                      imageName,
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                     SizedBox(height: 4),
                     Text(
-                      '\$$price', // Afficher le prix
+                      '\$$price',
                       style: TextStyle(fontWeight: FontWeight.bold, color: Colors.green),
                     ),
                   ],
@@ -209,9 +251,8 @@ class _CategoryPageState extends State<CategoryPage> {
               Center(
                 child: ElevatedButton(
                   onPressed: () {
-                    // Action à exécuter lors du clic sur le bouton
+                    addToCart(); // Ajouter au panier
                   },
-                  // Icône du panier à droite du texte
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
