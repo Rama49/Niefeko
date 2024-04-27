@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:niefeko/Components/Carte/recherche/recherche.dart';
 import 'package:niefeko/Reutilisable/buttonReu.dart';
 
 class carteReu extends StatelessWidget {
@@ -20,11 +19,12 @@ class carteReu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      width: 300,
       decoration: BoxDecoration(
     color: Color.fromARGB(255, 85, 58, 112),
     borderRadius: BorderRadius.circular(borderRadius),
-  ),
-
+      ),
+    
       child: Row(
         // crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -57,9 +57,10 @@ class carteReu extends StatelessWidget {
                 titre: "Ajouter au panier",
                 onPressed: () {
                   // Navigator.push(
-                  //   context
+                  //   contextr
                   //   // MaterialPageRoute(builder: (context) => carteReu()),
                   // );
+    
                 },
               ),
               SizedBox(
@@ -67,7 +68,7 @@ class carteReu extends StatelessWidget {
               )
             ],
           ),
-          Flexible(child: image),
+          Expanded(child: image),
         ],
       ),
     );
