@@ -1,5 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:niefeko/Components/Recherche/recherche.dart';
+import 'package:niefeko/Pages/CartPanier/CartPanier.dart';
+
+// Classe représentant un produit
+class Product {
+  final String imagePath;
+  final String name;
+  final double price;
+
+  Product({required this.imagePath, required this.name, required this.price});
+}
 
 class CategoryPage extends StatefulWidget {
   @override
@@ -9,32 +19,31 @@ class CategoryPage extends StatefulWidget {
 class _CategoryPageState extends State<CategoryPage> {
   List<bool> isFavoritedList = List.generate(20, (index) => false);
   List<String> imagePaths = [
-    '../assets/casque.png',
-    '../assets/chaussure.png',
-    '../assets/coquillage.png',
-    '../assets/gourde.png',
-    '../assets/jordan.png',
-    '../assets/lunnete1.png',
-    '../assets/lunette.png',
-    '../assets/montre.png',
-    '../assets/pantalon.png',
-    '../assets/pot.png',
-    '../assets/sac1.png',
-    '../assets/sacoche.png',
-    '../assets/shoes.png',
-    '../assets/t-shirt.png',
-    '../assets/torche.png',
-    '../assets/tshirt-polo.jpg',
-    '../assets/tshirt1.jpg',
-    '../assets/tshirtRouge.png',
-    '../assets/torche.png',
-    '../assets/tshirt-polo.jpg',
-    '../assets/tshirt1.jpg',
-    '../assets/tshirtRouge.png',
+    'assets/casque.png',
+    'assets/chaussure.png',
+    'assets/coquillage.png',
+    'assets/gourde.png',
+    'assets/jordan.png',
+    'assets/lunnete1.png',
+    'assets/lunette.png',
+    'assets/montre.png',
+    'assets/pantalon.png',
+    'assets/pot.png',
+    'assets/sac1.png',
+    'assets/sac.jpg',
+    'assets/sacoche.png',
+    'assets/shoes.png',
+    'assets/t-shirt.png',
+    'assets/torche.png',
+    'assets/tshirt-polo.jpg',
+    'assets/tshirt1.jpg',
+    'assets/tshirtRouge.png',
+    'assets/torche.png',
   ];
   List<double> prices = List.generate(20, (index) => 1000.0);
   List<String> filteredImagePaths = [];
   int cartItemCount = 0;
+  List<Product> cartItems = [];
 
   @override
   void initState() {
@@ -50,10 +59,34 @@ class _CategoryPageState extends State<CategoryPage> {
     });
   }
 
-  void addToCart() {
+  void addToCart(int index) {
     setState(() {
-      cartItemCount++;
+      cartItems.add(Product(
+        imagePath: imagePaths[index],
+        name: filteredImagePaths[index].split('/').last.split('.').first,
+        price: prices[index],
+      ));
+      cartItemCount++; // Incrémentez cartItemCount
     });
+  }
+
+  void removeFromCart(int index) {
+    setState(() {
+      cartItems.removeAt(index);
+      cartItemCount--; // Décrémentez cartItemCount
+    });
+  }
+
+  void navigateToCartPage() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => CartPanier(
+          cartItems: cartItems,
+          removeFromCart: removeFromCart,
+        ),
+      ),
+    );
   }
 
   @override
@@ -68,29 +101,29 @@ class _CategoryPageState extends State<CategoryPage> {
           },
         ),
         actions: [
-          Stack(
-            children: [
-              IconButton(
-                icon: Icon(Icons.shopping_cart, color: Colors.white, size: 30),
-                onPressed: () {
-                  // Action à exécuter lors du clic sur l'icône de panier
-                },
-              ),
-              Positioned(
-                right: 8,
-                top: 8,
-                child: CircleAvatar(
-                  backgroundColor: Colors.red,
-                  radius: 10,
-                  child: Text(
-                    cartItemCount.toString(),
-                    style: TextStyle(color: Colors.white, fontSize: 12),
-                  ),
-                ),
-              ),
-            ],
+  Stack(
+    children: [
+      IconButton(
+        icon: Icon(Icons.shopping_cart, color: Colors.white, size: 30),
+        onPressed: navigateToCartPage,
+      ),
+      // if (cartItemCount > 0) // Vérifie si le panier n'est pas vide
+        Positioned(
+          right: 8,
+          top: 8,
+          child: CircleAvatar(
+            backgroundColor: Colors.red,
+            radius: 10,
+            child: Text(
+              cartItemCount.toString(),
+              style: TextStyle(color: Colors.white, fontSize: 12),
+            ),
           ),
-        ],
+        ),
+    ],
+  ),
+],
+
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -180,14 +213,7 @@ class _CategoryPageState extends State<CategoryPage> {
               icon: Icon(Icons.home, color: Colors.white),
             ),
             IconButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => CategoryPage(),
-                  ),
-                );
-              },
+              onPressed: navigateToCartPage,
               icon: Icon(Icons.shopping_cart, color: Colors.white),
             ),
             IconButton(
@@ -254,7 +280,7 @@ class _CategoryPageState extends State<CategoryPage> {
               SizedBox(height: 8),
               Center(
                 child: ElevatedButton(
-                  onPressed: addToCart,
+                  onPressed: () => addToCart(index),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
