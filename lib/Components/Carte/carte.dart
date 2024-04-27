@@ -1,7 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:niefeko/Components/Carte/Categories/categorie.dart';
-import 'package:niefeko/Components/Carte/Recherche/recherche.dart';
 import 'package:niefeko/Reutilisable/carteReu.dart';
 
 class carte extends StatefulWidget {

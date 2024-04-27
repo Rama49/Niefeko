@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:niefeko/Components/Carte/Recherche/recherche.dart';
+import 'package:niefeko/Components/Recherche/recherche.dart';
 
 class CategoryPage extends StatefulWidget {
   @override

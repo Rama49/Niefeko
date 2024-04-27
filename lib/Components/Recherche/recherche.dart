@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:niefeko/Components/Carte/Categories/categorie.dart';
+import 'package:niefeko/Components/Categories/categorie.dart';
 import 'package:niefeko/Components/Deals/deal.dart';
 import 'package:niefeko/Pages/Category/CategoriePage.dart';
 import 'package:niefeko/Pages/Connexion/conexion.dart';
@@ -69,7 +69,7 @@ class _searchState extends State<search> {
                     ),
                   ),
                   padding: const EdgeInsets.all(20),
-                  height: 250,
+                    height: 250,
                   child: Column(
                     children: [
                       const Text(
@@ -77,116 +77,90 @@ class _searchState extends State<search> {
                         style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
-                          fontSize: 20,
+                          fontSize: 18,
                         ),
                       ),
-                      SizedBox(height: 20),
-                      TextField(
-                        decoration: InputDecoration(
-                          contentPadding: EdgeInsets.symmetric(
-                            vertical: 2,
-                          ),
-                          filled: true,
-                          fillColor: const Color(0xfff1f1f1),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
-                            borderSide: BorderSide.none,
-                          ),
-                          hintText: "Recherche un produit",
-                          prefixIcon: const Icon(Icons.search),
-                          prefixIconColor: Colors.black,
-                        ),
-                      ),
-                      SizedBox(height: 20),
+                      SizedBox(height: 10),
+                  Container(
+                    // height: 30,
+                    child:   TextField(
+  decoration: InputDecoration(
+    contentPadding: EdgeInsets.symmetric(
+      vertical: 3, // Ajustez cette valeur pour réduire la hauteur de l'input
+    ),
+    filled: true,
+    fillColor: Colors.white,
+    border: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(8),
+      borderSide: BorderSide.none,
+    ),
+    hintText: "Rechercher un produit",
+    prefixIcon: const Icon(Icons.search),
+    prefixIconColor: Colors.black,
+  ),
+),
+),
+                      SizedBox(height: 15),
+
                       // Carousel
                       CarouselSlider(
                         items: [
                           //1st Image of Slider
-                          Column(
-                            children: [
-                              Flexible(
-                                child: carteReu(
-                                  image: Image.asset(
-                                    "sac.png",
-                                  ),
-                                  title: "Nouveau",
-                                  paragraph: "50%",
-                                  texte:
-                                      "Trouvez ce que vous aimez, à prix malins !",
-                                ),
-                              ),
-                            ],
+                          carteReu(
+                            image: Image.asset(
+                              "sac.png",
+                              fit: BoxFit.cover,
+                            ),
+                            title: "Nouveau",
+                            paragraph: "50%",
+                            texte: "Trouvez ce que vous aimez, à prix malins !",
                           ),
                           //2nd Image of Slider
-                          Column(
-                            children: [
-                              Flexible(
-                                child: carteReu(
-                                  image: Image.asset(
-                                    "lunette.png",
-                                  ),
-                                  title: "Nouveau",
-                                  paragraph: "50%",
-                                  texte:
-                                      "Trouvez ce que vous aimez, à prix malins !",
-                                ),
-                              ),
-                            ],
+                          carteReu(
+                            image: Image.asset(
+                              "lunette.png",
+                              fit: BoxFit.cover,
+                            ),
+                            title: "Nouveau",
+                            paragraph: "50%",
+                            texte: "Trouvez ce que vous aimez, à prix malins !",
                           ),
                           //3rd Image of Slider
-                          Column(
-                            children: [
-                              Flexible(
-                                child: carteReu(
-                                  image: Image.asset(
-                                    "shoes.png",
-                                  ),
-                                  title: "Nouveau",
-                                  paragraph: "50%",
-                                  texte:
-                                      "Trouvez ce que vous aimez, à prix malins !",
-                                ),
-                              ),
-                            ],
+                          carteReu(
+                            image: Image.asset(
+                              "shoes.png",
+                              fit: BoxFit.cover,
+                            ),
+                            title: "Nouveau",
+                            paragraph: "50%",
+                            texte: "Trouvez ce que vous aimez, à prix malins !",
                           ),
                           //4th Image of Slider
-                          Column(
-                            children: [
-                              Flexible(
-                                child: carteReu(
-                                  image: Image.asset(
-                                    "t-shirt.png",
-                                  ),
-                                  title: "Nouveau",
-                                  paragraph: "50%",
-                                  texte:
-                                      "Trouvez ce que vous aimez, à prix malins !",
-                                ),
-                              ),
-                            ],
+                          carteReu(
+                            image: Image.asset(
+                              "t-shirt.png",
+                              fit: BoxFit.cover,
+                            ),
+                            title: "Nouveau",
+                            paragraph: "50%",
+                            texte: "Trouvez ce que vous aimez, à prix malins !",
                           ),
                           //5th Image of Slider
-                          Column(
-                            children: [
-                              Flexible(
-                                child: carteReu(
-                                  image: Image.asset(
-                                    "sac.png",
-                                  ),
-                                  title: "Nouveau",
-                                  paragraph: "50%",
-                                  texte:
-                                      "Trouvez ce que vous aimez, à prix malins !",
-                                ),
-                              ),
-                            ],
+                          carteReu(
+                            image: Image.asset(
+                              "sac.png",
+                              fit: BoxFit.cover,
+                            ),
+                            title: "Nouveau",
+                            paragraph: "50%",
+                            texte: "Trouvez ce que vous aimez, à prix malins !",
                           ),
                         ],
                         //Slider Container properties
                         options: CarouselOptions(
                           enlargeCenterPage: true,
                           autoPlay: true,
-                          aspectRatio: 16 / 9,
+                          aspectRatio: 15 / 9,
                           autoPlayCurve: Curves.fastOutSlowIn,
                           enableInfiniteScroll: true,
                           autoPlayAnimationDuration:
@@ -194,6 +168,7 @@ class _searchState extends State<search> {
                           viewportFraction: 0.8,
                         ),
                       ),
+
                     ],
                   )),
 

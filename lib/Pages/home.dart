@@ -23,26 +23,21 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-    
-       
-      body: SingleChildScrollView(
-        child: Stack(
-          children: [
-            if (_showSplash) SplashScreen(),
-            AnimatedOpacity(
-              opacity: _showSplash ? 0.0 : 1.0,
-              duration: Duration(milliseconds: 500),
-              curve: Curves.easeInOut,
-              child: Column(
-                children: [
-                  inscription(),
-                ],
-              ),
+      body: Stack(
+        children: [
+          if (_showSplash) SplashScreen(),
+          AnimatedOpacity(
+            opacity: _showSplash ? 0.0 : 1.0,
+            duration: Duration(milliseconds: 500),
+            curve: Curves.easeInOut,
+            child: _showSplash ? SizedBox.shrink() : Column(
+              children: [
+                inscription(),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
-      
     );
   }
 }
