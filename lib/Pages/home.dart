@@ -30,10 +30,9 @@ class _MyHomePageState extends State<MyHomePage> {
             opacity: _showSplash ? 0.0 : 1.0,
             duration: Duration(milliseconds: 500),
             curve: Curves.easeInOut,
-            child: _showSplash ? SizedBox.shrink() : Column(
-              children: [
+            child: _showSplash ? SizedBox.shrink() : Container(
+              child: 
                 inscription(),
-              ],
             ),
           ),
         ],
