@@ -95,13 +95,21 @@ class ProductList extends StatelessWidget {
         return ListView(
           children: snapshot.data!.docs.map((DocumentSnapshot document) {
             Map<String, dynamic> data = document.data() as Map<String, dynamic>;
+
+            // Vérifiez si les champs requis sont null, sinon utilisez une valeur par défaut
+            String imagePath = data['imagePath'] ?? 'assets/sac1.png';
+            String name = data['name'] ?? 'sac';
+            double price = data['price'] ?? 10000;
+            String idClient = data['idClient'] ?? 'idClient';
+
             Product product = Product(
-              imagePath: data['imagePath'],
-              name: data['name'],
-              price: data['price'],
+              imagePath: imagePath,
+              name: name,
+              price: price,
+              // idClient: idClient,
             );
 
-            return ProductCard(product: product);
+            return ProductCard(product: product, documentId: document.id);
           }).toList(),
         );
       },
@@ -111,8 +119,9 @@ class ProductList extends StatelessWidget {
 
 class ProductCard extends StatelessWidget {
   final Product product;
+  final String documentId;
 
-  const ProductCard({required this.product});
+  const ProductCard({required this.product, required this.documentId});
 
   @override
   Widget build(BuildContext context) {
@@ -121,8 +130,36 @@ class ProductCard extends StatelessWidget {
         leading: Image.asset(product.imagePath),
         title: Text(product.name),
         subtitle: Text('Prix: ${product.price}'),
-        // Ajoutez d'autres détails du produit ici selon vos besoins
-        // Vous pouvez également ajouter un bouton pour supprimer le produit des favoris
+        trailing: IconButton(
+          icon: Icon(Icons.delete), // Icône de suppression
+          onPressed: () {
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: Text('Confirmer la suppression'),
+                  content: Text('Voulez-vous vraiment supprimer ce produit ?'),
+                  actions: <Widget>[
+                    TextButton(
+                      child: Text('Annuler'),
+                      onPressed: () {
+                        Navigator.of(context).pop(); // Fermer la boîte de dialogue
+                      },
+                    ),
+                    TextButton(
+                      child: Text('Supprimer'),
+                      onPressed: () {
+                        // Supprimez le produit de la base de données Firestore en utilisant l'ID du document
+                        FirebaseFirestore.instance.collection('favoris').doc(documentId).delete();
+                        Navigator.of(context).pop(); // Fermer la boîte de dialogue
+                      },
+                    ),
+                  ],
+                );
+              },
+            );
+          },
+        ),
       ),
     );
   }
