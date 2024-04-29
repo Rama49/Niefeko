@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:niefeko/Components/Recherche/recherche.dart';
 import 'package:niefeko/Pages/CartPanier/CartPanier.dart';
-import 'package:niefeko/Pages/Favoris/PageFavoris.dart';
 
 class Product {
   final String imagePath;
@@ -10,6 +8,15 @@ class Product {
   final double price;
 
   Product({required this.imagePath, required this.name, required this.price});
+
+  // Convertir le produit en un map pour Firestore
+  Map<String, dynamic> toMap() {
+    return {
+      'imagePath': imagePath,
+      'name': name,
+      'price': price,
+    };
+  }
 }
 
 class CategoryPage extends StatefulWidget {
@@ -179,7 +186,6 @@ class _CategoryPageState extends State<CategoryPage> {
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Container(
-                // color: Color(0xFF612C7D),
                 padding: EdgeInsets.all(8.0),
                 child: Row(
                   children: List.generate(
@@ -329,13 +335,15 @@ class _CategoryPageState extends State<CategoryPage> {
 
       // Vérifiez si le produit est ajouté aux favoris
       if (isFavoritedList[index]) {
-        // Naviguer vers une nouvelle page avec les détails du produit
-        // Navigator.push(
-        //   context,
-        //   MaterialPageRoute(
-        //     builder: (context) => ProductDetailsPage(product: Product(imagePath: "assets/casque.png", name: "rrrrrraaaaama", price: 100))
-        //   ),
-        // );
+        // Créez une instance de produit
+        Product favoriteProduct = Product(
+          imagePath: imagePaths[index],
+          name: imageName,
+          price: price,
+        );
+
+        // Ajouter le produit aux favoris dans Firestore
+        addFavoriteToFirestore(favoriteProduct);
       }
     },
   ),
@@ -343,6 +351,18 @@ class _CategoryPageState extends State<CategoryPage> {
 ],
       ),
     );
+  }
+
+  // Méthode pour ajouter un produit aux favoris dans Firestore
+  void addFavoriteToFirestore(Product favoriteProduct) {
+    // Référence à la collection "favorites" dans Firestore
+    CollectionReference favorites = FirebaseFirestore.instance.collection('favoris');
+
+    // Ajouter le produit aux favoris dans Firestore
+    favorites
+        .add(favoriteProduct.toMap())
+        .then((value) => print("Produit ajouté aux favoris avec l'ID: ${value.id}"))
+        .catchError((error) => print("Erreur lors de l'ajout aux favoris: $error"));
   }
 
   void addOrderToFirestore(Order order) {
