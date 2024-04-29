@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-// import 'package:niefeko/Pages/CartPanier/Product.dart';
 import 'package:niefeko/Pages/Category/CategoriePage.dart';
 
 class CartPanier extends StatelessWidget {

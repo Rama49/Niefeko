@@ -7,20 +7,12 @@ import 'package:niefeko/Pages/CartPanier/CartPanier.dart';
 import 'package:niefeko/Pages/CartPanier/cartItems.dart';
 import 'package:niefeko/Pages/Category/CategoriePage.dart';
 import 'package:niefeko/Pages/Connexion/conexion.dart';
+import 'package:niefeko/Pages/Favoris/PageFavoris.dart';
 import 'package:niefeko/Reutilisable/carteReu.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
 class search extends StatefulWidget {
-   final List<Product> cartItems;
-  final Function(int) removeFromCart;
-
-  const search({
-    Key? key,
-    required this.cartItems,
-    required this.removeFromCart,
-  }) : super(key: key);
-
- 
+  const search({Key? key}) : super(key: key);
 
   @override
   State<search> createState() => _searchState();
@@ -225,7 +217,7 @@ class _searchState extends State<search> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => search(cartItems: cartItems, removeFromCart: removeFromCart),
+                      builder: (context) => search(),
                     ),
                   );
                 },
@@ -248,9 +240,9 @@ class _searchState extends State<search> {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(
-                      builder: (context) => CategoryPage(),
-                    ),
+                     MaterialPageRoute(
+            builder: (context) => ProductDetailsPage(product: Product(imagePath: "assets/casque.png", name: "rrrrrraaaaama", price: 100))
+          ),
                   );
                 },
                 icon: Icon(Icons.favorite, color: Colors.white),

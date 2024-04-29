@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:niefeko/Components/Recherche/recherche.dart';
 import 'package:niefeko/Pages/CartPanier/CartPanier.dart';
+import 'package:niefeko/Pages/Favoris/PageFavoris.dart';
 
 class Product {
   final String imagePath;
@@ -314,21 +315,32 @@ class _CategoryPageState extends State<CategoryPage> {
               ),
             ],
           ),
-          Align(
-            alignment: Alignment(1, -1),
-            child: IconButton(
-              icon: Icon(
-                isFavoritedList[index] ? Icons.favorite : Icons.favorite_border,
-                color: isFavoritedList[index] ? Colors.red : Colors.grey,
-              ),
-              onPressed: () {
-                setState(() {
-                  isFavoritedList[index] = !isFavoritedList[index];
-                });
-              },
-            ),
-          ),
-        ],
+         Align(
+  alignment: Alignment(1, -1),
+  child: IconButton(
+    icon: Icon(
+      isFavoritedList[index] ? Icons.favorite : Icons.favorite_border,
+      color: isFavoritedList[index] ? Colors.red : Colors.grey,
+    ),
+    onPressed: () {
+      setState(() {
+        isFavoritedList[index] = !isFavoritedList[index];
+      });
+
+      // Vérifiez si le produit est ajouté aux favoris
+      if (isFavoritedList[index]) {
+        // Naviguer vers une nouvelle page avec les détails du produit
+        // Navigator.push(
+        //   context,
+        //   MaterialPageRoute(
+        //     builder: (context) => ProductDetailsPage(product: Product(imagePath: "assets/casque.png", name: "rrrrrraaaaama", price: 100))
+        //   ),
+        // );
+      }
+    },
+  ),
+),
+],
       ),
     );
   }
