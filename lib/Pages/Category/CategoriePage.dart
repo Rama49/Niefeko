@@ -101,29 +101,28 @@ class _CategoryPageState extends State<CategoryPage> {
           },
         ),
         actions: [
-  Stack(
-    children: [
-      IconButton(
-        icon: Icon(Icons.shopping_cart, color: Colors.white, size: 30),
-        onPressed: navigateToCartPage,
-      ),
-      // if (cartItemCount > 0) // Vérifie si le panier n'est pas vide
-        Positioned(
-          right: 8,
-          top: 8,
-          child: CircleAvatar(
-            backgroundColor: Colors.red,
-            radius: 10,
-            child: Text(
-              cartItemCount.toString(),
-              style: TextStyle(color: Colors.white, fontSize: 12),
-            ),
+          Stack(
+            children: [
+              IconButton(
+                icon: Icon(Icons.shopping_cart, color: Colors.white, size: 30),
+                onPressed: navigateToCartPage,
+              ),
+              // if (cartItemCount > 0) // Vérifie si le panier n'est pas vide
+              Positioned(
+                right: 8,
+                top: 8,
+                child: CircleAvatar(
+                  backgroundColor: Colors.red,
+                  radius: 10,
+                  child: Text(
+                    cartItemCount.toString(),
+                    style: TextStyle(color: Colors.white, fontSize: 12),
+                  ),
+                ),
+              ),
+            ],
           ),
-        ),
-    ],
-  ),
-],
-
+        ],
       ),
       body: SingleChildScrollView(
         child: Column(

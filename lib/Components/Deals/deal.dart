@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:niefeko/Pages/Category/CategoriePage.dart';
 
 class deal extends StatefulWidget {
   const deal({super.key});
@@ -28,7 +29,12 @@ class _dealState extends State<deal> {
               GestureDetector(
                 onTap: () {
                   // Action à effectuer lorsque "Voir Plus" est cliqué
-                  print("Voir Plus");
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => CategoryPage(),
+                    ),
+                  );
                 },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,

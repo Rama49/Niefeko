@@ -4,10 +4,9 @@ import 'package:flutter/material.dart';
 class BoutonR extends StatelessWidget {
   final String titre;
   final VoidCallback onPressed;
-   final double borderRadius;
-  final Color? couleur; 
-  final double?
-      fontSize; 
+  final double borderRadius;
+  final Color? couleur;
+  final double? fontSize;
 
   const BoutonR({
     Key? key,
@@ -24,16 +23,14 @@ class BoutonR extends StatelessWidget {
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
         backgroundColor: couleur ?? Colors.white,
-        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-        shape: RoundedRectangleBorder( borderRadius: BorderRadius.circular(borderRadius)
-        ),
+        padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(borderRadius)),
       ),
       child: Text(
         titre,
-        
         style: TextStyle(
-          fontSize: fontSize ??
-              14,
+          fontSize: fontSize ?? 14,
           color: Color.fromARGB(255, 71, 3, 82),
         ),
       ),

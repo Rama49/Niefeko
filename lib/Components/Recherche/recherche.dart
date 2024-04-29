@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:niefeko/Components/Categories/categorie.dart';
 import 'package:niefeko/Components/Deals/deal.dart';
+import 'package:niefeko/Pages/CartPanier/CartPanier.dart';
+import 'package:niefeko/Pages/CartPanier/cartItems.dart';
 import 'package:niefeko/Pages/Category/CategoriePage.dart';
 import 'package:niefeko/Pages/Connexion/conexion.dart';
 import 'package:niefeko/Reutilisable/carteReu.dart';
@@ -13,9 +15,22 @@ class search extends StatefulWidget {
 
   @override
   State<search> createState() => _searchState();
+  
 }
 
 class _searchState extends State<search> {
+    List<Product> cartItems = [
+    Product(name: '', price: 10.0, imagePath: ''),
+    Product(name: '', price: 15.0, imagePath: ''),
+  ];
+
+  // Fonction removeFromCart pour illustrer
+  void removeFromCart(int index) {
+    setState(() {
+      cartItems.removeAt(index);
+    });
+  }
+
   bool _isLoggedOut = false;
 
   Future<void> _signOut() async {
@@ -55,132 +70,134 @@ class _searchState extends State<search> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: SingleChildScrollView(
-          child: Column(
-            children: [
-              // Section de recherche
-              Container(
-                  decoration: BoxDecoration(
-                    color: Color(0xFF593070),
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: const Radius.circular(40.0),
-                      bottomRight: const Radius.circular(40.0),
-                      topLeft: const Radius.circular(5.0),
-                      topRight: const Radius.circular(55.0),
+          child: Flexible(
+            child: Column(
+              children: [
+                // Section de recherche
+                Container(
+                    decoration: BoxDecoration(
+                      color: Color(0xFF593070),
+                      borderRadius: BorderRadius.only(
+                        bottomLeft: const Radius.circular(40.0),
+                        bottomRight: const Radius.circular(40.0),
+                        topLeft: const Radius.circular(5.0),
+                        topRight: const Radius.circular(55.0),
+                      ),
                     ),
-                  ),
-                  padding: const EdgeInsets.all(20),
+                    padding: const EdgeInsets.all(20),
                     height: 250,
-                  child: Column(
-                    children: [
-                      const Text(
-                        "Bienvenue à Niefeko",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18,
+                    child: Column(
+                      children: [
+                        const Text(
+                          "Bienvenue à Niefeko",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                          ),
                         ),
-                      ),
-                      SizedBox(height: 10),
-                  Container(
-                    // height: 30,
-                    child:   TextField(
-  decoration: InputDecoration(
-    contentPadding: EdgeInsets.symmetric(
-      vertical: 3, // Ajustez cette valeur pour réduire la hauteur de l'input
-    ),
-    filled: true,
-    fillColor: Colors.white,
-    border: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(8),
-      borderSide: BorderSide.none,
-    ),
-    hintText: "Rechercher un produit",
-    prefixIcon: const Icon(Icons.search),
-    prefixIconColor: Colors.black,
-  ),
-),
-),
-                      SizedBox(height: 15),
-
-                      // Carousel
-                      CarouselSlider(
-                        items: [
-                          //1st Image of Slider
-                          carteReu(
-                            image: Image.asset(
-                              "sac1.png",
-                              fit: BoxFit.cover,
+                        SizedBox(height: 10),
+                        Container(
+                           height: 30,
+                          child: TextField(
+                            decoration: InputDecoration(
+                              contentPadding: EdgeInsets.symmetric(
+                                vertical:
+                                    3, // Ajustez cette valeur pour réduire la hauteur de l'input
+                              ),
+                              filled: true,
+                              fillColor: Colors.white,
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(8),
+                                borderSide: BorderSide.none,
+                              ),
+                              hintText: "Rechercher un produit",
+                              prefixIcon: const Icon(Icons.search),
+                              prefixIconColor: Colors.black,
                             ),
-                            title: "Nouveau",
-                            paragraph: "50%",
-                            texte: "Trouvez ce que vous aimez, à prix malins !",
                           ),
-                          //2nd Image of Slider
-                          carteReu(
-                            image: Image.asset(
-                              "lunette.png",
-                              fit: BoxFit.cover,
-                            ),
-                            title: "Nouveau",
-                            paragraph: "50%",
-                            texte: "Trouvez ce que vous aimez, à prix malins !",
-                          ),
-                          //3rd Image of Slider
-                          carteReu(
-                            image: Image.asset(
-                              "shoes.png",
-                              fit: BoxFit.cover,
-                            ),
-                            title: "Nouveau",
-                            paragraph: "50%",
-                            texte: "Trouvez ce que vous aimez, à prix malins !",
-                          ),
-                          //4th Image of Slider
-                          carteReu(
-                            image: Image.asset(
-                              "t-shirt.png",
-                              fit: BoxFit.cover,
-                            ),
-                            title: "Nouveau",
-                            paragraph: "50%",
-                            texte: "Trouvez ce que vous aimez, à prix malins !",
-                          ),
-                          //5th Image of Slider
-                          carteReu(
-                            image: Image.asset(
-                              "sac1.png",
-                              fit: BoxFit.cover,
-                            ),
-                            title: "Nouveau",
-                            paragraph: "50%",
-                            texte: "Trouvez ce que vous aimez, à prix malins !",
-                          ),
-                        ],
-                        //Slider Container properties
-                        options: CarouselOptions(
-                          enlargeCenterPage: true,
-                          autoPlay: true,
-                          aspectRatio: 15 / 9,
-                          autoPlayCurve: Curves.fastOutSlowIn,
-                          enableInfiniteScroll: true,
-                          autoPlayAnimationDuration:
-                              Duration(milliseconds: 800),
-                          viewportFraction: 0.8,
                         ),
-                      ),
-
-                    ],
-                  )),
-
-              // Votre Container contenant la catégorie
-              Column(
-                children: [
-                  SizedBox(height: 120),
-                  categorie(),
-                  deal(),
-                ],
-              ),
-            ],
+                        SizedBox(height: 15),
+            
+                        // Carousel
+                        CarouselSlider(
+                          items: [
+                            //1st Image of Slider
+                            carteReu(
+                              image: Image.asset(
+                                "sac1.png",
+                                fit: BoxFit.cover,
+                              ),
+                              title: "Nouveau",
+                              paragraph: "50%",
+                              texte: "Trouvez ce que vous aimez, à prix malins !",
+                            ),
+                            //2nd Image of Slider
+                            carteReu(
+                              image: Image.asset(
+                                "lunette.png",
+                                fit: BoxFit.cover,
+                              ),
+                              title: "Nouveau",
+                              paragraph: "50%",
+                              texte: "Trouvez ce que vous aimez, à prix malins !",
+                            ),
+                            //3rd Image of Slider
+                            carteReu(
+                              image: Image.asset(
+                                "shoes.png",
+                                fit: BoxFit.cover,
+                              ),
+                              title: "Nouveau",
+                              paragraph: "50%",
+                              texte: "Trouvez ce que vous aimez, à prix malins !",
+                            ),
+                            //4th Image of Slider
+                            carteReu(
+                              image: Image.asset(
+                                "t-shirt.png",
+                                fit: BoxFit.cover,
+                              ),
+                              title: "Nouveau",
+                              paragraph: "50%",
+                              texte: "Trouvez ce que vous aimez, à prix malins !",
+                            ),
+                            //5th Image of Slider
+                            carteReu(
+                              image: Image.asset(
+                                "sac1.png",
+                                fit: BoxFit.cover,
+                              ),
+                              title: "Nouveau",
+                              paragraph: "50%",
+                              texte: "Trouvez ce que vous aimez, à prix malins !",
+                            ),
+                          ],
+                          //Slider Container properties
+                          options: CarouselOptions(
+                            enlargeCenterPage: true,
+                            autoPlay: true,
+                            aspectRatio: 15 / 9,
+                            autoPlayCurve: Curves.fastOutSlowIn,
+                            enableInfiniteScroll: true,
+                            autoPlayAnimationDuration:
+                                Duration(milliseconds: 800),
+                            viewportFraction: 0.8,
+                          ),
+                        ),
+                      ],
+                    )),
+            
+                // Votre Container contenant la catégorie
+                Column(
+                  children: [
+                    SizedBox(height: 120),
+                    categorie(),
+                    deal(),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
         bottomNavigationBar: BottomAppBar(
@@ -208,12 +225,14 @@ class _searchState extends State<search> {
               ),
               IconButton(
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => CategoryPage(),
-                    ),
-                  );
+                      Navigator.push(
+  context,
+   MaterialPageRoute(
+                                builder: (context) => CartPanier(cartItems: cartItems, removeFromCart: removeFromCart),
+
+                  ),
+);
+
                 },
                 icon: Icon(Icons.shopping_cart, color: Colors.white),
               ),
