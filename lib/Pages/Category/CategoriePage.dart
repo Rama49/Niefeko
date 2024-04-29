@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:niefeko/Components/Recherche/recherche.dart';
 import 'package:niefeko/Pages/CartPanier/CartPanier.dart';
 
-// Classe représentant un produit
 class Product {
   final String imagePath;
   final String name;
@@ -60,11 +60,41 @@ class _CategoryPageState extends State<CategoryPage> {
   }
 
   void addToCart(int index) {
+    // Récupérer les informations nécessaires
+    String imageUrl = imagePaths[index];
+    String productName = filteredImagePaths[index].split('/').last.split('.').first;
+    double price = prices[index];
+    DateTime timestamp = DateTime.now(); // Timestamp de la commande
+  
+    // TODO: Récupérer l'ID du client, le prénom et le nom du client
+    String idClient = ""; // Remplir avec l'ID du client
+    String prenom = ""; // Remplir avec le prénom du client
+    String nom = ""; // Remplir avec le nom du client
+    
+    // Calculer le montant total
+    double totalAmount = price * 1; // Pour l'exemple, mettons la quantité à 1
+
+    // Créer une instance de la commande
+    Order order = Order(
+      imageUrl: imageUrl,
+      idClient: idClient,
+      prenom: prenom,
+      nom: nom,
+      nomProduit: productName,
+      nbrProduit: 1, // Pour l'exemple, mettons la quantité à 1
+      prix: price,
+      totalAmount: totalAmount,
+      timestamp: timestamp,
+    );
+
+    // Ajouter la commande à Firestore
+    addOrderToFirestore(order);
+
     setState(() {
       cartItems.add(Product(
-        imagePath: imagePaths[index],
-        name: filteredImagePaths[index].split('/').last.split('.').first,
-        price: prices[index],
+        imagePath: imageUrl,
+        name: productName,
+        price: price,
       ));
       cartItemCount++; // Incrémentez cartItemCount
     });
@@ -101,29 +131,27 @@ class _CategoryPageState extends State<CategoryPage> {
           },
         ),
         actions: [
-  Stack(
-    children: [
-      IconButton(
-        icon: Icon(Icons.shopping_cart, color: Colors.white, size: 30),
-        onPressed: navigateToCartPage,
-      ),
-      // if (cartItemCount > 0) // Vérifie si le panier n'est pas vide
-        Positioned(
-          right: 8,
-          top: 8,
-          child: CircleAvatar(
-            backgroundColor: Colors.red,
-            radius: 10,
-            child: Text(
-              cartItemCount.toString(),
-              style: TextStyle(color: Colors.white, fontSize: 12),
-            ),
+          Stack(
+            children: [
+              IconButton(
+                icon: Icon(Icons.shopping_cart, color: Colors.white, size: 30),
+                onPressed: navigateToCartPage,
+              ),
+              Positioned(
+                right: 8,
+                top: 8,
+                child: CircleAvatar(
+                  backgroundColor: Colors.red,
+                  radius: 10,
+                  child: Text(
+                    cartItemCount.toString(),
+                    style: TextStyle(color: Colors.white, fontSize: 12),
+                  ),
+                ),
+              ),
+            ],
           ),
-        ),
-    ],
-  ),
-],
-
+        ],
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -150,7 +178,7 @@ class _CategoryPageState extends State<CategoryPage> {
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Container(
-                color: Color(0xFF612C7D),
+                // color: Color(0xFF612C7D),
                 padding: EdgeInsets.all(8.0),
                 child: Row(
                   children: List.generate(
@@ -167,7 +195,6 @@ class _CategoryPageState extends State<CategoryPage> {
               ),
             ),
             SizedBox(height: 10),
-            // Condition pour afficher "Produit non trouvé" si la liste filtrée est vide
             filteredImagePaths.isEmpty
                 ? Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -203,12 +230,7 @@ class _CategoryPageState extends State<CategoryPage> {
           children: [
             IconButton(
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => search(),
-                  ),
-                );
+                // Ajoutez ici votre logique de navigation pour l'écran d'accueil
               },
               icon: Icon(Icons.home, color: Colors.white),
             ),
@@ -218,23 +240,13 @@ class _CategoryPageState extends State<CategoryPage> {
             ),
             IconButton(
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => CategoryPage(),
-                  ),
-                );
+                // Ajoutez ici votre logique de navigation pour l'écran des favoris
               },
               icon: Icon(Icons.favorite, color: Colors.white),
             ),
             IconButton(
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => CategoryPage(),
-                  ),
-                );
+                // Ajoutez ici votre logique de navigation pour l'écran des paramètres
               },
               icon: Icon(Icons.settings, color: Colors.white),
             ),
@@ -319,5 +331,54 @@ class _CategoryPageState extends State<CategoryPage> {
         ],
       ),
     );
+  }
+
+  void addOrderToFirestore(Order order) {
+    // Référence à la collection "orders" dans Firestore
+    CollectionReference orders = FirebaseFirestore.instance.collection('Panier');
+
+    // Ajouter la commande à Firestore
+    orders.add(order.toMap())
+        .then((value) => print("Commande ajoutée avec l'ID: ${value.id}"))
+        .catchError((error) => print("Erreur lors de l'ajout de la commande: $error"));
+  }
+}
+
+class Order {
+  final String imageUrl;
+  final String idClient;
+  final String prenom;
+  final String nom;
+  final String nomProduit;
+  final int nbrProduit;
+  final double prix;
+  final double totalAmount;
+  final DateTime timestamp;
+
+  Order({
+    required this.imageUrl,
+    required this.idClient,
+    required this.prenom,
+    required this.nom,
+    required this.nomProduit,
+    required this.nbrProduit,
+    required this.prix,
+    required this.totalAmount,
+    required this.timestamp,
+  });
+
+  // Convertir la commande en un map pour Firestore
+  Map<String, dynamic> toMap() {
+    return {
+      'imageUrl': imageUrl,
+      'idClient': idClient,
+      'prenom': prenom,
+      'nom': nom,
+      'nomProduit': nomProduit,
+      'nbrProduit': nbrProduit,
+      'prix': prix,
+      'totalAmount': totalAmount,
+      'timestamp': timestamp,
+    };
   }
 }
