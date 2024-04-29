@@ -11,7 +11,16 @@ import 'package:niefeko/Reutilisable/carteReu.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
 class search extends StatefulWidget {
-  const search({Key? key}) : super(key: key);
+   final List<Product> cartItems;
+  final Function(int) removeFromCart;
+
+  const search({
+    Key? key,
+    required this.cartItems,
+    required this.removeFromCart,
+  }) : super(key: key);
+
+ 
 
   @override
   State<search> createState() => _searchState();
@@ -20,8 +29,7 @@ class search extends StatefulWidget {
 
 class _searchState extends State<search> {
     List<Product> cartItems = [
-    Product(name: '', price: 10.0, imagePath: ''),
-    Product(name: '', price: 15.0, imagePath: ''),
+    Product(name: '', price: 0, imagePath: ''),
   ];
 
   // Fonction removeFromCart pour illustrer
@@ -217,7 +225,7 @@ class _searchState extends State<search> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => search(),
+                      builder: (context) => search(cartItems: cartItems, removeFromCart: removeFromCart),
                     ),
                   );
                 },
