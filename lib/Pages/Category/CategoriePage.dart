@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:niefeko/Pages/CartPanier/CartPanier.dart';
+import 'package:niefeko/Pages/Favoris/PageFavoris.dart';
 
 class Product {
   final String imagePath;
@@ -70,15 +71,16 @@ class _CategoryPageState extends State<CategoryPage> {
   void addToCart(int index) {
     // Récupérer les informations nécessaires
     String imageUrl = imagePaths[index];
-    String productName = filteredImagePaths[index].split('/').last.split('.').first;
+    String productName =
+        filteredImagePaths[index].split('/').last.split('.').first;
     double price = prices[index];
     DateTime timestamp = DateTime.now(); // Timestamp de la commande
-  
+
     // TODO: Récupérer l'ID du client, le prénom et le nom du client
     String idClient = ""; // Remplir avec l'ID du client
     String prenom = ""; // Remplir avec le prénom du client
     String nom = ""; // Remplir avec le nom du client
-    
+
     // Calculer le montant total
     double totalAmount = price * 1; // Pour l'exemple, mettons la quantité à 1
 
@@ -321,34 +323,45 @@ class _CategoryPageState extends State<CategoryPage> {
               ),
             ],
           ),
-         Align(
-  alignment: Alignment(1, -1),
-  child: IconButton(
-    icon: Icon(
-      isFavoritedList[index] ? Icons.favorite : Icons.favorite_border,
-      color: isFavoritedList[index] ? Colors.red : Colors.grey,
-    ),
-    onPressed: () {
-      setState(() {
-        isFavoritedList[index] = !isFavoritedList[index];
-      });
+          Align(
+            alignment: Alignment(1, -1),
+            child: IconButton(
+              icon: Icon(
+                isFavoritedList[index] ? Icons.favorite : Icons.favorite_border,
+                color: isFavoritedList[index] ? Colors.red : Colors.grey,
+              ),
+              onPressed: () {
 
-      // Vérifiez si le produit est ajouté aux favoris
-      if (isFavoritedList[index]) {
-        // Créez une instance de produit
-        Product favoriteProduct = Product(
-          imagePath: imagePaths[index],
-          name: imageName,
-          price: price,
-        );
 
-        // Ajouter le produit aux favoris dans Firestore
-        addFavoriteToFirestore(favoriteProduct);
-      }
-    },
-  ),
-),
-],
+
+Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => pageFavoris()
+      ),
+    );
+
+
+                setState(() {
+                  isFavoritedList[index] = !isFavoritedList[index];
+                });
+
+                // Vérifiez si le produit est ajouté aux favoris
+                if (isFavoritedList[index]) {
+                  // Créez une instance de produit
+                  Product favoriteProduct = Product(
+                    imagePath: imagePaths[index],
+                    name: imageName,
+                    price: price,
+                  );
+
+                  // Ajouter le produit aux favoris dans Firestore
+                  addFavoriteToFirestore(favoriteProduct);
+                }
+              },
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -356,23 +369,29 @@ class _CategoryPageState extends State<CategoryPage> {
   // Méthode pour ajouter un produit aux favoris dans Firestore
   void addFavoriteToFirestore(Product favoriteProduct) {
     // Référence à la collection "favorites" dans Firestore
-    CollectionReference favorites = FirebaseFirestore.instance.collection('favoris');
+    CollectionReference favorites =
+        FirebaseFirestore.instance.collection('favoris');
 
     // Ajouter le produit aux favoris dans Firestore
     favorites
         .add(favoriteProduct.toMap())
-        .then((value) => print("Produit ajouté aux favoris avec l'ID: ${value.id}"))
-        .catchError((error) => print("Erreur lors de l'ajout aux favoris: $error"));
+        .then((value) =>
+            print("Produit ajouté aux favoris avec l'ID: ${value.id}"))
+        .catchError(
+            (error) => print("Erreur lors de l'ajout aux favoris: $error"));
   }
 
   void addOrderToFirestore(Order order) {
     // Référence à la collection "orders" dans Firestore
-    CollectionReference orders = FirebaseFirestore.instance.collection('Panier');
+    CollectionReference orders =
+        FirebaseFirestore.instance.collection('Panier');
 
     // Ajouter la commande à Firestore
-    orders.add(order.toMap())
+    orders
+        .add(order.toMap())
         .then((value) => print("Commande ajoutée avec l'ID: ${value.id}"))
-        .catchError((error) => print("Erreur lors de l'ajout de la commande: $error"));
+        .catchError(
+            (error) => print("Erreur lors de l'ajout de la commande: $error"));
   }
 }
 

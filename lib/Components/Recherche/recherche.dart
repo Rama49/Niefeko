@@ -16,11 +16,10 @@ class search extends StatefulWidget {
 
   @override
   State<search> createState() => _searchState();
-  
 }
 
 class _searchState extends State<search> {
-    List<Product> cartItems = [
+  List<Product> cartItems = [
     Product(name: '', price: 0, imagePath: ''),
   ];
 
@@ -98,7 +97,7 @@ class _searchState extends State<search> {
                         ),
                         SizedBox(height: 10),
                         Container(
-                           height: 30,
+                          height: 30,
                           child: TextField(
                             decoration: InputDecoration(
                               contentPadding: EdgeInsets.symmetric(
@@ -118,7 +117,7 @@ class _searchState extends State<search> {
                           ),
                         ),
                         SizedBox(height: 15),
-            
+
                         // Carousel
                         CarouselSlider(
                           items: [
@@ -130,7 +129,8 @@ class _searchState extends State<search> {
                               ),
                               title: "Nouveau",
                               paragraph: "50%",
-                              texte: "Trouvez ce que vous aimez, à prix malins !",
+                              texte:
+                                  "Trouvez ce que vous aimez, à prix malins !",
                             ),
                             //2nd Image of Slider
                             carteReu(
@@ -140,7 +140,8 @@ class _searchState extends State<search> {
                               ),
                               title: "Nouveau",
                               paragraph: "50%",
-                              texte: "Trouvez ce que vous aimez, à prix malins !",
+                              texte:
+                                  "Trouvez ce que vous aimez, à prix malins !",
                             ),
                             //3rd Image of Slider
                             carteReu(
@@ -150,7 +151,8 @@ class _searchState extends State<search> {
                               ),
                               title: "Nouveau",
                               paragraph: "50%",
-                              texte: "Trouvez ce que vous aimez, à prix malins !",
+                              texte:
+                                  "Trouvez ce que vous aimez, à prix malins !",
                             ),
                             //4th Image of Slider
                             carteReu(
@@ -160,7 +162,8 @@ class _searchState extends State<search> {
                               ),
                               title: "Nouveau",
                               paragraph: "50%",
-                              texte: "Trouvez ce que vous aimez, à prix malins !",
+                              texte:
+                                  "Trouvez ce que vous aimez, à prix malins !",
                             ),
                             //5th Image of Slider
                             carteReu(
@@ -170,7 +173,8 @@ class _searchState extends State<search> {
                               ),
                               title: "Nouveau",
                               paragraph: "50%",
-                              texte: "Trouvez ce que vous aimez, à prix malins !",
+                              texte:
+                                  "Trouvez ce que vous aimez, à prix malins !",
                             ),
                           ],
                           //Slider Container properties
@@ -187,7 +191,7 @@ class _searchState extends State<search> {
                         ),
                       ],
                     )),
-            
+
                 // Votre Container contenant la catégorie
                 Column(
                   children: [
@@ -225,14 +229,13 @@ class _searchState extends State<search> {
               ),
               IconButton(
                 onPressed: () {
-                      Navigator.push(
-  context,
-   MaterialPageRoute(
-                                builder: (context) => CartPanier(cartItems: cartItems, removeFromCart: removeFromCart),
-
-                  ),
-);
-
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => CartPanier(
+                          cartItems: cartItems, removeFromCart: removeFromCart),
+                    ),
+                  );
                 },
                 icon: Icon(Icons.shopping_cart, color: Colors.white),
               ),
@@ -240,9 +243,8 @@ class _searchState extends State<search> {
                 onPressed: () {
                   Navigator.push(
                     context,
-                     MaterialPageRoute(
-            builder: (context) => ProductDetailsPage(product: Product(imagePath: "assets/casque.png", name: "rrrrrraaaaama", price: 100))
-          ),
+                    MaterialPageRoute(
+                        builder: (context) => pageFavoris()),
                   );
                 },
                 icon: Icon(Icons.favorite, color: Colors.white),
