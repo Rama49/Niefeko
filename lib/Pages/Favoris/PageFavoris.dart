@@ -15,61 +15,62 @@ class pageFavoris extends StatelessWidget {
         ),
       ),
       body: ProductList(),
-      bottomNavigationBar: BottomAppBar(
-        color: Color(0xFF593070),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            IconButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => search(),
-                  ),
-                );
-              },
-              icon: Icon(Icons.home, color: Colors.white),
-            ),
-            IconButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => search(),
-                  ),
-                );
-              },
-              icon: Icon(Icons.shopping_cart, color: Colors.white),
-            ),
-            IconButton(
-              onPressed: () {
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(
-                //       builder: (context) => pageFavoris(
-                //           Product(imagePath: "assets/sacoche.png", name: "name", price: 1000): Product(
-                //               imagePath: "assets/casque.png",
-                //               name: "rrrrrraaaaama",
-                //               price: 100))),
-                // );
-              },
-              icon: Icon(Icons.favorite, color: Colors.white),
-            ),
-            IconButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => CategoryPage(),
-                  ),
-                );
-              },
-              icon: Icon(Icons.settings, color: Colors.white),
-            ),
-          ],
-        ),
-      ),
+      // bottomNavigationBar: BottomAppBar(
+      //   color: Color(0xFF593070),
+      //   child: Row(
+      //     mainAxisAlignment: MainAxisAlignment.spaceAround,
+      //     children: [
+      //       IconButton(
+      //         onPressed: () {
+      //           Navigator.push(
+      //             context,
+      //             MaterialPageRoute(
+      //               builder: (context) => search(),
+      //             ),
+      //           );
+      //         },
+      //         icon: Icon(Icons.home, color: Colors.white),
+      //       ),
+      //       IconButton(
+      //         onPressed: () {
+      //           Navigator.push(
+      //             context,
+      //             MaterialPageRoute(
+      //               builder: (context) => search(),
+      //             ),
+      //           );
+      //         },
+      //         icon: Icon(Icons.shopping_cart, color: Colors.white),
+      //       ),
+      //       IconButton(
+      //         onPressed: () {
+      //           // Navigator.push(
+      //           //   context,
+      //           //   MaterialPageRoute(
+      //           //       builder: (context) => pageFavoris(
+      //           //           Product(imagePath: "assets/sacoche.png", name: "name", price: 1000): Product(
+      //           //               imagePath: "assets/casque.png",
+      //           //               name: "rrrrrraaaaama",
+      //           //               price: 100))),
+      //           // );
+      //         },
+      //         icon: Icon(Icons.favorite, color: Colors.white),
+      //       ),
+      //       IconButton(
+      //         onPressed: () {
+      //           Navigator.push(
+      //             context,
+      //             MaterialPageRoute(
+      //               builder: (context) => CategoryPage(),
+      //             ),
+      //           );
+      //         },
+      //         icon: Icon(Icons.settings, color: Colors.white),
+      //       ),
+      //     ],
+      //   ),
+      // ),
+    
     );
   }
 }

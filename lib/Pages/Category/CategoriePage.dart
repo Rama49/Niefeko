@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:niefeko/Components/Category/detail.dart';
+import 'package:niefeko/Components/Recherche/recherche.dart';
 import 'package:niefeko/Pages/CartPanier/CartPanier.dart';
 import 'package:niefeko/Pages/Favoris/PageFavoris.dart';
 
@@ -136,9 +138,12 @@ class _CategoryPageState extends State<CategoryPage> {
         backgroundColor: Color(0xFF612C7D),
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () {
-            Navigator.pop(context);
-          },
+         onPressed: () {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => search()),
+    );
+  },
         ),
         actions: [
           Stack(
@@ -232,36 +237,37 @@ class _CategoryPageState extends State<CategoryPage> {
           ],
         ),
       ),
-      bottomNavigationBar: BottomAppBar(
-        color: Color(0xFF612C7D),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            IconButton(
-              onPressed: () {
-                // Ajoutez ici votre logique de navigation pour l'écran d'accueil
-              },
-              icon: Icon(Icons.home, color: Colors.white),
-            ),
-            IconButton(
-              onPressed: navigateToCartPage,
-              icon: Icon(Icons.shopping_cart, color: Colors.white),
-            ),
-            IconButton(
-              onPressed: () {
-                // Ajoutez ici votre logique de navigation pour l'écran des favoris
-              },
-              icon: Icon(Icons.favorite, color: Colors.white),
-            ),
-            IconButton(
-              onPressed: () {
-                // Ajoutez ici votre logique de navigation pour l'écran des paramètres
-              },
-              icon: Icon(Icons.settings, color: Colors.white),
-            ),
-          ],
-        ),
-      ),
+      // bottomNavigationBar: BottomAppBar(
+      //   color: Color(0xFF612C7D),
+      //   child: Row(
+      //     mainAxisAlignment: MainAxisAlignment.spaceAround,
+      //     children: [
+      //       IconButton(
+      //         onPressed: () {
+      //           // Ajoutez ici votre logique de navigation pour l'écran d'accueil
+      //         },
+      //         icon: Icon(Icons.home, color: Colors.white),
+      //       ),
+      //       IconButton(
+      //         onPressed: navigateToCartPage,
+      //         icon: Icon(Icons.shopping_cart, color: Colors.white),
+      //       ),
+      //       IconButton(
+      //         onPressed: () {
+      //           // Ajoutez ici votre logique de navigation pour l'écran des favoris
+      //         },
+      //         icon: Icon(Icons.favorite, color: Colors.white),
+      //       ),
+      //       IconButton(
+      //         onPressed: () {
+      //           // Ajoutez ici votre logique de navigation pour l'écran des paramètres
+      //         },
+      //         icon: Icon(Icons.settings, color: Colors.white),
+      //       ),
+      //     ],
+      //   ),
+      // ),
+    
     );
   }
 
@@ -269,9 +275,26 @@ class _CategoryPageState extends State<CategoryPage> {
     String imageName =
         filteredImagePaths[index].split('/').last.split('.').first;
     double price = prices[index];
-    return Card(
-      child: Stack(
-        children: [
+    return
+    Card(
+  child: GestureDetector(
+    onTap: () {
+
+ Navigator.push(
+                   context,
+                   MaterialPageRoute(
+                     builder: (context) => detail(),
+                   ),
+                 );
+
+
+      // Action à exécuter lorsque la carte est cliquée
+      // Par exemple, vous pouvez naviguer vers une autre page ou afficher des détails sur le produit
+      // Ici, je laisse l'action vide pour le moment
+    },
+    child: Stack(
+      children: 
+        [
           Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
@@ -312,10 +335,9 @@ class _CategoryPageState extends State<CategoryPage> {
                       Icon(Icons.shopping_cart, color: Colors.white),
                     ],
                   ),
-                  
                   style: ElevatedButton.styleFrom(
                     padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                    // primary: Color(0xFF612C7D),
+                    backgroundColor: Color(0xFF612C7D),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(7),
                     ),
@@ -357,8 +379,11 @@ class _CategoryPageState extends State<CategoryPage> {
             ),
           ),
         ],
-      ),
-    );
+      
+    ),
+  ),
+);
+
   }
 
   // Méthode pour ajouter un produit aux favoris dans Firestore
