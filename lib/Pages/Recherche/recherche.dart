@@ -2,8 +2,6 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:niefeko/Components/Carte/Navbar/menu.dart';
-import 'package:niefeko/Components/Category/Categorie.dart';
 import 'package:niefeko/Components/Category/CategorieHeader.dart';
 import 'package:niefeko/Reutilisable/buttonReu.dart';
 import 'package:niefeko/Reutilisable/carteReu.dart';
@@ -211,7 +209,7 @@ class _searchState extends State<search> {
                       );
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(0xFF612C7D),
+                      backgroundColor: Color.fromARGB(255, 198, 6, 6),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(5),
                       ),

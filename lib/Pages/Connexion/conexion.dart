@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:niefeko/Components/Recherche/recherche.dart';
+import 'package:niefeko/Pages/Inscription/inscription.dart';
 
 class connexion extends StatefulWidget {
   const connexion({Key? key}) : super(key: key);
@@ -169,10 +170,10 @@ class _connexionState extends State<connexion> {
                       ),
                       child: Container(
                           child: Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
                                 Align(
-                                    alignment: Alignment.bottomRight,
+                                    // alignment: Alignment.bottomRight,
                                     child: Text(
                                       "Mot de passe oublié ?",
                                       style: TextStyle(
@@ -185,7 +186,8 @@ class _connexionState extends State<connexion> {
                     SizedBox(
                       height: 20,
                     ),
-                    ElevatedButton(
+                    Row(children: [
+                       ElevatedButton(
                       onPressed: () {
                         // Vérifiez la validation du formulaire avant de se connecter
                         if (_formKey.currentState!.validate()) {
@@ -193,7 +195,9 @@ class _connexionState extends State<connexion> {
                         }
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Color.fromARGB(255, 247, 246, 248),
+                        backgroundColor: Colors.white,
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 10),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(5),
                         ),
@@ -201,14 +205,35 @@ class _connexionState extends State<connexion> {
                       child: const Text(
                         "Se connecter",
                         style: TextStyle(
-                          fontSize: 16.0,
-                          backgroundColor: Colors.white,
-                          color: Colors.purple,
+                          fontSize: 14,
+                          color: Color(0xFF612C7D),
                         ),
                       ),
                     ),
-                    SizedBox(height: 20),
-                    SizedBox(height: 10),
+                    // SizedBox(height: 20),
+                    // SizedBox(height: 10),
+                       ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => inscription()),
+                        );
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.white,
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 10),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5)),
+                      ),
+                      child: Text(
+                        "Creer un compte",
+                        style: TextStyle(fontSize: 14, color: Color(0xFF612C7D)),
+                      ),
+                    ),
+                 
+                    ]),
                   ],
                 ),
               ),
