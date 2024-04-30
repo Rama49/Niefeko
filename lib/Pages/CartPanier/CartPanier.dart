@@ -8,7 +8,7 @@ class CartPanier extends StatelessWidget {
   final String prenom;
   final String nom;
   final String email;
-  final Function(BuildContext context, String, String, String) validateCart; // Modifier le type de validateCart
+  final Function(BuildContext context, String, String, String) validateCart;
 
   const CartPanier({
     Key? key,
@@ -62,23 +62,28 @@ class CartPanier extends StatelessWidget {
                     },
                   ),
                 ),
-                Container(
-                  alignment: Alignment.center,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      validateCart(context, idClient, prenom, nom); // Appel de validateCart avec les arguments requis
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                        content: Text('Panier validé'),
-                      ));
-                    },
-                    style: ElevatedButton.styleFrom(
-                      primary: Colors.green,
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Text(
-                        'Valider le panier',
-                        style: TextStyle(fontSize: 18),
+                Center(
+                  child: Container(
+                    margin: EdgeInsets.symmetric(vertical: 16.0),
+                    child: ElevatedButton(
+                      onPressed: () {
+                        validateCart(context, idClient, prenom, nom);
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text('Panier validé'),
+                        ));
+                      },
+                      style: ElevatedButton.styleFrom(
+                        primary: Color(0xFF612C7D),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(7),
+                        ),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Text(
+                          'Valider le panier',
+                          style: TextStyle(fontSize: 18, color: Colors.white),
+                        ),
                       ),
                     ),
                   ),

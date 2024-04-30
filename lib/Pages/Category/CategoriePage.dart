@@ -119,6 +119,7 @@ class _CategoryPageState extends State<CategoryPage> {
 
     String prenom = userSnapshot['prenom'];
     String nom = userSnapshot['nom'];
+    
 
     Navigator.push(
       context,
