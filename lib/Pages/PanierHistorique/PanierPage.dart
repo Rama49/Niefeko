@@ -23,19 +23,21 @@ class _PanierPageState extends State<PanierPage> {
 
   // Fonction pour récupérer l'historique des commandes depuis Firestore
   Future<void> _fetchOrderHistory() async {
-    FirebaseFirestore.instance
-        .collection('Panier')
-        .where('userId', isEqualTo: _user!.uid)
-        .get()
-        .then((querySnapshot) {
+    try {
+      String userID = _user!.uid;
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+          .collection('HistoriqueCommandes')
+          .where('userId', isEqualTo: userID)
+          .get();
       setState(() {
         _orders = querySnapshot.docs
             .map((doc) => Order.fromMap(doc.data() as Map<String, dynamic>))
             .toList();
       });
-    }).catchError((error) {
-      print('Erreur lors de la récupération de l\'historique des commandes: $error');
-    });
+    } catch (error) {
+      print(
+          'Erreur lors de la récupération de l\'historique des commandes: $error');
+    }
   }
 
   @override
@@ -46,7 +48,8 @@ class _PanierPageState extends State<PanierPage> {
       ),
       body: _orders.isEmpty
           ? Center(
-              child: Text('Votre historique de panier est vide.'), // Message si l'historique est vide
+              child: Text(
+                  'Votre historique de panier est vide.'), // Message si l'historique est vide
             )
           : ListView.builder(
               itemCount: _orders.length,
@@ -58,15 +61,18 @@ class _PanierPageState extends State<PanierPage> {
                     subtitle: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Total: \$${order.totalAmount.toStringAsFixed(2)}'),
+                        Text(
+                            'Total: \$${order.totalAmount.toStringAsFixed(2)}'),
                         SizedBox(height: 8),
                         Text('Produits commandés:'),
                         Column(
                           children: order.products.map((product) {
                             return ListTile(
                               title: Text(product.name), // Nom du produit
-                              subtitle: Text('\$${product.price.toStringAsFixed(2)}'), // Prix du produit
-                              leading: Image.asset(product.imagePath), // Image du produit
+                              subtitle: Text(
+                                  '\$${product.price.toStringAsFixed(2)}'), // Prix du produit
+                              leading: Image.asset(
+                                  product.imagePath), // Image du produit
                             );
                           }).toList(),
                         ),
@@ -100,18 +106,21 @@ class Order {
   // Constructeur de l'objet Order à partir des données Firestore
   factory Order.fromMap(Map<String, dynamic> data) {
     // Convertir les données Firestore en instance d'Order
-    List<Product> products = (data['products'] as List<dynamic>).map((productData) {
-      return Product(
-        imagePath: productData['imagePath'],
-        name: productData['name'],
-        price: productData['price'],
-      );
-    }).toList();
+    List<Product> products = [];
+    if (data['products'] != null) {
+      products = (data['products'] as List<dynamic>).map((productData) {
+        return Product(
+          imagePath: productData['imagePath'],
+          name: productData['name'],
+          price: productData['price'],
+        );
+      }).toList();
+    }
 
     return Order(
-      orderId: data['orderId'],
-      userId: data['userId'],
-      totalAmount: data['totalAmount'],
+      orderId: data['orderId'] ?? '',
+      userId: data['userId'] ?? '',
+      totalAmount: data['totalAmount'] ?? 0.0,
       products: products,
     );
   }
