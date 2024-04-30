@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:niefeko/Components/Carte/Recherche/recherche.dart';
+import 'package:niefeko/Components/Category/detail.dart';
 
 class connexion extends StatefulWidget {
   const connexion({Key? key}) : super(key: key);
@@ -224,7 +225,7 @@ class _connexionState extends State<connexion> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => search()),
+                              builder: (context) => detail()),
                         );
                       },
                       style: ElevatedButton.styleFrom(
