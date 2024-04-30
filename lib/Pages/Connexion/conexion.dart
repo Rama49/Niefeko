@@ -1,8 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:niefeko/Components/Carte/Recherche/recherche.dart';
-import 'package:niefeko/Pages/Inscription/inscription.dart';
+import 'package:niefeko/Components/Recherche/recherche.dart';
 
 class connexion extends StatefulWidget {
   const connexion({Key? key}) : super(key: key);
@@ -31,8 +30,9 @@ class _connexionState extends State<connexion> {
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.CENTER,
         timeInSecForIosWeb: 3,
-        backgroundColor: Colors.green, // Couleur de fond pour une connexion réussie
-        textColor: Colors.white,
+        backgroundColor:
+            Colors.white, // Couleur de fond pour une connexion réussie
+        textColor: Color.fromARGB(255, 68, 8, 219),
         fontSize: 16.0,
       );
       // Rediriger l'utilisateur vers la page de recherche
@@ -61,7 +61,6 @@ class _connexionState extends State<connexion> {
       body: Container(
         color: Color(0xFF612C7D),
         child: Container(
-          height: 660,
           child: Column(
             children: [
               Image.asset(
@@ -118,7 +117,7 @@ class _connexionState extends State<connexion> {
                       child: TextFormField(
                         controller: _passwordController,
                         style: TextStyle(color: Colors.white),
-                        obscureText: _isObscure, // Utilisation de la variable pour masquer ou montrer le mot de passe
+                        obscureText: _isObscure,
                         decoration: InputDecoration(
                           labelText: 'Mot de passe',
                           labelStyle: TextStyle(color: Colors.white),
@@ -133,12 +132,15 @@ class _connexionState extends State<connexion> {
                           // Ajout de l'icône œil pour montrer ou masquer le mot de passe
                           suffixIcon: IconButton(
                             icon: Icon(
-                              _isObscure ? Icons.visibility : Icons.visibility_off,
+                              _isObscure
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
                               color: Colors.white,
                             ),
                             onPressed: () {
                               setState(() {
-                                _isObscure = !_isObscure; // Inversion de l'état de visibilité du mot de passe
+                                _isObscure =
+                                    !_isObscure; // Inversion de l'état de visibilité du mot de passe
                               });
                             },
                           ),
@@ -154,13 +156,44 @@ class _connexionState extends State<connexion> {
                     SizedBox(height: 20),
                     ElevatedButton(
                       onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => search()),
+                        );
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Color(0xFF612C7D),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                      ),
+                      child: Container(
+                          child: Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Align(
+                                    alignment: Alignment.bottomRight,
+                                    child: Text(
+                                      "Mot de passe oublié ?",
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        color: Colors.white,
+                                      ),
+                                    )),
+                              ])),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
                         // Vérifiez la validation du formulaire avant de se connecter
                         if (_formKey.currentState!.validate()) {
                           _signInWithEmailAndPassword();
                         }
                       },
                       style: ElevatedButton.styleFrom(
-                        primary: Color(0xFF612C7D),
+                        backgroundColor: Color.fromARGB(255, 247, 246, 248),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(5),
                         ),
@@ -168,34 +201,14 @@ class _connexionState extends State<connexion> {
                       child: const Text(
                         "Se connecter",
                         style: TextStyle(
-                          fontSize: 18,
-                          color: Colors.white,
+                          fontSize: 16.0,
+                          backgroundColor: Colors.white,
+                          color: Colors.purple,
                         ),
                       ),
                     ),
-                    SizedBox(height: 30),
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => search()),
-                        );
-                      },
-                      style: ElevatedButton.styleFrom(
-                        primary: Color(0xFF612C7D),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                      ),
-                      child: const Text(
-                        "Créer un compte",
-                        style: TextStyle(
-                          fontSize: 18,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 30),
+                    SizedBox(height: 20),
+                    SizedBox(height: 10),
                   ],
                 ),
               ),

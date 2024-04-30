@@ -1,9 +1,8 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:niefeko/Components/Carte/recherche/recherche.dart';
 import 'package:niefeko/Pages/Connexion/conexion.dart';
 import 'package:niefeko/Reutilisable/buttonReu.dart';
 
@@ -19,15 +18,11 @@ class _inscriptionState extends State<inscription> {
   final TextEditingController _prenomController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController =
-      TextEditingController();
-  bool _passwordObscure = true;
-  bool _confirmPasswordObscure = true;
+  final TextEditingController _confirmPasswordController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    // Initialise Firebase ici
     Firebase.initializeApp().then((_) {
       print("Firebase initialisé avec succès !");
     }).catchError((error) {
@@ -41,7 +36,6 @@ class _inscriptionState extends State<inscription> {
       child: Container(
         color: Color(0xFF612C7D),
         child: Container(
-          height: 660,
           child: Column(
             children: [
               SizedBox(
@@ -64,8 +58,8 @@ class _inscriptionState extends State<inscription> {
                 child: Column(
                   children: [
                     Padding(
-                      padding:
-                          const EdgeInsets.only(top: 10, left: 40, right: 40),
+                      padding: const EdgeInsets.only(
+                          top: 10, left: 40, right: 40),
                       child: TextFormField(
                         style: TextStyle(color: Colors.white),
                         controller: _nomController,
@@ -81,17 +75,19 @@ class _inscriptionState extends State<inscription> {
                           filled: true,
                           fillColor: Color(0xFF5B2B75),
                           enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white),
+                            borderSide:
+                                BorderSide(color: Colors.white),
                           ),
                           focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white),
+                            borderSide:
+                                BorderSide(color: Colors.white),
                           ),
                         ),
                       ),
                     ),
                     Padding(
-                      padding:
-                          const EdgeInsets.only(top: 15, left: 40, right: 40),
+                      padding: const EdgeInsets.only(
+                          top: 15, left: 40, right: 40),
                       child: TextFormField(
                         style: TextStyle(color: Colors.white),
                         controller: _prenomController,
@@ -102,22 +98,24 @@ class _inscriptionState extends State<inscription> {
                           return null;
                         },
                         decoration: InputDecoration(
-                          labelText: 'Prenom',
+                          labelText: 'Prénom',
                           labelStyle: TextStyle(color: Colors.white),
                           filled: true,
                           fillColor: Color(0xFF593070),
                           enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white),
+                            borderSide:
+                                BorderSide(color: Colors.white),
                           ),
                           focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white),
+                            borderSide:
+                                BorderSide(color: Colors.white),
                           ),
                         ),
                       ),
                     ),
                     Padding(
-                      padding:
-                          const EdgeInsets.only(top: 15, left: 40, right: 40),
+                      padding: const EdgeInsets.only(
+                          top: 15, left: 40, right: 40),
                       child: TextFormField(
                         style: TextStyle(color: Colors.white),
                         controller: _emailController,
@@ -133,21 +131,23 @@ class _inscriptionState extends State<inscription> {
                           filled: true,
                           fillColor: Color(0xFF593070),
                           enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white),
+                            borderSide:
+                                BorderSide(color: Colors.white),
                           ),
                           focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white),
+                            borderSide:
+                                BorderSide(color: Colors.white),
                           ),
                         ),
                       ),
                     ),
                     Padding(
-                      padding:
-                          const EdgeInsets.only(top: 15, left: 40, right: 40),
+                      padding: const EdgeInsets.only(
+                          top: 15, left: 40, right: 40),
                       child: TextFormField(
                         style: TextStyle(color: Colors.white),
                         controller: _passwordController,
-                        obscureText: _passwordObscure,
+                        obscureText: true,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Veuillez entrer votre mot de passe';
@@ -160,34 +160,23 @@ class _inscriptionState extends State<inscription> {
                           filled: true,
                           fillColor: Color(0xFF593070),
                           enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white),
+                            borderSide:
+                                BorderSide(color: Colors.white),
                           ),
                           focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white),
-                          ),
-                          suffixIcon: IconButton(
-                            icon: Icon(
-                              _passwordObscure
-                                  ? Icons.visibility
-                                  : Icons.visibility_off,
-                              color: Colors.white,
-                            ),
-                            onPressed: () {
-                              setState(() {
-                                _passwordObscure = !_passwordObscure;
-                              });
-                            },
+                            borderSide:
+                                BorderSide(color: Colors.white),
                           ),
                         ),
                       ),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(
-                          top: 15, left: 40, right: 40, bottom: 0),
+                          top: 15, left: 40, right: 40),
                       child: TextFormField(
                         style: TextStyle(color: Colors.white),
                         controller: _confirmPasswordController,
-                        obscureText: _confirmPasswordObscure,
+                        obscureText: true,
                         validator: (value) {
                           if (value != _passwordController.text) {
                             return 'Les mots de passe ne correspondent pas';
@@ -200,24 +189,12 @@ class _inscriptionState extends State<inscription> {
                           filled: true,
                           fillColor: Color(0xFF593070),
                           enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white),
+                            borderSide:
+                                BorderSide(color: Colors.white),
                           ),
                           focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white),
-                          ),
-                          suffixIcon: IconButton(
-                            icon: Icon(
-                              _confirmPasswordObscure
-                                  ? Icons.visibility
-                                  : Icons.visibility_off,
-                              color: Colors.white,
-                            ),
-                            onPressed: () {
-                              setState(() {
-                                _confirmPasswordObscure =
-                                    !_confirmPasswordObscure;
-                              });
-                            },
+                            borderSide:
+                                BorderSide(color: Colors.white),
                           ),
                         ),
                       ),
@@ -226,63 +203,21 @@ class _inscriptionState extends State<inscription> {
                     BoutonR(
                       titre: "S'inscrire",
                       onPressed: () async {
-                        if (_formKey.currentState!.validate()) {
-                          try {
-                            UserCredential userCredential = await FirebaseAuth
-                                .instance
-                                .createUserWithEmailAndPassword(
-                              email: _emailController.text,
-                              password: _passwordController.text,
-                            );
-
-                            await FirebaseFirestore.instance
-                                .collection('Inscription')
-                                .doc(userCredential.user!.uid)
-                                .set({
-                              'nom': _nomController.text,
-                              'prenom': _prenomController.text,
-                              'email': _emailController.text,
-                              'password': _passwordController.text,
-                              'confirmPassword':
-                                  _confirmPasswordController.text,
-                            });
-
-                            Fluttertoast.showToast(
-                              msg: "Inscription réussie avec succès",
-                              toastLength: Toast.LENGTH_SHORT,
-                              gravity: ToastGravity.CENTER,
-                              timeInSecForIosWeb: 3,
-                              backgroundColor: Colors.white,
-                              textColor: Colors.purple,
-                              fontSize: 16.0,
-                            );
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => connexion()),
-                            );
-                            _nomController.clear();
-                            _prenomController.clear();
-                            _emailController.clear();
-                            _passwordController.clear();
-                            _confirmPasswordController.clear();
-                          } catch (e) {
-                            print('Erreur lors de l\'inscription : $e');
-                          }
-                        }
+                        await registerUser();
                       },
                     ),
                     ElevatedButton(
                       onPressed: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => connexion()),
+                          MaterialPageRoute(
+                              builder: (context) => connexion()),
                         );
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Color(0xFF612C7D),
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 50, vertical: 20),
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 50, vertical: 20),
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(5)),
                       ),
@@ -299,6 +234,53 @@ class _inscriptionState extends State<inscription> {
         ),
       ),
     );
+  }
+
+  Future<void> registerUser() async {
+    if (_formKey.currentState!.validate()) {
+      try {
+        UserCredential userCredential = await FirebaseAuth.instance
+            .createUserWithEmailAndPassword(
+          email: _emailController.text,
+          password: _passwordController.text,
+        );
+
+        String userID = userCredential.user!.uid;
+
+        await FirebaseFirestore.instance
+            .collection('Inscription')
+            .doc(userID)
+            .set({
+          'nom': _nomController.text,
+          'prenom': _prenomController.text,
+          'email': _emailController.text,
+          'password': _passwordController.text,
+          'confirmPassword': _confirmPasswordController.text,
+        });
+
+        Fluttertoast.showToast(
+          msg: "Inscription réussie avec succès",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 3,
+          backgroundColor: Colors.white,
+          textColor: Colors.purple,
+          fontSize: 16.0,
+        );
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => connexion()),
+        );
+
+        _nomController.clear();
+        _prenomController.clear();
+        _emailController.clear();
+        _passwordController.clear();
+        _confirmPasswordController.clear();
+      } catch (e) {
+        print('Erreur lors de l\'inscription : $e');
+      }
+    }
   }
 
   @override

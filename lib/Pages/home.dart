@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:niefeko/Pages/Inscription/inscription.dart';
 import 'package:niefeko/Pages/Splash/splash.dart';
-import 'package:niefeko/Pages/pageAcceuil/PageAcceuil.dart';
 
 class MyHomePage extends StatefulWidget {
-
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  bool _showSplash = true; 
+  bool _showSplash = true;
 
   @override
   void initState() {
@@ -28,16 +26,13 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Stack(
         children: [
           if (_showSplash) SplashScreen(),
-
           AnimatedOpacity(
             opacity: _showSplash ? 0.0 : 1.0,
             duration: Duration(milliseconds: 500),
             curve: Curves.easeInOut,
-            child: Column(
-              children: [
+            child: _showSplash ? SizedBox.shrink() : Container(
+              child: 
                 inscription(),
-                pageAcceuil(),
-              ],
             ),
           ),
         ],
