@@ -13,7 +13,6 @@ class Product {
   final double price;
   int quantity; // Champ pour stocker la quantité du produit
 
-  Product({required this.imagePath, required this.name, required this.price});
 
   // Convertir le produit en un map pour Firestore
   Map<String, dynamic> toMap() {
@@ -485,18 +484,6 @@ class _CategoryPageState extends State<CategoryPage> {
             (error) => print("Erreur lors de l'ajout aux favoris: $error"));
   }
 
-  void addOrderToFirestore(Order order) {
-    // Référence à la collection "orders" dans Firestore
-    CollectionReference orders =
-        FirebaseFirestore.instance.collection('Panier');
-
-    // Ajouter la commande à Firestore
-    orders
-        .add(order.toMap())
-        .then((value) => print("Commande ajoutée avec l'ID: ${value.id}"))
-        .catchError(
-            (error) => print("Erreur lors de l'ajout de la commande: $error"));
-  }
 }
 
 class Order {
