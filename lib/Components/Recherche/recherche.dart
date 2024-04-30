@@ -82,7 +82,7 @@ class _searchState extends State<search> {
                       ),
                     ),
                     padding: const EdgeInsets.all(20),
-                     height: 250,
+                    // height: 250,
                     child: Column(
                       children: [
                         const Text(
@@ -231,7 +231,16 @@ class _searchState extends State<search> {
                     context,
                     MaterialPageRoute(
                       builder: (context) => CartPanier(
-                          cartItems: cartItems, removeFromCart: removeFromCart),
+                          cartItems: cartItems,
+                          removeFromCart: removeFromCart,
+                          idClient: "idClient",
+                          prenom: "prenom",
+                          nom: "nom",
+                          email: "email",
+                          validateCart: (BuildContext context, String prenom, String nom, String email) {
+      // Implémentez ici le code de votre fonction validateCart
+      // Utilisez context, prenom, nom, email comme nécessaire
+    },),
                     ),
                   );
                 },
@@ -241,8 +250,7 @@ class _searchState extends State<search> {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(
-                        builder: (context) => pageFavoris()),
+                    MaterialPageRoute(builder: (context) => pageFavoris()),
                   );
                 },
                 icon: Icon(Icons.favorite, color: Colors.white),
