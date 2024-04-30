@@ -331,16 +331,10 @@ class _CategoryPageState extends State<CategoryPage> {
                 color: isFavoritedList[index] ? Colors.red : Colors.grey,
               ),
               onPressed: () {
-
-
-
-Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => pageFavoris()
-      ),
-    );
-
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(builder: (context) => pageFavoris()),
+                // );
 
                 setState(() {
                   isFavoritedList[index] = !isFavoritedList[index];

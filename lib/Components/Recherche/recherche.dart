@@ -4,7 +4,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:niefeko/Components/Categories/categorie.dart';
 import 'package:niefeko/Components/Deals/deal.dart';
 import 'package:niefeko/Pages/CartPanier/CartPanier.dart';
-import 'package:niefeko/Pages/CartPanier/cartItems.dart';
 import 'package:niefeko/Pages/Category/CategoriePage.dart';
 import 'package:niefeko/Pages/Connexion/conexion.dart';
 import 'package:niefeko/Pages/Favoris/PageFavoris.dart';
@@ -79,12 +78,10 @@ class _searchState extends State<search> {
                       borderRadius: BorderRadius.only(
                         bottomLeft: const Radius.circular(40.0),
                         bottomRight: const Radius.circular(40.0),
-                        topLeft: const Radius.circular(5.0),
-                        topRight: const Radius.circular(55.0),
                       ),
                     ),
                     padding: const EdgeInsets.all(20),
-                    height: 250,
+                    // height: 250,
                     child: Column(
                       children: [
                         const Text(
@@ -181,7 +178,7 @@ class _searchState extends State<search> {
                           options: CarouselOptions(
                             enlargeCenterPage: true,
                             autoPlay: true,
-                            aspectRatio: 15 / 9,
+                            aspectRatio: 12 / 9,
                             autoPlayCurve: Curves.fastOutSlowIn,
                             enableInfiniteScroll: true,
                             autoPlayAnimationDuration:

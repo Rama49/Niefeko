@@ -69,7 +69,7 @@ class carteReu extends StatelessWidget {
                 )
               ],
             ),
-            Expanded(child: image),
+            Flexible(child: image),
           ],
         ),
       ),
