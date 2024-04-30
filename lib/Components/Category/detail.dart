@@ -134,9 +134,19 @@ class detail extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(40),
                               ),
                               
+                              
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
+                                 // ClipOval(
+                                    //borderRadius: BorderRadius.circular(8.0),
+                                 // child: Image.asset(
+                                  //  'sac.jpg',
+                                  //    width: 110.0,
+                                    //  height: 110.0,
+                                      //fit: BoxFit.fill,
+                                    //),
+                                  //),
                                 Image(
                                 height: 70,
                                 image: AssetImage('sac.jpg')
@@ -195,16 +205,22 @@ class detail extends StatelessWidget {
                          // ),
                   
                   CircleAvatar(
-                    //radius: 22,
+                    radius: 22,
                     backgroundColor: Colors.white,
-                    child: IconButton(onPressed: (){}, icon: Icon(Icons.remove)),
+                    child: IconButton(onPressed: (){
+                      if (quantity > 1) {
+                                quantity -= 1;
+                                //setState(() {});
+                              }
+                    }, 
+                    icon: Icon(Icons.remove)),
                   ),
                   
                   Text("0",
                   style: TextStyle(
-                    fontSize: 18,
-
-                  ),),
+                    fontSize: 20,
+                  ),
+                  ),
 //                    Text(
 //                             "$quantity",
 //                             style: const TextStyle(
@@ -222,9 +238,15 @@ class detail extends StatelessWidget {
 //                           ),
 
                  CircleAvatar(
-                  // radius: 22,
+                  radius: 22,
                     backgroundColor: Colors.white,
-                    child: IconButton(onPressed: (){}, icon: Icon(Icons.add))
+                    child: IconButton(onPressed: (){
+                      if (quantity > 1) {
+                                quantity -= 1;
+                                //setState(() {});
+                              }
+                    }, 
+                    icon: Icon(Icons.add))
                   )
                 ],
               ),
