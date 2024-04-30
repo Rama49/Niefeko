@@ -68,6 +68,7 @@ class _searchState extends State<search> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: SingleChildScrollView(
+          scrollDirection: Axis.vertical,
           child: Flexible(
             child: Column(
               children: [
@@ -81,7 +82,7 @@ class _searchState extends State<search> {
                       ),
                     ),
                     padding: const EdgeInsets.all(20),
-                    // height: 250,
+                     height: 250,
                     child: Column(
                       children: [
                         const Text(
