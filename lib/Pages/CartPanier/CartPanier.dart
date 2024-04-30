@@ -77,7 +77,7 @@ class CartPanier extends StatelessWidget {
                   child: ElevatedButton(
                     onPressed: () => validateCart(context),
                     style: ElevatedButton.styleFrom(
-                      primary: Colors.green,
+                      // primary: Colors.green,
                     ),
                     child: Padding(
                       padding: const EdgeInsets.all(16.0),

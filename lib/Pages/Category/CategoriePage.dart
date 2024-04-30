@@ -312,9 +312,10 @@ class _CategoryPageState extends State<CategoryPage> {
                       Icon(Icons.shopping_cart, color: Colors.white),
                     ],
                   ),
+                  
                   style: ElevatedButton.styleFrom(
                     padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                    primary: Color(0xFF612C7D),
+                    // primary: Color(0xFF612C7D),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(7),
                     ),
