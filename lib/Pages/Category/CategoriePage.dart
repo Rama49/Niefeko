@@ -13,7 +13,7 @@ class Product {
   final double price;
   int quantity; // Champ pour stocker la quantité du produit
 
-  Product({required this.imagePath, required this.name, required this.price});
+  // Product({required this.imagePath, required this.name, required this.price});
 
   // Convertir le produit en un map pour Firestore
   Map<String, dynamic> toMap() {
@@ -23,6 +23,7 @@ class Product {
       'price': price,
     };
   }
+
   Product({
     required this.imagePath,
     required this.name,
@@ -95,7 +96,8 @@ class _CategoryPageState extends State<CategoryPage> {
     double totalAmount = price * 1; // Pour l'exemple, mettons la quantité à 1
 
     // Vérifier si le produit existe déjà dans le panier
-    int existingIndex = cartItems.indexWhere((product) => product.name == productName);
+    int existingIndex =
+        cartItems.indexWhere((product) => product.name == productName);
     if (existingIndex != -1) {
       // Le produit existe déjà dans le panier, augmentez simplement la quantité
       setState(() {
@@ -141,7 +143,6 @@ class _CategoryPageState extends State<CategoryPage> {
 
     String prenom = userSnapshot['prenom'];
     String nom = userSnapshot['nom'];
-    
 
     Navigator.push(
       context,
@@ -159,7 +160,8 @@ class _CategoryPageState extends State<CategoryPage> {
     );
   }
 
-  void validateCart(BuildContext context, String idClient, String prenom, String nom) async {
+  void validateCart(
+      BuildContext context, String idClient, String prenom, String nom) async {
     User? user = FirebaseAuth.instance.currentUser;
     if (user == null) {
       // Redirection vers la page de connexion si l'utilisateur n'est pas connecté
@@ -176,7 +178,8 @@ class _CategoryPageState extends State<CategoryPage> {
 
     String prenom = userSnapshot['prenom'];
     String nom = userSnapshot['nom'];
-    String email = userSnapshot['email']; // Si l'email est stocké dans la collection "Inscription"
+    String email = userSnapshot[
+        'email']; // Si l'email est stocké dans la collection "Inscription"
 
     cartItems.forEach((product) {
       String imageUrl = product.imagePath;
@@ -184,7 +187,9 @@ class _CategoryPageState extends State<CategoryPage> {
       double price = product.price;
       DateTime timestamp = DateTime.now();
 
-      double totalAmount = price * product.quantity; // Calculer le montant total en multipliant le prix par la quantité
+      double totalAmount = price *
+          product
+              .quantity; // Calculer le montant total en multipliant le prix par la quantité
 
       Order order = Order(
         imageUrl: imageUrl,
@@ -222,16 +227,16 @@ class _CategoryPageState extends State<CategoryPage> {
     );
   }
 
-  void addOrderToFirestore(Order order) {
-    CollectionReference orders =
-        FirebaseFirestore.instance.collection('Panier');
+  // void addOrderToFirestore(Order order) {
+  //   CollectionReference orders =
+  //       FirebaseFirestore.instance.collection('Panier');
 
-    orders
-        .add(order.toMap())
-        .then((value) => print("Commande ajoutée avec l'ID: ${value.id}"))
-        .catchError(
-            (error) => print("Erreur lors de l'ajout de la commande: $error"));
-  }
+  //   orders
+  //       .add(order.toMap())
+  //       .then((value) => print("Commande ajoutée avec l'ID: ${value.id}"))
+  //       .catchError(
+  //           (error) => print("Erreur lors de l'ajout de la commande: $error"));
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -372,12 +377,12 @@ class _CategoryPageState extends State<CategoryPage> {
           ],
         ),
       ),
-    
     );
   }
 
   Widget buildCard(int index) {
-    String imageName = filteredImagePaths[index].split('/').last.split('.').first;
+    String imageName =
+        filteredImagePaths[index].split('/').last.split('.').first;
     double price = prices[index];
     return Card(
       child: Stack(
