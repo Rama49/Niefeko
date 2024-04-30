@@ -1,35 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:niefeko/Pages/Category/CategoriePage.dart';
+import 'package:niefeko/Pages/Category/CategoriePage.dart'; // Importez les classes nécessaires depuis le fichier de catégorie
 
 class CartPanier extends StatelessWidget {
   final List<Product> cartItems;
   final Function(int) removeFromCart;
+  final String idClient;
+  final String prenom;
+  final String nom;
+  final String email;
+  final Function(BuildContext context, String, String, String) validateCart;
 
   const CartPanier({
     Key? key,
     required this.cartItems,
     required this.removeFromCart,
+    required this.idClient,
+    required this.prenom,
+    required this.nom,
+    required this.email,
+    required this.validateCart,
   }) : super(key: key);
-
-  void validateCart(BuildContext context) {
-    double totalPrice = 0.0;
-    for (var item in cartItems) {
-      totalPrice += item.price;
-    }
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text('Total Price'),
-        content: Text('Total Price: \$${totalPrice.toStringAsFixed(2)}'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text('OK'),
-          ),
-        ],
-      ),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -72,18 +62,28 @@ class CartPanier extends StatelessWidget {
                     },
                   ),
                 ),
-                Container(
-                  alignment: Alignment.center,
-                  child: ElevatedButton(
-                    onPressed: () => validateCart(context),
-                    style: ElevatedButton.styleFrom(
-                      primary: Colors.green,
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Text(
-                        'Valider le panier',
-                        style: TextStyle(fontSize: 18),
+                Center(
+                  child: Container(
+                    margin: EdgeInsets.symmetric(vertical: 16.0),
+                    child: ElevatedButton(
+                      onPressed: () {
+                        validateCart(context, idClient, prenom, nom);
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text('Panier validé'),
+                        ));
+                      },
+                      style: ElevatedButton.styleFrom(
+                        primary: Color(0xFF612C7D),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(7),
+                        ),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Text(
+                          'Valider le panier',
+                          style: TextStyle(fontSize: 18, color: Colors.white),
+                        ),
                       ),
                     ),
                   ),
