@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:niefeko/Pages/Category/CategoriePage.dart';
+import 'package:intl/intl.dart'; // Ajout de l'import pour DateFormat
 
 class PanierPage extends StatefulWidget {
   @override
@@ -9,34 +8,36 @@ class PanierPage extends StatefulWidget {
 }
 
 class _PanierPageState extends State<PanierPage> {
-  late User? _user;
-  List<Order> _orders = []; // Liste des commandes
+  late Stream<QuerySnapshot> _ordersStream;
 
   @override
   void initState() {
     super.initState();
-    _user = FirebaseAuth.instance.currentUser;
-    if (_user != null) {
-      _fetchOrderHistory(); // Récupérer l'historique des commandes
-    }
+    _ordersStream = FirebaseFirestore.instance
+        .collection('Panier')
+        .orderBy('timestamp', descending: true)
+        .snapshots();
   }
 
-  // Fonction pour récupérer l'historique des commandes depuis Firestore
-  Future<void> _fetchOrderHistory() async {
+  void _deleteOrder(String orderId) async {
     try {
-      String userID = _user!.uid;
-      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-          .collection('HistoriqueCommandes')
-          .where('userId', isEqualTo: userID)
-          .get();
-      setState(() {
-        _orders = querySnapshot.docs
-            .map((doc) => Order.fromMap(doc.data() as Map<String, dynamic>))
-            .toList();
-      });
-    } catch (error) {
-      print(
-          'Erreur lors de la récupération de l\'historique des commandes: $error');
+      await FirebaseFirestore.instance
+          .collection('Panier')
+          .doc(orderId)
+          .delete();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Commande supprimée avec succès'),
+          duration: Duration(seconds: 2),
+        ),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Erreur lors de la suppression de la commande'),
+          duration: Duration(seconds: 2),
+        ),
+      );
     }
   }
 
@@ -44,97 +45,92 @@ class _PanierPageState extends State<PanierPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Historique des commandes'), // Titre de la page
+        title: Text('Historique des commandes'),
       ),
-      body: _orders.isEmpty
-          ? Center(
-              child: Text(
-                  'Votre historique de panier est vide.'), // Message si l'historique est vide
-            )
-          : ListView.builder(
-              itemCount: _orders.length,
-              itemBuilder: (context, index) {
-                final order = _orders[index];
-                return Card(
-                  child: ListTile(
-                    title: Text('Commande ${index + 1}'),
-                    subtitle: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                            'Total: \$${order.totalAmount.toStringAsFixed(2)}'),
-                        SizedBox(height: 8),
-                        Text('Produits commandés:'),
-                        Column(
-                          children: order.products.map((product) {
-                            return ListTile(
-                              title: Text(product.name), // Nom du produit
-                              subtitle: Text(
-                                  '\$${product.price.toStringAsFixed(2)}'), // Prix du produit
-                              leading: Image.asset(
-                                  product.imagePath), // Image du produit
-                            );
-                          }).toList(),
-                        ),
-                      ],
-                    ),
-                    onTap: () {
-                      // Naviguer vers la page de détails de la commande
+      body: StreamBuilder<QuerySnapshot>(
+        stream: _ordersStream,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          if (snapshot.hasError) {
+            return Center(
+              child: Text('Une erreur est survenue'),
+            );
+          }
+          if (snapshot.data!.docs.isEmpty) {
+            return Center(
+              child: Text('Aucune commande trouvée'),
+            );
+          }
+          return ListView(
+            children: snapshot.data!.docs.map((doc) {
+              Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+              Timestamp timestamp = data['timestamp'] as Timestamp;
+              DateTime date = timestamp.toDate();
+              return Dismissible(
+                key: UniqueKey(),
+                direction: DismissDirection.endToStart,
+                background: Container(
+                  alignment: Alignment.centerRight,
+                  padding: EdgeInsets.symmetric(horizontal: 20.0),
+                  color: Colors.red,
+                  child: Icon(Icons.delete, color: Colors.white),
+                ),
+                onDismissed: (direction) {
+                  _deleteOrder(doc.id);
+                },
+                confirmDismiss: (direction) async {
+                  return await showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: Text("Confirmation"),
+                        content: Text(
+                            "Êtes-vous sûr de vouloir supprimer cette commande ?"),
+                        actions: <Widget>[
+                          TextButton(
+                            onPressed: () => Navigator.of(context).pop(true),
+                            child: Text("Supprimer"),
+                          ),
+                          TextButton(
+                            onPressed: () => Navigator.of(context).pop(false),
+                            child: Text("Annuler"),
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                },
+                child: ListTile(
+                  leading: Image.network(
+                      data['imageUrl']), // Affichage de l'image du produit
+                  title: Text(data['nomProduit']),
+                  subtitle: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('Quantité: ${data['nbrProduit']}'),
+                      Text('Prix: ${data['totalAmount']} \$'), // Affichage du prix
+                      // Affichage de la date et de l'heure de la commande
+                      Text(
+                        'Date et heure: ${DateFormat('dd/MM/yyyy HH:mm').format(date)}',
+                      ),
+                    ],
+                  ),
+                  trailing: IconButton(
+                    icon: Icon(Icons.delete),
+                    onPressed: () {
+                      _deleteOrder(doc.id);
                     },
                   ),
-                );
-              },
-            ),
+                ),
+              );
+            }).toList(),
+          );
+        },
+      ),
     );
   }
-}
-
-// Classe pour représenter une commande
-class Order {
-  final String orderId;
-  final String userId;
-  final double totalAmount;
-  final List<Product> products; // Liste des produits commandés
-
-  Order({
-    required this.orderId,
-    required this.userId,
-    required this.totalAmount,
-    required this.products,
-  });
-
-  // Constructeur de l'objet Order à partir des données Firestore
-  factory Order.fromMap(Map<String, dynamic> data) {
-    // Convertir les données Firestore en instance d'Order
-    List<Product> products = [];
-    if (data['products'] != null) {
-      products = (data['products'] as List<dynamic>).map((productData) {
-        return Product(
-          imagePath: productData['imagePath'],
-          name: productData['name'],
-          price: productData['price'],
-        );
-      }).toList();
-    }
-
-    return Order(
-      orderId: data['orderId'] ?? '',
-      userId: data['userId'] ?? '',
-      totalAmount: data['totalAmount'] ?? 0.0,
-      products: products,
-    );
-  }
-}
-
-// Classe pour représenter un produit
-class Product {
-  final String imagePath;
-  final String name;
-  final double price;
-
-  Product({
-    required this.imagePath,
-    required this.name,
-    required this.price,
-  });
 }

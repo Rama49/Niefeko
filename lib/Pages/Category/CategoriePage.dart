@@ -178,8 +178,7 @@ class _CategoryPageState extends State<CategoryPage> {
 
     String prenom = userSnapshot['prenom'];
     String nom = userSnapshot['nom'];
-    String email = userSnapshot[
-        'email']; // Si l'email est stocké dans la collection "Inscription"
+    String email = userSnapshot['email']; // Si l'email est stocké dans la collection "Inscription"
 
     cartItems.forEach((product) {
       String imageUrl = product.imagePath;
@@ -227,6 +226,7 @@ class _CategoryPageState extends State<CategoryPage> {
     );
   }
 
+  
   void addOrderToFirestore(Order order) {
     CollectionReference orders =
         FirebaseFirestore.instance.collection('Panier');
