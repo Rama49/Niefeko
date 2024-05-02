@@ -3,13 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:niefeko/Components/Recherche/recherche.dart';
 
+// ignore: camel_case_types
 class connexion extends StatefulWidget {
+  // ignore: use_super_parameters
   const connexion({Key? key}) : super(key: key);
 
   @override
   State<connexion> createState() => _connexionState();
 }
 
+// ignore: camel_case_types
 class _connexionState extends State<connexion> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
@@ -19,6 +22,7 @@ class _connexionState extends State<connexion> {
   // Fonction pour se connecter avec Firebase
   Future<void> _signInWithEmailAndPassword() async {
     try {
+      // ignore: unused_local_variable
       UserCredential userCredential =
           await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: _emailController.text,
@@ -32,16 +36,18 @@ class _connexionState extends State<connexion> {
         timeInSecForIosWeb: 3,
         backgroundColor:
             Colors.white, // Couleur de fond pour une connexion réussie
-        textColor: Color.fromARGB(255, 68, 8, 219),
+        textColor: const Color.fromARGB(255, 68, 8, 219),
         fontSize: 16.0,
       );
       // Rediriger l'utilisateur vers la page de recherche
+      // ignore: use_build_context_synchronously
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => search()),
+        MaterialPageRoute(builder: (context) => const search()),
       );
     } catch (e) {
       // Erreur de connexion, afficher le toast correspondant
+      // ignore: avoid_print
       print("Erreur de connexion: $e");
       Fluttertoast.showToast(
         msg: "Erreur de connexion: $e",
@@ -59,7 +65,8 @@ class _connexionState extends State<connexion> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        color: Color(0xFF612C7D),
+        color: const Color(0xFF612C7D),
+        // ignore: avoid_unnecessary_containers
         child: Container(
           child: Column(
             children: [
@@ -68,9 +75,9 @@ class _connexionState extends State<connexion> {
                 width: 80,
                 height: 80,
               ),
-              SizedBox(height: 10),
-              Padding(
-                padding: const EdgeInsets.all(28),
+              const SizedBox(height: 10),
+              const Padding(
+                padding: EdgeInsets.all(28),
                 child: Text(
                   "Entrez vos identifiants pour accéder à votre compte",
                   style: TextStyle(
@@ -79,7 +86,7 @@ class _connexionState extends State<connexion> {
                   ),
                 ),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Form(
                 key: _formKey,
                 child: Column(
@@ -89,7 +96,7 @@ class _connexionState extends State<connexion> {
                           const EdgeInsets.only(top: 15, left: 40, right: 40),
                       child: TextFormField(
                         controller: _emailController,
-                        style: TextStyle(color: Colors.white),
+                        style: const TextStyle(color: Colors.white),
                         decoration: const InputDecoration(
                           labelText: 'Email',
                           labelStyle: TextStyle(color: Colors.white),
@@ -110,23 +117,23 @@ class _connexionState extends State<connexion> {
                         },
                       ),
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     Padding(
                       padding:
                           const EdgeInsets.only(top: 15, left: 40, right: 40),
                       child: TextFormField(
                         controller: _passwordController,
-                        style: TextStyle(color: Colors.white),
+                        style: const TextStyle(color: Colors.white),
                         obscureText: _isObscure,
                         decoration: InputDecoration(
                           labelText: 'Mot de passe',
-                          labelStyle: TextStyle(color: Colors.white),
+                          labelStyle: const TextStyle(color: Colors.white),
                           filled: true,
-                          fillColor: Color(0xFF593070),
-                          enabledBorder: OutlineInputBorder(
+                          fillColor: const Color(0xFF593070),
+                          enabledBorder: const OutlineInputBorder(
                             borderSide: BorderSide(color: Colors.white),
                           ),
-                          focusedBorder: OutlineInputBorder(
+                          focusedBorder: const OutlineInputBorder(
                             borderSide: BorderSide(color: Colors.white),
                           ),
                           // Ajout de l'icône œil pour montrer ou masquer le mot de passe
@@ -153,22 +160,23 @@ class _connexionState extends State<connexion> {
                         },
                       ),
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     ElevatedButton(
                       onPressed: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => search()),
+                          MaterialPageRoute(builder: (context) => const search()),
                         );
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Color(0xFF612C7D),
+                        backgroundColor: const Color(0xFF612C7D),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(5),
                         ),
                       ),
+                      // ignore: avoid_unnecessary_containers
                       child: Container(
-                          child: Row(
+                          child: const Row(
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
                                 Align(
@@ -182,7 +190,7 @@ class _connexionState extends State<connexion> {
                                     )),
                               ])),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
                     ElevatedButton(
@@ -193,7 +201,7 @@ class _connexionState extends State<connexion> {
                         }
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Color.fromARGB(255, 247, 246, 248),
+                        backgroundColor: const Color.fromARGB(255, 247, 246, 248),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(5),
                         ),
@@ -207,8 +215,8 @@ class _connexionState extends State<connexion> {
                         ),
                       ),
                     ),
-                    SizedBox(height: 20),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 20),
+                    const SizedBox(height: 10),
                   ],
                 ),
               ),

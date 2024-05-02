@@ -10,13 +10,16 @@ import 'package:niefeko/Pages/Favoris/PageFavoris.dart';
 import 'package:niefeko/Reutilisable/carteReu.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
+// ignore: camel_case_types
 class search extends StatefulWidget {
+  // ignore: use_super_parameters
   const search({Key? key}) : super(key: key);
 
   @override
   State<search> createState() => _searchState();
 }
 
+// ignore: camel_case_types
 class _searchState extends State<search> {
   List<Product> cartItems = [
     Product(name: '', price: 0, imagePath: ''),
@@ -29,8 +32,10 @@ class _searchState extends State<search> {
     });
   }
 
+  // ignore: unused_field
   bool _isLoggedOut = false;
 
+  // ignore: unused_element
   Future<void> _signOut() async {
     try {
       await FirebaseAuth.instance.signOut();
@@ -46,11 +51,13 @@ class _searchState extends State<search> {
         textColor: Colors.white,
         fontSize: 16.0,
       );
+      // ignore: use_build_context_synchronously
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => connexion()),
+        MaterialPageRoute(builder: (context) => const connexion()),
       );
     } catch (e) {
+      // ignore: avoid_print
       print("Erreur lors de la déconnexion: $e");
       Fluttertoast.showToast(
         msg: "Erreur lors de la déconnexion: $e",
@@ -74,11 +81,11 @@ class _searchState extends State<search> {
               children: [
                 // Section de recherche
                 Container(
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       color: Color(0xFF593070),
                       borderRadius: BorderRadius.only(
-                        bottomLeft: const Radius.circular(40.0),
-                        bottomRight: const Radius.circular(40.0),
+                        bottomLeft: Radius.circular(40.0),
+                        bottomRight: Radius.circular(40.0),
                       ),
                     ),
                     padding: const EdgeInsets.all(20),
@@ -93,12 +100,13 @@ class _searchState extends State<search> {
                             fontSize: 18,
                           ),
                         ),
-                        SizedBox(height: 10),
+                        const SizedBox(height: 10),
+                        // ignore: sized_box_for_whitespace
                         Container(
                           height: 30,
                           child: TextField(
                             decoration: InputDecoration(
-                              contentPadding: EdgeInsets.symmetric(
+                              contentPadding: const EdgeInsets.symmetric(
                                 vertical:
                                     3, // Ajustez cette valeur pour réduire la hauteur de l'input
                               ),
@@ -114,7 +122,7 @@ class _searchState extends State<search> {
                             ),
                           ),
                         ),
-                        SizedBox(height: 15),
+                        const SizedBox(height: 15),
 
                         // Carousel
                         CarouselSlider(
@@ -183,7 +191,7 @@ class _searchState extends State<search> {
                             autoPlayCurve: Curves.fastOutSlowIn,
                             enableInfiniteScroll: true,
                             autoPlayAnimationDuration:
-                                Duration(milliseconds: 800),
+                                const Duration(milliseconds: 800),
                             viewportFraction: 0.8,
                           ),
                         ),
@@ -191,7 +199,7 @@ class _searchState extends State<search> {
                     )),
 
                 // Votre Container contenant la catégorie
-                Column(
+                const Column(
                   children: [
                     SizedBox(height: 120),
                     categorie(),
@@ -209,7 +217,7 @@ class _searchState extends State<search> {
           //     topRight: Radius.circular(40.0),
           //   ),
 
-          color: Color(0xFF593070),
+          color: const Color(0xFF593070),
 
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -219,11 +227,11 @@ class _searchState extends State<search> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => search(),
+                      builder: (context) => const search(),
                     ),
                   );
                 },
-                icon: Icon(Icons.home, color: Colors.white),
+                icon: const Icon(Icons.home, color: Colors.white),
               ),
               IconButton(
                 onPressed: () {
@@ -231,20 +239,22 @@ class _searchState extends State<search> {
                     context,
                     MaterialPageRoute(
                       builder: (context) => CartPanier(
-                          cartItems: cartItems,
-                          removeFromCart: removeFromCart,
-                          idClient: "idClient",
-                          prenom: "prenom",
-                          nom: "nom",
-                          email: "email",
-                          validateCart: (BuildContext context, String prenom, String nom, String email) {
-      // Implémentez ici le code de votre fonction validateCart
-      // Utilisez context, prenom, nom, email comme nécessaire
-    },),
+                        cartItems: cartItems,
+                        removeFromCart: removeFromCart,
+                        idClient: "idClient",
+                        prenom: "prenom",
+                        nom: "nom",
+                        email: "email",
+                        validateCart: (BuildContext context, String prenom,
+                            String nom, String email) {
+                          // Implémentez ici le code de votre fonction validateCart
+                          // Utilisez context, prenom, nom, email comme nécessaire
+                        },
+                      ),
                     ),
                   );
                 },
-                icon: Icon(Icons.shopping_cart, color: Colors.white),
+                icon: const Icon(Icons.shopping_cart, color: Colors.white),
               ),
               IconButton(
                 onPressed: () {
@@ -253,7 +263,7 @@ class _searchState extends State<search> {
                     MaterialPageRoute(builder: (context) => pageFavoris()),
                   );
                 },
-                icon: Icon(Icons.favorite, color: Colors.white),
+                icon: const Icon(Icons.favorite, color: Colors.white),
               ),
               IconButton(
                 onPressed: () {
@@ -264,7 +274,7 @@ class _searchState extends State<search> {
                     ),
                   );
                 },
-                icon: Icon(Icons.settings, color: Colors.white),
+                icon: const Icon(Icons.settings, color: Colors.white),
               ),
             ],
           ),

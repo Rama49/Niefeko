@@ -1,7 +1,10 @@
+// ignore_for_file: camel_case_types
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
 class categorie extends StatefulWidget {
+  // ignore: use_key_in_widget_constructors
   const categorie({Key? key});
 
   @override
@@ -12,10 +15,10 @@ class _categorieState extends State<categorie> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      padding: EdgeInsets.all(10),
+      padding: const EdgeInsets.all(10),
       child: Column(
         children: [
-          Row(
+          const Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Text(
@@ -27,7 +30,7 @@ class _categorieState extends State<categorie> {
               ),
             ],
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           CarouselSlider(
             items: [
               //1st Image of Slider
@@ -48,7 +51,7 @@ class _categorieState extends State<categorie> {
               aspectRatio: 23 / 9,
               autoPlayCurve: Curves.fastOutSlowIn,
               enableInfiniteScroll: true,
-              autoPlayAnimationDuration: Duration(milliseconds: 500),
+              autoPlayAnimationDuration: const Duration(milliseconds: 500),
               viewportFraction: 0.25, // Une image à la fois
             ),
           ),
@@ -58,6 +61,7 @@ class _categorieState extends State<categorie> {
   }
 
   Widget buildCarouselItem(String imagePath, String text) {
+    // ignore: avoid_unnecessary_containers
     return Container(
       // padding: EdgeInsets.symmetric(vertical: 0),
       // color: Colors.amber,
@@ -67,7 +71,7 @@ class _categorieState extends State<categorie> {
             height: 80, // Hauteur du background mauve
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(40.0),
-              color: Color.fromARGB(255, 215, 194, 233),
+              color: const Color.fromARGB(255, 215, 194, 233),
             ),
             child: Image.asset(
               imagePath,
@@ -75,10 +79,10 @@ class _categorieState extends State<categorie> {
               height: 100,
             ),
           ),
-          SizedBox(height: 8), // Espacement entre l'image et le texte
+          const SizedBox(height: 8), // Espacement entre l'image et le texte
           Text(
             text,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 16,
             ),
           ),

@@ -1,3 +1,5 @@
+// ignore_for_file: use_key_in_widget_constructors, use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -6,11 +8,14 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:niefeko/Pages/Connexion/conexion.dart';
 import 'package:niefeko/Reutilisable/buttonReu.dart';
 
+// ignore: camel_case_types
 class inscription extends StatefulWidget {
   @override
+  // ignore: library_private_types_in_public_api
   _inscriptionState createState() => _inscriptionState();
 }
 
+// ignore: camel_case_types
 class _inscriptionState extends State<inscription> {
   final _formKey = GlobalKey<FormState>();
 
@@ -24,8 +29,10 @@ class _inscriptionState extends State<inscription> {
   void initState() {
     super.initState();
     Firebase.initializeApp().then((_) {
+      // ignore: avoid_print
       print("Firebase initialisé avec succès !");
     }).catchError((error) {
+      // ignore: avoid_print
       print("Erreur lors de l'initialisation de Firebase : $error");
     });
   }
@@ -34,11 +41,12 @@ class _inscriptionState extends State<inscription> {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Container(
-        color: Color(0xFF612C7D),
+        color: const Color(0xFF612C7D),
+        // ignore: avoid_unnecessary_containers
         child: Container(
           child: Column(
             children: [
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               Image.asset(
@@ -47,8 +55,8 @@ class _inscriptionState extends State<inscription> {
                 height: 80,
               ),
               Container(
-                margin: EdgeInsets.all(5),
-                child: Text(
+                margin: const EdgeInsets.all(5),
+                child: const Text(
                   "Inscrivez-vous pour vivre une expérience unique.",
                   style: TextStyle(fontSize: 15, color: Colors.white),
                 ),
@@ -61,7 +69,7 @@ class _inscriptionState extends State<inscription> {
                       padding: const EdgeInsets.only(
                           top: 10, left: 40, right: 40),
                       child: TextFormField(
-                        style: TextStyle(color: Colors.white),
+                        style: const TextStyle(color: Colors.white),
                         controller: _nomController,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -69,7 +77,7 @@ class _inscriptionState extends State<inscription> {
                           }
                           return null;
                         },
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           labelText: 'Nom',
                           labelStyle: TextStyle(color: Colors.white),
                           filled: true,
@@ -89,7 +97,7 @@ class _inscriptionState extends State<inscription> {
                       padding: const EdgeInsets.only(
                           top: 15, left: 40, right: 40),
                       child: TextFormField(
-                        style: TextStyle(color: Colors.white),
+                        style: const TextStyle(color: Colors.white),
                         controller: _prenomController,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -97,7 +105,7 @@ class _inscriptionState extends State<inscription> {
                           }
                           return null;
                         },
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           labelText: 'Prénom',
                           labelStyle: TextStyle(color: Colors.white),
                           filled: true,
@@ -117,7 +125,7 @@ class _inscriptionState extends State<inscription> {
                       padding: const EdgeInsets.only(
                           top: 15, left: 40, right: 40),
                       child: TextFormField(
-                        style: TextStyle(color: Colors.white),
+                        style: const TextStyle(color: Colors.white),
                         controller: _emailController,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -125,7 +133,7 @@ class _inscriptionState extends State<inscription> {
                           }
                           return null;
                         },
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           labelText: 'Email',
                           labelStyle: TextStyle(color: Colors.white),
                           filled: true,
@@ -145,7 +153,7 @@ class _inscriptionState extends State<inscription> {
                       padding: const EdgeInsets.only(
                           top: 15, left: 40, right: 40),
                       child: TextFormField(
-                        style: TextStyle(color: Colors.white),
+                        style: const TextStyle(color: Colors.white),
                         controller: _passwordController,
                         obscureText: true,
                         validator: (value) {
@@ -154,7 +162,7 @@ class _inscriptionState extends State<inscription> {
                           }
                           return null;
                         },
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           labelText: 'Mot de passe',
                           labelStyle: TextStyle(color: Colors.white),
                           filled: true,
@@ -174,7 +182,7 @@ class _inscriptionState extends State<inscription> {
                       padding: const EdgeInsets.only(
                           top: 15, left: 40, right: 40),
                       child: TextFormField(
-                        style: TextStyle(color: Colors.white),
+                        style: const TextStyle(color: Colors.white),
                         controller: _confirmPasswordController,
                         obscureText: true,
                         validator: (value) {
@@ -183,7 +191,7 @@ class _inscriptionState extends State<inscription> {
                           }
                           return null;
                         },
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           labelText: 'Confirmer mot de passe',
                           labelStyle: TextStyle(color: Colors.white),
                           filled: true,
@@ -199,7 +207,7 @@ class _inscriptionState extends State<inscription> {
                         ),
                       ),
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     BoutonR(
                       titre: "S'inscrire",
                       onPressed: () async {
@@ -211,17 +219,17 @@ class _inscriptionState extends State<inscription> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => connexion()),
+                              builder: (context) => const connexion()),
                         );
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Color(0xFF612C7D),
-                        padding: EdgeInsets.symmetric(
+                        backgroundColor: const Color(0xFF612C7D),
+                        padding: const EdgeInsets.symmetric(
                             horizontal: 50, vertical: 20),
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(5)),
                       ),
-                      child: Text(
+                      child: const Text(
                         "Avez-vous déjà un compte? Se connecter",
                         style: TextStyle(fontSize: 14, color: Colors.white),
                       ),
@@ -269,7 +277,7 @@ class _inscriptionState extends State<inscription> {
         );
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => connexion()),
+          MaterialPageRoute(builder: (context) => const connexion()),
         );
 
         _nomController.clear();
@@ -278,6 +286,7 @@ class _inscriptionState extends State<inscription> {
         _passwordController.clear();
         _confirmPasswordController.clear();
       } catch (e) {
+        // ignore: avoid_print
         print('Erreur lors de l\'inscription : $e');
       }
     }

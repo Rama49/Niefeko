@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:niefeko/Pages/Category/CategoriePage.dart';
 
+// ignore: camel_case_types
 class deal extends StatefulWidget {
   const deal({super.key});
 
@@ -9,17 +10,18 @@ class deal extends StatefulWidget {
   State<deal> createState() => _dealState();
 }
 
+// ignore: camel_case_types
 class _dealState extends State<deal> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      padding: EdgeInsets.all(10),
+      padding: const EdgeInsets.all(10),
       child: Column(
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
+              const Text(
                 "Special Vente",
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
@@ -36,7 +38,7 @@ class _dealState extends State<deal> {
                     ),
                   );
                 },
-                child: Row(
+                child: const Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Text(
@@ -57,20 +59,20 @@ class _dealState extends State<deal> {
               ),
             ],
           ),
-SizedBox(height: 20),
+const SizedBox(height: 20),
           // SizedBox(height: 10),
           CarouselSlider(
             items: [
               //1st Image of Slider
               Container(
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   color: Color.fromARGB(255, 215, 194, 233),
                 ),
                 child: Image.asset("casque.png", fit: BoxFit.contain),
               ),
               //2nd Image of Slider
               Container(
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   color: Color.fromARGB(255, 215, 194, 233),
                 ),
                 child: Image.asset(
@@ -81,7 +83,7 @@ SizedBox(height: 20),
               ),
               //3rd Image of Slider
               Container(
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   color: Color.fromARGB(255, 215, 194, 233),
                 ),
                 child: Image.asset(
@@ -92,7 +94,7 @@ SizedBox(height: 20),
               ),
               //4th Image of Slider
               Container(
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   color: Color.fromARGB(255, 215, 194, 233),
                 ),
                 child: Image.asset(
@@ -103,7 +105,7 @@ SizedBox(height: 20),
               ),
               //5th Image of Slider
               Container(
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   color: Color.fromARGB(255, 215, 194, 233),
                 ),
                 child: Image.asset(
@@ -120,7 +122,7 @@ SizedBox(height: 20),
               aspectRatio: 16 / 9,
               autoPlayCurve: Curves.fastOutSlowIn,
               enableInfiniteScroll: true,
-              autoPlayAnimationDuration: Duration(milliseconds: 500),
+              autoPlayAnimationDuration: const Duration(milliseconds: 500),
               viewportFraction: 0.4, // Une image à la fois
             ),
           ),

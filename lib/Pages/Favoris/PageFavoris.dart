@@ -1,22 +1,25 @@
+// ignore_for_file: file_names, use_key_in_widget_constructors, duplicate_ignore
+
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:niefeko/Components/Recherche/recherche.dart';
 import 'package:niefeko/Pages/Category/CategoriePage.dart';
 
+// ignore: camel_case_types, use_key_in_widget_constructors
 class pageFavoris extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xFF593070),
-        title: Text(
+        backgroundColor: const Color(0xFF593070),
+        title: const Text(
           'Détails du produit',
           style: TextStyle(color: Colors.white),
         ),
       ),
       body: ProductList(),
       bottomNavigationBar: BottomAppBar(
-        color: Color(0xFF593070),
+        color: const Color(0xFF593070),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
@@ -25,22 +28,22 @@ class pageFavoris extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => search(),
+                    builder: (context) => const search(),
                   ),
                 );
               },
-              icon: Icon(Icons.home, color: Colors.white),
+              icon: const Icon(Icons.home, color: Colors.white),
             ),
             IconButton(
               onPressed: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => search(),
+                    builder: (context) => const search(),
                   ),
                 );
               },
-              icon: Icon(Icons.shopping_cart, color: Colors.white),
+              icon: const Icon(Icons.shopping_cart, color: Colors.white),
             ),
             IconButton(
               onPressed: () {
@@ -54,7 +57,7 @@ class pageFavoris extends StatelessWidget {
                 //               price: 100))),
                 // );
               },
-              icon: Icon(Icons.favorite, color: Colors.white),
+              icon: const Icon(Icons.favorite, color: Colors.white),
             ),
             IconButton(
               onPressed: () {
@@ -65,7 +68,7 @@ class pageFavoris extends StatelessWidget {
                   ),
                 );
               },
-              icon: Icon(Icons.settings, color: Colors.white),
+              icon: const Icon(Icons.settings, color: Colors.white),
             ),
           ],
         ),
@@ -74,6 +77,7 @@ class pageFavoris extends StatelessWidget {
   }
 }
 
+// ignore: use_key_in_widget_constructors
 class ProductList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -81,15 +85,15 @@ class ProductList extends StatelessWidget {
       stream: FirebaseFirestore.instance.collection('favoris').snapshots(),
       builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator());
         }
 
         if (snapshot.hasError) {
-          return Center(child: Text('Une erreur s\'est produite.'));
+          return const Center(child: Text('Une erreur s\'est produite.'));
         }
 
         if (snapshot.data!.docs.isEmpty) {
-          return Center(child: Text('Aucun produit trouvé dans les favoris.'));
+          return const Center(child: Text('Aucun produit trouvé dans les favoris.'));
         }
 
         return ListView(
@@ -100,6 +104,7 @@ class ProductList extends StatelessWidget {
             String imagePath = data['imagePath'] ?? 'assets/sac1.png';
             String name = data['name'] ?? 'sac';
             double price = data['price'] ?? 10000;
+            // ignore: unused_local_variable
             String idClient = data['idClient'] ?? 'idClient';
 
             Product product = Product(
@@ -131,23 +136,23 @@ class ProductCard extends StatelessWidget {
         title: Text(product.name),
         subtitle: Text('Prix: ${product.price}'),
         trailing: IconButton(
-          icon: Icon(Icons.delete), // Icône de suppression
+          icon: const Icon(Icons.delete), // Icône de suppression
           onPressed: () {
             showDialog(
               context: context,
               builder: (BuildContext context) {
                 return AlertDialog(
-                  title: Text('Confirmer la suppression'),
-                  content: Text('Voulez-vous vraiment supprimer ce produit ?'),
+                  title: const Text('Confirmer la suppression'),
+                  content: const Text('Voulez-vous vraiment supprimer ce produit ?'),
                   actions: <Widget>[
                     TextButton(
-                      child: Text('Annuler'),
+                      child: const Text('Annuler'),
                       onPressed: () {
                         Navigator.of(context).pop(); // Fermer la boîte de dialogue
                       },
                     ),
                     TextButton(
-                      child: Text('Supprimer'),
+                      child: const Text('Supprimer'),
                       onPressed: () {
                         // Supprimez le produit de la base de données Firestore en utilisant l'ID du document
                         FirebaseFirestore.instance.collection('favoris').doc(documentId).delete();

@@ -1,4 +1,8 @@
+// ignore_for_file: use_key_in_widget_constructors
+
 import 'package:flutter/material.dart';
+import 'package:niefeko/Pages/Connexion/conexion.dart';
+// ignore: unused_import
 import 'package:niefeko/Pages/Inscription/inscription.dart';
 import 'package:niefeko/Pages/Splash/splash.dart';
 
@@ -13,7 +17,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(Duration(seconds: 3), () {
+    Future.delayed(const Duration(seconds: 3), () {
       setState(() {
         _showSplash = false;
       });
@@ -28,11 +32,12 @@ class _MyHomePageState extends State<MyHomePage> {
           if (_showSplash) SplashScreen(),
           AnimatedOpacity(
             opacity: _showSplash ? 0.0 : 1.0,
-            duration: Duration(milliseconds: 500),
+            duration: const Duration(milliseconds: 500),
             curve: Curves.easeInOut,
-            child: _showSplash ? SizedBox.shrink() : Container(
+            // ignore: avoid_unnecessary_containers
+            child: _showSplash ? const SizedBox.shrink() : Container(
               child: 
-                inscription(),
+                const connexion(),
             ),
           ),
         ],

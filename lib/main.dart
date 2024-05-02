@@ -7,6 +7,7 @@ void main() {
   runApp(App());
 }
 
+// ignore: use_key_in_widget_constructors
 class App extends StatelessWidget {
   // Déclaration de la future pour l'initialisation de Firebase
   final Future<FirebaseApp> _initialization = initializeFirebase();
@@ -19,18 +20,18 @@ class App extends StatelessWidget {
       builder: (context, snapshot) {
         // Vérification des erreurs
         if (snapshot.hasError) {
-          return Center(
+          return const Center(
             child: Text('Something went wrong'),
           );
         }
 
         // Une fois l'initialisation terminée, affichez votre application
         if (snapshot.connectionState == ConnectionState.done) {
-          return MyApp();
+          return const MyApp();
         }
 
         // Sinon, affichez un indicateur de chargement
-        return Center(
+        return const Center(
           child: CircularProgressIndicator(),
         );
       },
@@ -41,7 +42,7 @@ class App extends StatelessWidget {
   static Future<FirebaseApp> initializeFirebase() async {
     // Vérifiez d'abord si l'application s'exécute sur le web
     return await Firebase.initializeApp(
-      options: FirebaseOptions(
+      options: const FirebaseOptions(
         apiKey: "AIzaSyBE5tqoygdvXY4uZ8Zq_viDxOa3JSjB3Yc",
         authDomain: "niefeko-4d059.firebaseapp.com",
         projectId: "niefeko-4d059",
@@ -54,6 +55,7 @@ class App extends StatelessWidget {
 }
 
 class MyApp extends StatelessWidget {
+  // ignore: use_super_parameters
   const MyApp({Key? key}) : super(key: key);
 
   @override

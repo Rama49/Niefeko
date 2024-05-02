@@ -1,9 +1,15 @@
+// ignore: duplicate_ignore
+// ignore: file_names
+// ignore_for_file: file_names
+
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:intl/intl.dart'; // Ajout de l'import pour DateFormat
+import 'package:intl/intl.dart';
 
+// ignore: use_key_in_widget_constructors
 class PanierPage extends StatefulWidget {
   @override
+  // ignore: library_private_types_in_public_api
   _PanierPageState createState() => _PanierPageState();
 }
 
@@ -25,15 +31,17 @@ class _PanierPageState extends State<PanierPage> {
           .collection('Panier')
           .doc(orderId)
           .delete();
+      // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           content: Text('Commande supprimée avec succès'),
           duration: Duration(seconds: 2),
         ),
       );
     } catch (e) {
+      // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           content: Text('Erreur lors de la suppression de la commande'),
           duration: Duration(seconds: 2),
         ),
@@ -45,24 +53,29 @@ class _PanierPageState extends State<PanierPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Historique des commandes'),
+        backgroundColor: const Color(0xFF612C7D),
+        title: const Text(
+          'Historique des commandes',
+          style: TextStyle(color: Colors.white),
+        ),
+        iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: StreamBuilder<QuerySnapshot>(
         stream: _ordersStream,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(
+            return const Center(
               child: CircularProgressIndicator(),
             );
           }
           if (snapshot.hasError) {
-            return Center(
+            return const Center(
               child: Text('Une erreur est survenue'),
             );
           }
           if (snapshot.data!.docs.isEmpty) {
-            return Center(
-              child: Text('Aucune commande trouvée'),
+            return const Center(
+              child: Text('Votre historique de panier est vide'),
             );
           }
           return ListView(
@@ -75,9 +88,9 @@ class _PanierPageState extends State<PanierPage> {
                 direction: DismissDirection.endToStart,
                 background: Container(
                   alignment: Alignment.centerRight,
-                  padding: EdgeInsets.symmetric(horizontal: 20.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
                   color: Colors.red,
-                  child: Icon(Icons.delete, color: Colors.white),
+                  child: const Icon(Icons.delete, color: Colors.white),
                 ),
                 onDismissed: (direction) {
                   _deleteOrder(doc.id);
@@ -87,17 +100,17 @@ class _PanierPageState extends State<PanierPage> {
                     context: context,
                     builder: (BuildContext context) {
                       return AlertDialog(
-                        title: Text("Confirmation"),
-                        content: Text(
+                        title: const Text("Confirmation"),
+                        content: const Text(
                             "Êtes-vous sûr de vouloir supprimer cette commande ?"),
                         actions: <Widget>[
                           TextButton(
                             onPressed: () => Navigator.of(context).pop(true),
-                            child: Text("Supprimer"),
+                            child: const Text("Supprimer"),
                           ),
                           TextButton(
                             onPressed: () => Navigator.of(context).pop(false),
-                            child: Text("Annuler"),
+                            child: const Text("Annuler"),
                           ),
                         ],
                       );
@@ -105,22 +118,20 @@ class _PanierPageState extends State<PanierPage> {
                   );
                 },
                 child: ListTile(
-                  leading: Image.network(
-                      data['imageUrl']), // Affichage de l'image du produit
+                  leading: Image.network(data['imageUrl']),
                   title: Text(data['nomProduit']),
                   subtitle: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text('Quantité: ${data['nbrProduit']}'),
-                      Text('Prix: ${data['totalAmount']} \$'), // Affichage du prix
-                      // Affichage de la date et de l'heure de la commande
+                      Text('Prix: ${data['totalAmount']} \$'),
                       Text(
                         'Date et heure: ${DateFormat('dd/MM/yyyy HH:mm').format(date)}',
                       ),
                     ],
                   ),
                   trailing: IconButton(
-                    icon: Icon(Icons.delete),
+                    icon: const Icon(Icons.delete),
                     onPressed: () {
                       _deleteOrder(doc.id);
                     },

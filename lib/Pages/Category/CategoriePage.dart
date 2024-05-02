@@ -1,11 +1,17 @@
+// ignore_for_file: file_names, library_private_types_in_public_api, unused_local_variable, use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:niefeko/Pages/CartPanier/CartPanier.dart';
+// ignore: unused_import
 import 'package:niefeko/Pages/Favoris/PageFavoris.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+// ignore: unused_import
 import 'package:niefeko/Components/Recherche/recherche.dart';
+// ignore: duplicate_import
 import 'package:niefeko/Pages/CartPanier/CartPanier.dart';
 import 'package:niefeko/Pages/PanierHistorique/PanierPage.dart';
+import 'package:niefeko/Pages/SettingsPage/SettingsPage.dart';
 
 class Product {
   final String imagePath;
@@ -32,6 +38,7 @@ class Product {
   });
 }
 
+// ignore: use_key_in_widget_constructors
 class CategoryPage extends StatefulWidget {
   @override
   _CategoryPageState createState() => _CategoryPageState();
@@ -87,7 +94,6 @@ class _CategoryPageState extends State<CategoryPage> {
     double price = prices[index];
     DateTime timestamp = DateTime.now(); // Timestamp de la commande
 
-    // TODO: Récupérer l'ID du client, le prénom et le nom du client
     String idClient = ""; // Remplir avec l'ID du client
     String prenom = ""; // Remplir avec le prénom du client
     String nom = ""; // Remplir avec le nom du client
@@ -180,6 +186,7 @@ class _CategoryPageState extends State<CategoryPage> {
     String nom = userSnapshot['nom'];
     String email = userSnapshot['email']; // Si l'email est stocké dans la collection "Inscription"
 
+    // ignore: avoid_function_literals_in_foreach_calls
     cartItems.forEach((product) {
       String imageUrl = product.imagePath;
       String productName = product.name;
@@ -214,27 +221,28 @@ class _CategoryPageState extends State<CategoryPage> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text('Panier validé'),
-        content: Text('Votre panier a été validé avec succès.'),
+        title: const Text('Panier validé'),
+        content: const Text('Votre panier a été validé avec succès.'),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text('OK'),
+            child: const Text('OK'),
           ),
         ],
       ),
     );
   }
 
-  
   void addOrderToFirestore(Order order) {
     CollectionReference orders =
         FirebaseFirestore.instance.collection('Panier');
 
     orders
         .add(order.toMap())
+        // ignore: avoid_print
         .then((value) => print("Commande ajoutée avec l'ID: ${value.id}"))
         .catchError(
+            // ignore: avoid_print
             (error) => print("Erreur lors de l'ajout de la commande: $error"));
   }
 
@@ -242,9 +250,9 @@ class _CategoryPageState extends State<CategoryPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xFF612C7D),
+        backgroundColor: const Color(0xFF612C7D),
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.white),
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
             Navigator.pop(context);
           },
@@ -253,7 +261,7 @@ class _CategoryPageState extends State<CategoryPage> {
           Stack(
             children: [
               IconButton(
-                icon: Icon(Icons.shopping_cart, color: Colors.white, size: 30),
+                icon: const Icon(Icons.shopping_cart, color: Colors.white, size: 40),
                 onPressed: navigateToCartPage,
               ),
               Positioned(
@@ -264,7 +272,7 @@ class _CategoryPageState extends State<CategoryPage> {
                   radius: 10,
                   child: Text(
                     cartItemCount.toString(),
-                    style: TextStyle(color: Colors.white, fontSize: 12),
+                    style: const TextStyle(color: Colors.white, fontSize: 12),
                   ),
                 ),
               ),
@@ -276,7 +284,7 @@ class _CategoryPageState extends State<CategoryPage> {
         child: Column(
           children: [
             Container(
-              color: Color(0xFF612C7D),
+              color: const Color(0xFF612C7D),
               padding: const EdgeInsets.all(8.0),
               child: Container(
                 decoration: BoxDecoration(
@@ -285,7 +293,7 @@ class _CategoryPageState extends State<CategoryPage> {
                 ),
                 child: TextField(
                   onChanged: searchProduct,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     hintText: 'Recherche...',
                     prefixIcon: Icon(Icons.search, color: Colors.grey),
                     border: InputBorder.none,
@@ -293,11 +301,11 @@ class _CategoryPageState extends State<CategoryPage> {
                 ),
               ),
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Container(
-                padding: EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(8.0),
                 child: Row(
                   children: List.generate(
                     filteredImagePaths.length,
@@ -312,10 +320,10 @@ class _CategoryPageState extends State<CategoryPage> {
                 ),
               ),
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             filteredImagePaths.isEmpty
-                ? Padding(
-                    padding: const EdgeInsets.all(8.0),
+                ? const Padding(
+                    padding: EdgeInsets.all(8.0),
                     child: Text(
                       "Produit non trouvé",
                       style: TextStyle(
@@ -327,8 +335,8 @@ class _CategoryPageState extends State<CategoryPage> {
                   )
                 : GridView.builder(
                     shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    physics: const NeverScrollableScrollPhysics(),
+                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
                       crossAxisSpacing: 8,
                       mainAxisSpacing: 8,
@@ -342,7 +350,7 @@ class _CategoryPageState extends State<CategoryPage> {
         ),
       ),
       bottomNavigationBar: BottomAppBar(
-        color: Color(0xFF612C7D),
+        color: const Color(0xFF612C7D),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
@@ -350,7 +358,7 @@ class _CategoryPageState extends State<CategoryPage> {
               onPressed: () {
                 // Ajoutez ici votre logique de navigation pour l'écran d'accueil
               },
-              icon: Icon(Icons.home, color: Colors.white),
+              icon: const Icon(Icons.home, color: Colors.white),
             ),
             IconButton(
               onPressed: () {
@@ -360,19 +368,22 @@ class _CategoryPageState extends State<CategoryPage> {
                   MaterialPageRoute(builder: (context) => PanierPage()),
                 );
               },
-              icon: Icon(Icons.shopping_cart, color: Colors.white),
+              icon: const Icon(Icons.shopping_cart, color: Colors.white),
             ),
             IconButton(
               onPressed: () {
                 // Ajoutez ici votre logique de navigation pour l'écran des favoris
               },
-              icon: Icon(Icons.favorite, color: Colors.white),
+              icon: const Icon(Icons.favorite, color: Colors.white),
             ),
             IconButton(
               onPressed: () {
-                // Ajoutez ici votre logique de navigation pour l'écran des paramètres
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => SettingsPage()),
+                );
               },
-              icon: Icon(Icons.settings, color: Colors.white),
+              icon: const Icon(Icons.settings, color: Colors.white),
             ),
           ],
         ),
@@ -402,22 +413,23 @@ class _CategoryPageState extends State<CategoryPage> {
                   children: [
                     Text(
                       imageName,
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                      style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
-                    SizedBox(height: 4),
+                    const SizedBox(height: 4),
                     Text(
                       '\$$price',
-                      style: TextStyle(
+                      style: const TextStyle(
                           fontWeight: FontWeight.bold, color: Colors.green),
                     ),
                   ],
                 ),
               ),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               Center(
                 child: ElevatedButton(
                   onPressed: () => addToCart(index),
-                  child: Row(
+                  // ignore: sort_child_properties_last
+                  child: const Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(
@@ -428,8 +440,9 @@ class _CategoryPageState extends State<CategoryPage> {
                     ],
                   ),
                   style: ElevatedButton.styleFrom(
-                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                    primary: Color(0xFF612C7D),
+                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                    // ignore: deprecated_member_use
+                    primary: const Color(0xFF612C7D),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(7),
                     ),
@@ -439,7 +452,7 @@ class _CategoryPageState extends State<CategoryPage> {
             ],
           ),
           Align(
-            alignment: Alignment(1, -1),
+            alignment: const Alignment(1, -1),
             child: IconButton(
               icon: Icon(
                 isFavoritedList[index] ? Icons.favorite : Icons.favorite_border,
@@ -485,11 +498,12 @@ class _CategoryPageState extends State<CategoryPage> {
     favorites
         .add(favoriteProduct.toMap())
         .then((value) =>
+            // ignore: avoid_print
             print("Produit ajouté aux favoris avec l'ID: ${value.id}"))
         .catchError(
+            // ignore: avoid_print
             (error) => print("Erreur lors de l'ajout aux favoris: $error"));
   }
-
 }
 
 class Order {

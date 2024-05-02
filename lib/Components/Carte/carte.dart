@@ -1,7 +1,10 @@
+// ignore_for_file: camel_case_types, duplicate_ignore
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:niefeko/Reutilisable/carteReu.dart';
 
+// ignore: camel_case_types
 class carte extends StatefulWidget {
   const carte({super.key});
 
@@ -15,11 +18,11 @@ class _carteState extends State<carte> {
     return Stack(children: [ // Section de recherche
               Positioned.fill(
                 child: Container(
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       color: Color(0xFF593070),
                       borderRadius: BorderRadius.only(
-                        bottomLeft: const Radius.circular(40.0),
-                        bottomRight: const Radius.circular(40.0),
+                        bottomLeft: Radius.circular(40.0),
+                        bottomRight: Radius.circular(40.0),
                       ),
                     ),
                     padding: const EdgeInsets.all(20),
@@ -33,12 +36,13 @@ class _carteState extends State<carte> {
                             fontSize: 18,
                           ),
                         ),
-                        SizedBox(height: 10),
+                        const SizedBox(height: 10),
+                        // ignore: avoid_unnecessary_containers
                         Container(
                           // height: 30,
                           child: TextField(
                             decoration: InputDecoration(
-                              contentPadding: EdgeInsets.symmetric(
+                              contentPadding: const EdgeInsets.symmetric(
                                 vertical:
                                     3, // Ajustez cette valeur pour réduire la hauteur de l'input
                               ),
@@ -54,7 +58,7 @@ class _carteState extends State<carte> {
                             ),
                           ),
                         ),
-                        SizedBox(height: 15),
+                        const SizedBox(height: 15),
                       ],
                     )),
               ),
@@ -64,11 +68,11 @@ class _carteState extends State<carte> {
                 child: Stack(
                   children: [
                     Container(
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         color: Color(0xFF593070),
                         borderRadius: BorderRadius.only(
-                          topLeft: const Radius.circular(40.0),
-                          topRight: const Radius.circular(40.0),
+                          topLeft: Radius.circular(40.0),
+                          topRight: Radius.circular(40.0),
                         ),
                       ),
                     ),
@@ -133,7 +137,7 @@ class _carteState extends State<carte> {
                         aspectRatio: 16 / 9,
                         autoPlayCurve: Curves.fastOutSlowIn,
                         enableInfiniteScroll: true,
-                        autoPlayAnimationDuration: Duration(milliseconds: 800),
+                        autoPlayAnimationDuration: const Duration(milliseconds: 800),
                         viewportFraction: 0.8,
                       ),
                     ),
