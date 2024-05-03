@@ -5,12 +5,9 @@ class MyMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar:
-       AppBar(
+      appBar: AppBar(
         title: const Text("Menu"),
       ),
-     
-     
       body: const Center(
         child: Text("Contenu de la page"),
       ),
@@ -44,4 +41,3 @@ class MyMenu extends StatelessWidget {
     );
   }
 }
-

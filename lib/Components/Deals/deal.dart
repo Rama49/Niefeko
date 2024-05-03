@@ -59,7 +59,7 @@ class _dealState extends State<deal> {
               ),
             ],
           ),
-const SizedBox(height: 20),
+          const SizedBox(height: 20),
           // SizedBox(height: 10),
           CarouselSlider(
             items: [

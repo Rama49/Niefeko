@@ -1,9 +1,14 @@
+// ignore: duplicate_ignore
+// ignore_for_file: file_names, duplicate_ignore
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+// ignore: use_key_in_widget_constructors
 class ModifierMDP extends StatefulWidget {
   @override
+  // ignore: library_private_types_in_public_api
   _ModifierMDPState createState() => _ModifierMDPState();
 }
 
@@ -11,6 +16,7 @@ class _ModifierMDPState extends State<ModifierMDP> {
   final _formKey = GlobalKey<FormState>();
   String _password = '';
   late String _newPassword;
+  // ignore: unused_field
   late String _confirmNewPassword;
   String?
       _oldPassword; // Ajout de la variable pour stocker l'ancien mot de passe
@@ -46,6 +52,7 @@ class _ModifierMDPState extends State<ModifierMDP> {
         }
       }
     } catch (error) {
+      // ignore: avoid_print
       print('Erreur lors du chargement du mot de passe actuel: $error');
     }
   }
@@ -110,8 +117,7 @@ class _ModifierMDPState extends State<ModifierMDP> {
                   },
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 20, vertical: 10),
-                    primary: const Color(0xFF612C7D),
+                        horizontal: 20, vertical: 10), backgroundColor: const Color(0xFF612C7D),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(7),
                     ),
@@ -140,7 +146,7 @@ class _ModifierMDPState extends State<ModifierMDP> {
     required VoidCallback onVisibilityToggle,
   }) {
     return Container(
-      margin: EdgeInsets.only(bottom: 10.0),
+      margin: const EdgeInsets.only(bottom: 10.0),
       child: SizedBox(
         width: double.infinity,
         child: TextFormField(
@@ -150,7 +156,7 @@ class _ModifierMDPState extends State<ModifierMDP> {
               icon: Icon(isVisible ? Icons.visibility : Icons.visibility_off),
               onPressed: onVisibilityToggle,
             ),
-            border: OutlineInputBorder(),
+            border: const OutlineInputBorder(),
           ),
           initialValue: initialValue,
           obscureText: !isVisible,
@@ -187,6 +193,7 @@ class _ModifierMDPState extends State<ModifierMDP> {
 
         await user.updatePassword(_newPassword);
 
+        // ignore: use_build_context_synchronously
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Mot de passe modifié avec succès'),
@@ -194,14 +201,16 @@ class _ModifierMDPState extends State<ModifierMDP> {
           ),
         );
 
+        // ignore: use_build_context_synchronously
         Navigator.pop(context);
       }
     } catch (error) {
+      // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content:
               Text('Erreur lors de la modification du mot de passe: $error'),
-          duration: Duration(seconds: 2),
+          duration: const Duration(seconds: 2),
         ),
       );
     }

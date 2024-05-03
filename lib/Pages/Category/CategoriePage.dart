@@ -10,8 +10,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:niefeko/Components/Recherche/recherche.dart';
 // ignore: duplicate_import
 import 'package:niefeko/Pages/CartPanier/CartPanier.dart';
-import 'package:niefeko/Pages/PanierHistorique/PanierPage.dart';
-import 'package:niefeko/Pages/SettingsPage/SettingsPage.dart';
+// import 'package:niefeko/Pages/PanierHistorique/PanierPage.dart';
+// import 'package:niefeko/Pages/SettingsPage/SettingsPage.dart';
 
 class Product {
   final String imagePath;
@@ -184,7 +184,8 @@ class _CategoryPageState extends State<CategoryPage> {
 
     String prenom = userSnapshot['prenom'];
     String nom = userSnapshot['nom'];
-    String email = userSnapshot['email']; // Si l'email est stocké dans la collection "Inscription"
+    String email = userSnapshot[
+        'email']; // Si l'email est stocké dans la collection "Inscription"
 
     // ignore: avoid_function_literals_in_foreach_calls
     cartItems.forEach((product) {
@@ -261,7 +262,8 @@ class _CategoryPageState extends State<CategoryPage> {
           Stack(
             children: [
               IconButton(
-                icon: const Icon(Icons.shopping_cart, color: Colors.white, size: 40),
+                icon: const Icon(Icons.shopping_cart,
+                    color: Colors.white, size: 40),
                 onPressed: navigateToCartPage,
               ),
               Positioned(
@@ -336,7 +338,8 @@ class _CategoryPageState extends State<CategoryPage> {
                 : GridView.builder(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
                       crossAxisSpacing: 8,
                       mainAxisSpacing: 8,
@@ -346,45 +349,6 @@ class _CategoryPageState extends State<CategoryPage> {
                       return buildCard(index);
                     },
                   ),
-          ],
-        ),
-      ),
-      bottomNavigationBar: BottomAppBar(
-        color: const Color(0xFF612C7D),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            IconButton(
-              onPressed: () {
-                // Ajoutez ici votre logique de navigation pour l'écran d'accueil
-              },
-              icon: const Icon(Icons.home, color: Colors.white),
-            ),
-            IconButton(
-              onPressed: () {
-                // Naviguer vers la page d'historique des commandes
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => PanierPage()),
-                );
-              },
-              icon: const Icon(Icons.shopping_cart, color: Colors.white),
-            ),
-            IconButton(
-              onPressed: () {
-                // Ajoutez ici votre logique de navigation pour l'écran des favoris
-              },
-              icon: const Icon(Icons.favorite, color: Colors.white),
-            ),
-            IconButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => SettingsPage()),
-                );
-              },
-              icon: const Icon(Icons.settings, color: Colors.white),
-            ),
           ],
         ),
       ),
@@ -440,7 +404,8 @@ class _CategoryPageState extends State<CategoryPage> {
                     ],
                   ),
                   style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 10),
                     // ignore: deprecated_member_use
                     primary: const Color(0xFF612C7D),
                     shape: RoundedRectangleBorder(
@@ -495,14 +460,11 @@ class _CategoryPageState extends State<CategoryPage> {
         FirebaseFirestore.instance.collection('favoris');
 
     // Ajouter le produit aux favoris dans Firestore
-    favorites
-        .add(favoriteProduct.toMap())
-        .then((value) =>
-            // ignore: avoid_print
-            print("Produit ajouté aux favoris avec l'ID: ${value.id}"))
-        .catchError(
-            // ignore: avoid_print
-            (error) => print("Erreur lors de l'ajout aux favoris: $error"));
+    favorites.add(favoriteProduct.toMap()).then((value) =>
+        // ignore: avoid_print
+        print("Produit ajouté aux favoris avec l'ID: ${value.id}")).catchError(
+        // ignore: avoid_print
+        (error) => print("Erreur lors de l'ajout aux favoris: $error"));
   }
 }
 

@@ -5,8 +5,10 @@ import 'package:niefeko/Components/Categories/categorie.dart';
 import 'package:niefeko/Components/Deals/deal.dart';
 import 'package:niefeko/Pages/CartPanier/CartPanier.dart';
 import 'package:niefeko/Pages/Category/CategoriePage.dart';
-import 'package:niefeko/Pages/Connexion/conexion.dart';
+import 'package:niefeko/Pages/Connexion/connexion.dart';
 import 'package:niefeko/Pages/Favoris/PageFavoris.dart';
+import 'package:niefeko/Pages/PanierHistorique/PanierPage.dart';
+import 'package:niefeko/Pages/SettingsPage/SettingsPage.dart';
 import 'package:niefeko/Reutilisable/carteReu.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
@@ -74,210 +76,184 @@ class _searchState extends State<search> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: SingleChildScrollView(
-          scrollDirection: Axis.vertical,
-          child: Flexible(
-            child: Column(
-              children: [
-                // Section de recherche
-                Container(
-                    decoration: const BoxDecoration(
-                      color: Color(0xFF593070),
-                      borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(40.0),
-                        bottomRight: Radius.circular(40.0),
-                      ),
-                    ),
-                    padding: const EdgeInsets.all(20),
-                    // height: 250,
-                    child: Column(
-                      children: [
-                        const Text(
-                          "Bienvenue à Niefeko",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18,
-                          ),
-                        ),
-                        const SizedBox(height: 10),
-                        // ignore: sized_box_for_whitespace
-                        Container(
-                          height: 30,
-                          child: TextField(
-                            decoration: InputDecoration(
-                              contentPadding: const EdgeInsets.symmetric(
-                                vertical:
-                                    3, // Ajustez cette valeur pour réduire la hauteur de l'input
-                              ),
-                              filled: true,
-                              fillColor: Colors.white,
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(8),
-                                borderSide: BorderSide.none,
-                              ),
-                              hintText: "Rechercher un produit",
-                              prefixIcon: const Icon(Icons.search),
-                              prefixIconColor: Colors.black,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 15),
-
-                        // Carousel
-                        CarouselSlider(
-                          items: [
-                            //1st Image of Slider
-                            carteReu(
-                              image: Image.asset(
-                                "sac1.png",
-                                fit: BoxFit.cover,
-                              ),
-                              title: "Nouveau",
-                              paragraph: "50%",
-                              texte:
-                                  "Trouvez ce que vous aimez, à prix malins !",
-                            ),
-                            //2nd Image of Slider
-                            carteReu(
-                              image: Image.asset(
-                                "lunette.png",
-                                fit: BoxFit.cover,
-                              ),
-                              title: "Nouveau",
-                              paragraph: "50%",
-                              texte:
-                                  "Trouvez ce que vous aimez, à prix malins !",
-                            ),
-                            //3rd Image of Slider
-                            carteReu(
-                              image: Image.asset(
-                                "shoes.png",
-                                fit: BoxFit.cover,
-                              ),
-                              title: "Nouveau",
-                              paragraph: "50%",
-                              texte:
-                                  "Trouvez ce que vous aimez, à prix malins !",
-                            ),
-                            //4th Image of Slider
-                            carteReu(
-                              image: Image.asset(
-                                "t-shirt.png",
-                                fit: BoxFit.cover,
-                              ),
-                              title: "Nouveau",
-                              paragraph: "50%",
-                              texte:
-                                  "Trouvez ce que vous aimez, à prix malins !",
-                            ),
-                            //5th Image of Slider
-                            carteReu(
-                              image: Image.asset(
-                                "sac1.png",
-                                fit: BoxFit.cover,
-                              ),
-                              title: "Nouveau",
-                              paragraph: "50%",
-                              texte:
-                                  "Trouvez ce que vous aimez, à prix malins !",
-                            ),
-                          ],
-                          //Slider Container properties
-                          options: CarouselOptions(
-                            enlargeCenterPage: true,
-                            autoPlay: true,
-                            aspectRatio: 12 / 9,
-                            autoPlayCurve: Curves.fastOutSlowIn,
-                            enableInfiniteScroll: true,
-                            autoPlayAnimationDuration:
-                                const Duration(milliseconds: 800),
-                            viewportFraction: 0.8,
-                          ),
-                        ),
-                      ],
-                    )),
-
-                // Votre Container contenant la catégorie
-                const Column(
-                  children: [
-                    SizedBox(height: 120),
-                    categorie(),
-                    deal(),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ),
-        bottomNavigationBar: BottomAppBar(
-          // shape: RoundedRectangleBorder(
-          //   borderRadius: BorderRadius.only(
-          //     topLeft: Radius.circular(40.0),
-          //     topRight: Radius.circular(40.0),
-          //   ),
-
-          color: const Color(0xFF593070),
-
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+      body: SingleChildScrollView(
+        scrollDirection: Axis.vertical,
+        child: Flexible(
+          child: Column(
             children: [
-              IconButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const search(),
+              // Section de recherche
+              Container(
+                  decoration: const BoxDecoration(
+                    color: Color(0xFF593070),
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(40.0),
+                      bottomRight: Radius.circular(40.0),
                     ),
-                  );
-                },
-                icon: const Icon(Icons.home, color: Colors.white),
-              ),
-              IconButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => CartPanier(
-                        cartItems: cartItems,
-                        removeFromCart: removeFromCart,
-                        idClient: "idClient",
-                        prenom: "prenom",
-                        nom: "nom",
-                        email: "email",
-                        validateCart: (BuildContext context, String prenom,
-                            String nom, String email) {
-                          // Implémentez ici le code de votre fonction validateCart
-                          // Utilisez context, prenom, nom, email comme nécessaire
-                        },
+                  ),
+                  padding: const EdgeInsets.all(20),
+                  // height: 250,
+                  child: Column(
+                    children: [
+                      const Text(
+                        "Bienvenue à Niefeko",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                        ),
                       ),
-                    ),
-                  );
-                },
-                icon: const Icon(Icons.shopping_cart, color: Colors.white),
-              ),
-              IconButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => pageFavoris()),
-                  );
-                },
-                icon: const Icon(Icons.favorite, color: Colors.white),
-              ),
-              IconButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => CategoryPage(),
-                    ),
-                  );
-                },
-                icon: const Icon(Icons.settings, color: Colors.white),
+                      const SizedBox(height: 10),
+                      // ignore: sized_box_for_whitespace
+                      Container(
+                        height: 30,
+                        child: TextField(
+                          decoration: InputDecoration(
+                            contentPadding: const EdgeInsets.symmetric(
+                              vertical:
+                                  3, // Ajustez cette valeur pour réduire la hauteur de l'input
+                            ),
+                            filled: true,
+                            fillColor: Colors.white,
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8),
+                              borderSide: BorderSide.none,
+                            ),
+                            hintText: "Rechercher un produit",
+                            prefixIcon: const Icon(Icons.search),
+                            prefixIconColor: Colors.black,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 15),
+
+                      // Carousel
+                      CarouselSlider(
+                        items: [
+                          //1st Image of Slider
+                          carteReu(
+                            image: Image.asset(
+                              "sac1.png",
+                              fit: BoxFit.cover,
+                            ),
+                            title: "Nouveau",
+                            paragraph: "50%",
+                            texte: "Trouvez ce que vous aimez, à prix malins !",
+                          ),
+                          //2nd Image of Slider
+                          carteReu(
+                            image: Image.asset(
+                              "lunette.png",
+                              fit: BoxFit.cover,
+                            ),
+                            title: "Nouveau",
+                            paragraph: "50%",
+                            texte: "Trouvez ce que vous aimez, à prix malins !",
+                          ),
+                          //3rd Image of Slider
+                          carteReu(
+                            image: Image.asset(
+                              "shoes.png",
+                              fit: BoxFit.cover,
+                            ),
+                            title: "Nouveau",
+                            paragraph: "50%",
+                            texte: "Trouvez ce que vous aimez, à prix malins !",
+                          ),
+                          //4th Image of Slider
+                          carteReu(
+                            image: Image.asset(
+                              "t-shirt.png",
+                              fit: BoxFit.cover,
+                            ),
+                            title: "Nouveau",
+                            paragraph: "50%",
+                            texte: "Trouvez ce que vous aimez, à prix malins !",
+                          ),
+                          //5th Image of Slider
+                          carteReu(
+                            image: Image.asset(
+                              "sac1.png",
+                              fit: BoxFit.cover,
+                            ),
+                            title: "Nouveau",
+                            paragraph: "50%",
+                            texte: "Trouvez ce que vous aimez, à prix malins !",
+                          ),
+                        ],
+                        //Slider Container properties
+                        options: CarouselOptions(
+                          enlargeCenterPage: true,
+                          autoPlay: true,
+                          aspectRatio: 12 / 9,
+                          autoPlayCurve: Curves.fastOutSlowIn,
+                          enableInfiniteScroll: true,
+                          autoPlayAnimationDuration:
+                              const Duration(milliseconds: 800),
+                          viewportFraction: 0.8,
+                        ),
+                      ),
+                    ],
+                  )),
+
+              // Votre Container contenant la catégorie
+              const Column(
+                children: [
+                  SizedBox(height: 120),
+                  categorie(),
+                  deal(),
+                ],
               ),
             ],
           ),
-        ));
+        ),
+      ),
+      bottomNavigationBar: BottomAppBar(
+        color: const Color(0xFF612C7D),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            IconButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  // ignore: prefer_const_constructors
+                  MaterialPageRoute(builder: (context) => search()),
+                );
+              },
+              icon: const Icon(Icons.home, color: Colors.white),
+            ),
+            IconButton(
+              onPressed: () {
+                // Naviguer vers la page d'historique des commandes
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => PanierPage()),
+                );
+              },
+              icon: const Icon(Icons.shopping_cart, color: Colors.white),
+            ),
+            IconButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => pageFavoris()),
+                );
+                // Ajoutez ici votre logique de navigation pour l'écran des favoris
+              },
+              icon: const Icon(Icons.favorite, color: Colors.white),
+            ),
+            IconButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => SettingsPage()),
+                );
+              },
+              icon: const Icon(Icons.settings, color: Colors.white),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

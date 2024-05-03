@@ -16,6 +16,7 @@ class pageFavoris extends StatelessWidget {
           'Détails du produit',
           style: TextStyle(color: Colors.white),
         ),
+        iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: ProductList(),
       bottomNavigationBar: BottomAppBar(
@@ -93,7 +94,8 @@ class ProductList extends StatelessWidget {
         }
 
         if (snapshot.data!.docs.isEmpty) {
-          return const Center(child: Text('Aucun produit trouvé dans les favoris.'));
+          return const Center(
+              child: Text('Aucun produit trouvé dans les favoris.'));
         }
 
         return ListView(
@@ -143,20 +145,26 @@ class ProductCard extends StatelessWidget {
               builder: (BuildContext context) {
                 return AlertDialog(
                   title: const Text('Confirmer la suppression'),
-                  content: const Text('Voulez-vous vraiment supprimer ce produit ?'),
+                  content:
+                      const Text('Voulez-vous vraiment supprimer ce produit ?'),
                   actions: <Widget>[
                     TextButton(
                       child: const Text('Annuler'),
                       onPressed: () {
-                        Navigator.of(context).pop(); // Fermer la boîte de dialogue
+                        Navigator.of(context)
+                            .pop(); // Fermer la boîte de dialogue
                       },
                     ),
                     TextButton(
                       child: const Text('Supprimer'),
                       onPressed: () {
                         // Supprimez le produit de la base de données Firestore en utilisant l'ID du document
-                        FirebaseFirestore.instance.collection('favoris').doc(documentId).delete();
-                        Navigator.of(context).pop(); // Fermer la boîte de dialogue
+                        FirebaseFirestore.instance
+                            .collection('favoris')
+                            .doc(documentId)
+                            .delete();
+                        Navigator.of(context)
+                            .pop(); // Fermer la boîte de dialogue
                       },
                     ),
                   ],

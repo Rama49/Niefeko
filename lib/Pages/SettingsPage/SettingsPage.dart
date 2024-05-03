@@ -1,9 +1,12 @@
+// ignore_for_file: file_names
+
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:niefeko/Pages/Connexion/conexion.dart'; // Importez la page de connexion
+import 'package:niefeko/Pages/Connexion/connexion.dart';
 import 'package:niefeko/Pages/ModifierMDP/ModifierMDP.dart';
 import 'package:niefeko/utils/auth.dart';
 
+// ignore: use_key_in_widget_constructors
 class SettingsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -37,8 +40,10 @@ class SettingsPage extends StatelessWidget {
                 // Déconnexion de l'utilisateur
                 await FirebaseAuth.instance.signOut();
                 // Afficher un message de déconnexion réussie dans le terminal
+                // ignore: avoid_print
                 print('Déconnexion réussie');
                 // Afficher un message de déconnexion réussie dans l'application
+                // ignore: use_build_context_synchronously
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
                     content: Text('Déconnexion réussie'),
@@ -46,12 +51,14 @@ class SettingsPage extends StatelessWidget {
                   ),
                 );
                 // Naviguer vers la page de connexion
+                // ignore: use_build_context_synchronously
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(builder: (context) => const connexion()),
                 );
               } catch (error) {
                 // Afficher un message d'erreur en cas de problème de déconnexion
+                // ignore: use_build_context_synchronously
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
                     content: Text('Erreur lors de la déconnexion'),

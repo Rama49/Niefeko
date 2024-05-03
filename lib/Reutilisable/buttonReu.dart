@@ -1,4 +1,7 @@
+// ignore: file_names
 // bouton_template.dart
+// ignore_for_file: file_names, duplicate_ignore
+
 import 'package:flutter/material.dart';
 
 class BoutonR extends StatelessWidget {
@@ -8,6 +11,7 @@ class BoutonR extends StatelessWidget {
   final Color? couleur;
   final double? fontSize;
 
+  // ignore: use_super_parameters
   const BoutonR({
     Key? key,
     required this.titre,
@@ -23,15 +27,15 @@ class BoutonR extends StatelessWidget {
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
         backgroundColor: couleur ?? Colors.white,
-        padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+        padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 20),
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(borderRadius)),
       ),
       child: Text(
         titre,
         style: TextStyle(
-          fontSize: fontSize ?? 14,
-          color: Color.fromARGB(255, 71, 3, 82),
+          fontSize: fontSize ?? 16,
+          color: const Color(0xFF593070),
         ),
       ),
     );

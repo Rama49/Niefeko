@@ -1,11 +1,12 @@
 
 import 'package:flutter/material.dart';
 
+// ignore: use_key_in_widget_constructors
 class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFF612C7D),
+      backgroundColor: const Color(0xFF612C7D),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -18,7 +19,7 @@ class SplashScreen extends StatelessWidget {
                 color: Colors.white,
               ),
             ),
-            CircularProgressIndicator(),
+            const CircularProgressIndicator(),
           ],
         ),
       ),
