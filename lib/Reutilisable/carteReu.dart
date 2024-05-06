@@ -1,6 +1,14 @@
-import 'package:flutter/material.dart';
+// ignore: duplicate_ignore
+// ignore: duplicate_ignore
+// ignore: file_names
+// ignore: file_names
+// ignore: file_names
+// ignore_for_file: file_names, duplicate_ignore
+
+import 'package:flutter/material.dart' show Axis, BorderRadius, BoxDecoration, BuildContext, Color, Colors, Column, Container, EdgeInsets, Flexible, FontWeight, Image, Row, SingleChildScrollView, SizedBox, StatelessWidget, Text, TextStyle, Widget;
 import 'package:niefeko/Reutilisable/buttonReu.dart';
 
+// ignore: camel_case_types
 class carteReu extends StatelessWidget {
   final Image image;
   final String title;
@@ -23,7 +31,7 @@ class carteReu extends StatelessWidget {
       child: Container(
         width: 300,
         decoration: BoxDecoration(
-      color: Color.fromARGB(255, 85, 58, 112),
+      color: const Color.fromARGB(255, 85, 58, 112),
       borderRadius: BorderRadius.circular(borderRadius),
         ),
       
@@ -33,26 +41,29 @@ class carteReu extends StatelessWidget {
             // Container(child: image, color: Colors.white,),
             Column(
               children: [
+                // ignore: avoid_unnecessary_containers
                 Container(
                   child: Text(title,
-                      style: TextStyle(
+                      style: const TextStyle(
                           fontWeight: FontWeight.w700,
                           color: Colors.white,
                           fontSize: 30)),
                 ),
                 Container(
-                  padding: EdgeInsets.only(left: 5),
+                  padding: const EdgeInsets.only(left: 5),
+                  // ignore: sort_child_properties_last
                   child: Text(paragraph,
-                      style: TextStyle(
+                      style: const TextStyle(
                           fontWeight: FontWeight.w700,
                           color: Colors.white,
                           fontSize: 30)),
                   width: 100,
                 ),
                 Container(
-                    padding: EdgeInsets.only(left: 25, bottom: 20, top: 5),
+                    padding: const EdgeInsets.only(left: 25, bottom: 20, top: 5),
+                    // ignore: sort_child_properties_last
                     child: Text(texte,
-                        style: TextStyle(
+                        style: const TextStyle(
                             fontWeight: FontWeight.w700, color: Colors.white)),
                     width: 180),
                 BoutonR(
@@ -65,7 +76,7 @@ class carteReu extends StatelessWidget {
       
                   },
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 )
               ],
