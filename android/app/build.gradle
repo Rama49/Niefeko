@@ -1,11 +1,18 @@
+/* groovylint-disable NoDef, UnnecessaryGString */
+/* groovylint-disable-next-line CompileStatic */
 plugins {
+    /* groovylint-disable-next-line UnnecessaryGString */
     id "com.android.application"
+    /* groovylint-disable-next-line UnnecessaryGString */
     id "kotlin-android"
+    /* groovylint-disable-next-line UnnecessaryGString */
     id "dev.flutter.flutter-gradle-plugin"
     id 'com.google.gms.google-services'
 }
 
+/* groovylint-disable-next-line VariableTypeRequired */
 def localProperties = new Properties()
+/* groovylint-disable-next-line VariableTypeRequired */
 def localPropertiesFile = rootProject.file('local.properties')
 if (localPropertiesFile.exists()) {
     localPropertiesFile.withReader('UTF-8') { reader ->
@@ -13,11 +20,13 @@ if (localPropertiesFile.exists()) {
     }
 }
 
+/* groovylint-disable-next-line VariableTypeRequired */
 def flutterVersionCode = localProperties.getProperty('flutter.versionCode')
 if (flutterVersionCode == null) {
     flutterVersionCode = '1'
 }
 
+/* groovylint-disable-next-line VariableTypeRequired */
 def flutterVersionName = localProperties.getProperty('flutter.versionName')
 if (flutterVersionName == null) {
     flutterVersionName = '1.0'
@@ -42,14 +51,18 @@ android {
     }
 
     defaultConfig {
+        /* groovylint-disable-next-line LineLength */
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
+        /* groovylint-disable-next-line DuplicateStringLiteral */
         applicationId "com.example.niefeko"
         // You can update the following values to match your application needs.
+        /* groovylint-disable-next-line LineLength */
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
-        minSdkVersion flutter.minSdkVersion
-        targetSdkVersion flutter.targetSdkVersion
+        minSdkVersion 21
+        targetSdkVersion 31
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
+        multiDexEnabled true
     }
 
     buildTypes {

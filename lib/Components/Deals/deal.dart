@@ -1,10 +1,12 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:niefeko/Pages/Category/CategoriePage.dart';
 
 // ignore: camel_case_types
 class deal extends StatefulWidget {
-  const deal({super.key});
+  const deal({Key? key}) : super(key: key);
 
   @override
   State<deal> createState() => _dealState();
@@ -38,9 +40,9 @@ class _dealState extends State<deal> {
                     ),
                   );
                 },
-                child: const Row(
+                child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
+                  children: const [
                     Text(
                       "Voir Plus",
                       style: TextStyle(
@@ -60,7 +62,6 @@ class _dealState extends State<deal> {
             ],
           ),
           const SizedBox(height: 20),
-          // SizedBox(height: 10),
           CarouselSlider(
             items: [
               //1st Image of Slider
@@ -126,7 +127,6 @@ class _dealState extends State<deal> {
               viewportFraction: 0.4, // Une image à la fois
             ),
           ),
-          // SizedBox(height: 500)
         ],
       ),
     );
