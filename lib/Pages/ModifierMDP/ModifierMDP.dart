@@ -1,14 +1,10 @@
-// ignore: duplicate_ignore
-// ignore_for_file: file_names, duplicate_ignore
-
-import 'package:firebase_auth/firebase_auth.dart';
+// Pages/ModifierMDP/ModifierMDP.dart
+import 'package:firebase_auth/firebase_auth.dart';import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-// ignore: use_key_in_widget_constructors
 class ModifierMDP extends StatefulWidget {
   @override
-  // ignore: library_private_types_in_public_api
   _ModifierMDPState createState() => _ModifierMDPState();
 }
 
@@ -16,10 +12,8 @@ class _ModifierMDPState extends State<ModifierMDP> {
   final _formKey = GlobalKey<FormState>();
   String _password = '';
   late String _newPassword;
-  // ignore: unused_field
   late String _confirmNewPassword;
-  String?
-      _oldPassword; // Ajout de la variable pour stocker l'ancien mot de passe
+  String? _oldPassword;
 
   bool _passwordVisible = false;
   bool _newPasswordVisible = false;
@@ -28,17 +22,13 @@ class _ModifierMDPState extends State<ModifierMDP> {
   @override
   void initState() {
     super.initState();
-    // Chargez le mot de passe actuel lors de l'initialisation de l'état
     _loadCurrentPassword();
   }
 
   Future<void> _loadCurrentPassword() async {
     try {
-      // Récupérer l'utilisateur actuel
       User? user = FirebaseAuth.instance.currentUser;
-      // Vérifier si l'utilisateur est connecté
       if (user != null) {
-        // Récupérer les données de l'utilisateur depuis Firestore
         DocumentSnapshot userData = await FirebaseFirestore.instance
             .collection('Inscription')
             .doc(user.uid)
@@ -47,12 +37,11 @@ class _ModifierMDPState extends State<ModifierMDP> {
           String? currentPassword = userData['password'];
           setState(() {
             _password = currentPassword ?? '';
-            _oldPassword = currentPassword; // Stockez l'ancien mot de passe
+            _oldPassword = currentPassword;
           });
         }
       }
     } catch (error) {
-      // ignore: avoid_print
       print('Erreur lors du chargement du mot de passe actuel: $error');
     }
   }
@@ -105,7 +94,8 @@ class _ModifierMDPState extends State<ModifierMDP> {
                   isVisible: _confirmNewPasswordVisible,
                   onVisibilityToggle: () {
                     setState(() {
-                      _confirmNewPasswordVisible = !_confirmNewPasswordVisible;
+                      _confirmNewPasswordVisible =
+                          !_confirmNewPasswordVisible;
                     });
                   },
                 ),
@@ -116,8 +106,9 @@ class _ModifierMDPState extends State<ModifierMDP> {
                     }
                   },
                   style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 20, vertical: 10), backgroundColor: const Color(0xFF612C7D),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                    backgroundColor: const Color(0xFF612C7D),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(7),
                     ),
@@ -184,16 +175,13 @@ class _ModifierMDPState extends State<ModifierMDP> {
             .collection('Inscription')
             .doc(user.uid)
             .update({
-          'oldMotDePasse':
-              _oldPassword, // Utilisez l'ancien mot de passe stocké
+          'oldMotDePasse': _oldPassword,
           'newMotDePasse': _newPassword,
-          'motDePasse':
-              _newPassword, // Mettez à jour le mot de passe avec le nouveau mot de passe
+          'motDePasse': _newPassword,
         });
 
         await user.updatePassword(_newPassword);
 
-        // ignore: use_build_context_synchronously
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Mot de passe modifié avec succès'),
@@ -201,11 +189,9 @@ class _ModifierMDPState extends State<ModifierMDP> {
           ),
         );
 
-        // ignore: use_build_context_synchronously
         Navigator.pop(context);
       }
     } catch (error) {
-      // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content:

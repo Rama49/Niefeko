@@ -1,12 +1,9 @@
-// ignore_for_file: file_names
-
-import 'package:flutter/material.dart';
+// Pages/ResetPassword/ResetPassword.dart
+import 'package:flutter/material.dart';import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-// ignore: use_key_in_widget_constructors
 class ResetPassword extends StatefulWidget {
   @override
-  // ignore: library_private_types_in_public_api
   _ResetPasswordState createState() => _ResetPasswordState();
 }
 
@@ -20,18 +17,13 @@ class _ResetPasswordState extends State<ResetPassword> {
         await FirebaseAuth.instance.sendPasswordResetEmail(
           email: _emailController.text,
         );
-        // Succès, l'e-mail de réinitialisation de mot de passe a été envoyé
-        // ignore: use_build_context_synchronously
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text(
             "Un e-mail de réinitialisation de mot de passe a été envoyé à ${_emailController.text}. Veuillez vérifier votre boîte de réception.",
           ),
         ));
       } catch (e) {
-        // ignore: avoid_print
         print("Erreur lors de la réinitialisation du mot de passe: $e");
-        // Gérer l'erreur
-        // ignore: use_build_context_synchronously
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           content: Text(
             "Erreur lors de la réinitialisation du mot de passe. Veuillez réessayer plus tard.",
@@ -65,7 +57,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                   controller: _emailController,
                   decoration: const InputDecoration(
                     labelText: 'Adresse e-mail',
-                    border: OutlineInputBorder(), // Ajout de la bordure
+                    border: OutlineInputBorder(),
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {

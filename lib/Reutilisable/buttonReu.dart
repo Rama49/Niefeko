@@ -1,8 +1,5 @@
-// ignore: file_names
-// bouton_template.dart
-// ignore_for_file: file_names, duplicate_ignore
-
-import 'package:flutter/material.dart';
+// Reutilisable/buttonReu.dart
+import 'package:flutter/material.dart';import 'package:flutter/material.dart';
 
 class BoutonR extends StatelessWidget {
   final String titre;
@@ -11,14 +8,13 @@ class BoutonR extends StatelessWidget {
   final Color? couleur;
   final double? fontSize;
 
-  // ignore: use_super_parameters
   const BoutonR({
     Key? key,
     required this.titre,
     required this.onPressed,
     this.borderRadius = 5,
     this.couleur,
-    this.fontSize, // Ajouter la taille de police comme argument
+    this.fontSize,
   }) : super(key: key);
 
   @override
@@ -29,7 +25,8 @@ class BoutonR extends StatelessWidget {
         backgroundColor: couleur ?? Colors.white,
         padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 20),
         shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(borderRadius)),
+          borderRadius: BorderRadius.circular(borderRadius),
+        ),
       ),
       child: Text(
         titre,

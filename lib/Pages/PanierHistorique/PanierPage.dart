@@ -1,15 +1,10 @@
-// ignore: duplicate_ignore
-// ignore: file_names
-// ignore_for_file: file_names
-
+// Pages/PanierHistorique/PanierPage.dart
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 
-// ignore: use_key_in_widget_constructors
 class PanierPage extends StatefulWidget {
   @override
-  // ignore: library_private_types_in_public_api
   _PanierPageState createState() => _PanierPageState();
 }
 
@@ -31,7 +26,6 @@ class _PanierPageState extends State<PanierPage> {
           .collection('Panier')
           .doc(orderId)
           .delete();
-      // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Commande supprimée avec succès'),
@@ -39,7 +33,6 @@ class _PanierPageState extends State<PanierPage> {
         ),
       );
     } catch (e) {
-      // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Erreur lors de la suppression de la commande'),

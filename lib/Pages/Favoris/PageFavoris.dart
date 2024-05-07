@@ -1,12 +1,10 @@
-// ignore_for_file: file_names, use_key_in_widget_constructors, duplicate_ignore
-
-import 'package:flutter/material.dart';
+// Pages/Favoris/PageFavoris.dart
+import 'package:flutter/material.dart';import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:niefeko/Components/Recherche/recherche.dart';
 import 'package:niefeko/Pages/Category/CategoriePage.dart';
 
-// ignore: camel_case_types, use_key_in_widget_constructors
-class pageFavoris extends StatelessWidget {
+class PageFavoris extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,7 +27,7 @@ class pageFavoris extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const search(),
+                    builder: (context) => const Search(),
                   ),
                 );
               },
@@ -40,7 +38,7 @@ class pageFavoris extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const search(),
+                    builder: (context) => const Search(),
                   ),
                 );
               },
@@ -48,10 +46,11 @@ class pageFavoris extends StatelessWidget {
             ),
             IconButton(
               onPressed: () {
+                // Uncomment this section when necessary
                 // Navigator.push(
                 //   context,
                 //   MaterialPageRoute(
-                //       builder: (context) => pageFavoris(
+                //       builder: (context) => PageFavoris(
                 //           Product(imagePath: "assets/sacoche.png", name: "name", price: 1000): Product(
                 //               imagePath: "assets/casque.png",
                 //               name: "rrrrrraaaaama",
@@ -78,7 +77,6 @@ class pageFavoris extends StatelessWidget {
   }
 }
 
-// ignore: use_key_in_widget_constructors
 class ProductList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

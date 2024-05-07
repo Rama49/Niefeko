@@ -1,9 +1,6 @@
-// ignore: duplicate_ignore
-// ignore: file_names
-// ignore_for_file: file_names
-
-import 'package:flutter/material.dart';
-import 'package:niefeko/Pages/Category/CategoriePage.dart'; // Importez les classes nécessaires depuis le fichier de catégorie
+// Pages/CartPanier/CartPanier.dart
+import 'package:flutter/material.dart';import 'package:flutter/material.dart';
+import 'package:niefeko/Pages/Category/CategoriePage.dart';
 
 class CartPanier extends StatelessWidget {
   final List<Product> cartItems;
@@ -15,7 +12,7 @@ class CartPanier extends StatelessWidget {
   final Function(BuildContext context, String, String, String) validateCart;
 
   const CartPanier({
-    super.key,
+    Key? key, // Ajout de Key? key ici
     required this.cartItems,
     required this.removeFromCart,
     required this.idClient,
@@ -23,7 +20,7 @@ class CartPanier extends StatelessWidget {
     required this.nom,
     required this.email,
     required this.validateCart,
-  });
+  }) : super(key: key); // Utilisation de super(key: key) ici
 
   @override
   Widget build(BuildContext context) {
@@ -80,20 +77,20 @@ class CartPanier extends StatelessWidget {
                         backgroundColor: const Color(0xFF612C7D),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(7),
-                        ),
                       ),
+                    ),
                       child: const Padding(
                         padding: EdgeInsets.all(16.0),
                         child: Text(
                           'Valider le panier',
-                          style: TextStyle(fontSize: 18, color: Colors.white),
-                        ),
-                      ),
-                    ),
+                        style: TextStyle(fontSize: 18, color: Colors.white),
                   ),
                 ),
-              ],
+              ),
             ),
+          ),
+        ],
+      ),
     );
   }
 }

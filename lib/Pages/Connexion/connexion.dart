@@ -1,21 +1,19 @@
-import 'package:flutter/material.dart';
+// Pages/Connexion/connexion.dart
+import 'package:flutter/material.dart';import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:niefeko/Components/Recherche/recherche.dart';
 import 'package:niefeko/Pages/Inscription/inscription.dart';
-import 'package:niefeko/Pages/ResetPassword/ResetPassword.dart'; // Importez la page d'accueil
+import 'package:niefeko/Pages/ResetPassword/ResetPassword.dart';
 
-// ignore: camel_case_types
-class connexion extends StatefulWidget {
-  // ignore: use_super_parameters
-  const connexion({Key? key}) : super(key: key);
+class Connexion extends StatefulWidget {
+  const Connexion({Key? key}) : super(key: key);
 
   @override
-  State<connexion> createState() => _connexionState();
+  State<Connexion> createState() => _ConnexionState();
 }
 
-// ignore: camel_case_types
-class _connexionState extends State<connexion> {
+class _ConnexionState extends State<Connexion> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -23,7 +21,6 @@ class _connexionState extends State<connexion> {
 
   Future<void> _signInWithEmailAndPassword() async {
     try {
-      // ignore: unused_local_variable
       UserCredential userCredential =
           await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: _emailController.text,
@@ -38,13 +35,11 @@ class _connexionState extends State<connexion> {
         textColor: const Color.fromARGB(255, 68, 8, 219),
         fontSize: 16.0,
       );
-      // ignore: use_build_context_synchronously
       Navigator.pushReplacement(
-        context, // Utilisez pushReplacement pour remplacer la page actuelle par la nouvelle
-        MaterialPageRoute(builder: (context) => const search()), // Page d'accueil
+        context,
+        MaterialPageRoute(builder: (context) => const Search()), // Page d'accueil
       );
     } catch (e) {
-      // ignore: avoid_print
       print("Erreur de connexion: $e");
       Fluttertoast.showToast(
         msg: "Erreur de connexion: $e",
@@ -64,7 +59,6 @@ class _connexionState extends State<connexion> {
       body: Container(
         color: const Color(0xFF612C7D),
         child: Center(
-          // ignore: sized_box_for_whitespace
           child: Container(
             width: MediaQuery.of(context).size.width * 0.8,
             child: Column(
@@ -220,7 +214,7 @@ class _connexionState extends State<connexion> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => inscription()),
+                                  builder: (context) => Inscription()),
                             );
                           },
                           style: ElevatedButton.styleFrom(

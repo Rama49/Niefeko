@@ -1,17 +1,11 @@
-// ignore_for_file: file_names, library_private_types_in_public_api, unused_local_variable, use_build_context_synchronously
+// Pages/Category/CategoriePage.dart
+// ignore_for_file: file_names, library_private_types_in_public_api, unused_local_variable, use_build_context_synchronously// ignore_for_file: file_names, library_private_types_in_public_api, unused_local_variable, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:niefeko/Pages/CartPanier/CartPanier.dart';
-// ignore: unused_import
-import 'package:niefeko/Pages/Favoris/PageFavoris.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-// ignore: unused_import
-import 'package:niefeko/Components/Recherche/recherche.dart';
-// ignore: duplicate_import
-import 'package:niefeko/Pages/CartPanier/CartPanier.dart';
-// import 'package:niefeko/Pages/PanierHistorique/PanierPage.dart';
-// import 'package:niefeko/Pages/SettingsPage/SettingsPage.dart';
+import 'package:niefeko/Components/Recherche/Recherche.dart';
 
 class Product {
   final String imagePath;
@@ -38,7 +32,6 @@ class Product {
   });
 }
 
-// ignore: use_key_in_widget_constructors
 class CategoryPage extends StatefulWidget {
   @override
   _CategoryPageState createState() => _CategoryPageState();
@@ -407,7 +400,7 @@ class _CategoryPageState extends State<CategoryPage> {
                     padding: const EdgeInsets.symmetric(
                         horizontal: 20, vertical: 10),
                     // ignore: deprecated_member_use
-                    primary: const Color(0xFF612C7D),
+                    backgroundColor: const Color(0xFF612C7D),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(7),
                     ),

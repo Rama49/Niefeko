@@ -1,6 +1,5 @@
-// ignore_for_file: sized_box_for_whitespace, camel_case_types
-
-import 'package:flutter/material.dart';
+// Pages/Inscription/inscription.dart
+import 'package:flutter/material.dart';import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -8,14 +7,12 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:niefeko/Pages/Connexion/connexion.dart';
 import 'package:niefeko/Reutilisable/buttonReu.dart';
 
-// ignore: use_key_in_widget_constructors
-class inscription extends StatefulWidget {
+class Inscription extends StatefulWidget {
   @override
-  // ignore: library_private_types_in_public_api
-  _inscriptionState createState() => _inscriptionState();
+  _InscriptionState createState() => _InscriptionState();
 }
 
-class _inscriptionState extends State<inscription> {
+class _InscriptionState extends State<Inscription> {
   final _formKey = GlobalKey<FormState>();
 
   final TextEditingController _nomController = TextEditingController();
@@ -32,10 +29,8 @@ class _inscriptionState extends State<inscription> {
   void initState() {
     super.initState();
     Firebase.initializeApp().then((_) {
-      // ignore: avoid_print
       print("Firebase initialisé avec succès !");
     }).catchError((error) {
-      // ignore: avoid_print
       print("Erreur lors de l'initialisation de Firebase : $error");
     });
   }
@@ -47,8 +42,7 @@ class _inscriptionState extends State<inscription> {
       body: Center(
         child: SingleChildScrollView(
           child: Container(
-            width: MediaQuery.of(context).size.width *
-                0.8, // Utilisation de 80% de la largeur de l'écran
+            width: MediaQuery.of(context).size.width * 0.8,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -179,7 +173,8 @@ class _inscriptionState extends State<inscription> {
                             suffixIcon: IconButton(
                               onPressed: () {
                                 setState(() {
-                                  _passwordObscureText = !_passwordObscureText;
+                                  _passwordObscureText =
+                                      !_passwordObscureText;
                                 });
                               },
                               icon: Icon(
@@ -195,7 +190,7 @@ class _inscriptionState extends State<inscription> {
                       Padding(
                         padding: const EdgeInsets.only(
                           top: 15,
-                          bottom: 20, // Ajout de marge en bas
+                          bottom: 20,
                         ),
                         child: TextFormField(
                           style: const TextStyle(color: Colors.white),
@@ -237,8 +232,7 @@ class _inscriptionState extends State<inscription> {
                       ),
                       Padding(
                         padding: const EdgeInsets.only(
-                          top: 15,
-                          bottom: 20, // Ajout de marge en bas
+                          bottom: 20,
                         ),
                         child: BoutonR(
                           titre: "S'inscrire",
@@ -249,14 +243,14 @@ class _inscriptionState extends State<inscription> {
                       ),
                       Padding(
                         padding: const EdgeInsets.only(
-                          bottom: 20, // Ajout de marge en bas
+                          bottom: 20,
                         ),
                         child: ElevatedButton(
                           onPressed: () {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => const connexion()),
+                                  builder: (context) => const Connexion()),
                             );
                           },
                           style: ElevatedButton.styleFrom(
@@ -266,13 +260,12 @@ class _inscriptionState extends State<inscription> {
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(5),
                               side: const BorderSide(
-                                  color: Colors.white), // Bordure blanche
+                                  color: Colors.white),
                             ),
                           ),
                           child: const Text(
                             "Se connecter",
-                            style:
-                                TextStyle(fontSize: 16, color: Colors.white),
+                            style: TextStyle(fontSize: 16, color: Colors.white),
                           ),
                         ),
                       ),
@@ -319,10 +312,9 @@ class _inscriptionState extends State<inscription> {
           fontSize: 16.0,
         );
 
-        // ignore: use_build_context_synchronously
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const connexion()),
+          MaterialPageRoute(builder: (context) => const Connexion()),
         );
 
         _nomController.clear();
@@ -331,7 +323,6 @@ class _inscriptionState extends State<inscription> {
         _passwordController.clear();
         _confirmPasswordController.clear();
       } catch (e) {
-        // ignore: avoid_print
         print('Erreur lors de l\'inscription : $e');
       }
     }

@@ -3,22 +3,21 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
-class categorie extends StatefulWidget {
-  // ignore: use_key_in_widget_constructors
-  const categorie({Key? key});
+class Categorie extends StatefulWidget {
+  const Categorie({Key? key}) : super(key: key);
 
   @override
-  State<categorie> createState() => _categorieState();
+  State<Categorie> createState() => _CategorieState();
 }
 
-class _categorieState extends State<categorie> {
+class _CategorieState extends State<Categorie> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       padding: const EdgeInsets.all(10),
       child: Column(
         children: [
-          const Row(
+          Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Text(
@@ -61,10 +60,7 @@ class _categorieState extends State<categorie> {
   }
 
   Widget buildCarouselItem(String imagePath, String text) {
-    // ignore: avoid_unnecessary_containers
     return Container(
-      // padding: EdgeInsets.symmetric(vertical: 0),
-      // color: Colors.amber,
       child: Column(
         children: [
           Container(
@@ -75,7 +71,6 @@ class _categorieState extends State<categorie> {
             ),
             child: Image.asset(
               imagePath,
-              // width: 120,
               height: 100,
             ),
           ),
