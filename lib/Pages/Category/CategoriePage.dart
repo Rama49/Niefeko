@@ -1,4 +1,5 @@
-// ignore_for_file: file_names, library_private_types_in_public_api, unused_local_variable, use_build_context_synchronously
+// Pages/Category/CategoriePage.dart
+// ignore_for_file: file_names, library_private_types_in_public_api, unused_local_variable, use_build_context_synchronously// ignore_for_file: file_names, library_private_types_in_public_api, unused_local_variable, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -89,8 +90,7 @@ class _CategoryPageState extends State<CategoryPage> {
 
   void addToCart(int index) async {
     String imageUrl = imagePaths[index];
-    String productName =
-        filteredImagePaths[index].split('/').last.split('.').first;
+    String productName = filteredImagePaths[index].split('/').last.split('.').first;
     double price = prices[index];
     DateTime timestamp = DateTime.now(); // Timestamp de la commande
 
@@ -367,8 +367,8 @@ class _CategoryPageState extends State<CategoryPage> {
             children: [
               Image.asset(
                 filteredImagePaths[index],
-                width: 90,
-                height: 90,
+                width: 55,
+                height: 55,
                 fit: BoxFit.cover,
               ),
               Padding(
@@ -388,7 +388,7 @@ class _CategoryPageState extends State<CategoryPage> {
                   ],
                 ),
               ),
-              const SizedBox(height: 8),
+              // const SizedBox(height: 8),
               Center(
                 child: ElevatedButton(
                   onPressed: () => addToCart(index),
@@ -405,9 +405,9 @@ class _CategoryPageState extends State<CategoryPage> {
                   ),
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 20, vertical: 10),
+                        horizontal: 20),
                     // ignore: deprecated_member_use
-                    primary: const Color(0xFF612C7D),
+                    backgroundColor: const Color(0xFF612C7D),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(7),
                     ),

@@ -1,3 +1,4 @@
+// Pages/Splash/splash.dart
 
 import 'package:flutter/material.dart';
 
@@ -14,7 +15,7 @@ class SplashScreen extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(top: 100),
               child: Image.asset(
-                "../../assets/logoNiefeko.png", // Update the path to your image asset
+                "assets/logoNiefeko.png", // Update the path to your image asset
                 width: 200,
                 color: Colors.white,
               ),

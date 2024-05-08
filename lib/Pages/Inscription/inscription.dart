@@ -1,6 +1,5 @@
-// ignore_for_file: sized_box_for_whitespace, camel_case_types
-
-import 'package:flutter/material.dart';
+// Pages/Inscription/inscription.dart
+import 'package:flutter/material.dart';import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -8,10 +7,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:niefeko/Pages/Connexion/connexion.dart';
 import 'package:niefeko/Reutilisable/buttonReu.dart';
 
-// ignore: use_key_in_widget_constructors
 class inscription extends StatefulWidget {
   @override
-  // ignore: library_private_types_in_public_api
   _inscriptionState createState() => _inscriptionState();
 }
 
@@ -32,10 +29,8 @@ class _inscriptionState extends State<inscription> {
   void initState() {
     super.initState();
     Firebase.initializeApp().then((_) {
-      // ignore: avoid_print
       print("Firebase initialisé avec succès !");
     }).catchError((error) {
-      // ignore: avoid_print
       print("Erreur lors de l'initialisation de Firebase : $error");
     });
   }
@@ -47,15 +42,14 @@ class _inscriptionState extends State<inscription> {
       body: Center(
         child: SingleChildScrollView(
           child: Container(
-            width: MediaQuery.of(context).size.width *
-                0.8, // Utilisation de 80% de la largeur de l'écran
+            width: MediaQuery.of(context).size.width * 0.8,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 const SizedBox(height: 10),
                 Image.asset(
-                  "logoNiefeko.png",
+                  "assets/logoNiefeko.png",
                   width: 80,
                   height: 80,
                 ),
@@ -70,209 +64,119 @@ class _inscriptionState extends State<inscription> {
                   key: _formKey,
                   child: Column(
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.only(
-                          top: 10,
-                        ),
-                        child: TextFormField(
-                          style: const TextStyle(color: Colors.white),
-                          controller: _nomController,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Veuillez entrer votre nom';
-                            }
-                            return null;
-                          },
-                          decoration: const InputDecoration(
-                            labelText: 'Nom',
-                            labelStyle: TextStyle(color: Colors.white),
-                            filled: true,
-                            fillColor: Color(0xFF5B2B75),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.white),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.white),
-                            ),
-                          ),
-                        ),
+                      _buildInputField(
+                        label: 'Nom',
+                        controller: _nomController,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Veuillez entrer votre nom';
+                          }
+                          return null;
+                        },
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(
-                          top: 15,
-                        ),
-                        child: TextFormField(
-                          style: const TextStyle(color: Colors.white),
-                          controller: _prenomController,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Veuillez entrer votre prénom';
-                            }
-                            return null;
-                          },
-                          decoration: const InputDecoration(
-                            labelText: 'Prénom',
-                            labelStyle: TextStyle(color: Colors.white),
-                            filled: true,
-                            fillColor: Color(0xFF593070),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.white),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.white),
-                            ),
-                          ),
-                        ),
+                      _buildInputField(
+                        label: 'Prénom',
+                        controller: _prenomController,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Veuillez entrer votre prénom';
+                          }
+                          return null;
+                        },
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(
-                          top: 15,
-                        ),
-                        child: TextFormField(
-                          style: const TextStyle(color: Colors.white),
-                          controller: _emailController,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Veuillez entrer votre email';
-                            }
-                            return null;
-                          },
-                          decoration: const InputDecoration(
-                            labelText: 'Email',
-                            labelStyle: TextStyle(color: Colors.white),
-                            filled: true,
-                            fillColor: Color(0xFF593070),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.white),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.white),
-                            ),
-                          ),
-                        ),
+                      _buildInputField(
+                        label: 'Email',
+                        controller: _emailController,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Veuillez entrer votre email';
+                          }
+                          return null;
+                        },
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(
-                          top: 15,
-                        ),
-                        child: TextFormField(
-                          style: const TextStyle(color: Colors.white),
-                          controller: _passwordController,
-                          obscureText: _passwordObscureText,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Veuillez entrer votre mot de passe';
-                            }
-                            return null;
-                          },
-                          decoration: InputDecoration(
-                            labelText: 'Mot de passe',
-                            labelStyle: const TextStyle(color: Colors.white),
-                            filled: true,
-                            fillColor: const Color(0xFF593070),
-                            enabledBorder: const OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.white),
-                            ),
-                            focusedBorder: const OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.white),
-                            ),
-                            suffixIcon: IconButton(
-                              onPressed: () {
-                                setState(() {
-                                  _passwordObscureText = !_passwordObscureText;
-                                });
-                              },
-                              icon: Icon(
-                                _passwordObscureText
-                                    ? Icons.visibility
-                                    : Icons.visibility_off,
-                                color: Colors.white,
-                              ),
-                            ),
-                          ),
-                        ),
+                      _buildPasswordField(
+                        label: 'Mot de passe',
+                        controller: _passwordController,
+                        obscureText: _passwordObscureText,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Veuillez entrer votre mot de passe';
+                          }
+                          return null;
+                        },
+                        onPressed: () {
+                          setState(() {
+                            _passwordObscureText = !_passwordObscureText;
+                          });
+                        },
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(
-                          top: 15,
-                          bottom: 20, // Ajout de marge en bas
-                        ),
-                        child: TextFormField(
-                          style: const TextStyle(color: Colors.white),
-                          controller: _confirmPasswordController,
-                          obscureText: _confirmPasswordObscureText,
-                          validator: (value) {
-                            if (value != _passwordController.text) {
-                              return 'Les mots de passe ne correspondent pas';
-                            }
-                            return null;
-                          },
-                          decoration: InputDecoration(
-                            labelText: 'Confirmer mot de passe',
-                            labelStyle: const TextStyle(color: Colors.white),
-                            filled: true,
-                            fillColor: const Color(0xFF593070),
-                            enabledBorder: const OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.white),
-                            ),
-                            focusedBorder: const OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.white),
-                            ),
-                            suffixIcon: IconButton(
-                              onPressed: () {
-                                setState(() {
-                                  _confirmPasswordObscureText =
-                                      !_confirmPasswordObscureText;
-                                });
-                              },
-                              icon: Icon(
-                                _confirmPasswordObscureText
-                                    ? Icons.visibility
-                                    : Icons.visibility_off,
-                                color: Colors.white,
-                              ),
-                            ),
-                          ),
-                        ),
+                      _buildPasswordField(
+                        label: 'Confirmer mot de passe',
+                        controller: _confirmPasswordController,
+                        obscureText: _confirmPasswordObscureText,
+                        validator: (value) {
+                          if (value != _passwordController.text) {
+                            return 'Les mots de passe ne correspondent pas';
+                          }
+                          return null;
+                        },
+                        onPressed: () {
+                          setState(() {
+                            _confirmPasswordObscureText =
+                                !_confirmPasswordObscureText;
+                          });
+                        },
                       ),
+
                       Padding(
-                        padding: const EdgeInsets.only(
-                          top: 15,
-                          bottom: 20, // Ajout de marge en bas
-                        ),
-                        child: BoutonR(
-                          titre: "S'inscrire",
+                        padding: const EdgeInsets.only(top: 20, bottom: 5),
+                        child: ElevatedButton(
                           onPressed: () async {
                             await registerUser();
                           },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 40, vertical: 10),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(7),
+                              side: const BorderSide(
+                                color: Colors.white), // Bordure blanche
+                            ),
+                            minimumSize: const Size(150, 0), // Définir la largeur fixe
+                          ),
+                          child: const Text(
+                            "S'inscrire",
+                            style: TextStyle(fontSize: 16, color: Color(0xFF593070)),
+                          ),
                         ),
                       ),
+
                       Padding(
-                        padding: const EdgeInsets.only(
-                          bottom: 20, // Ajout de marge en bas
-                        ),
+                        padding: const EdgeInsets.only(bottom: 20),
                         child: ElevatedButton(
                           onPressed: () {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => const connexion()),
+                                builder: (context) => const connexion(),
+                              ),
                             );
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: const Color(0xFF612C7D),
                             padding: const EdgeInsets.symmetric(
-                                horizontal: 50, vertical: 20),
+                                horizontal: 30, vertical: 10),
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(5),
+                              borderRadius: BorderRadius.circular(7),
                               side: const BorderSide(
                                   color: Colors.white), // Bordure blanche
                             ),
+                            minimumSize: const Size(150, 0), // Définir la largeur fixe
                           ),
                           child: const Text(
                             "Se connecter",
-                            style:
-                                TextStyle(fontSize: 16, color: Colors.white),
+                            style: TextStyle(fontSize: 16, color: Colors.white),
                           ),
                         ),
                       ),
@@ -280,6 +184,70 @@ class _inscriptionState extends State<inscription> {
                   ),
                 ),
               ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildInputField({
+    required String label,
+    required TextEditingController controller,
+    required String? Function(String?)? validator,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 15),
+      child: TextFormField(
+        style: const TextStyle(color: Colors.white),
+        controller: controller,
+        validator: validator,
+        decoration: InputDecoration(
+          labelText: label,
+          labelStyle: const TextStyle(color: Colors.white),
+          filled: true,
+          fillColor: const Color(0xFF5B2B75),
+          enabledBorder: OutlineInputBorder(
+            borderSide: const BorderSide(color: Colors.white),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderSide: const BorderSide(color: Colors.white),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildPasswordField({
+    required String label,
+    required TextEditingController controller,
+    required bool obscureText,
+    required String? Function(String?)? validator,
+    required VoidCallback onPressed,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 15),
+      child: TextFormField(
+        style: const TextStyle(color: Colors.white),
+        controller: controller,
+        obscureText: obscureText,
+        validator: validator,
+        decoration: InputDecoration(
+          labelText: label,
+          labelStyle: const TextStyle(color: Colors.white),
+          filled: true,
+          fillColor: const Color(0xFF5B2B75),
+          enabledBorder: OutlineInputBorder(
+            borderSide: const BorderSide(color: Colors.white),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderSide: const BorderSide(color: Colors.white),
+          ),
+          suffixIcon: IconButton(
+            onPressed: onPressed,
+            icon: Icon(
+              obscureText ? Icons.visibility : Icons.visibility_off,
+              color: Colors.white,
             ),
           ),
         ),
@@ -312,14 +280,13 @@ class _inscriptionState extends State<inscription> {
         Fluttertoast.showToast(
           msg: "Inscription réussie avec succès",
           toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.CENTER,
+          gravity: ToastGravity.TOP,
           timeInSecForIosWeb: 3,
           backgroundColor: Colors.white,
           textColor: Colors.purple,
           fontSize: 16.0,
         );
 
-        // ignore: use_build_context_synchronously
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => const connexion()),
@@ -331,7 +298,6 @@ class _inscriptionState extends State<inscription> {
         _passwordController.clear();
         _confirmPasswordController.clear();
       } catch (e) {
-        // ignore: avoid_print
         print('Erreur lors de l\'inscription : $e');
       }
     }

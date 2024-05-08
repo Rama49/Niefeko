@@ -29,7 +29,12 @@ class CartPanier extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Panier'),
+        backgroundColor: const Color(0xFF612C7D),
+        title: const Text(
+          'Panier',
+          style: TextStyle(color: Colors.white),
+        ),
+        iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: cartItems.isEmpty
           ? const Center(
@@ -83,7 +88,7 @@ class CartPanier extends StatelessWidget {
                         ),
                       ),
                       child: const Padding(
-                        padding: EdgeInsets.all(16.0),
+                        padding: EdgeInsets.all(10.0),
                         child: Text(
                           'Valider le panier',
                           style: TextStyle(fontSize: 18, color: Colors.white),

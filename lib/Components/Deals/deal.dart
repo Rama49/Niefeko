@@ -1,4 +1,5 @@
-import 'package:flutter/material.dart';
+// Components/Deals/deal.dart
+import 'package:flutter/material.dart';import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:niefeko/Pages/Category/CategoriePage.dart';
 
@@ -68,7 +69,7 @@ class _dealState extends State<deal> {
                 decoration: const BoxDecoration(
                   color: Color.fromARGB(255, 215, 194, 233),
                 ),
-                child: Image.asset("casque.png", fit: BoxFit.contain),
+                child: Image.asset("assets/casque.png", fit: BoxFit.contain),
               ),
               //2nd Image of Slider
               Container(
@@ -76,7 +77,7 @@ class _dealState extends State<deal> {
                   color: Color.fromARGB(255, 215, 194, 233),
                 ),
                 child: Image.asset(
-                  "tshirtRouge.png",
+                  "assets/tshirtRouge.png",
                   width: 120,
                   height: 60,
                 ),
@@ -87,7 +88,7 @@ class _dealState extends State<deal> {
                   color: Color.fromARGB(255, 215, 194, 233),
                 ),
                 child: Image.asset(
-                  "montre.png",
+                  "assets/montre.png",
                   width: 120,
                   height: 60,
                 ),
@@ -98,7 +99,7 @@ class _dealState extends State<deal> {
                   color: Color.fromARGB(255, 215, 194, 233),
                 ),
                 child: Image.asset(
-                  "sacoche.png",
+                  "assets/sacoche.png",
                   width: 120,
                   height: 60,
                 ),
@@ -109,7 +110,7 @@ class _dealState extends State<deal> {
                   color: Color.fromARGB(255, 215, 194, 233),
                 ),
                 child: Image.asset(
-                  "pot.png",
+                  "assets/pot.png",
                   width: 120,
                   height: 60,
                 ),

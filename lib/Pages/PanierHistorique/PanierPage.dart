@@ -1,4 +1,5 @@
-// ignore: duplicate_ignore
+// Pages/PanierHistorique/PanierPage.dart
+// ignore: duplicate_ignore// ignore: duplicate_ignore
 // ignore: file_names
 // ignore_for_file: file_names
 
@@ -118,7 +119,7 @@ class _PanierPageState extends State<PanierPage> {
                   );
                 },
                 child: ListTile(
-                  leading: Image.network(data['imageUrl']),
+                  leading: Image.asset(data['imageUrl']),
                   title: Text(data['nomProduit']),
                   subtitle: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,

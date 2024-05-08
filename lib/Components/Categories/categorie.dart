@@ -1,4 +1,5 @@
-// ignore_for_file: camel_case_types
+// Components/Categories/categorie.dart
+// ignore_for_file: camel_case_types// ignore_for_file: camel_case_types
 
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
@@ -34,15 +35,15 @@ class _categorieState extends State<categorie> {
           CarouselSlider(
             items: [
               //1st Image of Slider
-              buildCarouselItem("gourde.png", "Gourde"),
+              buildCarouselItem("assets/gourde.png", "Gourde"),
               //2nd Image of Slider
-              buildCarouselItem("pantalon.png", "Pantalon"),
+              buildCarouselItem("assets/pantalon.png", "Pantalon"),
               //3rd Image of Slider
-              buildCarouselItem("lunnete1.png", "Lunettes"),
+              buildCarouselItem("assets/lunnete1.png", "Lunettes"),
               //4th Image of Slider
-              buildCarouselItem("torche.png", "Torche"),
+              buildCarouselItem("assets/torche.png", "Torche"),
               //5th Image of Slider
-              buildCarouselItem("maronshoes.png", "Chaussures"),
+              // buildCarouselItem("assets/maronshoes.png", "Maronshoes"),
             ],
             //Slider Container properties
             options: CarouselOptions(

@@ -1,4 +1,5 @@
-// ignore_for_file: file_names
+// Pages/SettingsPage/SettingsPage.dart
+// ignore_for_file: file_names// ignore_for_file: file_names
 
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -19,7 +20,12 @@ class SettingsPage extends StatelessWidget {
     // Si l'utilisateur est connecté, affichez la page des paramètres
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Paramètres'),
+        backgroundColor: const Color(0xFF612C7D),
+        title: const Text(
+          'Paramètres',
+          style: TextStyle(color: Colors.white),
+        ),
+        iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: Column(
         children: [

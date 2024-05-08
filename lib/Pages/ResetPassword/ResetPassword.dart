@@ -1,4 +1,5 @@
-// ignore_for_file: file_names
+// Pages/ResetPassword/ResetPassword.dart
+// ignore_for_file: file_names// ignore_for_file: file_names
 
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -65,7 +66,9 @@ class _ResetPasswordState extends State<ResetPassword> {
                   controller: _emailController,
                   decoration: const InputDecoration(
                     labelText: 'Adresse e-mail',
-                    border: OutlineInputBorder(), // Ajout de la bordure
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide(color: Color(0xFF593070)), // Changement de la couleur de la bordure
+                    ), // Ajout de la bordure
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -78,7 +81,8 @@ class _ResetPasswordState extends State<ResetPassword> {
                 ElevatedButton(
                   onPressed: _resetPassword,
                   style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10), backgroundColor: const Color(0xFF612C7D),
+                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10), 
+                    backgroundColor: const Color(0xFF612C7D),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(7),
                     ),

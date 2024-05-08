@@ -133,7 +133,7 @@ class _searchState extends State<search> {
                           //1st Image of Slider
                           carteReu(
                             image: Image.asset(
-                              "sac1.png",
+                              "assets/sac1.png",
                               fit: BoxFit.cover,
                             ),
                             title: "Nouveau",
@@ -143,7 +143,7 @@ class _searchState extends State<search> {
                           //2nd Image of Slider
                           carteReu(
                             image: Image.asset(
-                              "lunette.png",
+                              "assets/lunette.png",
                               fit: BoxFit.cover,
                             ),
                             title: "Nouveau",
@@ -153,7 +153,7 @@ class _searchState extends State<search> {
                           //3rd Image of Slider
                           carteReu(
                             image: Image.asset(
-                              "shoes.png",
+                              "assets/shoes.png",
                               fit: BoxFit.cover,
                             ),
                             title: "Nouveau",
@@ -163,7 +163,7 @@ class _searchState extends State<search> {
                           //4th Image of Slider
                           carteReu(
                             image: Image.asset(
-                              "t-shirt.png",
+                              "assets/t-shirt.png",
                               fit: BoxFit.cover,
                             ),
                             title: "Nouveau",
@@ -173,7 +173,7 @@ class _searchState extends State<search> {
                           //5th Image of Slider
                           carteReu(
                             image: Image.asset(
-                              "sac1.png",
+                              "assets/sac1.png",
                               fit: BoxFit.cover,
                             ),
                             title: "Nouveau",
