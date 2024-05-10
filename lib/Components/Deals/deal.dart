@@ -13,7 +13,7 @@ class _dealState extends State<deal> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(10),
+      padding: const EdgeInsets.only(bottom: 20),
       child: Column(
         children: [
           Row(
@@ -61,12 +61,24 @@ class _dealState extends State<deal> {
             items: [
               Container(
                 decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(20.0),
+                      topRight: Radius.circular(20.0),
+                      bottomLeft: Radius.circular(20.0),
+                      bottomRight: Radius.circular(20.0),
+                    ),
                   color: Color.fromARGB(255, 215, 194, 233),
                 ),
                 child: Image.asset("assets/casque.png", fit: BoxFit.contain),
               ),
               Container(
                 decoration: const BoxDecoration(
+                   borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(20.0),
+                      topRight: Radius.circular(20.0),
+                      bottomLeft: Radius.circular(20.0),
+                      bottomRight: Radius.circular(20.0),
+                    ),
                   color: Color.fromARGB(255, 215, 194, 233),
                 ),
                 child: Image.asset(
@@ -77,6 +89,12 @@ class _dealState extends State<deal> {
               ),
               Container(
                 decoration: const BoxDecoration(
+                   borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(20.0),
+                      topRight: Radius.circular(20.0),
+                      bottomLeft: Radius.circular(20.0),
+                      bottomRight: Radius.circular(20.0),
+                    ),
                   color: Color.fromARGB(255, 215, 194, 233),
                 ),
                 child: Image.asset(
@@ -87,6 +105,12 @@ class _dealState extends State<deal> {
               ),
               Container(
                 decoration: const BoxDecoration(
+                   borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(20.0),
+                      topRight: Radius.circular(20.0),
+                      bottomLeft: Radius.circular(20.0),
+                      bottomRight: Radius.circular(20.0),
+                    ),
                   color: Color.fromARGB(255, 215, 194, 233),
                 ),
                 child: Image.asset(
@@ -97,6 +121,12 @@ class _dealState extends State<deal> {
               ),
               Container(
                 decoration: const BoxDecoration(
+                   borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(20.0),
+                      topRight: Radius.circular(20.0),
+                      bottomLeft: Radius.circular(20.0),
+                      bottomRight: Radius.circular(20.0),
+                    ),
                   color: Color.fromARGB(255, 215, 194, 233),
                 ),
                 child: Image.asset(

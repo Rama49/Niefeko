@@ -92,8 +92,13 @@ class _searchState extends State<search> {
                       bottomRight: Radius.circular(40.0),
                     ),
                   ),
-                  padding: const EdgeInsets.all(20),
-                  height: 290,
+                  padding: EdgeInsets.only(
+   
+    bottom: MediaQuery.of(context).padding.bottom != 0
+        ? MediaQuery.of(context).padding.bottom
+        : 250, // Ajoutez le padding en bas
+  ),
+  height: MediaQuery.of(context).size.height / 3,
                   child: Column(
                     children: [
                       SizedBox(height: 20),
@@ -107,13 +112,15 @@ class _searchState extends State<search> {
                       ),
                       const SizedBox(height: 20),
                       // ignore: sized_box_for_whitespace
+
                       Container(
                         height: 40,
+                        padding: EdgeInsets.only(right: 25, left: 25),
                         child: TextField(
                           decoration: InputDecoration(
                             contentPadding: const EdgeInsets.symmetric(
                               vertical:
-                                  3, // Ajustez cette valeur pour réduire la hauteur de l'input
+                                  3, 
                             ),
                             filled: true,
                             fillColor: Colors.white,
@@ -127,7 +134,8 @@ class _searchState extends State<search> {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 20),
+
+                      const SizedBox(height: 30),
 
                       // Carousel
                       CarouselSlider(
@@ -139,7 +147,7 @@ class _searchState extends State<search> {
                               fit: BoxFit.cover,
                             ),
                             title: "Nouveau",
-                            paragraph: "50%",
+                            paragraph: "30%",
                             texte: "Trouvez ce que vous aimez, à prix malins !",
                           ),
                           //2nd Image of Slider
@@ -149,7 +157,7 @@ class _searchState extends State<search> {
                               fit: BoxFit.cover,
                             ),
                             title: "Nouveau",
-                            paragraph: "50%",
+                            paragraph: "10%",
                             texte: "Trouvez ce que vous aimez, à prix malins !",
                           ),
                           //3rd Image of Slider
@@ -159,7 +167,7 @@ class _searchState extends State<search> {
                               fit: BoxFit.cover,
                             ),
                             title: "Nouveau",
-                            paragraph: "50%",
+                            paragraph: "80%",
                             texte: "Trouvez ce que vous aimez, à prix malins !",
                           ),
                           //4th Image of Slider
@@ -169,7 +177,7 @@ class _searchState extends State<search> {
                               fit: BoxFit.cover,
                             ),
                             title: "Nouveau",
-                            paragraph: "50%",
+                            paragraph: "40%",
                             texte: "Trouvez ce que vous aimez, à prix malins !",
                           ),
                           //5th Image of Slider
@@ -179,7 +187,7 @@ class _searchState extends State<search> {
                               fit: BoxFit.cover,
                             ),
                             title: "Nouveau",
-                            paragraph: "50%",
+                            paragraph: "90%",
                             texte: "Trouvez ce que vous aimez, à prix malins !",
                           ),
                         ],
@@ -197,6 +205,8 @@ class _searchState extends State<search> {
                       ),
                     ],
                   )),
+
+
 
               // Votre Container contenant la catégorie
               const Column(
@@ -241,7 +251,6 @@ class _searchState extends State<search> {
                   context,
                   MaterialPageRoute(builder: (context) => const pagefavoris()),
                 );
-                // Ajoutez ici votre logique de navigation pour l'écran des favoris
               },
               icon: const Icon(Icons.favorite, color: Colors.white),
             ),

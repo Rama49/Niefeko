@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-// ignore: unused_import
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:niefeko/Components/Recherche/recherche.dart';
@@ -10,7 +9,6 @@ class Connexion extends StatefulWidget {
   const Connexion({super.key});
 
   @override
-  // ignore: library_private_types_in_public_api
   ConnexionState createState() => ConnexionState();
 }
 
@@ -36,8 +34,6 @@ class ConnexionState extends State<Connexion> {
         MaterialPageRoute(builder: (context) => const search()),
       );
     } catch (e) {
-      
-      // ignore: avoid_print
       print("Erreur de Connexion: $e");
       Fluttertoast.showToast(
         msg: "Erreur de Connexion: $e",
@@ -74,7 +70,10 @@ class ConnexionState extends State<Connexion> {
                   margin: const EdgeInsets.all(5),
                   child: const Text(
                     "Connectez-vous à votre compte",
-                    style: TextStyle(fontSize: 15, color: Colors.white, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                        fontSize: 15,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold),
                     textAlign: TextAlign.center,
                   ),
                 ),
@@ -150,7 +149,8 @@ class ConnexionState extends State<Connexion> {
                       ),
                       const SizedBox(height: 10),
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20, vertical: 10),
                         child: TextButton(
                           onPressed: () {
                             Navigator.push(
@@ -187,12 +187,13 @@ class ConnexionState extends State<Connexion> {
                             }
                           },
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color.fromARGB(255, 255, 255, 255),
-                            padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 10),
+                            backgroundColor:
+                                const Color.fromARGB(255, 255, 255, 255),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 40, vertical: 10),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(5),
-                              side: const BorderSide(
-                                  color: Color(0xFF593070)),
+                              side: const BorderSide(color: Color(0xFF593070)),
                             ),
                           ),
                           child: const Text(
@@ -217,17 +218,16 @@ class ConnexionState extends State<Connexion> {
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: const Color(0xFF593070),
-                            padding: const EdgeInsets.symmetric(horizontal: 55, vertical: 10),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 55, vertical: 10),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(5),
-                              side: const BorderSide(
-                                  color: Colors.white),
+                              side: const BorderSide(color: Colors.white),
                             ),
                           ),
                           child: const Text(
                             "S'inscrire",
-                            style:
-                              TextStyle(fontSize: 16, color: Colors.white),
+                            style: TextStyle(fontSize: 16, color: Colors.white),
                           ),
                         ),
                       ),

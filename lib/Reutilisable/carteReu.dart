@@ -5,7 +5,9 @@
 // ignore: file_names
 // ignore_for_file: file_names, duplicate_ignore
 
-import 'package:flutter/material.dart' show Axis, BorderRadius, BoxDecoration, BuildContext, Color, Colors, Column, Container, EdgeInsets, Flexible, FontWeight, Image, Row, SingleChildScrollView, SizedBox, StatelessWidget, Text, TextStyle, Widget;
+import 'package:flutter/material.dart' 
+show Axis, BorderRadius, BoxDecoration, BuildContext, Color, Colors, Column, Container, EdgeInsets, Flexible, FontWeight, Image, MaterialPageRoute, Navigator, Row, SingleChildScrollView, SizedBox, StatelessWidget, Text, TextStyle, Widget;
+import 'package:niefeko/Pages/PanierHistorique/PanierPage.dart';
 import 'package:niefeko/Reutilisable/buttonReu.dart';
 
 
@@ -30,7 +32,7 @@ class carteReu extends StatelessWidget {
     return SingleChildScrollView(
        scrollDirection: Axis.vertical,
       child: Container(
-        width: 300,
+        // width: 300,
         decoration: BoxDecoration(
       color: const Color.fromARGB(255, 85, 58, 112),
       borderRadius: BorderRadius.circular(borderRadius),
@@ -57,28 +59,27 @@ class carteReu extends StatelessWidget {
                       style: const TextStyle(
                           fontWeight: FontWeight.w700,
                           color: Colors.white,
-                          fontSize: 30)),
+                          fontSize: 25)),
                   width: 100,
                 ),
                 Container(
-                    padding: const EdgeInsets.only(left: 25, bottom: 20, top: 5),
+                    padding: const EdgeInsets.only(left: 2, bottom: 2, top: 5),
                     // ignore: sort_child_properties_last
                     child: Text(texte,
                         style: const TextStyle(
                             fontWeight: FontWeight.w700, color: Colors.white)),
                     width: 180),
-                BoutonR(
+               BoutonR(
                   titre: "Ajouter au panier",
                   onPressed: () {
-                    // Navigator.push(
-                    //   contextr
-                    //   // MaterialPageRoute(builder: (context) => carteReu()),
-                    // );
-      
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => PanierPage()), 
+                    );
                   },
                 ),
                 const SizedBox(
-                  height: 20,
+                  height: 10,
                 )
               ],
             ),
