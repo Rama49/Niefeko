@@ -1,10 +1,13 @@
-// Pages/Favoris/PageFavoris.dart
-import 'package:flutter/material.dart';import 'package:flutter/material.dart';
+// ignore: file_names
+import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:niefeko/Components/Recherche/recherche.dart';
 import 'package:niefeko/Pages/Category/CategoriePage.dart';
 
-class pageFavoris extends StatelessWidget {
+// ignore: camel_case_types
+class pagefavoris extends StatelessWidget {
+  const pagefavoris({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -16,7 +19,7 @@ class pageFavoris extends StatelessWidget {
         ),
         iconTheme: const IconThemeData(color: Colors.white),
       ),
-      body: ProductList(),
+      body: const ProductList(),
       bottomNavigationBar: BottomAppBar(
         color: const Color(0xFF593070),
         child: Row(
@@ -69,6 +72,8 @@ class pageFavoris extends StatelessWidget {
 }
 
 class ProductList extends StatelessWidget {
+  const ProductList({super.key});
+
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
@@ -113,7 +118,7 @@ class ProductCard extends StatelessWidget {
   final Product product;
   final String documentId;
 
-  const ProductCard({required this.product, required this.documentId});
+  const ProductCard({super.key, required this.product, required this.documentId});
 
   @override
   Widget build(BuildContext context) {

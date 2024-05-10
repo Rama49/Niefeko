@@ -1,4 +1,4 @@
-/* groovylint-disable-next-line CompileStatic */
+/*groovylint-disable-next-line CompileStatic*/
 buildscript {
     ext.kotlin_version = '1.9.24'
     repositories {

@@ -8,6 +8,7 @@
 import 'package:flutter/material.dart' show Axis, BorderRadius, BoxDecoration, BuildContext, Color, Colors, Column, Container, EdgeInsets, Flexible, FontWeight, Image, Row, SingleChildScrollView, SizedBox, StatelessWidget, Text, TextStyle, Widget;
 import 'package:niefeko/Reutilisable/buttonReu.dart';
 
+
 // ignore: camel_case_types
 class carteReu extends StatelessWidget {
   final Image image;

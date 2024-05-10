@@ -1,5 +1,5 @@
 // Reutilisable/buttonReu.dart
-import 'package:flutter/material.dart';import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 
 class BoutonR extends StatelessWidget {
   final String titre;
@@ -8,6 +8,7 @@ class BoutonR extends StatelessWidget {
   final Color? couleur;
   final double? width; // Ajouter une propriété de largeur
 
+  // ignore: use_super_parameters
   const BoutonR({
     Key? key,
     required this.titre,

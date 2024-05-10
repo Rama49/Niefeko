@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
+// ignore: unused_import
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:niefeko/Components/Recherche/recherche.dart';
 import 'package:niefeko/Pages/Inscription/inscription.dart';
-import 'package:niefeko/Pages/ResetPassword/ResetPassword.dart';
+import 'package:niefeko/Pages/resetpassword/resetpassword.dart';
 
-class connexion extends StatefulWidget {
-  const connexion({Key? key}) : super(key: key);
+class Connexion extends StatefulWidget {
+  const Connexion({super.key});
 
   @override
-  _connexionState createState() => _connexionState();
+  // ignore: library_private_types_in_public_api
+  _ConnexionState createState() => _ConnexionState();
 }
 
-class _connexionState extends State<connexion> {
+class _ConnexionState extends State<Connexion> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -20,11 +22,6 @@ class _connexionState extends State<connexion> {
 
   Future<void> _signInWithEmailAndPassword() async {
     try {
-      UserCredential userCredential =
-          await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: _emailController.text,
-        password: _passwordController.text,
-      );
       Fluttertoast.showToast(
         msg: "Connexion réussie avec succès",
         toastLength: Toast.LENGTH_SHORT,
@@ -39,9 +36,11 @@ class _connexionState extends State<connexion> {
         MaterialPageRoute(builder: (context) => const search()),
       );
     } catch (e) {
-      print("Erreur de connexion: $e");
+      
+      // ignore: avoid_print
+      print("Erreur de Connexion: $e");
       Fluttertoast.showToast(
-        msg: "Erreur de connexion: $e",
+        msg: "Erreur de Connexion: $e",
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.TOP,
         timeInSecForIosWeb: 3,
@@ -73,13 +72,13 @@ class _connexionState extends State<connexion> {
                 ),
                 Container(
                   margin: const EdgeInsets.all(5),
-                  child: Text(
+                  child: const Text(
                     "Connectez-vous à votre compte",
                     style: TextStyle(fontSize: 15, color: Colors.white, fontWeight: FontWeight.bold),
                     textAlign: TextAlign.center,
                   ),
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 Form(
                   key: _formKey,
                   child: Column(
@@ -157,14 +156,14 @@ class _connexionState extends State<connexion> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => ResetPassword()),
+                                  builder: (context) => Resetpassword()),
                             );
                           },
                           style: TextButton.styleFrom(
                             padding: EdgeInsets.zero,
                             tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                           ),
-                          child: Align(
+                          child: const Align(
                             alignment: Alignment.bottomRight,
                             child: Text(
                               "Mot de passe oublié ?",
@@ -213,7 +212,7 @@ class _connexionState extends State<connexion> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => inscription()),
+                                  builder: (context) => const Inscription()),
                             );
                           },
                           style: ElevatedButton.styleFrom(

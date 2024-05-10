@@ -1,6 +1,3 @@
-// Pages/SettingsPage/SettingsPage.dart
-// ignore_for_file: file_names// ignore_for_file: file_names
-
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:niefeko/Pages/Connexion/connexion.dart';
@@ -8,13 +5,13 @@ import 'package:niefeko/Pages/ModifierMDP/ModifierMDP.dart';
 import 'package:niefeko/utils/auth.dart';
 
 // ignore: use_key_in_widget_constructors
-class SettingsPage extends StatelessWidget {
+class settingspage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Vérifiez si l'utilisateur est connecté avant de lui permettre d'accéder à la page des paramètres
     if (!AuthState.isLoggedIn()) {
       // Si l'utilisateur n'est pas connecté, redirigez-le vers la page de connexion
-      return const connexion();
+      return const Connexion();
     }
 
     // Si l'utilisateur est connecté, affichez la page des paramètres
@@ -59,8 +56,9 @@ class SettingsPage extends StatelessWidget {
                 // Naviguer vers la page de connexion
                 // ignore: use_build_context_synchronously
                 Navigator.pushReplacement(
+                  // ignore: use_build_context_synchronously
                   context,
-                  MaterialPageRoute(builder: (context) => const connexion()),
+                  MaterialPageRoute(builder: (context) => const Connexion()),
                 );
               } catch (error) {
                 // Afficher un message d'erreur en cas de problème de déconnexion

@@ -1,18 +1,21 @@
-// Pages/Inscription/inscription.dart
-import 'package:flutter/material.dart';import 'package:flutter/material.dart';
+// Pages/Inscription/Inscription.dart
+import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:niefeko/Pages/Connexion/connexion.dart';
-import 'package:niefeko/Reutilisable/buttonReu.dart';
+// ignore: unused_import
+import 'package:niefeko/Reutilisable/buttonreu.dart';
 
-class inscription extends StatefulWidget {
+class Inscription extends StatefulWidget {
+  const Inscription({super.key});
+
   @override
-  _inscriptionState createState() => _inscriptionState();
+  InscriptionState createState() => InscriptionState();
 }
 
-class _inscriptionState extends State<inscription> {
+class InscriptionState extends State<Inscription> {
   final _formKey = GlobalKey<FormState>();
 
   final TextEditingController _nomController = TextEditingController();
@@ -29,8 +32,11 @@ class _inscriptionState extends State<inscription> {
   void initState() {
     super.initState();
     Firebase.initializeApp().then((_) {
+      
+      // ignore: avoid_print
       print("Firebase initialisé avec succès !");
     }).catchError((error) {
+      // ignore: avoid_print
       print("Erreur lors de l'initialisation de Firebase : $error");
     });
   }
@@ -41,7 +47,7 @@ class _inscriptionState extends State<inscription> {
       backgroundColor: const Color(0xFF593070),
       body: Center(
         child: SingleChildScrollView(
-          child: Container(
+          child: SizedBox(
             width: MediaQuery.of(context).size.width * 0.8,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -159,7 +165,7 @@ class _inscriptionState extends State<inscription> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => const connexion(),
+                                builder: (context) => const Connexion(),
                               ),
                             );
                           },
@@ -207,11 +213,11 @@ class _inscriptionState extends State<inscription> {
           labelStyle: const TextStyle(color: Colors.white),
           filled: true,
           fillColor: const Color(0xFF5B2B75),
-          enabledBorder: OutlineInputBorder(
-            borderSide: const BorderSide(color: Colors.white),
+          enabledBorder: const OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.white),
           ),
-          focusedBorder: OutlineInputBorder(
-            borderSide: const BorderSide(color: Colors.white),
+          focusedBorder: const OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.white),
           ),
         ),
       ),
@@ -237,11 +243,11 @@ class _inscriptionState extends State<inscription> {
           labelStyle: const TextStyle(color: Colors.white),
           filled: true,
           fillColor: const Color(0xFF5B2B75),
-          enabledBorder: OutlineInputBorder(
-            borderSide: const BorderSide(color: Colors.white),
+          enabledBorder: const OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.white),
           ),
-          focusedBorder: OutlineInputBorder(
-            borderSide: const BorderSide(color: Colors.white),
+          focusedBorder: const OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.white),
           ),
           suffixIcon: IconButton(
             onPressed: onPressed,
@@ -288,8 +294,9 @@ class _inscriptionState extends State<inscription> {
         );
 
         Navigator.push(
+          // ignore: use_build_context_synchronously
           context,
-          MaterialPageRoute(builder: (context) => const connexion()),
+          MaterialPageRoute(builder: (context) => const Connexion()),
         );
 
         _nomController.clear();
@@ -298,7 +305,8 @@ class _inscriptionState extends State<inscription> {
         _passwordController.clear();
         _confirmPasswordController.clear();
       } catch (e) {
-        print('Erreur lors de l\'inscription : $e');
+        // ignore: avoid_print
+        print('Erreur lors de l\'Inscription : $e');
       }
     }
   }

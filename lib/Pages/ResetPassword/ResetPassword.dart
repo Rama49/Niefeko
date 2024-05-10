@@ -1,17 +1,14 @@
-// Pages/ResetPassword/ResetPassword.dart
-// ignore_for_file: file_names// ignore_for_file: file_names
-
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 // ignore: use_key_in_widget_constructors
-class ResetPassword extends StatefulWidget {
+class Resetpassword extends StatefulWidget {
   @override
   // ignore: library_private_types_in_public_api
   _ResetPasswordState createState() => _ResetPasswordState();
 }
 
-class _ResetPasswordState extends State<ResetPassword> {
+class _ResetPasswordState extends State<Resetpassword> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
 

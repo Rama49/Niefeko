@@ -7,7 +7,7 @@ import 'package:niefeko/Components/Deals/deal.dart';
 import 'package:niefeko/Pages/CartPanier/CartPanier.dart';
 import 'package:niefeko/Pages/Category/CategoriePage.dart';
 import 'package:niefeko/Pages/Connexion/connexion.dart';
-import 'package:niefeko/Pages/Favoris/PageFavoris.dart';
+import 'package:niefeko/Pages/Favoris/pagefavoris.dart';
 import 'package:niefeko/Pages/PanierHistorique/PanierPage.dart';
 import 'package:niefeko/Pages/SettingsPage/SettingsPage.dart';
 import 'package:niefeko/Reutilisable/carteReu.dart';
@@ -56,8 +56,9 @@ class _searchState extends State<search> {
       );
       // ignore: use_build_context_synchronously
       Navigator.pushReplacement(
+        // ignore: use_build_context_synchronously
         context,
-        MaterialPageRoute(builder: (context) => const connexion()),
+        MaterialPageRoute(builder: (context) => const Connexion()),
       );
     } catch (e) {
       // ignore: avoid_print
@@ -92,7 +93,7 @@ class _searchState extends State<search> {
                     ),
                   ),
                   padding: const EdgeInsets.all(20),
-                  // height: 250,
+                  height: 220,
                   child: Column(
                     children: [
                       const Text(
@@ -200,7 +201,7 @@ class _searchState extends State<search> {
               const Column(
                 children: [
                   SizedBox(height: 120),
-                  categorie(),
+                  Categorie(),
                   deal(),
                 ],
               ),
@@ -237,7 +238,7 @@ class _searchState extends State<search> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => pageFavoris()),
+                  MaterialPageRoute(builder: (context) => const pagefavoris()),
                 );
                 // Ajoutez ici votre logique de navigation pour l'écran des favoris
               },
@@ -247,7 +248,7 @@ class _searchState extends State<search> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => SettingsPage()),
+                  MaterialPageRoute(builder: (context) => settingspage()),
                 );
               },
               icon: const Icon(Icons.settings, color: Colors.white),

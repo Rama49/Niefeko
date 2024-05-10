@@ -8,6 +8,7 @@ void main() {
   runApp(App());
 }
 
+// ignore: use_key_in_widget_constructors
 class App extends StatelessWidget {
   final Future<FirebaseApp> _initialization = initializeFirebase();
 
@@ -49,7 +50,7 @@ class App extends StatelessWidget {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {

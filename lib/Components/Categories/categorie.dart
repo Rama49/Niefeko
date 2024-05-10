@@ -1,18 +1,18 @@
-// Components/Categories/categorie.dart
+// Components/Categories/Categorie.dart
 // ignore_for_file: camel_case_types// ignore_for_file: camel_case_types
 
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
-class categorie extends StatefulWidget {
+class Categorie extends StatefulWidget {
   // ignore: use_key_in_widget_constructors
-  const categorie({Key? key});
+  const Categorie({Key? key});
 
   @override
-  State<categorie> createState() => _categorieState();
+  State<Categorie> createState() => _CategorieState();
 }
 
-class _categorieState extends State<categorie> {
+class _CategorieState extends State<Categorie> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
