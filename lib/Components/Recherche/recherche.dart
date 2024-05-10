@@ -249,7 +249,7 @@ class _searchState extends State<search> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => settingspage()),
+                  MaterialPageRoute(builder: (context) => SettingsPage()),
                 );
               },
               icon: const Icon(Icons.settings, color: Colors.white),

@@ -5,7 +5,7 @@ import 'package:niefeko/Pages/ModifierMDP/ModifierMDP.dart';
 import 'package:niefeko/utils/auth.dart';
 
 // ignore: use_key_in_widget_constructors
-class settingspage extends StatelessWidget {
+class SettingsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Vérifiez si l'utilisateur est connecté avant de lui permettre d'accéder à la page des paramètres
