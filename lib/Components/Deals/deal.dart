@@ -1,17 +1,14 @@
-// Components/Deals/deal.dart
-import 'package:flutter/material.dart';import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:niefeko/Pages/Category/CategoriePage.dart';
 
-// ignore: camel_case_types
 class deal extends StatefulWidget {
-  const deal({super.key});
+  const deal({Key? key}) : super(key: key);
 
   @override
   State<deal> createState() => _dealState();
 }
 
-// ignore: camel_case_types
 class _dealState extends State<deal> {
   @override
   Widget build(BuildContext context) {
@@ -31,7 +28,6 @@ class _dealState extends State<deal> {
               ),
               GestureDetector(
                 onTap: () {
-                  // Action à effectuer lorsque "Voir Plus" est cliqué
                   Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -39,9 +35,9 @@ class _dealState extends State<deal> {
                     ),
                   );
                 },
-                child: const Row(
+                child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
+                  children: const [
                     Text(
                       "Voir Plus",
                       style: TextStyle(
@@ -52,8 +48,8 @@ class _dealState extends State<deal> {
                     ),
                     Icon(
                       Icons.arrow_forward,
-                      color: Colors.black, // Couleur de la flèche
-                      size: 20, // Taille de la flèche
+                      color: Colors.black,
+                      size: 20,
                     ),
                   ],
                 ),
@@ -61,17 +57,14 @@ class _dealState extends State<deal> {
             ],
           ),
           const SizedBox(height: 20),
-          // SizedBox(height: 10),
           CarouselSlider(
             items: [
-              //1st Image of Slider
               Container(
                 decoration: const BoxDecoration(
                   color: Color.fromARGB(255, 215, 194, 233),
                 ),
                 child: Image.asset("assets/casque.png", fit: BoxFit.contain),
               ),
-              //2nd Image of Slider
               Container(
                 decoration: const BoxDecoration(
                   color: Color.fromARGB(255, 215, 194, 233),
@@ -82,7 +75,6 @@ class _dealState extends State<deal> {
                   height: 60,
                 ),
               ),
-              //3rd Image of Slider
               Container(
                 decoration: const BoxDecoration(
                   color: Color.fromARGB(255, 215, 194, 233),
@@ -93,7 +85,6 @@ class _dealState extends State<deal> {
                   height: 60,
                 ),
               ),
-              //4th Image of Slider
               Container(
                 decoration: const BoxDecoration(
                   color: Color.fromARGB(255, 215, 194, 233),
@@ -104,7 +95,6 @@ class _dealState extends State<deal> {
                   height: 60,
                 ),
               ),
-              //5th Image of Slider
               Container(
                 decoration: const BoxDecoration(
                   color: Color.fromARGB(255, 215, 194, 233),
@@ -116,7 +106,6 @@ class _dealState extends State<deal> {
                 ),
               ),
             ],
-            //Slider Container properties
             options: CarouselOptions(
               enlargeCenterPage: true,
               autoPlay: true,
@@ -124,10 +113,9 @@ class _dealState extends State<deal> {
               autoPlayCurve: Curves.fastOutSlowIn,
               enableInfiniteScroll: true,
               autoPlayAnimationDuration: const Duration(milliseconds: 500),
-              viewportFraction: 0.4, // Une image à la fois
+              viewportFraction: 0.4,
             ),
           ),
-          // SizedBox(height: 500)
         ],
       ),
     );

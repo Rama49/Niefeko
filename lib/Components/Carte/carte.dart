@@ -15,7 +15,8 @@ class carte extends StatefulWidget {
 class _carteState extends State<carte> {
   @override
   Widget build(BuildContext context) {
-    return Stack(
+    return Scaffold(
+      body: Stack(
       children: [
         // Section de recherche
         Positioned.fill(
@@ -148,6 +149,7 @@ class _carteState extends State<carte> {
             ))
         // Votre Container contenant la catégorie],);
       ],
+    )
     );
   }
 }

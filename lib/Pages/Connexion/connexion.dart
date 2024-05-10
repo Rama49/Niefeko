@@ -228,7 +228,7 @@ class _connexionState extends State<connexion> {
                           child: const Text(
                             "S'inscrire",
                             style:
-                                TextStyle(fontSize: 16, color: Colors.white),
+                              TextStyle(fontSize: 16, color: Colors.white),
                           ),
                         ),
                       ),
