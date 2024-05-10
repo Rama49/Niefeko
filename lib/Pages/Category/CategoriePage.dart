@@ -294,14 +294,15 @@ class _CategoryPageState extends State<CategoryPage> {
                   borderRadius: BorderRadius.circular(7),
                   color: Colors.white,
                 ),
-                child: TextField(
+                child: 
+                Container(child: TextField(
                   onChanged: searchProduct,
                   decoration: const InputDecoration(
                     hintText: 'Recherche...',
                     prefixIcon: Icon(Icons.search, color: Colors.grey),
                     border: InputBorder.none,
                   ),
-                ),
+                ),)
               ),
             ),
             const SizedBox(height: 10),
@@ -430,9 +431,9 @@ class _CategoryPageState extends State<CategoryPage> {
                 //   MaterialPageRoute(builder: (context) => pageFavoris()),
                 // );
 
-                setState(() {
-                  isFavoritedList[index] = !isFavoritedList[index];
-                });
+                // setState(() {
+                //   isFavoritedList[index] = !isFavoritedList[index];
+                // });
 
                 // Vérifiez si le produit est ajouté aux favoris
                 if (isFavoritedList[index]) {

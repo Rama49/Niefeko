@@ -80,7 +80,7 @@ class ProductCard extends StatelessWidget {
         title: Text(product.name),
         subtitle: Text('Prix: ${product.price}'),
         trailing: IconButton(
-          icon: const Icon(Icons.delete),
+          icon: const Icon(Icons.delete, color: Colors.red,),
           onPressed: () {
             showDialog(
               context: context,
