@@ -1,7 +1,6 @@
-// ignore: file_names
+// Pages/Favoris/PageFavoris.dart
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:niefeko/Components/Recherche/recherche.dart';
 import 'package:niefeko/Pages/Category/CategoriePage.dart';
 
 // ignore: camel_case_types
@@ -19,54 +18,7 @@ class pagefavoris extends StatelessWidget {
         ),
         iconTheme: const IconThemeData(color: Colors.white),
       ),
-      body: const ProductList(),
-      bottomNavigationBar: BottomAppBar(
-        color: const Color(0xFF593070),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            IconButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const search(),
-                  ),
-                );
-              },
-              icon: const Icon(Icons.home, color: Colors.white),
-            ),
-            IconButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const search(),
-                  ),
-                );
-              },
-              icon: const Icon(Icons.shopping_cart, color: Colors.white),
-            ),
-            IconButton(
-              onPressed: () {
-                // Vous pouvez implémenter ici la logique pour afficher la page des favoris
-              },
-              icon: const Icon(Icons.favorite, color: Colors.white),
-            ),
-            IconButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => CategoryPage(),
-                  ),
-                );
-              },
-              icon: const Icon(Icons.settings, color: Colors.white),
-            ),
-          ],
-        ),
-      ),
+      body: ProductList(),
     );
   }
 }
@@ -148,9 +100,9 @@ class ProductCard extends StatelessWidget {
                       child: const Text('Supprimer'),
                       onPressed: () {
                         FirebaseFirestore.instance
-                            .collection('favoris')
-                            .doc(documentId)
-                            .delete();
+                          .collection('favoris')
+                          .doc(documentId)
+                          .delete();
                         Navigator.of(context).pop();
                       },
                     ),

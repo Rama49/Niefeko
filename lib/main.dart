@@ -17,14 +17,6 @@ class App extends StatelessWidget {
     return FutureBuilder(
       future: _initialization,
       builder: (context, snapshot) {
-        // if (snapshot.hasError) {
-        //   return Center(
-        //     child: Directionality(
-        //       textDirection: TextDirection.ltr,
-        //       child: Text('Quelque chose s\'est mal passé'),
-        //     ),
-        //   );
-        // }
         if (snapshot.connectionState == ConnectionState.done) {
           return const MyApp();
         }

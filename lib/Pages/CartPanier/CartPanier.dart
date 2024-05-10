@@ -91,14 +91,14 @@ class CartPanier extends StatelessWidget {
                         padding: EdgeInsets.all(10.0),
                         child: Text(
                           'Valider le panier',
-                          style: TextStyle(fontSize: 18, color: Colors.white),
-                        ),
-                      ),
-                    ),
+                        style: TextStyle(fontSize: 18, color: Colors.white),
                   ),
                 ),
-              ],
+              ),
             ),
+          ),
+        ],
+      ),
     );
   }
 }

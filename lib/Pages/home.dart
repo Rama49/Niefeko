@@ -19,12 +19,6 @@ class App extends StatelessWidget {
     return FutureBuilder(
       future: _initialization,
       builder: (context, snapshot) {
-        if (snapshot.hasError) {
-          return const Center(
-            child: Text('Something went wrong'),
-          );
-        }
-
         if (snapshot.connectionState == ConnectionState.done) {
           return MyHomePage();
         }
@@ -39,12 +33,12 @@ class App extends StatelessWidget {
   static Future<FirebaseApp> initializeFirebase() async {
     return await Firebase.initializeApp(
       options: const FirebaseOptions(
-        apiKey: "YOUR_API_KEY",
-        authDomain: "YOUR_AUTH_DOMAIN",
-        projectId: "YOUR_PROJECT_ID",
-        storageBucket: "YOUR_STORAGE_BUCKET",
-        messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-        appId: "YOUR_APP_ID",
+        apiKey: "AIzaSyBE5tqoygdvXY4uZ8Zq_viDxOa3JSjB3Yc",
+        authDomain: "niefeko-4d059.firebaseapp.com",
+        projectId: "niefeko-4d059",
+        storageBucket: "niefeko-4d059.appspot.com",
+        messagingSenderId: "411609193394",
+        appId: "1:411609193394:web:f032282e6f062bb18ea2ab",
       ),
     );
   }
