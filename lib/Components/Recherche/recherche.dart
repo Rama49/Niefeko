@@ -9,7 +9,7 @@ import 'package:niefeko/Pages/Category/CategoriePage.dart';
 import 'package:niefeko/Pages/Connexion/connexion.dart';
 import 'package:niefeko/Pages/Favoris/pagefavoris.dart';
 import 'package:niefeko/Pages/PanierHistorique/PanierPage.dart';
-import 'package:niefeko/Pages/SettingsPage/SettingsPage.dart';
+import 'package:niefeko/Pages/SettingsPage/settingspage.dart';
 import 'package:niefeko/Reutilisable/carteReu.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 

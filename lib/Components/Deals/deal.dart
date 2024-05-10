@@ -13,7 +13,7 @@ class _dealState extends State<deal> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      padding: const EdgeInsets.only(bottom: 20),
+      padding: const EdgeInsets.only(bottom: 20, right: 5),
       child: Column(
         children: [
           Row(
@@ -23,7 +23,7 @@ class _dealState extends State<deal> {
                 "Special Vente",
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  fontSize: 20,
+                  fontSize: 25,
                 ),
               ),
               GestureDetector(
