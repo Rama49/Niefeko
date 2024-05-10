@@ -93,21 +93,22 @@ class _searchState extends State<search> {
                     ),
                   ),
                   padding: const EdgeInsets.all(20),
-                  height: 220,
+                  height: 290,
                   child: Column(
                     children: [
+                      SizedBox(height: 20),
                       const Text(
                         "Bienvenue à Niefeko",
                         style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
-                          fontSize: 18,
+                          fontSize: 25,
                         ),
                       ),
-                      const SizedBox(height: 10),
+                      const SizedBox(height: 20),
                       // ignore: sized_box_for_whitespace
                       Container(
-                        height: 30,
+                        height: 40,
                         child: TextField(
                           decoration: InputDecoration(
                             contentPadding: const EdgeInsets.symmetric(
@@ -126,7 +127,7 @@ class _searchState extends State<search> {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 15),
+                      const SizedBox(height: 20),
 
                       // Carousel
                       CarouselSlider(

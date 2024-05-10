@@ -11,10 +11,10 @@ class Connexion extends StatefulWidget {
 
   @override
   // ignore: library_private_types_in_public_api
-  _ConnexionState createState() => _ConnexionState();
+  ConnexionState createState() => ConnexionState();
 }
 
-class _ConnexionState extends State<Connexion> {
+class ConnexionState extends State<Connexion> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
