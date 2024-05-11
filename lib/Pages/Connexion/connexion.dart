@@ -1,20 +1,18 @@
 import 'package:flutter/material.dart';
-// ignore: unused_import
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:niefeko/Components/Recherche/recherche.dart';
 import 'package:niefeko/Pages/Inscription/inscription.dart';
-import 'package:niefeko/Pages/resetpassword/resetpassword.dart';
+import 'package:niefeko/Pages/ResetPassword/ResetPassword.dart';
 
-class Connexion extends StatefulWidget {
-  const Connexion({super.key});
+class connexion extends StatefulWidget {
+  const connexion({Key? key}) : super(key: key);
 
   @override
-  // ignore: library_private_types_in_public_api
-  ConnexionState createState() => ConnexionState();
+  _connexionState createState() => _connexionState();
 }
 
-class ConnexionState extends State<Connexion> {
+class _connexionState extends State<connexion> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -22,6 +20,11 @@ class ConnexionState extends State<Connexion> {
 
   Future<void> _signInWithEmailAndPassword() async {
     try {
+      UserCredential userCredential =
+          await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: _emailController.text,
+        password: _passwordController.text,
+      );
       Fluttertoast.showToast(
         msg: "Connexion réussie avec succès",
         toastLength: Toast.LENGTH_SHORT,
@@ -36,11 +39,9 @@ class ConnexionState extends State<Connexion> {
         MaterialPageRoute(builder: (context) => const search()),
       );
     } catch (e) {
-      
-      // ignore: avoid_print
-      print("Erreur de Connexion: $e");
+      print("Erreur de connexion: $e");
       Fluttertoast.showToast(
-        msg: "Erreur de Connexion: $e",
+        msg: "Erreur de connexion: $e",
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.TOP,
         timeInSecForIosWeb: 3,
@@ -72,13 +73,13 @@ class ConnexionState extends State<Connexion> {
                 ),
                 Container(
                   margin: const EdgeInsets.all(5),
-                  child: const Text(
+                  child: Text(
                     "Connectez-vous à votre compte",
                     style: TextStyle(fontSize: 15, color: Colors.white, fontWeight: FontWeight.bold),
                     textAlign: TextAlign.center,
                   ),
                 ),
-                const SizedBox(height: 20),
+                SizedBox(height: 20),
                 Form(
                   key: _formKey,
                   child: Column(
@@ -163,7 +164,7 @@ class ConnexionState extends State<Connexion> {
                             padding: EdgeInsets.zero,
                             tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                           ),
-                          child: const Align(
+                          child: Align(
                             alignment: Alignment.bottomRight,
                             child: Text(
                               "Mot de passe oublié ?",
@@ -212,7 +213,7 @@ class ConnexionState extends State<Connexion> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => const Inscription()),
+                                  builder: (context) => Inscription()),
                             );
                           },
                           style: ElevatedButton.styleFrom(
@@ -227,7 +228,7 @@ class ConnexionState extends State<Connexion> {
                           child: const Text(
                             "S'inscrire",
                             style:
-                                TextStyle(fontSize: 16, color: Colors.white),
+                              TextStyle(fontSize: 16, color: Colors.white),
                           ),
                         ),
                       ),
