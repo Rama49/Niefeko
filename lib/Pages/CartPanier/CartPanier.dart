@@ -51,10 +51,10 @@ class CartPanier extends StatelessWidget {
                       return 
                       GestureDetector(
   onTap: () {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => Product(imagePath: imagePath, name: name, price: price)),
-    );
+      // Navigator.push(
+      //   context,
+      //   MaterialPageRoute(builder: (context) => Product(imagePath: imagePath, name: name, price: price)),
+      // );
   },
   child: Card(
     child: Stack(
