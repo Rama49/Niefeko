@@ -24,11 +24,11 @@ class BoutonR extends StatelessWidget {
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
         backgroundColor: couleur ?? Colors.white,
-        padding: const EdgeInsets.symmetric(vertical: 20), // Supprimer le padding horizontal
+        padding: const EdgeInsets.symmetric(vertical: 5), // Supprimer le padding horizontal
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(borderRadius),
         ),
-        minimumSize: const Size(150, 0), // Utiliser la largeur fixe si spécifiée
+        minimumSize: const Size(150, 0), 
       ),
       child: Text(
         titre,
