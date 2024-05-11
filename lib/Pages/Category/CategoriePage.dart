@@ -279,12 +279,12 @@ class _CategoryPageState extends State<CategoryPage> {
   child: GestureDetector(
     onTap: () {
 
- Navigator.push(
-                   context,
-                   MaterialPageRoute(
-                     builder: (context) => detail(),
-                   ),
-                 );
+//  Navigator.push(
+//                    context,
+//                    MaterialPageRoute(
+//                      builder: (context) => detail(),
+//                    ),
+//                  );
 
 
       // Action à exécuter lorsque la carte est cliquée

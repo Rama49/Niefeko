@@ -92,8 +92,19 @@ class _searchState extends State<search> {
                       bottomRight: Radius.circular(40.0),
                     ),
                   ),
-                  padding: const EdgeInsets.all(20),
-                  height: 290,
+                 
+
+
+
+
+
+                         padding: EdgeInsets.only(
+          bottom: MediaQuery.of(context).padding.bottom != 0
+              ? MediaQuery.of(context).padding.bottom
+              : 250, // Ajoutez le padding en bas
+        ),
+        height: MediaQuery.of(context).size.height / 3,
+
                   child: Column(
                     children: [
                       SizedBox(height: 20),
