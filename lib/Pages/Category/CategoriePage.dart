@@ -95,7 +95,7 @@ class _CategoryPageState extends State<CategoryPage> {
       cartItems.add(Product(
         imagePath: imageUrl,
         name: productName,
-        description: '',
+        description: 'description',
         price: price,
       ));
       cartItemCount++; // Incrémentez cartItemCount
@@ -277,7 +277,7 @@ child:
               SizedBox(height: 8),
               Center(
                 child: ElevatedButton(
-                  onPressed: () => addToCart(index),
+                  onPressed: () => addToCart(product),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [

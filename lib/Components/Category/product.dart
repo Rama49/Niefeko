@@ -16,7 +16,7 @@ class Product {
     return {
       'imagePath': imagePath,
       'name': name,
-      //'desciption': description,
+      'desciption': description,
       'price': price,
     };
     }
