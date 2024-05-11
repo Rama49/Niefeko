@@ -118,26 +118,27 @@ class _searchState extends State<search> {
                       ),
                       const SizedBox(height: 20),
                       // ignore: sized_box_for_whitespace
-                      Container(
-                        height: 40,
-                        child: TextField(
-                          decoration: InputDecoration(
-                            contentPadding: const EdgeInsets.symmetric(
-                              vertical:
-                                  3, // Ajustez cette valeur pour réduire la hauteur de l'input
-                            ),
-                            filled: true,
-                            fillColor: Colors.white,
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8),
-                              borderSide: BorderSide.none,
-                            ),
-                            hintText: "Rechercher un produit",
-                            prefixIcon: const Icon(Icons.search),
-                            prefixIconColor: Colors.black,
-                          ),
+                     Container(
+                    height: 40,
+                    padding: EdgeInsets.only(right: 25, left: 25),
+                    child: TextField(
+                      // onChanged: searchProduct,
+                      decoration: InputDecoration(
+                        contentPadding: const EdgeInsets.symmetric(
+                          vertical: 3,
                         ),
+                        filled: true,
+                        fillColor: Colors.white,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                          borderSide: BorderSide.none,
+                        ),
+                        hintText: "Rechercher un produit",
+                        prefixIcon: const Icon(Icons.search),
+                        prefixIconColor: Colors.black,
                       ),
+                    ),
+                  ),
                       const SizedBox(height: 20),
 
                       // Carousel
