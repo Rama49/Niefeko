@@ -1,234 +1,132 @@
-  // Pages/Category/CategoriePage.dart
-  // ignore: duplicate_ignore
-  // ignore_for_file: file_names, library_private_types_in_public_api, unused_local_variable, use_build_context_synchronously// ignore_for_file: file_names, library_private_types_in_public_api, unused_local_variable, use_build_context_synchronously
+import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:niefeko/Components/Category/MesProduits.dart';
+import 'package:niefeko/Components/Category/detail.dart';
+import 'package:niefeko/Components/Recherche/recherche.dart';
+import 'package:niefeko/Pages/CartPanier/CartPanier.dart';
+//import 'package:niefeko/Pages/Favoris/PageFavoris.dart';
+import 'package:niefeko/Components/Category/product.dart';
+//import 'package:niefeko/Components/Category/detail.dart';
 
-  import 'package:flutter/material.dart';
-  import 'package:cloud_firestore/cloud_firestore.dart';
-  import 'package:niefeko/Pages/CartPanier/CartPanier.dart';
-  // ignore: unused_import
-  import 'package:niefeko/Pages/Favoris/pagefavoris.dart';
-  import 'package:firebase_auth/firebase_auth.dart';
-  // ignore: duplicate_import
-  import 'package:niefeko/Pages/CartPanier/CartPanier.dart';
-  // import 'package:niefeko/Pages/PanierHistorique/PanierPage.dart';
-  // import 'package:niefeko/Pages/SettingsPage/SettingsPage.dart';
 
-  class Product {
-    final String imagePath;
-    final String name;
-    final double price;
-    int quantity; // Champ pour stocker la quantité du produit
+class CategoryPage extends StatefulWidget {
+  @override
+  _CategoryPageState createState() => _CategoryPageState();
 
-    // Product({required this.imagePath, required this.name, required this.price});
+}
 
-    // Convertir le produit en un map pour Firestore
-    Map<String, dynamic> toMap() {
-      return {
-        'imagePath': imagePath,
-        'name': name,
-        'price': price,
-      };
-    }
+class _CategoryPageState extends State<CategoryPage> {
+    
+  List<bool> isFavoritedList = List.generate(20, (index) => false);
+  List<double> prices = [];
+  List<String> filteredImagePaths = [];
+  //List<String> names = [];
+  List<String> imagePaths = [
+   'assets/casque.png',
+    'assets/chaussure.png',
+    'assets/coquillage.png',
+    'assets/gourde.png',
+    'assets/jordan.png',
+    'assets/lunnete1.png',
+    'assets/lunette.png',
+    'assets/montre.png',
+    'assets/pantalon.png',
+    'assets/pot.png',
+    'assets/sac1.png',
+    'assets/sac.jpg',
+    'assets/sacoche.png',
+    'assets/shoes.png',
+    'assets/t-shirt.png',
+    'assets/torche.png',
+    'assets/tshirt-polo.jpg',
+    'assets/tshirt1.jpg',
+    'assets/tshirtRouge.png',
+    'assets/torche.png',
+  ];
+  int cartItemCount = 0;
+  List<Product> cartItems = [];
+  @override
+  void initState() {
+    super.initState();
+    filteredImagePaths.addAll(imagePaths);
+  }
 
-    Product({
-      required this.imagePath,
-      required this.name,
-      required this.price,
-      this.quantity = 1,
+      DocumentSnapshot userSnapshot = await FirebaseFirestore.instance
+          .collection('Inscription')
+          .doc(userID)
+          .get();
+
+  void addToCart(Product product) {
+    // Récupérer les informations nécessaires
+    String imageUrl = product.imagePath;
+    String productName = product.name;
+        //filteredImagePaths[index].split('/').last.split('.').first;
+    double price = product.price;
+    DateTime timestamp = DateTime.now(); // Timestamp de la commande
+
+    // TODO: Récupérer l'ID du client, le prénom et le nom du client
+    String idClient = ""; // Remplir avec l'ID du client
+    String prenom = ""; // Remplir avec le prénom du client
+    String nom = ""; // Remplir avec le nom du client
+
+    // Calculer le montant total
+    double totalAmount = price * 1; // Pour l'exemple, mettons la quantité à 1
+
+    // Créer une instance de la commande
+    Order order = Order(
+      imageUrl: imageUrl,
+      idClient: idClient,
+      prenom: prenom,
+      nom: nom,
+      nomProduit: productName,
+      nbrProduit: 1, // Pour l'exemple, mettons la quantité à 1
+      prix: price,
+      totalAmount: totalAmount,
+      timestamp: timestamp,
+    );
+
+    // Ajouter la commande à Firestore
+    addOrderToFirestore(order);
+
+    setState(() {
+      cartItems.add(Product(
+        imagePath: imageUrl,
+        name: productName,
+        description: 'description',
+        price: price,
+      ));
+      cartItemCount++; // Incrémentez cartItemCount
     });
   }
 
-  // ignore: use_key_in_widget_constructors
-  class CategoryPage extends StatefulWidget {
-    @override
-    _CategoryPageState createState() => _CategoryPageState();
+  void removeFromCart(int index) {
+    setState(() {
+      cartItems.removeAt(index);
+      cartItemCount--; // Décrémentez cartItemCount
+    });
   }
 
-  class _CategoryPageState extends State<CategoryPage> {
-    List<bool> isFavoritedList = List.generate(20, (index) => false);
-    List<String> imagePaths = [
-      'assets/casque.png',
-      'assets/chaussure.png',
-      'assets/coquillage.png',
-      'assets/gourde.png',
-      'assets/jordan.png',
-      'assets/lunnete1.png',
-      'assets/lunette.png',
-      'assets/montre.png',
-      'assets/pantalon.png',
-      'assets/pot.png',
-      'assets/sac1.png',
-      'assets/sac.jpg',
-      'assets/sacoche.png',
-      'assets/shoes.png',
-      'assets/t-shirt.png',
-      'assets/torche.png',
-      'assets/tshirt-polo.jpg',
-      'assets/tshirt1.jpg',
-      'assets/tshirtRouge.png',
-      'assets/torche.png',
-    ];
-    List<double> prices = List.generate(20, (index) => 1000.0);
-    List<String> filteredImagePaths = [];
-    int cartItemCount = 0;
-    List<Product> cartItems = [];
-
-    @override
-    void initState() {
-      super.initState();
-      filteredImagePaths.addAll(imagePaths);
-    }
-
-    void searchProduct(String query) {
-      setState(() {
-        filteredImagePaths = imagePaths
-            .where((path) => path.toLowerCase().contains(query.toLowerCase()))
-            .toList();
-      });
-    }
-
-  void addToCart(int index) async {
-  String imageUrl = imagePaths[index];
-  String productName = filteredImagePaths[index].split('/').last.split('.').first;
-  double price = prices[index];
-  DateTime timestamp = DateTime.now(); // Timestamp de la commande
-
-  // Obtenir l'utilisateur actuellement connecté
-  User? user = FirebaseAuth.instance.currentUser;
-
-  // Vérifier si l'utilisateur est connecté
-  if (user != null) {
-    String userID = user.uid; // ID de l'utilisateur actuel
-
-    // Vérifier si le produit existe déjà dans le panier de l'utilisateur
-    CollectionReference userCart = FirebaseFirestore.instance.collection('Panier').doc(userID).collection('Items');
-    DocumentSnapshot productSnapshot = await userCart.doc(productName).get();
-
-    if (productSnapshot.exists) {
-      // Le produit existe déjà dans le panier de l'utilisateur, augmenter simplement la quantité
-      userCart.doc(productName).update({'quantity': FieldValue.increment(1)});
-    } else {
-      // Le produit n'existe pas encore dans le panier de l'utilisateur, l'ajouter
-      userCart.doc(productName).set({
-        'imageUrl': imageUrl,
-        'name': productName,
-        'price': price,
-        'quantity': 1,
-        'timestamp': timestamp,
-      });
-    }
-  } else {
-    // Gérer le cas où l'utilisateur n'est pas connecté
-    // Vous pouvez afficher un message d'erreur ou rediriger vers la page de connexion
-  }
-}
-
-    void removeFromCart(int index) {
-      setState(() {
-        cartItems.removeAt(index);
-        cartItemCount--;
-      });
-    }
-
-    void navigateToCartPage() async {
-      User? user = FirebaseAuth.instance.currentUser;
-      if (user == null) {
-        // Redirection vers la page de connexion si l'utilisateur n'est pas connecté
-        // Vous pouvez implémenter cela selon vos besoins
-        return;
-      }
-
-      String userID = user.uid;
-      String email = user.email!;
-
-      DocumentSnapshot userSnapshot = await FirebaseFirestore.instance
-          .collection('Inscription')
-          .doc(userID)
-          .get();
-
-      String prenom = userSnapshot['prenom'];
-      String nom = userSnapshot['nom'];
-
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => CartPanier(
-            cartItems: cartItems,
-            removeFromCart: removeFromCart,
-            idClient: userID,
-            prenom: prenom,
-            nom: nom, // Passer la valeur de nom
-            email: email,
-            validateCart: validateCart,
-          ),
-        ),
+  void navigateToCartPage() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => CartPanier(cartItems: cartItems, removeFromCart: removeFromCart, idClient: userID, prenom: "prenom", nom: "nom", email: "email", validateCart: validateCart),
       );
     }
 
-    void validateCart(
-        BuildContext context, String idClient, String prenom, String nom) async {
-      User? user = FirebaseAuth.instance.currentUser;
-      if (user == null) {
-        // Redirection vers la page de connexion si l'utilisateur n'est pas connecté
-        // Vous pouvez implémenter cela selon vos besoins
-        return;
-      }
-
-      String userID = user.uid;
-
-      DocumentSnapshot userSnapshot = await FirebaseFirestore.instance
-          .collection('Inscription')
-          .doc(userID)
-          .get();
-
-      String prenom = userSnapshot['prenom'];
-      String nom = userSnapshot['nom'];
-      String email = userSnapshot[
-          'email']; // Si l'email est stocké dans la collection "Inscription"
-
-      // ignore: avoid_function_literals_in_foreach_calls
-      cartItems.forEach((product) {
-        String imageUrl = product.imagePath;
-        String productName = product.name;
-        double price = product.price;
-        DateTime timestamp = DateTime.now();
-
-        double totalAmount = price *
-            product
-                .quantity; // Calculer le montant total en multipliant le prix par la quantité
-
-        Order order = Order(
-          imageUrl: imageUrl,
-          idClient: userID,
-          prenom: prenom,
-          nom: nom,
-          email: email,
-          nomProduit: productName,
-          nbrProduit: product.quantity, // Utiliser la quantité du produit
-          prix: price,
-          totalAmount: totalAmount,
-          timestamp: timestamp,
-        );
-
-        addOrderToFirestore(order);
-      });
-
-      setState(() {
-        cartItems.clear();
-        cartItemCount = 0;
-      });
-
-      showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: const Text('Panier validé'),
-          content: const Text('Votre panier a été validé avec succès.'),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text('OK'),
-            ),
-          ],
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Color(0xFF612C7D),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.white),
+         onPressed: () {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => search()),
+    );
+  },
         ),
       );
     }
@@ -350,32 +248,105 @@
                     ),
             ],
           ),
-        ),
-      );
-    }
+        ],
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Container(
+              color: Color(0xFF612C7D),
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(7),
+                  color: Colors.white,
+                ),
+                child: TextField(
+                  onChanged: searchProduct,
+                  decoration: InputDecoration(
+                    hintText: 'Search...',
+                    prefixIcon: Icon(Icons.search, color: Colors.grey),
+                    border: InputBorder.none,
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(height: 10),
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Container(
+                padding: EdgeInsets.all(8.0),
+                child: Row(
+                  children: List.generate(
+                    filteredImagePaths.length,
+                    (index) => Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: CircleAvatar(
+                        radius: 50,
+                        backgroundImage: AssetImage(filteredImagePaths[index]),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(height: 10),
+            filteredImagePaths.isEmpty
+                ? Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      "Produit non trouvé",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                        color: Colors.red,
+                      ),
+                    ),
+                  )
+                : GridView.builder(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 8,
+                      mainAxisSpacing: 8,
+                    ),
+                    itemCount: MesProduits.allProducts.length,
+                    itemBuilder: (context, index) {
+                      final allproducts = MesProduits.allProducts[index];
+                      return GestureDetector(
+                       onTap: () =>//{
 
-    Widget buildCard(int index) {
-      String imageName =
-          filteredImagePaths[index].split('/').last.split('.').first;
-      double price = prices[index];
-      return 
-      InkWell(
-    onTap: () {
-      // Navigator.push(
-      //   context,
-      //   MaterialPageRoute(builder: (context) => Detail(product: product)),
-      // );
-    },
-    child: Card(
-      child: Stack(
-        children: [
+                          Navigator.push(
+                   context,
+                   MaterialPageRoute(
+                     builder: (context) => Detail(product: allproducts),
+                   ),
+                   //child: buildCard(product: allProducts,),
+                   ),
+                   //},
+                   child: buildCard(index, Product(imagePath: allproducts.imagePath, name: allproducts.name, description: allproducts.description, price: allproducts.price)),
+                   );
+                   }
+                   )
+     ]
+    ),
+    )
+    );
+  }  
+  Widget buildCard(index, Product product){
+  return Card(
+child: 
+ Stack(
+      children: 
+        [
           Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Image.asset(
-                filteredImagePaths[index],
-                width: 55,
-                height: 55,
+                product.imagePath,
+                width: 90,
+                height: 90,
                 fit: BoxFit.cover,
               ),
               Padding(
@@ -383,13 +354,13 @@
                 child: Column(
                   children: [
                     Text(
-                      imageName,
-                      style: const TextStyle(fontWeight: FontWeight.bold),
+                      product.name,
+                      style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      '\$$price',
-                      style: const TextStyle(
+                      '${product.price}',
+                      style: TextStyle(
                           fontWeight: FontWeight.bold, color: Colors.green),
                     ),
                   ],
@@ -397,8 +368,8 @@
               ),
               Center(
                 child: ElevatedButton(
-                  onPressed: () => addToCart(index),
-                  child: const Row(
+                  onPressed: () => addToCart(product),
+                  child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(
@@ -409,9 +380,8 @@
                     ],
                   ),
                   style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 20),
-                    backgroundColor: const Color(0xFF612C7D),
+                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                    backgroundColor: Color(0xFF612C7D),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(7),
                     ),
@@ -436,9 +406,10 @@
                 if (isFavoritedList[index]) {
                   // Create a product instance
                   Product favoriteProduct = Product(
-                    imagePath: imagePaths[index],
-                    name: imageName,
-                    price: price,
+                    imagePath: product.imagePath,
+                    name: product.name,
+                    description: 'ma description',
+                    price: product.price,
                   );
 
                   // Add the product to favorites in Firestore
@@ -448,25 +419,9 @@
             ),
           ),
         ],
-      ),
-    ),
-  );
+      
+    ),);
 
-    }
-
-    // Méthode pour ajouter un produit aux favoris dans Firestore
-    void addFavoriteToFirestore(Product favoriteProduct) {
-      // Référence à la collection "favorites" dans Firestore
-      CollectionReference favorites =
-          FirebaseFirestore.instance.collection('favoris');
-
-      // Ajouter le produit aux favoris dans Firestore
-      favorites.add(favoriteProduct.toMap()).then((value) =>
-          // ignore: avoid_print
-          print("Produit ajouté aux favoris avec l'ID: ${value.id}")).catchError(
-          // ignore: avoid_print
-          (error) => print("Erreur lors de l'ajout aux favoris: $error"));
-    }
   }
 
   class Order {

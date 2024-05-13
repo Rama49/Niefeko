@@ -12,6 +12,7 @@ import 'package:niefeko/Pages/PanierHistorique/PanierPage.dart';
 import 'package:niefeko/Pages/SettingsPage/SettingsPage.dart';
 import 'package:niefeko/Reutilisable/carteReu.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:niefeko/Components/Category/product.dart';
 
 // ignore: camel_case_types
 class search extends StatefulWidget {
@@ -25,7 +26,7 @@ class search extends StatefulWidget {
 // ignore: camel_case_types
 class _searchState extends State<search> {
   List<Product> cartItems = [
-    Product(name: '', price: 0, imagePath: ''),
+    Product(name: '', price: 0, description: '', imagePath: ''),
   ];
 
   // Fonction removeFromCart pour illustrer

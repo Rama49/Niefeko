@@ -3,7 +3,9 @@
 // ignore_for_file: file_names
 
 import 'package:flutter/material.dart';
-import 'package:niefeko/Pages/Category/CategoriePage.dart'; // Importez les classes nécessaires depuis le fichier de catégorie
+import 'package:niefeko/Pages/Category/CategoriePage.dart';
+import 'package:niefeko/Components/Category/product.dart';
+
 
 class CartPanier extends StatelessWidget {
   final List<Product> cartItems;
@@ -71,27 +73,20 @@ class CartPanier extends StatelessWidget {
                     },
                   ),
                 ),
-                Center(
-                  child: Container(
-                    margin: const EdgeInsets.symmetric(vertical: 16.0),
-                    child: ElevatedButton(
-                      onPressed: () {
-                        validateCart(context, idClient, prenom, nom);
-                        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                          content: Text('Panier validé'),
-                        ));
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF612C7D),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(7),
-                        ),
+                Container(
+                  alignment: Alignment.center,
+                  child: ElevatedButton(
+                    onPressed: () => validateCart(context),
+                    style: ElevatedButton.styleFrom(
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Text(
+                        'Valider le panier',
+                        style: TextStyle(fontSize: 18),
                       ),
-                      child: const Padding(
-                        padding: EdgeInsets.all(10.0),
-                        child: Text(
-                          'Valider le panier',
-                        style: TextStyle(fontSize: 18, color: Colors.white),
+                    ),
+                      //  primary: Colors.green,
                   ),
                 ),
               ),

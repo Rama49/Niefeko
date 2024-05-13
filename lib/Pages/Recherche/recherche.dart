@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:niefeko/Components/Categories/categorie.dart';
+import 'package:niefeko/Components/Category/product.dart';
 import 'package:niefeko/Components/Deals/deal.dart';
 // ignore: unused_import
 import 'package:niefeko/Pages/CartPanier/CartPanier.dart';
@@ -25,7 +26,7 @@ class search extends StatefulWidget {
 // ignore: camel_case_types
 class _searchState extends State<search> {
   List<Product> cartItems = [
-    Product(name: '', price: 0, imagePath: ''),
+    Product(imagePath: "imagePath", name: "name", description: "description", price: 0),
   ];
 
   // Fonction removeFromCart pour illustrer

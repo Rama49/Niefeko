@@ -1,7 +1,10 @@
 // Pages/Favoris/PageFavoris.dart
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:niefeko/Pages/Category/CategoriePage.dart';
+//import 'package:niefeko/Components/Recherche/recherche.dart';
+//import 'package:niefeko/Pages/Category/CategoriePage.dart';
+import 'package:niefeko/Components/Category/product.dart';
+
 
 // ignore: camel_case_types
 class pagefavoris extends StatelessWidget {
@@ -19,6 +22,62 @@ class pagefavoris extends StatelessWidget {
         iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: ProductList(),
+      // bottomNavigationBar: BottomAppBar(
+      //   color: Color(0xFF593070),
+      //   child: Row(
+      //     mainAxisAlignment: MainAxisAlignment.spaceAround,
+      //     children: [
+      //       IconButton(
+      //         onPressed: () {
+      //           Navigator.push(
+      //             context,
+      //             MaterialPageRoute(
+      //               builder: (context) => search(),
+      //             ),
+      //           );
+      //         },
+      //         icon: Icon(Icons.home, color: Colors.white),
+      //       ),
+      //       IconButton(
+      //         onPressed: () {
+      //           Navigator.push(
+      //             context,
+      //             MaterialPageRoute(
+      //               builder: (context) => search(),
+      //             ),
+      //           );
+      //         },
+      //         icon: Icon(Icons.shopping_cart, color: Colors.white),
+      //       ),
+      //       IconButton(
+      //         onPressed: () {
+      //           // Navigator.push(
+      //           //   context,
+      //           //   MaterialPageRoute(
+      //           //       builder: (context) => pageFavoris(
+      //           //           Product(imagePath: "assets/sacoche.png", name: "name", price: 1000): Product(
+      //           //               imagePath: "assets/casque.png",
+      //           //               name: "rrrrrraaaaama",
+      //           //               price: 100))),
+      //           // );
+      //         },
+      //         icon: Icon(Icons.favorite, color: Colors.white),
+      //       ),
+      //       IconButton(
+      //         onPressed: () {
+      //           Navigator.push(
+      //             context,
+      //             MaterialPageRoute(
+      //               builder: (context) => CategoryPage(),
+      //             ),
+      //           );
+      //         },
+      //         icon: Icon(Icons.settings, color: Colors.white),
+      //       ),
+      //     ],
+      //   ),
+      // ),
+    
     );
   }
 }
@@ -50,11 +109,14 @@ class ProductList extends StatelessWidget {
 
             String imagePath = data['imagePath'] ?? 'assets/sac1.png';
             String name = data['name'] ?? 'sac';
-            double price = (data['price'] ?? 10000).toDouble();
+            String description = data['desciption'];
+            double price = data['price'] ?? 10000;
+            String idClient = data['idClient'] ?? 'idClient';
 
             Product product = Product(
               imagePath: imagePath,
               name: name,
+              description: description,
               price: price,
             );
 
