@@ -9,8 +9,6 @@
   // ignore: unused_import
   import 'package:niefeko/Pages/Favoris/pagefavoris.dart';
   import 'package:firebase_auth/firebase_auth.dart';
-  // ignore: unused_import
-  import 'package:niefeko/Components/Recherche/recherche.dart';
   // ignore: duplicate_import
   import 'package:niefeko/Pages/CartPanier/CartPanier.dart';
   // import 'package:niefeko/Pages/PanierHistorique/PanierPage.dart';
