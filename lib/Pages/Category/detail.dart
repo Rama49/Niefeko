@@ -3,6 +3,7 @@ import 'package:niefeko/Components/Category/product.dart';
 import 'package:niefeko/Pages/Category/CategoriePage.dart';
 import 'package:niefeko/Pages/CartPanier/CartPanier.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 //import 'package:flutter/cupertino.dart';
 
 class Detail extends StatefulWidget{
@@ -25,67 +26,170 @@ List<bool> isFavoritedList = List.generate(20, (index) => false);
     super.initState();
     filteredImagePaths.addAll(imagePaths);
   }
-void addToCart(Product product) {
-    // Récupérer les informations nécessaires
-    String imageUrl = product.imagePath;
-    String productName = product.name;
-        //filteredImagePaths[index].split('/').last.split('.').first;
-    double price = product.price;
-    DateTime timestamp = DateTime.now(); // Timestamp de la commande
+void addToCart(Product product) async {
+      String imageUrl = product.imagePath;
+      String productName = product.name;
+      double price = product.price;
+      // DateTime timestamp = DateTime.now(); // Timestamp de la commande
 
-    // TODO: Récupérer l'ID du client, le prénom et le nom du client
-    String idClient = ""; // Remplir avec l'ID du client
-    String prenom = ""; // Remplir avec le prénom du client
-    String nom = ""; // Remplir avec le nom du client
+      // String idClient = ""; // Remplir avec l'ID du client
+      // String prenom = ""; // Remplir avec le prénom du client
+      // String nom = ""; // Remplir avec le nom du client
 
-    // Calculer le montant total
-    double totalAmount = price * 1; // Pour l'exemple, mettons la quantité à 1
+      // Calculer le montant total
+      //double totalAmount = price * 1; // Pour l'exemple, mettons la quantité à 1
 
-    // Créer une instance de la commande
-    Order order = Order(
-      imageUrl: imageUrl,
-      idClient: idClient,
-      prenom: prenom,
-      nom: nom,
-      nomProduit: productName,
-      nbrProduit: 1, // Pour l'exemple, mettons la quantité à 1
-      prix: price,
-      totalAmount: totalAmount,
-      timestamp: timestamp,
-    );
+      // Vérifier si le produit existe déjà dans le panier
+      int existingIndex =
+          cartItems.indexWhere((product) => product.name == productName);
+      if (existingIndex != -1) {
+        // Le produit existe déjà dans le panier, augmentez simplement la quantité
+        setState(() {
+          cartItems[existingIndex].quantity++; // Augmenter la quantité du produit
+          cartItemCount++; // Augmenter le nombre total d'articles dans le panier
+        });
+      } else {
+        // Le produit n'existe pas encore dans le panier, l'ajouter
+        setState(() {
+          cartItems.add(Product(
+            imagePath: imageUrl,
+            name: productName,
+            description: 'description',
+            price: price,
+            quantity: 1, // Initialiser la quantité à 1
+          ));
+          cartItemCount++; // Augmenter le nombre total d'articles dans le panier
+        });
+      }
+    }
 
-    // Ajouter la commande à Firestore
-    addOrderToFirestore(order);
+    void removeFromCart(int index) {
+      setState(() {
+        cartItems.removeAt(index);
+        cartItemCount--;
+      });
+    }
 
-    setState(() {
-      cartItems.add(Product(
-        imagePath: imageUrl,
-        name: productName,
-        description: 'description',
-        price: price,
-      ));
-      cartItemCount++; // Incrémentez cartItemCount
-    });
-  }
 
-  void removeFromCart(product) {
-    setState(() {
-      cartItems.removeAt(product);
-      cartItemCount--; // Décrémentez cartItemCount
-    });
-  }
+  Future<void> navigateToCartPage() async {
+     User? user = FirebaseAuth.instance.currentUser;
+      if (user == null) {
+        // Redirection vers la page de connexion si l'utilisateur n'est pas connecté
+        // Vous pouvez implémenter cela selon vos besoins
+        return;
+      }
 
-  void navigateToCartPage() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => CartPanier(
-          cartItems: cartItems,
-          removeFromCart: removeFromCart,
+      String userID = user.uid;
+      String email = user.email!;
+
+      DocumentSnapshot userSnapshot = await FirebaseFirestore.instance
+          .collection('Inscription')
+          .doc(userID)
+          .get();
+
+      String prenom = userSnapshot['prenom'];
+      String nom = userSnapshot['nom'];
+
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => CartPanier(
+            cartItems: cartItems,
+            removeFromCart: removeFromCart,
+            idClient: userID,
+            prenom: prenom,
+            nom: nom, // Passer la valeur de nom
+            email: email,
+            validateCart: validateCart,
+          ),
         ),
-      ),
-    );
-  }
+      );
+    }
+
+     void validateCart(
+        BuildContext context, String idClient, String prenom, String nom) async {
+      User? user = FirebaseAuth.instance.currentUser;
+      if (user == null) {
+        // Redirection vers la page de connexion si l'utilisateur n'est pas connecté
+        // Vous pouvez implémenter cela selon vos besoins
+        return;
+      }
+
+      String userID = user.uid;
+
+      DocumentSnapshot userSnapshot = await FirebaseFirestore.instance
+          .collection('Inscription')
+          .doc(userID)
+          .get();
+
+      String prenom = userSnapshot['prenom'];
+      String nom = userSnapshot['nom'];
+      String email = userSnapshot[
+          'email']; // Si l'email est stocké dans la collection "Inscription"
+
+      // ignore: avoid_function_literals_in_foreach_calls
+      cartItems.forEach((product) {
+        String imageUrl = product.imagePath;
+        String productName = product.name;
+        double price = product.price;
+        DateTime timestamp = DateTime.now();
+
+        double totalAmount = price *
+            product
+                .quantity; // Calculer le montant total en multipliant le prix par la quantité
+
+        Order order = Order(
+          imageUrl: imageUrl,
+          idClient: userID,
+          prenom: prenom,
+          nom: nom,
+          email: email,
+          nomProduit: productName,
+          nbrProduit: product.quantity, // Utiliser la quantité du produit
+          prix: price,
+          totalAmount: totalAmount,
+          timestamp: timestamp,
+        );
+
+        addOrderToFirestore(order);
+      });
+
+      setState(() {
+        cartItems.clear();
+        cartItemCount = 0;
+      });
+
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Panier validé'),
+          content: const Text('Votre panier a été validé avec succès.'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('OK'),
+            ),
+          ],
+        ),
+      );
+    }
+void addOrderToFirestore(Order order) {
+      CollectionReference orders =
+          FirebaseFirestore.instance.collection('Panier');
+
+      orders
+          .add(order.toMap())
+          // ignore: avoid_print
+          .then((value) => print("Commande ajoutée avec l'ID: ${value.id}"))
+          .catchError(
+              // ignore: avoid_print
+              (error) => print("Erreur lors de l'ajout de la commande: $error"));
+    }
+
+
+
+
+
 
   @override
   Widget build(BuildContext context){
@@ -374,19 +478,6 @@ bottomNavigationBar: Container(
         .catchError(
             (error) => print("Erreur lors de l'ajout aux favoris: $error"));
   }
-
-  void addOrderToFirestore(Order order) {
-    // Référence à la collection "orders" dans Firestore
-    CollectionReference orders =
-        FirebaseFirestore.instance.collection('Panier');
-
-    // Ajouter la commande à Firestore
-    orders
-        .add(order.toMap())
-        .then((value) => print("Commande ajoutée avec l'ID: ${value.id}"))
-        .catchError(
-            (error) => print("Erreur lors de l'ajout de la commande: $error"));
-  }
 }
 
 class Order {
@@ -394,6 +485,7 @@ class Order {
   final String idClient;
   final String prenom;
   final String nom;
+  final String email;
   final String nomProduit;
   final int nbrProduit;
   final double prix;
@@ -405,6 +497,7 @@ class Order {
     required this.idClient,
     required this.prenom,
     required this.nom,
+    required this.email,
     required this.nomProduit,
     required this.nbrProduit,
     required this.prix,
@@ -419,6 +512,7 @@ class Order {
       'idClient': idClient,
       'prenom': prenom,
       'nom': nom,
+      'email': email,
       'nomProduit': nomProduit,
       'nbrProduit': nbrProduit,
       'prix': prix,

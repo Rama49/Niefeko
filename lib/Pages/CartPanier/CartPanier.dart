@@ -3,9 +3,9 @@
 // ignore_for_file: file_names
 
 import 'package:flutter/material.dart';
-import 'package:niefeko/Pages/Category/CategoriePage.dart';
+//import 'package:niefeko/Components/Category/detail.dart';
 import 'package:niefeko/Components/Category/product.dart';
-
+//import 'package:niefeko/Pages/Category/CategoriePage.dart'; // Importez les classes nécessaires depuis le fichier de catégorie
 
 class CartPanier extends StatelessWidget {
   final List<Product> cartItems;
@@ -57,14 +57,27 @@ class CartPanier extends StatelessWidget {
       //   MaterialPageRoute(builder: (context) => Product(imagePath: imagePath, name: name, price: price)),
       // );
   },
-  child: Card(
-    child: Stack(
-      children: [
-        // Vos enfants de la carte ici...
-      ],
-    ),
-  ),
-);
+                    child: Card(
+                        child: ListTile(
+                          leading: Image.asset(
+                            product.imagePath,
+                            width: 50,
+                            height: 50,
+                            fit: BoxFit.cover,
+                          ),
+                          title: Text(product.name),
+                          subtitle: Text('${product.price}cfa'),
+                          trailing: IconButton(
+                            icon: Icon(Icons.delete),
+                            onPressed: () {
+                              removeFromCart(index);
+                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                content: Text('Produit supprimé du panier'),
+                              ));
+                            },
+                          ),
+                        ),
+                      ));
 
                     },
                   ),
@@ -94,7 +107,6 @@ class CartPanier extends StatelessWidget {
                         ),
                       ),
                     ),
-                      //  primary: Colors.green,
                   ),
                 ),
               ],
