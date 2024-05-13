@@ -1,3 +1,4 @@
+// Pages/Favoris/PageFavoris.dart
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 //import 'package:niefeko/Components/Recherche/recherche.dart';
@@ -5,101 +6,51 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:niefeko/Components/Category/product.dart';
 
 
-class pageFavoris extends StatelessWidget {
+// ignore: camel_case_types
+class pagefavoris extends StatelessWidget {
+  const pagefavoris({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xFF593070),
-        title: Text(
-          'Détails du produit',
+        backgroundColor: const Color(0xFF593070),
+        title: const Text(
+          'Produits favoris',
           style: TextStyle(color: Colors.white),
         ),
+        iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: ProductList(),
-      // bottomNavigationBar: BottomAppBar(
-      //   color: Color(0xFF593070),
-      //   child: Row(
-      //     mainAxisAlignment: MainAxisAlignment.spaceAround,
-      //     children: [
-      //       IconButton(
-      //         onPressed: () {
-      //           Navigator.push(
-      //             context,
-      //             MaterialPageRoute(
-      //               builder: (context) => search(),
-      //             ),
-      //           );
-      //         },
-      //         icon: Icon(Icons.home, color: Colors.white),
-      //       ),
-      //       IconButton(
-      //         onPressed: () {
-      //           Navigator.push(
-      //             context,
-      //             MaterialPageRoute(
-      //               builder: (context) => search(),
-      //             ),
-      //           );
-      //         },
-      //         icon: Icon(Icons.shopping_cart, color: Colors.white),
-      //       ),
-      //       IconButton(
-      //         onPressed: () {
-      //           // Navigator.push(
-      //           //   context,
-      //           //   MaterialPageRoute(
-      //           //       builder: (context) => pageFavoris(
-      //           //           Product(imagePath: "assets/sacoche.png", name: "name", price: 1000): Product(
-      //           //               imagePath: "assets/casque.png",
-      //           //               name: "rrrrrraaaaama",
-      //           //               price: 100))),
-      //           // );
-      //         },
-      //         icon: Icon(Icons.favorite, color: Colors.white),
-      //       ),
-      //       IconButton(
-      //         onPressed: () {
-      //           Navigator.push(
-      //             context,
-      //             MaterialPageRoute(
-      //               builder: (context) => CategoryPage(),
-      //             ),
-      //           );
-      //         },
-      //         icon: Icon(Icons.settings, color: Colors.white),
-      //       ),
-      //     ],
-      //   ),
-      // ),
-    
     );
   }
 }
 
 class ProductList extends StatelessWidget {
+  const ProductList({super.key});
+
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
       stream: FirebaseFirestore.instance.collection('favoris').snapshots(),
       builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator());
         }
 
         if (snapshot.hasError) {
-          return Center(child: Text('Une erreur s\'est produite.'));
+          return const Center(child: Text('Une erreur s\'est produite.'));
         }
 
         if (snapshot.data!.docs.isEmpty) {
-          return Center(child: Text('Aucun produit trouvé dans les favoris.'));
+          return const Center(
+              child: Text('Aucun produit trouvé dans les favoris.'));
         }
 
         return ListView(
           children: snapshot.data!.docs.map((DocumentSnapshot document) {
             Map<String, dynamic> data = document.data() as Map<String, dynamic>;
 
-            // Vérifiez si les champs requis sont null, sinon utilisez une valeur par défaut
             String imagePath = data['imagePath'] ?? 'assets/sac1.png';
             String name = data['name'] ?? 'sac';
             String description = data['desciption']?? 'Description du produit';
@@ -111,7 +62,6 @@ class ProductList extends StatelessWidget {
               name: name,
               description: description,
               price: price,
-              // idClient: idClient,
             );
 
             return ProductCard(product: product, documentId: document.id);
@@ -126,7 +76,7 @@ class ProductCard extends StatelessWidget {
   final Product product;
   final String documentId;
 
-  const ProductCard({required this.product, required this.documentId});
+  const ProductCard({super.key, required this.product, required this.documentId});
 
   @override
   Widget build(BuildContext context) {
@@ -136,27 +86,30 @@ class ProductCard extends StatelessWidget {
         title: Text(product.name),
         subtitle: Text('Prix: ${product.price}'),
         trailing: IconButton(
-          icon: Icon(Icons.delete), // Icône de suppression
+          icon: const Icon(Icons.delete, color: Colors.red,),
           onPressed: () {
             showDialog(
               context: context,
               builder: (BuildContext context) {
                 return AlertDialog(
-                  title: Text('Confirmer la suppression'),
-                  content: Text('Voulez-vous vraiment supprimer ce produit ?'),
+                  title: const Text('Confirmer la suppression'),
+                  content:
+                      const Text('Voulez-vous vraiment supprimer ce produit ?'),
                   actions: <Widget>[
                     TextButton(
-                      child: Text('Annuler'),
+                      child: const Text('Annuler'),
                       onPressed: () {
-                        Navigator.of(context).pop(); // Fermer la boîte de dialogue
+                        Navigator.of(context).pop();
                       },
                     ),
                     TextButton(
-                      child: Text('Supprimer'),
+                      child: const Text('Supprimer'),
                       onPressed: () {
-                        // Supprimez le produit de la base de données Firestore en utilisant l'ID du document
-                        FirebaseFirestore.instance.collection('favoris').doc(documentId).delete();
-                        Navigator.of(context).pop(); // Fermer la boîte de dialogue
+                        FirebaseFirestore.instance
+                          .collection('favoris')
+                          .doc(documentId)
+                          .delete();
+                        Navigator.of(context).pop();
                       },
                     ),
                   ],

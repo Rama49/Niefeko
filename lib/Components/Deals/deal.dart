@@ -3,7 +3,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:niefeko/Pages/Category/CategoriePage.dart';
 
 class deal extends StatefulWidget {
-  const deal({super.key});
+  const deal({Key? key}) : super(key: key);
 
   @override
   State<deal> createState() => _dealState();
@@ -13,22 +13,21 @@ class _dealState extends State<deal> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      padding: EdgeInsets.all(10),
+      padding: const EdgeInsets.only(bottom: 20, right: 5),
       child: Column(
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
+              const Text(
                 "Special Vente",
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  fontSize: 20,
+                  fontSize: 25,
                 ),
               ),
               GestureDetector(
                 onTap: () {
-                  // Action à effectuer lorsque "Voir Plus" est cliqué
                   Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -38,7 +37,7 @@ class _dealState extends State<deal> {
                 },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
+                  children: const [
                     Text(
                       "Voir Plus",
                       style: TextStyle(
@@ -49,82 +48,104 @@ class _dealState extends State<deal> {
                     ),
                     Icon(
                       Icons.arrow_forward,
-                      color: Colors.black, // Couleur de la flèche
-                      size: 20, // Taille de la flèche
+                      color: Colors.black,
+                      size: 20,
                     ),
                   ],
                 ),
               ),
             ],
           ),
-SizedBox(height: 20),
-          // SizedBox(height: 10),
+          const SizedBox(height: 20),
           CarouselSlider(
             items: [
-              //1st Image of Slider
               Container(
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(20.0),
+                      topRight: Radius.circular(20.0),
+                      bottomLeft: Radius.circular(20.0),
+                      bottomRight: Radius.circular(20.0),
+                    ),
                   color: Color.fromARGB(255, 215, 194, 233),
                 ),
-                child: Image.asset("casque.png", fit: BoxFit.contain),
+                child: Image.asset("assets/casque.png", fit: BoxFit.contain),
               ),
-              //2nd Image of Slider
               Container(
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
+                   borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(20.0),
+                      topRight: Radius.circular(20.0),
+                      bottomLeft: Radius.circular(20.0),
+                      bottomRight: Radius.circular(20.0),
+                    ),
                   color: Color.fromARGB(255, 215, 194, 233),
                 ),
                 child: Image.asset(
-                  "tshirtRouge.png",
+                  "assets/tshirtRouge.png",
                   width: 120,
                   height: 60,
                 ),
               ),
-              //3rd Image of Slider
               Container(
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
+                   borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(20.0),
+                      topRight: Radius.circular(20.0),
+                      bottomLeft: Radius.circular(20.0),
+                      bottomRight: Radius.circular(20.0),
+                    ),
                   color: Color.fromARGB(255, 215, 194, 233),
                 ),
                 child: Image.asset(
-                  "montre.png",
+                  "assets/montre.png",
                   width: 120,
                   height: 60,
                 ),
               ),
-              //4th Image of Slider
               Container(
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
+                   borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(20.0),
+                      topRight: Radius.circular(20.0),
+                      bottomLeft: Radius.circular(20.0),
+                      bottomRight: Radius.circular(20.0),
+                    ),
                   color: Color.fromARGB(255, 215, 194, 233),
                 ),
                 child: Image.asset(
-                  "sacoche.png",
+                  "assets/sacoche.png",
                   width: 120,
                   height: 60,
                 ),
               ),
-              //5th Image of Slider
               Container(
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
+                   borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(20.0),
+                      topRight: Radius.circular(20.0),
+                      bottomLeft: Radius.circular(20.0),
+                      bottomRight: Radius.circular(20.0),
+                    ),
                   color: Color.fromARGB(255, 215, 194, 233),
                 ),
                 child: Image.asset(
-                  "pot.png",
+                  "assets/pot.png",
                   width: 120,
                   height: 60,
                 ),
               ),
             ],
-            //Slider Container properties
             options: CarouselOptions(
               enlargeCenterPage: true,
               autoPlay: true,
               aspectRatio: 16 / 9,
               autoPlayCurve: Curves.fastOutSlowIn,
               enableInfiniteScroll: true,
-              autoPlayAnimationDuration: Duration(milliseconds: 500),
-              viewportFraction: 0.4, // Une image à la fois
+              autoPlayAnimationDuration: const Duration(milliseconds: 500),
+              viewportFraction: 0.4,
             ),
           ),
-          // SizedBox(height: 500)
         ],
       ),
     );

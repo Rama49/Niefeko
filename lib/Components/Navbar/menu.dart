@@ -1,20 +1,18 @@
 import 'package:flutter/material.dart';
 
+// ignore: use_key_in_widget_constructors
 class MyMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar:
-       AppBar(
-        title: Text("Menu"),
+      appBar: AppBar(
+        title: const Text("Menu"),
       ),
-     
-     
-      body: Center(
+      body: const Center(
         child: Text("Contenu de la page"),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        items: [
+        items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: 'Accueil',
@@ -36,10 +34,10 @@ class MyMenu extends StatelessWidget {
         unselectedItemColor: Colors.grey, // Couleur de l'icône non sélectionnée
         currentIndex: 0, // Index de l'élément actuellement sélectionné
         onTap: (index) {
+          // ignore: avoid_print
           print("Item $index sélectionné");
         },
       ),
     );
   }
 }
-
