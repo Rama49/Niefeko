@@ -102,7 +102,7 @@ class ProductList extends StatelessWidget {
             // Vérifiez si les champs requis sont null, sinon utilisez une valeur par défaut
             String imagePath = data['imagePath'] ?? 'assets/sac1.png';
             String name = data['name'] ?? 'sac';
-            String description = data['desciption'];
+            String description = data['desciption']?? 'Description du produit';
             double price = data['price'] ?? 10000;
             String idClient = data['idClient'] ?? 'idClient';
 

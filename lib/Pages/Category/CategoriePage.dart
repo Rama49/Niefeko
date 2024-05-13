@@ -4,9 +4,7 @@ import 'package:niefeko/Components/Category/MesProduits.dart';
 import 'package:niefeko/Components/Category/detail.dart';
 import 'package:niefeko/Components/Recherche/recherche.dart';
 import 'package:niefeko/Pages/CartPanier/CartPanier.dart';
-//import 'package:niefeko/Pages/Favoris/PageFavoris.dart';
 import 'package:niefeko/Components/Category/product.dart';
-//import 'package:niefeko/Components/Category/detail.dart';
 
 
 class CategoryPage extends StatefulWidget {
@@ -102,9 +100,9 @@ class _CategoryPageState extends State<CategoryPage> {
     });
   }
 
-  void removeFromCart(int index) {
+  void removeFromCart(product) {
     setState(() {
-      cartItems.removeAt(index);
+      cartItems.removeAt(product);
       cartItemCount--; // Décrémentez cartItemCount
     });
   }
@@ -230,7 +228,6 @@ class _CategoryPageState extends State<CategoryPage> {
                    MaterialPageRoute(
                      builder: (context) => Detail(product: allproducts),
                    ),
-                   //child: buildCard(product: allProducts,),
                    ),
                    //},
                    child: buildCard(index, Product(imagePath: allproducts.imagePath, name: allproducts.name, description: allproducts.description, price: allproducts.price)),
