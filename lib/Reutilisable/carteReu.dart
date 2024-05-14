@@ -5,11 +5,31 @@
 // ignore: file_names
 // ignore_for_file: file_names, duplicate_ignore
 
-import 'package:flutter/material.dart' 
-show Axis, BorderRadius, BoxDecoration, BuildContext, Color, Colors, Column, Container, EdgeInsets, Flexible, FontWeight, Image, MaterialPageRoute, Navigator, Row, SingleChildScrollView, SizedBox, StatelessWidget, Text, TextStyle, Widget;
+import 'package:flutter/material.dart'
+    show
+        Axis,
+        BorderRadius,
+        BoxDecoration,
+        BuildContext,
+        Color,
+        Colors,
+        Column,
+        Container,
+        EdgeInsets,
+        Flexible,
+        FontWeight,
+        Image,
+        MaterialPageRoute,
+        Navigator,
+        Row,
+        SingleChildScrollView,
+        SizedBox,
+        StatelessWidget,
+        Text,
+        TextStyle,
+        Widget;
 import 'package:niefeko/Pages/PanierHistorique/PanierPage.dart';
 import 'package:niefeko/Reutilisable/buttonReu.dart';
-
 
 // ignore: camel_case_types
 class carteReu extends StatelessWidget {
@@ -17,7 +37,7 @@ class carteReu extends StatelessWidget {
   final String title;
   final String paragraph;
   final String texte;
-   final double borderRadius;
+  final double borderRadius;
 
   const carteReu(
       {super.key,
@@ -30,14 +50,14 @@ class carteReu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-       scrollDirection: Axis.vertical,
+      scrollDirection: Axis.vertical,
       child: Container(
         // width: 300,
         decoration: BoxDecoration(
-      color: const Color.fromARGB(255, 85, 58, 112),
-      borderRadius: BorderRadius.circular(borderRadius),
+          color: const Color.fromARGB(255, 85, 58, 112),
+          borderRadius: BorderRadius.circular(borderRadius),
         ),
-      
+
         child: Row(
           // crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -69,12 +89,12 @@ class carteReu extends StatelessWidget {
                         style: const TextStyle(
                             fontWeight: FontWeight.w700, color: Colors.white)),
                     width: 180),
-               BoutonR(
+                BoutonR(
                   titre: "Ajouter au panier",
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => PanierPage()), 
+                      MaterialPageRoute(builder: (context) => PanierPage()),
                     );
                   },
                 ),

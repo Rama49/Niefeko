@@ -51,7 +51,7 @@ class _searchState extends State<search> {
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.CENTER,
         timeInSecForIosWeb: 3,
-        backgroundColor: Colors.green,
+        backgroundColor: const Color(0xFF612C7D),
         textColor: Colors.white,
         fontSize: 16.0,
       );
@@ -262,7 +262,7 @@ class _searchState extends State<search> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => settingspage()),
+                  MaterialPageRoute(builder: (context) => SettingsPage()),
                 );
               },
               icon: const Icon(Icons.settings, color: Colors.white),
