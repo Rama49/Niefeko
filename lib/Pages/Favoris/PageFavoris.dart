@@ -1,7 +1,7 @@
 // Pages/Favoris/PageFavoris.dart
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:niefeko/Components/Category/product.dart';
+// import 'package:niefeko/Components/Category/product.dart';
 import 'package:niefeko/Pages/Category/CategoriePage.dart';
 
 // ignore: camel_case_types

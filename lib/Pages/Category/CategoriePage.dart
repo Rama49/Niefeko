@@ -1,29 +1,55 @@
-import 'package:firebase_auth/firebase_auth.dart';
-//import 'package:firebase_core/firebase_core.dart';
+// Pages/Category/CategoriePage.dart
+// ignore: duplicate_ignore
+// ignore_for_file: file_names, library_private_types_in_public_api, unused_local_variable, use_build_context_synchronously// ignore_for_file: file_names, library_private_types_in_public_api, unused_local_variable, use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:niefeko/Components/Category/MesProduits.dart';
-import 'package:niefeko/Pages/Category/detail.dart';
-import 'package:niefeko/Pages/Recherche/recherche.dart';
 import 'package:niefeko/Pages/CartPanier/CartPanier.dart';
-import 'package:niefeko/Components/Category/product.dart';
+// ignore: unused_import
+import 'package:niefeko/Pages/Favoris/pagefavoris.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+// ignore: unused_import
+// import 'package:niefeko/Components/Recherche/recherche.dart';
+// ignore: duplicate_import
+import 'package:niefeko/Pages/CartPanier/CartPanier.dart';
+// import 'package:niefeko/Pages/PanierHistorique/PanierPage.dart';
+// import 'package:niefeko/Pages/SettingsPage/SettingsPage.dart';
 
+class Product {
+  final String imagePath;
+  final String name;
+  final double price;
+  int quantity; // Champ pour stocker la quantité du produit
 
+  // Product({required this.imagePath, required this.name, required this.price});
+
+  // Convertir le produit en un map pour Firestore
+  Map<String, dynamic> toMap() {
+    return {
+      'imagePath': imagePath,
+      'name': name,
+      'price': price,
+    };
+  }
+
+  Product({
+    required this.imagePath,
+    required this.name,
+    required this.price,
+    this.quantity = 1,
+  });
+}
+
+// ignore: use_key_in_widget_constructors
 class CategoryPage extends StatefulWidget {
   @override
   _CategoryPageState createState() => _CategoryPageState();
-
 }
 
-
 class _CategoryPageState extends State<CategoryPage> {
-    
   List<bool> isFavoritedList = List.generate(20, (index) => false);
-  List<double> prices = [];
-  List<String> filteredImagePaths = [];
-  //List<String> names = [];
   List<String> imagePaths = [
-   'assets/casque.png',
+    'assets/casque.png',
     'assets/chaussure.png',
     'assets/coquillage.png',
     'assets/gourde.png',
@@ -44,12 +70,12 @@ class _CategoryPageState extends State<CategoryPage> {
     'assets/tshirtRouge.png',
     'assets/torche.png',
   ];
+  List<double> prices = List.generate(20, (index) => 1000.0);
+  List<String> filteredImagePaths = [];
   int cartItemCount = 0;
   List<Product> cartItems = [];
- 
-  
-  @override
 
+  @override
   void initState() {
     super.initState();
     filteredImagePaths.addAll(imagePaths);
@@ -63,185 +89,182 @@ class _CategoryPageState extends State<CategoryPage> {
     });
   }
 
-   void addToCart(Product product) async {
+  void addToCart(int index) async {
+    String imageUrl = imagePaths[index];
+    String productName = filteredImagePaths[index].split('/').last.split('.').first;
+    double price = prices[index];
+    DateTime timestamp = DateTime.now(); // Timestamp de la commande
+
+    String idClient = ""; // Remplir avec l'ID du client
+    String prenom = ""; // Remplir avec le prénom du client
+    String nom = ""; // Remplir avec le nom du client
+
+    // Calculer le montant total
+    double totalAmount = price * 1; // Pour l'exemple, mettons la quantité à 1
+
+    // Vérifier si le produit existe déjà dans le panier
+    int existingIndex =
+        cartItems.indexWhere((product) => product.name == productName);
+    if (existingIndex != -1) {
+      // Le produit existe déjà dans le panier, augmentez simplement la quantité
+      setState(() {
+        cartItems[existingIndex].quantity++; // Augmenter la quantité du produit
+        cartItemCount++; // Augmenter le nombre total d'articles dans le panier
+      });
+    } else {
+      // Le produit n'existe pas encore dans le panier, l'ajouter
+      setState(() {
+        cartItems.add(Product(
+          imagePath: imageUrl,
+          name: productName,
+          price: price,
+          quantity: 1, // Initialiser la quantité à 1
+        ));
+        cartItemCount++; // Augmenter le nombre total d'articles dans le panier
+      });
+    }
+  }
+
+  void removeFromCart(int index) {
+    setState(() {
+      cartItems.removeAt(index);
+      cartItemCount--;
+    });
+  }
+
+  void navigateToCartPage() async {
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user == null) {
+      // Redirection vers la page de connexion si l'utilisateur n'est pas connecté
+      // Vous pouvez implémenter cela selon vos besoins
+      return;
+    }
+
+    String userID = user.uid;
+    String email = user.email!;
+
+    DocumentSnapshot userSnapshot = await FirebaseFirestore.instance
+        .collection('Inscription')
+        .doc(userID)
+        .get();
+
+    String prenom = userSnapshot['prenom'];
+    String nom = userSnapshot['nom'];
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => CartPanier(
+          cartItems: cartItems,
+          removeFromCart: removeFromCart,
+          idClient: userID,
+          prenom: prenom,
+          nom: nom, // Passer la valeur de nom
+          email: email,
+          validateCart: validateCart,
+        ),
+      ),
+    );
+  }
+
+  void validateCart(
+      BuildContext context, String idClient, String prenom, String nom) async {
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user == null) {
+      // Redirection vers la page de connexion si l'utilisateur n'est pas connecté
+      // Vous pouvez implémenter cela selon vos besoins
+      return;
+    }
+
+    String userID = user.uid;
+
+    DocumentSnapshot userSnapshot = await FirebaseFirestore.instance
+        .collection('Inscription')
+        .doc(userID)
+        .get();
+
+    String prenom = userSnapshot['prenom'];
+    String nom = userSnapshot['nom'];
+    String email = userSnapshot[
+        'email']; // Si l'email est stocké dans la collection "Inscription"
+
+    // ignore: avoid_function_literals_in_foreach_calls
+    cartItems.forEach((product) {
       String imageUrl = product.imagePath;
       String productName = product.name;
       double price = product.price;
-      DateTime timestamp = DateTime.now(); // Timestamp de la commande
+      DateTime timestamp = DateTime.now();
 
-      // String idClient = ""; // Remplir avec l'ID du client
-      // String prenom = ""; // Remplir avec le prénom du client
-      // String nom = ""; // Remplir avec le nom du client
+      double totalAmount = price *
+          product
+              .quantity; // Calculer le montant total en multipliant le prix par la quantité
 
-      // Calculer le montant total
-     // double totalAmount = price * 1; // Pour l'exemple, mettons la quantité à 1
+      Order order = Order(
+        imageUrl: imageUrl,
+        idClient: userID,
+        prenom: prenom,
+        nom: nom,
+        email: email,
+        nomProduit: productName,
+        nbrProduit: product.quantity, // Utiliser la quantité du produit
+        prix: price,
+        totalAmount: totalAmount,
+        timestamp: timestamp,
+      );
 
-      // Vérifier si le produit existe déjà dans le panier
-      int existingIndex =
-          cartItems.indexWhere((product) => product.name == productName);
-      if (existingIndex != -1) {
-        // Le produit existe déjà dans le panier, augmentez simplement la quantité
-        setState(() {
-          cartItems[existingIndex].quantity++; // Augmenter la quantité du produit
-          cartItemCount++; // Augmenter le nombre total d'articles dans le panier
-        });
-      } else {
-        // Le produit n'existe pas encore dans le panier, l'ajouter
-        setState(() {
-          cartItems.add(Product(
-            imagePath: imageUrl,
-            name: productName,
-            description: 'description',
-            price: price,
-            quantity: 1, // Initialiser la quantité à 1
-          ));
-          cartItemCount++; // Augmenter le nombre total d'articles dans le panier
-        });
-      }
-    }
+      addOrderToFirestore(order);
+    });
 
-    void removeFromCart(int index) {
-      setState(() {
-        cartItems.removeAt(index);
-        cartItemCount--;
-      });
-    }
+    setState(() {
+      cartItems.clear();
+      cartItemCount = 0;
+    });
 
-
-  Future<void> navigateToCartPage() async {
-     User? user = FirebaseAuth.instance.currentUser;
-      if (user == null) {
-        // Redirection vers la page de connexion si l'utilisateur n'est pas connecté
-        // Vous pouvez implémenter cela selon vos besoins
-        return;
-      }
-
-      String userID = user.uid;
-      String email = user.email!;
-
-      DocumentSnapshot userSnapshot = await FirebaseFirestore.instance
-          .collection('Inscription')
-          .doc(userID)
-          .get();
-
-      String prenom = userSnapshot['prenom'];
-      String nom = userSnapshot['nom'];
-
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => CartPanier(
-            cartItems: cartItems,
-            removeFromCart: removeFromCart,
-            idClient: userID,
-            prenom: prenom,
-            nom: nom, // Passer la valeur de nom
-            email: email,
-            validateCart: validateCart,
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Panier validé'),
+        content: const Text('Votre panier a été validé avec succès.'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('OK'),
           ),
-        ),
-      );
-    }
+        ],
+      ),
+    );
+  }
 
-     void validateCart(
-        BuildContext context, String idClient, String prenom, String nom) async {
-      User? user = FirebaseAuth.instance.currentUser;
-      if (user == null) {
-        // Redirection vers la page de connexion si l'utilisateur n'est pas connecté
-        // Vous pouvez implémenter cela selon vos besoins
-        return;
-      }
+  void addOrderToFirestore(Order order) {
+    CollectionReference orders =
+        FirebaseFirestore.instance.collection('Panier');
 
-      String userID = user.uid;
-
-      DocumentSnapshot userSnapshot = await FirebaseFirestore.instance
-          .collection('Inscription')
-          .doc(userID)
-          .get();
-
-      String prenom = userSnapshot['prenom'];
-      String nom = userSnapshot['nom'];
-      String email = userSnapshot[
-          'email']; // Si l'email est stocké dans la collection "Inscription"
-
-      // ignore: avoid_function_literals_in_foreach_calls
-      cartItems.forEach((product) {
-        String imageUrl = product.imagePath;
-        String productName = product.name;
-        double price = product.price;
-        DateTime timestamp = DateTime.now();
-
-        double totalAmount = price *
-            product
-                .quantity; // Calculer le montant total en multipliant le prix par la quantité
-
-        Order order = Order(
-          imageUrl: imageUrl,
-          idClient: userID,
-          prenom: prenom,
-          nom: nom,
-          email: email,
-          nomProduit: productName,
-          nbrProduit: product.quantity, // Utiliser la quantité du produit
-          prix: price,
-          totalAmount: totalAmount,
-          timestamp: timestamp,
-        );
-
-        addOrderToFirestore(order);
-      });
-
-      setState(() {
-        cartItems.clear();
-        cartItemCount = 0;
-      });
-
-      showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: const Text('Panier validé'),
-          content: const Text('Votre panier a été validé avec succès.'),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text('OK'),
-            ),
-          ],
-        ),
-      );
-    }
-void addOrderToFirestore(Order order) {
-      CollectionReference orders =
-          FirebaseFirestore.instance.collection('Panier');
-
-      orders
-          .add(order.toMap())
-          // ignore: avoid_print
-          .then((value) => print("Commande ajoutée avec l'ID: ${value.id}"))
-          .catchError(
-              // ignore: avoid_print
-              (error) => print("Erreur lors de l'ajout de la commande: $error"));
-    }
+    orders
+        .add(order.toMap())
+        // ignore: avoid_print
+        .then((value) => print("Commande ajoutée avec l'ID: ${value.id}"))
+        .catchError(
+            // ignore: avoid_print
+            (error) => print("Erreur lors de l'ajout de la commande: $error"));
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xFF612C7D),
+        backgroundColor: const Color(0xFF612C7D),
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.white),
-         onPressed: () {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => search()),
-    );
-  },
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
         actions: [
           Stack(
             children: [
               IconButton(
-                icon: Icon(Icons.shopping_cart, color: Colors.white, size: 30),
+                icon: const Icon(Icons.shopping_cart,
+                    color: Colors.white, size: 40),
                 onPressed: navigateToCartPage,
               ),
               Positioned(
@@ -252,7 +275,7 @@ void addOrderToFirestore(Order order) {
                   radius: 10,
                   child: Text(
                     cartItemCount.toString(),
-                    style: TextStyle(color: Colors.white, fontSize: 12),
+                    style: const TextStyle(color: Colors.white, fontSize: 12),
                   ),
                 ),
               ),
@@ -264,7 +287,7 @@ void addOrderToFirestore(Order order) {
         child: Column(
           children: [
             Container(
-              color: Color(0xFF612C7D),
+              color: const Color(0xFF612C7D),
               padding: const EdgeInsets.all(8.0),
               child: Container(
                 decoration: BoxDecoration(
@@ -273,19 +296,19 @@ void addOrderToFirestore(Order order) {
                 ),
                 child: TextField(
                   onChanged: searchProduct,
-                  decoration: InputDecoration(
-                    hintText: 'Search...',
+                  decoration: const InputDecoration(
+                    hintText: 'Recherche...',
                     prefixIcon: Icon(Icons.search, color: Colors.grey),
                     border: InputBorder.none,
                   ),
                 ),
               ),
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Container(
-                padding: EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(8.0),
                 child: Row(
                   children: List.generate(
                     filteredImagePaths.length,
@@ -300,10 +323,10 @@ void addOrderToFirestore(Order order) {
                 ),
               ),
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             filteredImagePaths.isEmpty
-                ? Padding(
-                    padding: const EdgeInsets.all(8.0),
+                ? const Padding(
+                    padding: EdgeInsets.all(8.0),
                     child: Text(
                       "Produit non trouvé",
                       style: TextStyle(
@@ -315,47 +338,38 @@ void addOrderToFirestore(Order order) {
                   )
                 : GridView.builder(
                     shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    physics: const NeverScrollableScrollPhysics(),
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
                       crossAxisSpacing: 8,
                       mainAxisSpacing: 8,
                     ),
-                    itemCount: MesProduits.allProducts.length,
+                    itemCount: filteredImagePaths.length,
                     itemBuilder: (context, index) {
-                      final allproducts = MesProduits.allProducts[index];
-                      return GestureDetector(
-                       onTap: () =>//{
-
-                          Navigator.push(
-                   context,
-                   MaterialPageRoute(
-                     builder: (context) => Detail(product: allproducts),
-                   ),
-                   ),
-                   //},
-                   child: buildCard(index, Product(imagePath: allproducts.imagePath, name: allproducts.name, description: allproducts.description, price: allproducts.price)),
-                   );
-                   }
-                   )
-     ]
-    ),
-    )
+                      return buildCard(index);
+                    },
+                  ),
+          ],
+        ),
+      ),
     );
-  }  
-  Widget buildCard(index, Product product){
-  return Card(
-child: 
- Stack(
-      children: 
-        [
+  }
+
+  Widget buildCard(int index) {
+    String imageName =
+        filteredImagePaths[index].split('/').last.split('.').first;
+    double price = prices[index];
+    return Card(
+      child: Stack(
+        children: [
           Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Image.asset(
-                product.imagePath,
-                width: 70,
-                height: 70,
+                filteredImagePaths[index],
+                width: 55,
+                height: 55,
                 fit: BoxFit.cover,
               ),
               Padding(
@@ -363,23 +377,24 @@ child:
                 child: Column(
                   children: [
                     Text(
-                      product.name,
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                      imageName,
+                      style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
-                    SizedBox(height: 4),
+                    const SizedBox(height: 4),
                     Text(
-                      '${product.price}',
-                      style: TextStyle(
+                      '\$$price',
+                      style: const TextStyle(
                           fontWeight: FontWeight.bold, color: Colors.green),
                     ),
                   ],
                 ),
               ),
-              SizedBox(height: 8),
+              // const SizedBox(height: 8),
               Center(
                 child: ElevatedButton(
-                  onPressed: () => addToCart(product),
-                  child: Row(
+                  onPressed: () => addToCart(index),
+                  // ignore: sort_child_properties_last
+                  child: const Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(
@@ -390,8 +405,10 @@ child:
                     ],
                   ),
                   style: ElevatedButton.styleFrom(
-                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                    backgroundColor: Color(0xFF612C7D),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20),
+                    // ignore: deprecated_member_use
+                    backgroundColor: const Color(0xFF612C7D),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(7),
                     ),
@@ -401,7 +418,7 @@ child:
             ],
           ),
           Align(
-            alignment: Alignment(1, -1),
+            alignment: const Alignment(1, -1),
             child: IconButton(
               icon: Icon(
                 isFavoritedList[index] ? Icons.favorite : Icons.favorite_border,
@@ -421,10 +438,9 @@ child:
                 if (isFavoritedList[index]) {
                   // Créez une instance de produit
                   Product favoriteProduct = Product(
-                    imagePath: product.imagePath,
-                    name: product.name,
-                    description: 'ma description',
-                    price: product.price,
+                    imagePath: imagePaths[index],
+                    name: imageName,
+                    price: price,
                   );
 
                   // Ajouter le produit aux favoris dans Firestore
@@ -434,9 +450,8 @@ child:
             ),
           ),
         ],
-      
-    ),);
-
+      ),
+    );
   }
 
   // Méthode pour ajouter un produit aux favoris dans Firestore
@@ -446,12 +461,11 @@ child:
         FirebaseFirestore.instance.collection('favoris');
 
     // Ajouter le produit aux favoris dans Firestore
-    favorites
-        .add(favoriteProduct.toMap())
-        .then((value) =>
-            print("Produit ajouté aux favoris avec l'ID: ${value.id}"))
-        .catchError(
-            (error) => print("Erreur lors de l'ajout aux favoris: $error"));
+    favorites.add(favoriteProduct.toMap()).then((value) =>
+        // ignore: avoid_print
+        print("Produit ajouté aux favoris avec l'ID: ${value.id}")).catchError(
+        // ignore: avoid_print
+        (error) => print("Erreur lors de l'ajout aux favoris: $error"));
   }
 }
 
@@ -477,10 +491,9 @@ class Order {
     required this.nbrProduit,
     required this.prix,
     required this.totalAmount,
-    required this.timestamp, 
+    required this.timestamp,
   });
 
-  // Convertir la commande en un map pour Firestore
   Map<String, dynamic> toMap() {
     return {
       'imageUrl': imageUrl,
