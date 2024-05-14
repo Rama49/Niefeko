@@ -3,15 +3,9 @@
 // ignore_for_file: file_names
 
 import 'package:flutter/material.dart';
-<<<<<<< HEAD
-import 'package:niefeko/Pages/Category/CategoriePage.dart';
-import 'package:niefeko/Components/Category/product.dart';
-
-=======
 //import 'package:niefeko/Components/Category/detail.dart';
 import 'package:niefeko/Components/Category/product.dart';
 //import 'package:niefeko/Pages/Category/CategoriePage.dart'; // Importez les classes nécessaires depuis le fichier de catégorie
->>>>>>> 683be5876ab5a2878c36e8832f61f6a97515fa44
 
 class CartPanier extends StatelessWidget {
   final List<Product> cartItems;
@@ -88,22 +82,6 @@ class CartPanier extends StatelessWidget {
                     },
                   ),
                 ),
-<<<<<<< HEAD
-                Container(
-                  alignment: Alignment.center,
-                  child: ElevatedButton(
-                    onPressed: () => validateCart(context),
-                    style: ElevatedButton.styleFrom(
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Text(
-                        'Valider le panier',
-                        style: TextStyle(fontSize: 18),
-                      ),
-                    ),
-                      //  primary: Colors.green,
-=======
                 Center(
                   child: Container(
                     margin: const EdgeInsets.symmetric(vertical: 16.0),
@@ -129,7 +107,6 @@ class CartPanier extends StatelessWidget {
                         ),
                       ),
                     ),
->>>>>>> 683be5876ab5a2878c36e8832f61f6a97515fa44
                   ),
                 ),
               ],
