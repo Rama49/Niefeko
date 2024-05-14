@@ -16,7 +16,7 @@ class _CategorieState extends State<Categorie> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(10),
+      padding: const EdgeInsets.only(bottom: 20),
       child: Column(
         children: [
           const Row(

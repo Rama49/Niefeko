@@ -3,7 +3,9 @@
 // ignore_for_file: file_names
 
 import 'package:flutter/material.dart';
-import 'package:niefeko/Pages/Category/CategoriePage.dart'; // Importez les classes nécessaires depuis le fichier de catégorie
+//import 'package:niefeko/Components/Category/detail.dart';
+import 'package:niefeko/Components/Category/product.dart';
+//import 'package:niefeko/Pages/Category/CategoriePage.dart'; // Importez les classes nécessaires depuis le fichier de catégorie
 
 class CartPanier extends StatelessWidget {
   final List<Product> cartItems;
@@ -47,7 +49,15 @@ class CartPanier extends StatelessWidget {
                     itemCount: cartItems.length,
                     itemBuilder: (context, index) {
                       final product = cartItems[index];
-                      return Card(
+                      return 
+                      GestureDetector(
+  onTap: () {
+      // Navigator.push(
+      //   context,
+      //   MaterialPageRoute(builder: (context) => Product(imagePath: imagePath, name: name, price: price)),
+      // );
+  },
+                    child: Card(
                         child: ListTile(
                           leading: Image.asset(
                             product.imagePath,
@@ -56,18 +66,19 @@ class CartPanier extends StatelessWidget {
                             fit: BoxFit.cover,
                           ),
                           title: Text(product.name),
-                          subtitle: Text('\$${product.price}'),
+                          subtitle: Text('${product.price}cfa'),
                           trailing: IconButton(
-                            icon: const Icon(Icons.delete),
+                            icon: Icon(Icons.delete),
                             onPressed: () {
                               removeFromCart(index);
-                              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                                 content: Text('Produit supprimé du panier'),
                               ));
                             },
                           ),
                         ),
-                      );
+                      ));
+
                     },
                   ),
                 ),
@@ -77,7 +88,8 @@ class CartPanier extends StatelessWidget {
                     child: ElevatedButton(
                       onPressed: () {
                         validateCart(context, idClient, prenom, nom);
-                        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                        ScaffoldMessenger.of(context)
+                            .showSnackBar(const SnackBar(
                           content: Text('Panier validé'),
                         ));
                       },
@@ -91,14 +103,14 @@ class CartPanier extends StatelessWidget {
                         padding: EdgeInsets.all(10.0),
                         child: Text(
                           'Valider le panier',
-                        style: TextStyle(fontSize: 18, color: Colors.white),
+                          style: TextStyle(fontSize: 18, color: Colors.white),
+                        ),
+                      ),
+                    ),
                   ),
                 ),
-              ),
+              ],
             ),
-          ),
-        ],
-      ),
     );
   }
 }

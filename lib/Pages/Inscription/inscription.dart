@@ -33,10 +33,10 @@ class InscriptionState extends State<Inscription> {
     super.initState();
     Firebase.initializeApp().then((_) {
       
-      // ignore: avoid_print
+      
       print("Firebase initialisé avec succès !");
     }).catchError((error) {
-      // ignore: avoid_print
+     
       print("Erreur lors de l'initialisation de Firebase : $error");
     });
   }
@@ -165,7 +165,7 @@ class InscriptionState extends State<Inscription> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => const Connexion(),
+                                builder: (context) => const connexion(),
                               ),
                             );
                           },
@@ -296,7 +296,7 @@ class InscriptionState extends State<Inscription> {
         Navigator.push(
           // ignore: use_build_context_synchronously
           context,
-          MaterialPageRoute(builder: (context) => const Connexion()),
+          MaterialPageRoute(builder: (context) => const connexion()),
         );
 
         _nomController.clear();

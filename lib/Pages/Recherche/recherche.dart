@@ -12,6 +12,7 @@ import 'package:niefeko/Pages/PanierHistorique/PanierPage.dart';
 import 'package:niefeko/Pages/SettingsPage/SettingsPage.dart';
 import 'package:niefeko/Reutilisable/carteReu.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:niefeko/Components/Category/product.dart';
 
 // ignore: camel_case_types
 class search extends StatefulWidget {
@@ -25,7 +26,7 @@ class search extends StatefulWidget {
 // ignore: camel_case_types
 class _searchState extends State<search> {
   List<Product> cartItems = [
-    Product(name: '', price: 0, imagePath: ''),
+    Product(name: '', price: 0, description: '', imagePath: ''),
   ];
 
   // Fonction removeFromCart pour illustrer
@@ -58,7 +59,7 @@ class _searchState extends State<search> {
       Navigator.pushReplacement(
         // ignore: use_build_context_synchronously
         context,
-        MaterialPageRoute(builder: (context) => const Connexion()),
+        MaterialPageRoute(builder: (context) => const connexion()),
       );
     } catch (e) {
       // ignore: avoid_print
@@ -92,8 +93,14 @@ class _searchState extends State<search> {
                       bottomRight: Radius.circular(40.0),
                     ),
                   ),
-                  padding: const EdgeInsets.all(20),
-                  // height: 290,
+          
+          padding: EdgeInsets.only(
+            bottom: MediaQuery.of(context).padding.bottom != 0
+              ? MediaQuery.of(context).padding.bottom
+              : 250, // Ajoutez le padding en bas
+          ),
+        height: MediaQuery.of(context).size.height / 3,
+
                   child: Column(
                     children: [
                       SizedBox(height: 20),
@@ -107,26 +114,27 @@ class _searchState extends State<search> {
                       ),
                       const SizedBox(height: 20),
                       // ignore: sized_box_for_whitespace
-                      Container(
-                        height: 40,
-                        child: TextField(
-                          decoration: InputDecoration(
-                            contentPadding: const EdgeInsets.symmetric(
-                              vertical:
-                                  3, // Ajustez cette valeur pour réduire la hauteur de l'input
-                            ),
-                            filled: true,
-                            fillColor: Colors.white,
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8),
-                              borderSide: BorderSide.none,
-                            ),
-                            hintText: "Rechercher un produit",
-                            prefixIcon: const Icon(Icons.search),
-                            prefixIconColor: Colors.black,
-                          ),
+                     Container(
+                    height: 40,
+                    padding: EdgeInsets.only(right: 25, left: 25),
+                    child: TextField(
+                      // onChanged: searchProduct,
+                      decoration: InputDecoration(
+                        contentPadding: const EdgeInsets.symmetric(
+                          vertical: 3,
                         ),
+                        filled: true,
+                        fillColor: Colors.white,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                          borderSide: BorderSide.none,
+                        ),
+                        hintText: "Rechercher un produit",
+                        prefixIcon: const Icon(Icons.search),
+                        prefixIconColor: Colors.black,
                       ),
+                    ),
+                  ),
                       const SizedBox(height: 20),
 
                       // Carousel

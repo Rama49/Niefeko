@@ -11,7 +11,7 @@ class SettingsPage extends StatelessWidget {
     // Vérifiez si l'utilisateur est connecté avant de lui permettre d'accéder à la page des paramètres
     if (!AuthState.isLoggedIn()) {
       // Si l'utilisateur n'est pas connecté, redirigez-le vers la page de connexion
-      return const Connexion();
+      return const connexion();
     }
 
     // Si l'utilisateur est connecté, affichez la page des paramètres
@@ -58,7 +58,7 @@ class SettingsPage extends StatelessWidget {
                 Navigator.pushReplacement(
                   // ignore: use_build_context_synchronously
                   context,
-                  MaterialPageRoute(builder: (context) => const Connexion()),
+                  MaterialPageRoute(builder: (context) => const connexion()),
                 );
               } catch (error) {
                 // Afficher un message d'erreur en cas de problème de déconnexion

@@ -1,6 +1,7 @@
 // Pages/Favoris/PageFavoris.dart
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:niefeko/Components/Category/product.dart';
 import 'package:niefeko/Pages/Category/CategoriePage.dart';
 
 // ignore: camel_case_types
@@ -55,7 +56,7 @@ class ProductList extends StatelessWidget {
             Product product = Product(
               imagePath: imagePath,
               name: name,
-              price: price,
+              price: price, description: '',
             );
 
             return ProductCard(product: product, documentId: document.id);
@@ -80,7 +81,7 @@ class ProductCard extends StatelessWidget {
         title: Text(product.name),
         subtitle: Text('Prix: ${product.price}'),
         trailing: IconButton(
-          icon: const Icon(Icons.delete),
+          icon: const Icon(Icons.delete, color: Colors.red,),
           onPressed: () {
             showDialog(
               context: context,
