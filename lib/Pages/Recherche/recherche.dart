@@ -2,7 +2,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:niefeko/Components/Categories/categorie.dart';
+<<<<<<< HEAD
 import 'package:niefeko/Components/Category/product.dart';
+=======
+>>>>>>> 683be5876ab5a2878c36e8832f61f6a97515fa44
 import 'package:niefeko/Components/Deals/deal.dart';
 // ignore: unused_import
 import 'package:niefeko/Pages/CartPanier/CartPanier.dart';
@@ -13,6 +16,10 @@ import 'package:niefeko/Pages/PanierHistorique/PanierPage.dart';
 import 'package:niefeko/Pages/SettingsPage/SettingsPage.dart';
 import 'package:niefeko/Reutilisable/carteReu.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+<<<<<<< HEAD
+=======
+import 'package:niefeko/Components/Category/product.dart';
+>>>>>>> 683be5876ab5a2878c36e8832f61f6a97515fa44
 
 // ignore: camel_case_types
 class search extends StatefulWidget {
@@ -26,7 +33,11 @@ class search extends StatefulWidget {
 // ignore: camel_case_types
 class _searchState extends State<search> {
   List<Product> cartItems = [
+<<<<<<< HEAD
     Product(imagePath: "imagePath", name: "name", description: "description", price: 0),
+=======
+    Product(name: '', price: 0, description: '', imagePath: ''),
+>>>>>>> 683be5876ab5a2878c36e8832f61f6a97515fa44
   ];
 
   // Fonction removeFromCart pour illustrer

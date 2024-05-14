@@ -1,266 +1,466 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:niefeko/Components/Categories/categorie.dart';
-import 'package:niefeko/Components/Deals/deal.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:niefeko/Components/Category/MesProduits.dart';
+import 'package:niefeko/Components/Category/detail.dart';
+import 'package:niefeko/Components/Recherche/recherche.dart';
 import 'package:niefeko/Pages/CartPanier/CartPanier.dart';
-import 'package:niefeko/Pages/Category/CategoriePage.dart';
-import 'package:niefeko/Pages/Connexion/conexion.dart';
-import 'package:niefeko/Pages/Favoris/PageFavoris.dart';
-import 'package:niefeko/Reutilisable/carteReu.dart';
-import 'package:carousel_slider/carousel_slider.dart';
+//import 'package:niefeko/Pages/Favoris/PageFavoris.dart';
 import 'package:niefeko/Components/Category/product.dart';
+//import 'package:niefeko/Components/Category/detail.dart';
 
-class search extends StatefulWidget {
-  const search({Key? key}) : super(key: key);
 
+class CategoryPage extends StatefulWidget {
   @override
-  State<search> createState() => _searchState();
+  _CategoryPageState createState() => _CategoryPageState();
+
 }
 
-class _searchState extends State<search> {
-  List<Product> cartItems = [
-    Product(name: '', price: 0, description: '', imagePath: ''),
+class _CategoryPageState extends State<CategoryPage> {
+    
+  List<bool> isFavoritedList = List.generate(20, (index) => false);
+  List<double> prices = [];
+  List<String> filteredImagePaths = [];
+  //List<String> names = [];
+  List<String> imagePaths = [
+   'assets/casque.png',
+    'assets/chaussure.png',
+    'assets/coquillage.png',
+    'assets/gourde.png',
+    'assets/jordan.png',
+    'assets/lunnete1.png',
+    'assets/lunette.png',
+    'assets/montre.png',
+    'assets/pantalon.png',
+    'assets/pot.png',
+    'assets/sac1.png',
+    'assets/sac.jpg',
+    'assets/sacoche.png',
+    'assets/shoes.png',
+    'assets/t-shirt.png',
+    'assets/torche.png',
+    'assets/tshirt-polo.jpg',
+    'assets/tshirt1.jpg',
+    'assets/tshirtRouge.png',
+    'assets/torche.png',
   ];
+  int cartItemCount = 0;
+  List<Product> cartItems = [];
+  @override
+  void initState() {
+    super.initState();
+    filteredImagePaths.addAll(imagePaths);
+  }
 
-  // Fonction removeFromCart pour illustrer
-  void removeFromCart(int index) {
+      DocumentSnapshot userSnapshot = await FirebaseFirestore.instance
+          .collection('Inscription')
+          .doc(userID)
+          .get();
+
+  void addToCart(Product product) {
+    // Récupérer les informations nécessaires
+    String imageUrl = product.imagePath;
+    String productName = product.name;
+        //filteredImagePaths[index].split('/').last.split('.').first;
+    double price = product.price;
+    DateTime timestamp = DateTime.now(); // Timestamp de la commande
+
+    // TODO: Récupérer l'ID du client, le prénom et le nom du client
+    String idClient = ""; // Remplir avec l'ID du client
+    String prenom = ""; // Remplir avec le prénom du client
+    String nom = ""; // Remplir avec le nom du client
+
+    // Calculer le montant total
+    double totalAmount = price * 1; // Pour l'exemple, mettons la quantité à 1
+
+    // Créer une instance de la commande
+    Order order = Order(
+      imageUrl: imageUrl,
+      idClient: idClient,
+      prenom: prenom,
+      nom: nom,
+      nomProduit: productName,
+      nbrProduit: 1, // Pour l'exemple, mettons la quantité à 1
+      prix: price,
+      totalAmount: totalAmount,
+      timestamp: timestamp,
+    );
+
+    // Ajouter la commande à Firestore
+    addOrderToFirestore(order);
+
     setState(() {
-      cartItems.removeAt(index);
+      cartItems.add(Product(
+        imagePath: imageUrl,
+        name: productName,
+        description: 'description',
+        price: price,
+      ));
+      cartItemCount++; // Incrémentez cartItemCount
     });
   }
 
-  bool _isLoggedOut = false;
+  void removeFromCart(int index) {
+    setState(() {
+      cartItems.removeAt(index);
+      cartItemCount--; // Décrémentez cartItemCount
+    });
+  }
 
-  Future<void> _signOut() async {
-    try {
-      await FirebaseAuth.instance.signOut();
-      setState(() {
-        _isLoggedOut = true;
-      });
-      Fluttertoast.showToast(
-        msg: "Vous vous êtes déconnecté avec succès",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.CENTER,
-        timeInSecForIosWeb: 3,
-        backgroundColor: Colors.green,
-        textColor: Colors.white,
-        fontSize: 16.0,
-      );
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => connexion()),
-      );
-    } catch (e) {
-      print("Erreur lors de la déconnexion: $e");
-      Fluttertoast.showToast(
-        msg: "Erreur lors de la déconnexion: $e",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.CENTER,
-        timeInSecForIosWeb: 3,
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
-        fontSize: 16.0,
+  void navigateToCartPage() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => CartPanier(cartItems: cartItems, removeFromCart: removeFromCart, idClient: idClient, prenom: "prenom", nom: "nom", email: email, validateCart: validateCart),
       );
     }
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: SingleChildScrollView(
-          scrollDirection: Axis.vertical,
-          child: Flexible(
-            child: Column(
+      appBar: AppBar(
+        backgroundColor: Color(0xFF612C7D),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.white),
+         onPressed: () {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => search()),
+    );
+  },
+        ),
+      );
+    }
+
+    void addOrderToFirestore(Order order) {
+      CollectionReference orders =
+          FirebaseFirestore.instance.collection('Panier');
+
+      orders
+          .add(order.toMap())
+          // ignore: avoid_print
+          .then((value) => print("Commande ajoutée avec l'ID: ${value.id}"))
+          .catchError(
+              // ignore: avoid_print
+              (error) => print("Erreur lors de l'ajout de la commande: $error"));
+    }
+
+    @override
+    Widget build(BuildContext context) {
+      return Scaffold(
+        appBar: AppBar(
+          backgroundColor: const Color(0xFF612C7D),
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back, color: Colors.white),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+          actions: [
+            Stack(
               children: [
-                // Section de recherche
-                Container(
-                    decoration: BoxDecoration(
-                      color: Color(0xFF593070),
-                      borderRadius: BorderRadius.only(
-                        bottomLeft: const Radius.circular(40.0),
-                        bottomRight: const Radius.circular(40.0),
-                      ),
+                IconButton(
+                  icon: const Icon(Icons.shopping_cart,
+                      color: Colors.white, size: 40),
+                  onPressed: navigateToCartPage,
+                ),
+                Positioned(
+                  right: 8,
+                  top: 8,
+                  child: CircleAvatar(
+                    backgroundColor: Colors.red,
+                    radius: 10,
+                    child: Text(
+                      cartItemCount.toString(),
+                      style: const TextStyle(color: Colors.white, fontSize: 12),
                     ),
-                    padding: const EdgeInsets.all(20),
-                     height: 250,
-                    child: Column(
-                      children: [
-                        const Text(
-                          "Bienvenue à Niefeko",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18,
-                          ),
-                        ),
-                        SizedBox(height: 10),
-                        Container(
-                          height: 30,
-                          child: TextField(
-                            decoration: InputDecoration(
-                              contentPadding: EdgeInsets.symmetric(
-                                vertical:
-                                    3, // Ajustez cette valeur pour réduire la hauteur de l'input
-                              ),
-                              filled: true,
-                              fillColor: Colors.white,
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(8),
-                                borderSide: BorderSide.none,
-                              ),
-                              hintText: "Rechercher un produit",
-                              prefixIcon: const Icon(Icons.search),
-                              prefixIconColor: Colors.black,
-                            ),
-                          ),
-                        ),
-                        SizedBox(height: 15),
-
-                        // Carousel
-                        CarouselSlider(
-                          items: [
-                            //1st Image of Slider
-                            carteReu(
-                              image: Image.asset(
-                                "sac1.png",
-                                fit: BoxFit.cover,
-                              ),
-                              title: "Nouveau",
-                              paragraph: "50%",
-                              texte:
-                                  "Trouvez ce que vous aimez, à prix malins !",
-                            ),
-                            //2nd Image of Slider
-                            carteReu(
-                              image: Image.asset(
-                                "lunette.png",
-                                fit: BoxFit.cover,
-                              ),
-                              title: "Nouveau",
-                              paragraph: "50%",
-                              texte:
-                                  "Trouvez ce que vous aimez, à prix malins !",
-                            ),
-                            //3rd Image of Slider
-                            carteReu(
-                              image: Image.asset(
-                                "shoes.png",
-                                fit: BoxFit.cover,
-                              ),
-                              title: "Nouveau",
-                              paragraph: "50%",
-                              texte:
-                                  "Trouvez ce que vous aimez, à prix malins !",
-                            ),
-                            //4th Image of Slider
-                            carteReu(
-                              image: Image.asset(
-                                "t-shirt.png",
-                                fit: BoxFit.cover,
-                              ),
-                              title: "Nouveau",
-                              paragraph: "50%",
-                              texte:
-                                  "Trouvez ce que vous aimez, à prix malins !",
-                            ),
-                            //5th Image of Slider
-                            carteReu(
-                              image: Image.asset(
-                                "sac1.png",
-                                fit: BoxFit.cover,
-                              ),
-                              title: "Nouveau",
-                              paragraph: "50%",
-                              texte:
-                                  "Trouvez ce que vous aimez, à prix malins !",
-                            ),
-                          ],
-                          //Slider Container properties
-                          options: CarouselOptions(
-                            enlargeCenterPage: true,
-                            autoPlay: true,
-                            aspectRatio: 12 / 9,
-                            autoPlayCurve: Curves.fastOutSlowIn,
-                            enableInfiniteScroll: true,
-                            autoPlayAnimationDuration:
-                                Duration(milliseconds: 800),
-                            viewportFraction: 0.8,
-                          ),
-                        ),
-                      ],
-                    )),
-
-                // Votre Container contenant la catégorie
-                Column(
-                  children: [
-                    SizedBox(height: 120),
-                    categorie(),
-                    deal(),
-                  ],
+                  ),
                 ),
               ],
             ),
-          ),
+          ],
         ),
-        bottomNavigationBar: BottomAppBar(
-          // shape: RoundedRectangleBorder(
-          //   borderRadius: BorderRadius.only(
-          //     topLeft: Radius.circular(40.0),
-          //     topRight: Radius.circular(40.0),
-          //   ),
-
-          color: Color(0xFF593070),
-
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+        body: SingleChildScrollView(
+          child: Column(
             children: [
-              IconButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => search(),
+              Container(
+                color: const Color(0xFF612C7D),
+                padding: const EdgeInsets.all(8.0),
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(7),
+                    color: Colors.white,
+                  ),
+                  child: TextField(
+                    onChanged: searchProduct,
+                    decoration: const InputDecoration(
+                      hintText: 'Recherche...',
+                      prefixIcon: Icon(Icons.search, color: Colors.grey),
+                      border: InputBorder.none,
                     ),
-                  );
-                },
-                icon: Icon(Icons.home, color: Colors.white),
+                  ),
+                ),
               ),
-              IconButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => CartPanier(
-                          cartItems: cartItems, removeFromCart: removeFromCart),
+              const SizedBox(height: 10),
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Container(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    children: List.generate(
+                      filteredImagePaths.length,
+                      (index) => Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: CircleAvatar(
+                          radius: 50,
+                          backgroundImage: AssetImage(filteredImagePaths[index]),
+                        ),
+                      ),
                     ),
-                  );
-                },
-                icon: Icon(Icons.shopping_cart, color: Colors.white),
+                  ),
+                ),
               ),
-              IconButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => pageFavoris()),
-                  );
-                },
-                icon: Icon(Icons.favorite, color: Colors.white),
-              ),
-              IconButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => CategoryPage(),
+              const SizedBox(height: 10),
+              filteredImagePaths.isEmpty
+                  ? const Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Text(
+                        "Produit non trouvé",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                          color: Colors.red,
+                        ),
+                      ),
+                    )
+                  : GridView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        crossAxisSpacing: 8,
+                        mainAxisSpacing: 8,
+                      ),
+                      itemCount: filteredImagePaths.length,
+                      itemBuilder: (context, index) {
+                        return buildCard(index);
+                      },
                     ),
-                  );
-                },
-                icon: Icon(Icons.settings, color: Colors.white),
+            ],
+          ),
+        ],
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Container(
+              color: Color(0xFF612C7D),
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(7),
+                  color: Colors.white,
+                ),
+                child: TextField(
+                  onChanged: searchProduct,
+                  decoration: InputDecoration(
+                    hintText: 'Search...',
+                    prefixIcon: Icon(Icons.search, color: Colors.grey),
+                    border: InputBorder.none,
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(height: 10),
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Container(
+                padding: EdgeInsets.all(8.0),
+                child: Row(
+                  children: List.generate(
+                    filteredImagePaths.length,
+                    (index) => Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: CircleAvatar(
+                        radius: 50,
+                        backgroundImage: AssetImage(filteredImagePaths[index]),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(height: 10),
+            filteredImagePaths.isEmpty
+                ? Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      "Produit non trouvé",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                        color: Colors.red,
+                      ),
+                    ),
+                  )
+                : GridView.builder(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 8,
+                      mainAxisSpacing: 8,
+                    ),
+                    itemCount: MesProduits.allProducts.length,
+                    itemBuilder: (context, index) {
+                      final allproducts = MesProduits.allProducts[index];
+                      return GestureDetector(
+                       onTap: () =>//{
+
+                          Navigator.push(
+                   context,
+                   MaterialPageRoute(
+                     builder: (context) => Detail(product: allproducts),
+                   ),
+                   //child: buildCard(product: allProducts,),
+                   ),
+                   //},
+                   child: buildCard(index, Product(imagePath: allproducts.imagePath, name: allproducts.name, description: allproducts.description, price: allproducts.price)),
+                   );
+                   }
+                   )
+     ]
+    ),
+    )
+    );
+  }  
+  Widget buildCard(index, Product product){
+  return Card(
+child: 
+ Stack(
+      children: 
+        [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Image.asset(
+                product.imagePath,
+                width: 90,
+                height: 90,
+                fit: BoxFit.cover,
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  children: [
+                    Text(
+                      product.name,
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      '${product.price}',
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, color: Colors.green),
+                    ),
+                  ],
+                ),
+              ),
+              Center(
+                child: ElevatedButton(
+                  onPressed: () => addToCart(product),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        'Ajouter au',
+                        style: TextStyle(fontSize: 16, color: Colors.white),
+                      ),
+                      Icon(Icons.shopping_cart, color: Colors.white),
+                    ],
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                    backgroundColor: Color(0xFF612C7D),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(7),
+                    ),
+                  ),
+                ),
               ),
             ],
           ),
-        ));
+          Align(
+            alignment: const Alignment(1, -1),
+            child: IconButton(
+              icon: Icon(
+                isFavoritedList[index] ? Icons.favorite : Icons.favorite_border,
+                color: isFavoritedList[index] ? Colors.red : Colors.grey,
+              ),
+              onPressed: () {
+                setState(() {
+                  isFavoritedList[index] = !isFavoritedList[index];
+                });
+
+                // Check if the product is added to favorites
+                if (isFavoritedList[index]) {
+                  // Create a product instance
+                  Product favoriteProduct = Product(
+                    imagePath: product.imagePath,
+                    name: product.name,
+                    description: 'ma description',
+                    price: product.price,
+                  );
+
+                  // Add the product to favorites in Firestore
+                  addFavoriteToFirestore(favoriteProduct);
+                }
+              },
+            ),
+          ),
+        ],
+      
+    ),);
+
   }
-}
+
+  class Order {
+    final String imageUrl;
+    final String idClient;
+    final String prenom;
+    final String nom;
+    final String email;
+    final String nomProduit;
+    final int nbrProduit;
+    final double prix;
+    final double totalAmount;
+    final DateTime timestamp;
+
+    Order({
+      required this.imageUrl,
+      required this.idClient,
+      required this.prenom,
+      required this.nom,
+      required this.email,
+      required this.nomProduit,
+      required this.nbrProduit,
+      required this.prix,
+      required this.totalAmount,
+      required this.timestamp,
+    });
+
+    Map<String, dynamic> toMap() {
+      return {
+        'imageUrl': imageUrl,
+        'idClient': idClient,
+        'prenom': prenom,
+        'nom': nom,
+        'email': email,
+        'nomProduit': nomProduit,
+        'nbrProduit': nbrProduit,
+        'prix': prix,
+        'totalAmount': totalAmount,
+        'timestamp': timestamp,
+      };
+    }
+  }

@@ -22,6 +22,7 @@ class pagefavoris extends StatelessWidget {
         iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: ProductList(),
+<<<<<<< HEAD
       // bottomNavigationBar: BottomAppBar(
       //   color: Color(0xFF593070),
       //   child: Row(
@@ -78,6 +79,8 @@ class pagefavoris extends StatelessWidget {
       //   ),
       // ),
     
+=======
+>>>>>>> 683be5876ab5a2878c36e8832f61f6a97515fa44
     );
   }
 }
@@ -109,7 +112,11 @@ class ProductList extends StatelessWidget {
 
             String imagePath = data['imagePath'] ?? 'assets/sac1.png';
             String name = data['name'] ?? 'sac';
+<<<<<<< HEAD
             String description = data['desciption'];
+=======
+            String description = data['desciption']?? 'Description du produit';
+>>>>>>> 683be5876ab5a2878c36e8832f61f6a97515fa44
             double price = data['price'] ?? 10000;
             String idClient = data['idClient'] ?? 'idClient';
 
