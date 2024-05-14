@@ -23,7 +23,7 @@ class _CategoryPageState extends State<CategoryPage> {
   List<String> filteredImagePaths = [];
   //List<String> names = [];
   List<String> imagePaths = [
-   'assets/casque.png',
+    'assets/casque.png',
     'assets/chaussure.png',
     'assets/coquillage.png',
     'assets/gourde.png',
