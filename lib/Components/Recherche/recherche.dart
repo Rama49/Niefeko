@@ -93,7 +93,7 @@ class _searchState extends State<search> {
                     ),
                   ),
                   padding: const EdgeInsets.all(20),
-                  height: 290,
+                  // height: 290,
                   child: Column(
                     children: [
                       SizedBox(height: 20),
