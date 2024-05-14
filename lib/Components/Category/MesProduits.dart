@@ -101,13 +101,13 @@ class MesProduits{
       price: 1000),
 
       Product(
-      imagePath: 'assets/tshirt1Rouge.png', 
+      imagePath: 'assets/tshirt-polo.jpg', 
       name: 'Polo', 
       description: 'Un sac à main, est un accessoire de mode qui permet de ranger des objets utiles au quotidien, comme les clés',
       price: 4000),
 
       Product(
-      imagePath: 'assets/tshirt1.png', 
+      imagePath: 'assets/tshirt1.jpg', 
       name: 'T-shirt', 
       description: 'Un sac à main, est un accessoire de mode qui permet de ranger des objets utiles au quotidien, comme les clés',
       price: 2000),

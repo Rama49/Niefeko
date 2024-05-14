@@ -223,10 +223,6 @@ void addOrderToFirestore(Order order) {
               (error) => print("Erreur lors de l'ajout de la commande: $error"));
     }
 
-
-
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -358,8 +354,8 @@ child:
             children: [
               Image.asset(
                 product.imagePath,
-                width: 90,
-                height: 90,
+                width: 70,
+                height: 70,
                 fit: BoxFit.cover,
               ),
               Padding(
