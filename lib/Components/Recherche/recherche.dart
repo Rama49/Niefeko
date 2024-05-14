@@ -93,7 +93,7 @@ class _searchState extends State<search> {
                     ),
                   ),
                   padding: const EdgeInsets.all(20),
-                  height: 290,
+                  // height: 290,
                   child: Column(
                     children: [
                       SizedBox(height: 20),
@@ -230,7 +230,7 @@ class _searchState extends State<search> {
                 // Naviguer vers la page d'historique des commandes
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => PanierPage()),
+                  MaterialPageRoute(builder: (context) =>  PanierPage(userId: '')),
                 );
               },
               icon: const Icon(Icons.shopping_cart, color: Colors.white),

@@ -197,7 +197,7 @@ class _CategoryPageState extends State<CategoryPage> {
 
       double totalAmount = price *
           product
-              .quantity; // Calculer le montant total en multipliant le prix par la quantité
+            .quantity; // Calculer le montant total en multipliant le prix par la quantité
 
       Order order = Order(
         imageUrl: imageUrl,
@@ -264,7 +264,7 @@ class _CategoryPageState extends State<CategoryPage> {
             children: [
               IconButton(
                 icon: const Icon(Icons.shopping_cart,
-                    color: Colors.white, size: 40),
+                  color: Colors.white, size: 40),
                 onPressed: navigateToCartPage,
               ),
               Positioned(
