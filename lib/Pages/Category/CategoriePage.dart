@@ -245,7 +245,7 @@ void addOrderToFirestore(Order order) {
           Stack(
             children: [
               IconButton(
-                icon: Icon(Icons.shopping_cart, color: Colors.white, size: 30),
+                icon: Icon(Icons.shopping_cart, color: Colors.white, size: 40),
                 onPressed: navigateToCartPage,
               ),
               Positioned(
@@ -358,8 +358,8 @@ child:
             children: [
               Image.asset(
                 product.imagePath,
-                width: 90,
-                height: 90,
+                width: 80,
+                height: 80,
                 fit: BoxFit.cover,
               ),
               Padding(

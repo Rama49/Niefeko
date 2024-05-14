@@ -24,6 +24,40 @@ class _PanierPageState extends State<PanierPage> {
         .snapshots();
   }
 
+  void _validatePanier(List<Commande> panier) async {
+    try {
+      // Ajoutez la commande à la fois dans la collection "Panier" et "HISTORIQUE"
+      final timestamp = Timestamp.now();
+      final commandeData = panier.map((commande) => commande.toJson()).toList();
+
+      await FirebaseFirestore.instance.collection('Panier').add({
+        'userId': widget.userId,
+        'commande': commandeData,
+        'timestamp': timestamp,
+      });
+
+      await FirebaseFirestore.instance.collection('HISTORIQUE').add({
+        'userId': widget.userId,
+        'commande': commandeData,
+        'timestamp': timestamp,
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Commande validée avec succès'),
+          duration: Duration(seconds: 2),
+        ),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Erreur lors de la validation de la commande'),
+          duration: Duration(seconds: 2),
+        ),
+      );
+    }
+  }
+
   void _deleteOrder(String orderId) async {
     try {
       await FirebaseFirestore.instance
@@ -141,5 +175,28 @@ class _PanierPageState extends State<PanierPage> {
         },
       ),
     );
+  }
+}
+
+class Commande {
+  final String nomProduit;
+  final int nbrProduit;
+  final double totalAmount;
+  final String imageUrl;
+
+  Commande({
+    required this.nomProduit,
+    required this.nbrProduit,
+    required this.totalAmount,
+    required this.imageUrl,
+  });
+
+  Map<String, dynamic> toJson() {
+    return {
+      'nomProduit': nomProduit,
+      'nbrProduit': nbrProduit,
+      'totalAmount': totalAmount,
+      'imageUrl': imageUrl,
+    };
   }
 }

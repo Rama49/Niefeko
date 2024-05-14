@@ -74,7 +74,9 @@ class carteReu extends StatelessWidget {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => PanierPage()), 
+                      MaterialPageRoute(
+                        builder: (context) => PanierPage(userId: ''),
+                      ),
                     );
                   },
                 ),
