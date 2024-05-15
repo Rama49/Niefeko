@@ -3,9 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:niefeko/Components/Categories/categorie.dart';
 import 'package:niefeko/Components/Deals/deal.dart';
-// ignore: unused_import
 import 'package:niefeko/Pages/CartPanier/CartPanier.dart';
-// ignore: unused_import
 import 'package:niefeko/Pages/Category/CategoriePage.dart';
 import 'package:niefeko/Pages/Connexion/connexion.dart';
 import 'package:niefeko/Pages/Favoris/pagefavoris.dart';
@@ -15,16 +13,14 @@ import 'package:niefeko/Reutilisable/carteReu.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:niefeko/Components/Category/product.dart';
 
-// ignore: camel_case_types
+
 class search extends StatefulWidget {
-  // ignore: use_super_parameters
   const search({Key? key}) : super(key: key);
 
   @override
   State<search> createState() => _searchState();
 }
 
-// ignore: camel_case_types
 class _searchState extends State<search> {
   List<Product> cartItems = [
     Product(name: '', price: 0, description: '', imagePath: ''),
@@ -37,7 +33,6 @@ class _searchState extends State<search> {
     });
   }
 
-  // ignore: unused_field
   bool _isLoggedOut = false;
 
   // ignore: unused_element
@@ -218,7 +213,6 @@ class _searchState extends State<search> {
                   SizedBox(height: 120),
                   Categorie(),
                   deal(),
-                  CategoryPage(),
                 ],
               ),
             ],
