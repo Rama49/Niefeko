@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:niefeko/Components/Categories/categorie.dart';
 import 'package:niefeko/Components/Deals/deal.dart';
+import 'package:niefeko/Components/produitcart/produit_Card.dart';
 import 'package:niefeko/Pages/CartPanier/CartPanier.dart';
 import 'package:niefeko/Pages/Category/CategoriePage.dart';
 import 'package:niefeko/Pages/Connexion/connexion.dart';
@@ -12,7 +13,6 @@ import 'package:niefeko/Pages/SettingsPage/SettingsPage.dart';
 import 'package:niefeko/Reutilisable/carteReu.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:niefeko/Components/Category/product.dart';
-
 
 class search extends StatefulWidget {
   const search({Key? key}) : super(key: key);
@@ -51,21 +51,18 @@ class _searchState extends State<search> {
         textColor: Colors.white,
         fontSize: 16.0,
       );
-      // ignore: use_build_context_synchronously
       Navigator.pushReplacement(
-        // ignore: use_build_context_synchronously
         context,
         MaterialPageRoute(builder: (context) => const connexion()),
       );
     } catch (e) {
-      // ignore: avoid_print
       print("Erreur lors de la déconnexion: $e");
       Fluttertoast.showToast(
         msg: "Erreur lors de la déconnexion: $e",
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.CENTER,
         timeInSecForIosWeb: 3,
-        backgroundColor: Colors.red,
+        backgroundColor: const Color(0xFF612C7D),
         textColor: Colors.white,
         fontSize: 16.0,
       );
@@ -89,19 +86,12 @@ class _searchState extends State<search> {
                       bottomRight: Radius.circular(40.0),
                     ),
                   ),
-                 
-
-
-
-
-
-                         padding: EdgeInsets.only(
-          bottom: MediaQuery.of(context).padding.bottom != 0
-              ? MediaQuery.of(context).padding.bottom
-              : 250, // Ajoutez le padding en bas
-        ),
-        height: MediaQuery.of(context).size.height / 3,
-
+                  padding: EdgeInsets.only(
+                    bottom: MediaQuery.of(context).padding.bottom != 0
+                        ? MediaQuery.of(context).padding.bottom
+                        : 250, // Ajoutez le padding en bas
+                  ),
+                  height: MediaQuery.of(context).size.height / 3,
                   child: Column(
                     children: [
                       SizedBox(height: 20),
@@ -115,27 +105,27 @@ class _searchState extends State<search> {
                       ),
                       const SizedBox(height: 20),
                       // ignore: sized_box_for_whitespace
-                     Container(
-                    height: 40,
-                    padding: EdgeInsets.only(right: 25, left: 25),
-                    child: TextField(
-                      // onChanged: searchProduct,
-                      decoration: InputDecoration(
-                        contentPadding: const EdgeInsets.symmetric(
-                          vertical: 3,
+                      Container(
+                        height: 40,
+                        padding: EdgeInsets.only(right: 25, left: 25),
+                        child: TextField(
+                          // onChanged: searchProduct,
+                          decoration: InputDecoration(
+                            contentPadding: const EdgeInsets.symmetric(
+                              vertical: 3,
+                            ),
+                            filled: true,
+                            fillColor: Colors.white,
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8),
+                              borderSide: BorderSide.none,
+                            ),
+                            hintText: "Rechercher un produit",
+                            prefixIcon: const Icon(Icons.search),
+                            prefixIconColor: Colors.black,
+                          ),
                         ),
-                        filled: true,
-                        fillColor: Colors.white,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                          borderSide: BorderSide.none,
-                        ),
-                        hintText: "Rechercher un produit",
-                        prefixIcon: const Icon(Icons.search),
-                        prefixIconColor: Colors.black,
                       ),
-                    ),
-                  ),
                       const SizedBox(height: 20),
 
                       // Carousel
@@ -213,6 +203,7 @@ class _searchState extends State<search> {
                   SizedBox(height: 120),
                   Categorie(),
                   deal(),
+                  product()
                 ],
               ),
             ],
