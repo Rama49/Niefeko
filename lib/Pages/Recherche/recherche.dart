@@ -5,6 +5,7 @@ import 'package:niefeko/Components/Categories/categorie.dart';
 import 'package:niefeko/Components/Deals/deal.dart';
 // ignore: unused_import
 import 'package:niefeko/Pages/CartPanier/CartPanier.dart';
+// ignore: unused_import
 import 'package:niefeko/Pages/Category/CategoriePage.dart';
 import 'package:niefeko/Pages/Connexion/connexion.dart';
 import 'package:niefeko/Pages/Favoris/pagefavoris.dart';
@@ -217,6 +218,7 @@ class _searchState extends State<search> {
                   SizedBox(height: 120),
                   Categorie(),
                   deal(),
+                  CategoryPage(),
                 ],
               ),
             ],

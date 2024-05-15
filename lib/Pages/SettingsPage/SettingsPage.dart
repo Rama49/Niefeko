@@ -73,7 +73,7 @@ class SettingsPage extends StatelessWidget {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(top: 20, bottom: 18, right: 40, left: 16),
+                padding: const EdgeInsets.only(top: 20, bottom: 18, right: 16, left: 16),
                 child: Container(
                   decoration: BoxDecoration(
                     color: Colors.white,
@@ -94,7 +94,7 @@ class SettingsPage extends StatelessWidget {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(top: 20, bottom: 20, right: 40, left: 16),
+                padding: const EdgeInsets.only(top: 20, bottom: 20, right: 16, left: 16),
                 child: Container(
                   decoration: BoxDecoration(
                     color: Color(0xFF612C7D),
