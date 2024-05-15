@@ -442,18 +442,31 @@ child:
 
   // Méthode pour ajouter un produit aux favoris dans Firestore
   void addFavoriteToFirestore(Product favoriteProduct) {
-    // Référence à la collection "favorites" dans Firestore
-    CollectionReference favorites =
-        FirebaseFirestore.instance.collection('favoris');
+  // Référence à la collection "favoris" dans Firestore
+  CollectionReference favorites =
+      FirebaseFirestore.instance.collection('favoris');
 
-    // Ajouter le produit aux favoris dans Firestore
-    favorites
-        .add(favoriteProduct.toMap())
-        .then((value) =>
-            print("Produit ajouté aux favoris avec l'ID: ${value.id}"))
-        .catchError(
-            (error) => print("Erreur lors de l'ajout aux favoris: $error"));
+  User? user = FirebaseAuth.instance.currentUser;
+  if (user == null) {
+    // Gérer le cas où l'utilisateur n'est pas connecté
+    print("L'utilisateur n'est pas connecté.");
+    return;
   }
+
+  String userID = user.uid;
+
+  // Ajouter le produit aux favoris dans Firestore avec l'ID de l'utilisateur
+  favorites
+      .add({
+        ...favoriteProduct.toMap(), // Les données du produit
+        'userID': userID, // Ajout de l'ID de l'utilisateur
+      })
+      .then((value) =>
+          print("Produit ajouté aux favoris avec l'ID: ${value.id}"))
+      .catchError((error) =>
+          print("Erreur lors de l'ajout aux favoris: $error"));
+}
+
 }
 
 class Order {
