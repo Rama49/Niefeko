@@ -20,7 +20,7 @@ class _PanierPageState extends State<PanierPage> {
     // Filtrer les commandes par ID d'utilisateur
     _ordersStream = FirebaseFirestore.instance
         .collection('Panier')
-        .where('userId', isEqualTo: _currentUserUid) // Filtrer par ID utilisateur
+        .where('idClient', isEqualTo: _currentUserUid) // Filtrer par ID utilisateur
         .orderBy('timestamp', descending: true)
         .snapshots();
   }
