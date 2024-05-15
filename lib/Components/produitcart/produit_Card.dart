@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:niefeko/Components/Deals/deal.dart';
+import 'package:niefeko/Pages/Recherche/recherche.dart';
 
 class product extends StatelessWidget {
   const product({super.key});
@@ -9,87 +11,137 @@ class product extends StatelessWidget {
   Widget build(BuildContext context) {
     crossAxisAlignment:
     CrossAxisAlignment.start;
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 25),
-      child: Column(children: [
-        Text(
-          "Nos Produits",
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 25,
-          ),
+    return Column(children: [
+      Text(
+        "Nos Boutiques",
+        style: TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 25,
         ),
-        SizedBox(height: 20),
-        Card(
+      ),
+      SizedBox(height: 20),
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 25),
+        child: Card(
           color: Color.fromARGB(255, 215, 194, 233),
-          child: Stack(
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Image.asset(
-                    "assets/casque.png",
-                    width: 100,
-                    height: 100,
-                    fit: BoxFit.cover,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      children: [
-                        Text(
-                          "casque",
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        SizedBox(height: 4),
-                        Text(
-                          "1000",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, color: Colors.green),
-                        ),
-                      ],
+          child: InkWell(
+            onTap: () {
+              // Navigation vers une autre page lors du clic sur la carte
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => deal()),
+              );
+            },
+            child: Stack(
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Image.asset(
+                      "assets/sac1.png",
+                      width: 50,
+                      height: 50,
+                      fit: BoxFit.cover,
                     ),
-                  ),
-                  SizedBox(height: 8),
-                  Center(
-                    child: ElevatedButton(
-                      onPressed: () {
-                        // Navigator.push(
-                        //   context,
-                        //   MaterialPageRoute(
-                        //     builder: (context) => (),
-                        //   ),
-                        // );
-                      },
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
                         children: [
                           Text(
-                            'voir plus',
-                            style: TextStyle(fontSize: 16, color: Colors.white),
+                            "Fournisseur1",
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          SizedBox(height: 4),
+                          Text(
+                            "Mode",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.green),
+                          ),
+                          Row(children: [
+                             Icon(
+                    Icons.star,
+                    color: Colors.white,
+                  ),
+                  Icon(
+                    Icons.star,
+                    color: Colors.white,
+                  ),
+                  Icon(
+                    Icons.star,
+                    color: Colors.white,
+                  ),
+                  Icon(
+                    Icons.star,
+                    color: Colors.grey,
+                  ),
+                  Icon(
+                    Icons.star,
+                    color: Colors.grey,
+                  ),
+                          ],),
+                          Text(
+                            "membre depuis 1 ans",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.purple),
                           ),
                         ],
                       ),
-                      style: ElevatedButton.styleFrom(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                        backgroundColor: Color(0xFF612C7D),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(7),
-                        ),
-                      ),
                     ),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                ],
-              ),
-            ],
+                    SizedBox(height: 8),
+                    // Center(
+                    //   child: ElevatedButton(
+                    //     onPressed: () {
+                    //       // Ajoutez votre logique ici
+                    //     },
+                        // child: Row(
+                        //   mainAxisSize: MainAxisSize.min,
+                        //   children: [
+                        //     Text(
+                        //       'Ajouter au',
+                        //       style:
+                        //           TextStyle(fontSize: 16, color: Colors.white),
+                        //     ),
+                        //     Icon(Icons.shopping_cart, color: Colors.white),
+                        //   ],
+                        // ),
+                        // style: ElevatedButton.styleFrom(
+                        //   padding: EdgeInsets.symmetric(
+                        //       horizontal: 20, vertical: 10),
+                        //   backgroundColor: Color(0xFF612C7D),
+                        //   shape: RoundedRectangleBorder(
+                        //     borderRadius: BorderRadius.circular(7),
+                        //   ),
+                        // ),
+                      // ),
+                    // ),
+                  ],
+                ),
+                // Align(
+                //   alignment: Alignment(1, -1),
+                //   child: IconButton(
+                //     icon: Icon(
+                //       Icons.favorite,
+                //     ),
+                //     onPressed: () {
+                //       // Ajoutez votre logique ici
+                //       // Navigator.push(
+                //       //   context,
+                //       //   MaterialPageRoute(builder: (context) => PageFavoris()),
+                //       // );
+                //     },
+                //   ),
+                // ),
+              ],
+            ),
           ),
         ),
-        SizedBox(height: 20),
-        Card(
+      ),
+      SizedBox(height: 20),
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 25),
+        child: Card(
           color: Color.fromARGB(255, 215, 194, 233),
           child: Stack(
             children: [
@@ -157,8 +209,11 @@ class product extends StatelessWidget {
             ],
           ),
         ),
-        SizedBox(height: 20),
-        Card(
+      ),
+      SizedBox(height: 20),
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 25),
+        child: Card(
           color: Color.fromARGB(255, 215, 194, 233),
           child: Stack(
             children: [
@@ -226,8 +281,78 @@ class product extends StatelessWidget {
             ],
           ),
         ),
-        SizedBox(height: 20),
-        Card(
+      ),
+      SizedBox(height: 20),
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 25),
+        child: Card(
+          color: Color.fromARGB(255, 215, 194, 233),
+          child: Stack(
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Image.asset(
+                    "assets/gourde.png",
+                    width: 100,
+                    height: 100,
+                    fit: BoxFit.cover,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      children: [
+                        Text(
+                          "sac",
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        SizedBox(height: 4),
+                        Text(
+                          "1000",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, color: Colors.green),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 8),
+                  Center(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        // Ajoutez votre logique ici
+                      },
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            'voir plus',
+                            style: TextStyle(fontSize: 16, color: Colors.white),
+                          ),
+                        ],
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                        backgroundColor: Color(0xFF612C7D),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(7),
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+      SizedBox(height: 20),
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 25),
+        child: Card(
           color: Color.fromARGB(255, 215, 194, 233),
           child: Stack(
             children: [
@@ -290,72 +415,11 @@ class product extends StatelessWidget {
             ],
           ),
         ),
-        SizedBox(height: 20),
-        Card(
-          color: Color.fromARGB(255, 215, 194, 233),
-          child: Stack(
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Image.asset(
-                    "assets/gourde.png",
-                    width: 100,
-                    height: 100,
-                    fit: BoxFit.cover,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      children: [
-                        Text(
-                          "sac",
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        SizedBox(height: 4),
-                        Text(
-                          "1000",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, color: Colors.green),
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: 8),
-                  Center(
-                    child: ElevatedButton(
-                      onPressed: () {
-                        // Ajoutez votre logique ici
-                      },
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(
-                            'Ajouter au',
-                            style: TextStyle(fontSize: 16, color: Colors.white),
-                          ),
-                        ],
-                      ),
-                      style: ElevatedButton.styleFrom(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                        backgroundColor: Color(0xFF612C7D),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(7),
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-        SizedBox(height: 20),
-        Card(
+      ),
+      SizedBox(height: 20),
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 25),
+        child: Card(
           color: Color.fromARGB(255, 215, 194, 233),
           child: Stack(
             children: [
@@ -423,8 +487,11 @@ class product extends StatelessWidget {
             ],
           ),
         ),
-        SizedBox(height: 20),
-        Card(
+      ),
+      SizedBox(height: 20),
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 25),
+        child: Card(
           color: Color.fromARGB(255, 215, 194, 233),
           child: Stack(
             children: [
@@ -492,8 +559,11 @@ class product extends StatelessWidget {
             ],
           ),
         ),
-        SizedBox(height: 20),
-        Card(
+      ),
+      SizedBox(height: 20),
+      Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Card(
           color: Color.fromARGB(255, 215, 194, 233),
           child: Stack(
             children: [
@@ -561,8 +631,11 @@ class product extends StatelessWidget {
             ],
           ),
         ),
-        SizedBox(height: 20),
-        Card(
+      ),
+      SizedBox(height: 20),
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 25),
+        child: Card(
           color: Color.fromARGB(255, 215, 194, 233),
           child: Stack(
             children: [
@@ -631,8 +704,11 @@ class product extends StatelessWidget {
             ],
           ),
         ),
-        SizedBox(height: 20),
-        Card(
+      ),
+      SizedBox(height: 20),
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 25),
+        child: Card(
           color: Color.fromARGB(255, 215, 194, 233),
           child: Stack(
             children: [
@@ -700,8 +776,11 @@ class product extends StatelessWidget {
             ],
           ),
         ),
-        SizedBox(height: 20),
-        Card(
+      ),
+      SizedBox(height: 20),
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 25),
+        child: Card(
           color: Color.fromARGB(255, 215, 194, 233),
           child: Stack(
             children: [
@@ -770,8 +849,11 @@ class product extends StatelessWidget {
             ],
           ),
         ),
-        SizedBox(height: 20),
-        Card(
+      ),
+      SizedBox(height: 20),
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 25),
+        child: Card(
           color: Color.fromARGB(255, 215, 194, 233),
           child: Stack(
             children: [
@@ -839,8 +921,11 @@ class product extends StatelessWidget {
             ],
           ),
         ),
-        SizedBox(height: 20),
-        Card(
+      ),
+      SizedBox(height: 20),
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 25),
+        child: Card(
           color: Color.fromARGB(255, 215, 194, 233),
           child: Stack(
             children: [
@@ -908,8 +993,11 @@ class product extends StatelessWidget {
             ],
           ),
         ),
-        SizedBox(height: 20),
-        Card(
+      ),
+      SizedBox(height: 20),
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 25),
+        child: Card(
           color: Color.fromARGB(255, 215, 194, 233),
           child: Stack(
             children: [
@@ -977,8 +1065,11 @@ class product extends StatelessWidget {
             ],
           ),
         ),
-        SizedBox(height: 20),
-        Card(
+      ),
+      SizedBox(height: 20),
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 25),
+        child: Card(
           color: Color.fromARGB(255, 215, 194, 233),
           child: Stack(
             children: [
@@ -1046,8 +1137,11 @@ class product extends StatelessWidget {
             ],
           ),
         ),
-        SizedBox(height: 20),
-        Card(
+      ),
+      SizedBox(height: 20),
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 25),
+        child: Card(
           color: Color.fromARGB(255, 215, 194, 233),
           child: Stack(
             children: [
@@ -1115,7 +1209,7 @@ class product extends StatelessWidget {
             ],
           ),
         ),
-      ]),
-    );
+      ),
+    ]);
   }
 }
