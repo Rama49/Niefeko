@@ -1,19 +1,21 @@
-// bouton_template.dart
+// Reutilisable/buttonReu.dart
 import 'package:flutter/material.dart';
 
 class BoutonR extends StatelessWidget {
   final String titre;
   final VoidCallback onPressed;
-  final Color? couleur; // Nouvelle propriété pour la couleur du bouton
-  final double?
-      fontSize; // Nouvelle propriété pour la taille de police du texte
+  final double borderRadius;
+  final Color? couleur;
+  final double? width; // Ajouter une propriété de largeur
 
+  // ignore: use_super_parameters
   const BoutonR({
     Key? key,
     required this.titre,
     required this.onPressed,
+    this.borderRadius = 5,
     this.couleur,
-    this.fontSize, // Ajouter la taille de police comme argument
+    this.width, // Ajouter la propriété de largeur
   }) : super(key: key);
 
   @override
@@ -22,17 +24,17 @@ class BoutonR extends StatelessWidget {
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
         backgroundColor: couleur ?? Colors.white,
-        padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        padding: const EdgeInsets.symmetric(vertical: 5), // Supprimer le padding horizontal
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.zero,
+          borderRadius: BorderRadius.circular(borderRadius),
         ),
+        minimumSize: const Size(150, 0), 
       ),
       child: Text(
         titre,
-        style: TextStyle(
-          fontSize: fontSize ??
-              14,
-          color: Color.fromARGB(255, 71, 3, 82),
+        style: const TextStyle(
+          fontSize: 16,
+          color: Color(0xFF593070),
         ),
       ),
     );

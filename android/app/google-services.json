@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "411609193394",
+    "project_id": "niefeko-4d059",
+    "storage_bucket": "niefeko-4d059.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:411609193394:android:bf241d5e05b9418a8ea2ab",
+        "android_client_info": {
+          "package_name": "com.example.niefeko"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyATc9RX5mWcf00q5nIm3GnYZGiLkHgwFAc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
