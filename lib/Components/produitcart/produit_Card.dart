@@ -9,8 +9,7 @@ class product extends StatelessWidget {
   Widget build(BuildContext context) {
     crossAxisAlignment:
     CrossAxisAlignment.start;
-    return 
-    Padding(
+    return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 25),
       child: Column(children: [
         Text(
@@ -23,7 +22,6 @@ class product extends StatelessWidget {
         SizedBox(height: 20),
         Card(
           color: Color.fromARGB(255, 215, 194, 233),
-              
           child: Stack(
             children: [
               Column(
@@ -56,12 +54,12 @@ class product extends StatelessWidget {
                   Center(
                     child: ElevatedButton(
                       onPressed: () {
-                  // Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(
-                  //     builder: (context) => (),
-                  //   ),
-                  // );
+                        // Navigator.push(
+                        //   context,
+                        //   MaterialPageRoute(
+                        //     builder: (context) => (),
+                        //   ),
+                        // );
                       },
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
@@ -70,9 +68,7 @@ class product extends StatelessWidget {
                             'voir plus',
                             style: TextStyle(fontSize: 16, color: Colors.white),
                           ),
-                          Icon(Icons.shopping_cart, color: Colors.white),
                         ],
-                        
                       ),
                       style: ElevatedButton.styleFrom(
                         padding:
@@ -84,33 +80,17 @@ class product extends StatelessWidget {
                       ),
                     ),
                   ),
-                      SizedBox(height: 20,),
+                  SizedBox(
+                    height: 20,
+                  ),
                 ],
               ),
-              // Align(
-              //   alignment: Alignment(1, -1),
-              //   child:
-              //    IconButton(
-              //     icon: Icon(
-              //       Icons.favorite,
-              //       color: Colors.red,
-              //     ),
-              //     onPressed: () {
-              //       // Ajoutez votre logique ici
-              //       // Navigator.push(
-              //       //   context,
-              //       //   MaterialPageRoute(builder: (context) => pageFavoris()),
-              //       // );
-              //     },
-              //   ),
-              // ),
             ],
           ),
         ),
         SizedBox(height: 20),
         Card(
           color: Color.fromARGB(255, 215, 194, 233),
-              
           child: Stack(
             children: [
               Column(
@@ -143,12 +123,12 @@ class product extends StatelessWidget {
                   Center(
                     child: ElevatedButton(
                       onPressed: () {
-                  // Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(
-                  //     builder: (context) => CategoryPage(),
-                  //   ),
-                  // );
+                        // Navigator.push(
+                        //   context,
+                        //   MaterialPageRoute(
+                        //     builder: (context) => CategoryPage(),
+                        //   ),
+                        // );
                       },
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
@@ -157,9 +137,7 @@ class product extends StatelessWidget {
                             'Voir plus',
                             style: TextStyle(fontSize: 16, color: Colors.white),
                           ),
-                          Icon(Icons.shopping_cart, color: Colors.white),
                         ],
-                        
                       ),
                       style: ElevatedButton.styleFrom(
                         padding:
@@ -171,33 +149,17 @@ class product extends StatelessWidget {
                       ),
                     ),
                   ),
-                      SizedBox(height: 20,),
+                  SizedBox(
+                    height: 20,
+                  ),
                 ],
               ),
-              // Align(
-              //   alignment: Alignment(1, -1),
-              //   child:
-              //    IconButton(
-              //     icon: Icon(
-              //       Icons.favorite,
-              //       color: Colors.red,
-              //     ),
-              //     onPressed: () {
-              //       // Ajoutez votre logique ici
-              //       // Navigator.push(
-              //       //   context,
-              //       //   MaterialPageRoute(builder: (context) => pageFavoris()),
-              //       // );
-              //     },
-              //   ),
-              // ),
             ],
           ),
         ),
         SizedBox(height: 20),
         Card(
           color: Color.fromARGB(255, 215, 194, 233),
-              
           child: Stack(
             children: [
               Column(
@@ -230,12 +192,12 @@ class product extends StatelessWidget {
                   Center(
                     child: ElevatedButton(
                       onPressed: () {
-                  //       Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(
-                  //     builder: (context) => CategoryPage(),
-                  //   ),
-                  // );
+                        //       Navigator.push(
+                        //   context,
+                        //   MaterialPageRoute(
+                        //     builder: (context) => CategoryPage(),
+                        //   ),
+                        // );
                       },
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
@@ -244,9 +206,7 @@ class product extends StatelessWidget {
                             'voir plus',
                             style: TextStyle(fontSize: 16, color: Colors.white),
                           ),
-                          Icon(Icons.shopping_cart, color: Colors.white),
                         ],
-                        
                       ),
                       style: ElevatedButton.styleFrom(
                         padding:
@@ -258,33 +218,17 @@ class product extends StatelessWidget {
                       ),
                     ),
                   ),
-                      SizedBox(height: 20,),
+                  SizedBox(
+                    height: 20,
+                  ),
                 ],
               ),
-              // Align(
-              //   alignment: Alignment(1, -1),
-              //   child:
-              //    IconButton(
-              //     icon: Icon(
-              //       Icons.favorite,
-              //       color: Colors.red,
-              //     ),
-              //     onPressed: () {
-              //       // Ajoutez votre logique ici
-              //       // Navigator.push(
-              //       //   context,
-              //       //   MaterialPageRoute(builder: (context) => pageFavoris()),
-              //       // );
-              //     },
-              //   ),
-              // ),
             ],
           ),
         ),
-       SizedBox(height: 20),
+        SizedBox(height: 20),
         Card(
           color: Color.fromARGB(255, 215, 194, 233),
-              
           child: Stack(
             children: [
               Column(
@@ -326,9 +270,7 @@ class product extends StatelessWidget {
                             'Ajouter au',
                             style: TextStyle(fontSize: 16, color: Colors.white),
                           ),
-                          Icon(Icons.shopping_cart, color: Colors.white),
                         ],
-                        
                       ),
                       style: ElevatedButton.styleFrom(
                         padding:
@@ -340,33 +282,17 @@ class product extends StatelessWidget {
                       ),
                     ),
                   ),
-                      SizedBox(height: 20,),
+                  SizedBox(
+                    height: 20,
+                  ),
                 ],
               ),
-              // Align(
-              //   alignment: Alignment(1, -1),
-              //   child:
-              //    IconButton(
-              //     icon: Icon(
-              //       Icons.favorite,
-              //       color: Colors.red,
-              //     ),
-              //     onPressed: () {
-              //       // Ajoutez votre logique ici
-              //       // Navigator.push(
-              //       //   context,
-              //       //   MaterialPageRoute(builder: (context) => pageFavoris()),
-              //       // );
-              //     },
-              //   ),
-              // ),
             ],
           ),
         ),
-      SizedBox(height: 20),
+        SizedBox(height: 20),
         Card(
           color: Color.fromARGB(255, 215, 194, 233),
-              
           child: Stack(
             children: [
               Column(
@@ -408,9 +334,7 @@ class product extends StatelessWidget {
                             'Ajouter au',
                             style: TextStyle(fontSize: 16, color: Colors.white),
                           ),
-                          Icon(Icons.shopping_cart, color: Colors.white),
                         ],
-                        
                       ),
                       style: ElevatedButton.styleFrom(
                         padding:
@@ -422,33 +346,17 @@ class product extends StatelessWidget {
                       ),
                     ),
                   ),
-                      SizedBox(height: 20,),
+                  SizedBox(
+                    height: 20,
+                  ),
                 ],
               ),
-              // Align(
-              //   alignment: Alignment(1, -1),
-              //   child:
-              //    IconButton(
-              //     icon: Icon(
-              //       Icons.favorite,
-              //       color: Colors.red,
-              //     ),
-              //     onPressed: () {
-              //       // Ajoutez votre logique ici
-              //       // Navigator.push(
-              //       //   context,
-              //       //   MaterialPageRoute(builder: (context) => pageFavoris()),
-              //       // );
-              //     },
-              //   ),
-              // ),
             ],
           ),
         ),
-       SizedBox(height: 20),
+        SizedBox(height: 20),
         Card(
           color: Color.fromARGB(255, 215, 194, 233),
-              
           child: Stack(
             children: [
               Column(
@@ -481,12 +389,12 @@ class product extends StatelessWidget {
                   Center(
                     child: ElevatedButton(
                       onPressed: () {
-                          //  Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(
-                  //     builder: (context) => CategoryPage(),
-                  //   ),
-                  // );
+                        //  Navigator.push(
+                        //   context,
+                        //   MaterialPageRoute(
+                        //     builder: (context) => CategoryPage(),
+                        //   ),
+                        // );
                       },
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
@@ -495,9 +403,7 @@ class product extends StatelessWidget {
                             'Voir plus',
                             style: TextStyle(fontSize: 16, color: Colors.white),
                           ),
-                          Icon(Icons.shopping_cart, color: Colors.white),
                         ],
-                        
                       ),
                       style: ElevatedButton.styleFrom(
                         padding:
@@ -509,33 +415,17 @@ class product extends StatelessWidget {
                       ),
                     ),
                   ),
-                      SizedBox(height: 20,),
+                  SizedBox(
+                    height: 20,
+                  ),
                 ],
               ),
-              // Align(
-              //   alignment: Alignment(1, -1),
-              //   child:
-              //    IconButton(
-              //     icon: Icon(
-              //       Icons.favorite,
-              //       color: Colors.red,
-              //     ),
-              //     onPressed: () {
-              //       // Ajoutez votre logique ici
-              //       // Navigator.push(
-              //       //   context,
-              //       //   MaterialPageRoute(builder: (context) => pageFavoris()),
-              //       // );
-              //     },
-              //   ),
-              // ),
             ],
           ),
         ),
         SizedBox(height: 20),
         Card(
           color: Color.fromARGB(255, 215, 194, 233),
-              
           child: Stack(
             children: [
               Column(
@@ -568,12 +458,12 @@ class product extends StatelessWidget {
                   Center(
                     child: ElevatedButton(
                       onPressed: () {
-                       //  Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(
-                  //     builder: (context) => CategoryPage(),
-                  //   ),
-                  // );
+                        //  Navigator.push(
+                        //   context,
+                        //   MaterialPageRoute(
+                        //     builder: (context) => CategoryPage(),
+                        //   ),
+                        // );
                       },
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
@@ -582,9 +472,7 @@ class product extends StatelessWidget {
                             'voir plus',
                             style: TextStyle(fontSize: 16, color: Colors.white),
                           ),
-                          Icon(Icons.shopping_cart, color: Colors.white),
                         ],
-                        
                       ),
                       style: ElevatedButton.styleFrom(
                         padding:
@@ -596,33 +484,17 @@ class product extends StatelessWidget {
                       ),
                     ),
                   ),
-                      SizedBox(height: 20,),
+                  SizedBox(
+                    height: 20,
+                  ),
                 ],
               ),
-              // Align(
-              //   alignment: Alignment(1, -1),
-              //   child:
-              //    IconButton(
-              //     icon: Icon(
-              //       Icons.favorite,
-              //       color: Colors.red,
-              //     ),
-              //     onPressed: () {
-              //       // Ajoutez votre logique ici
-              //       // Navigator.push(
-              //       //   context,
-              //       //   MaterialPageRoute(builder: (context) => pageFavoris()),
-              //       // );
-              //     },
-              //   ),
-              // ),
             ],
           ),
         ),
-      SizedBox(height: 20),
+        SizedBox(height: 20),
         Card(
           color: Color.fromARGB(255, 215, 194, 233),
-              
           child: Stack(
             children: [
               Column(
@@ -655,12 +527,12 @@ class product extends StatelessWidget {
                   Center(
                     child: ElevatedButton(
                       onPressed: () {
-                         //  Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(
-                  //     builder: (context) => CategoryPage(),
-                  //   ),
-                  // );
+                        //  Navigator.push(
+                        //   context,
+                        //   MaterialPageRoute(
+                        //     builder: (context) => CategoryPage(),
+                        //   ),
+                        // );
                       },
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
@@ -669,9 +541,7 @@ class product extends StatelessWidget {
                             'Voir plus',
                             style: TextStyle(fontSize: 16, color: Colors.white),
                           ),
-                          Icon(Icons.shopping_cart, color: Colors.white),
                         ],
-                        
                       ),
                       style: ElevatedButton.styleFrom(
                         padding:
@@ -683,40 +553,24 @@ class product extends StatelessWidget {
                       ),
                     ),
                   ),
-                      SizedBox(height: 20,),
+                  SizedBox(
+                    height: 20,
+                  ),
                 ],
               ),
-              // Align(
-              //   alignment: Alignment(1, -1),
-              //   child:
-              //    IconButton(
-              //     icon: Icon(
-              //       Icons.favorite,
-              //       color: Colors.red,
-              //     ),
-              //     onPressed: () {
-              //       // Ajoutez votre logique ici
-              //       // Navigator.push(
-              //       //   context,
-              //       //   MaterialPageRoute(builder: (context) => pageFavoris()),
-              //       // );
-              //     },
-              //   ),
-              // ),
             ],
           ),
         ),
-       SizedBox(height: 20),
+        SizedBox(height: 20),
         Card(
           color: Color.fromARGB(255, 215, 194, 233),
-              
           child: Stack(
             children: [
               Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Image.asset(
-                    "assets/maronshoes.png",
+                    "assets/sac1.png",
                     width: 100,
                     height: 100,
                     fit: BoxFit.cover,
@@ -726,7 +580,7 @@ class product extends StatelessWidget {
                     child: Column(
                       children: [
                         Text(
-                          "shoes",
+                          "sac",
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
                         SizedBox(height: 4),
@@ -743,12 +597,12 @@ class product extends StatelessWidget {
                     child: ElevatedButton(
                       onPressed: () {
                         // Ajoutez votre logique ici
-                         //  Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(
-                  //     builder: (context) => CategoryPage(),
-                  //   ),
-                  // );
+                        //  Navigator.push(
+                        //   context,
+                        //   MaterialPageRoute(
+                        //     builder: (context) => CategoryPage(),
+                        //   ),
+                        // );
                       },
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
@@ -757,9 +611,7 @@ class product extends StatelessWidget {
                             'voir plus',
                             style: TextStyle(fontSize: 16, color: Colors.white),
                           ),
-                          Icon(Icons.shopping_cart, color: Colors.white),
                         ],
-                        
                       ),
                       style: ElevatedButton.styleFrom(
                         padding:
@@ -771,33 +623,17 @@ class product extends StatelessWidget {
                       ),
                     ),
                   ),
-                      SizedBox(height: 20,),
+                  SizedBox(
+                    height: 20,
+                  ),
                 ],
               ),
-              // Align(
-              //   alignment: Alignment(1, -1),
-              //   child:
-              //    IconButton(
-              //     icon: Icon(
-              //       Icons.favorite,
-              //       color: Colors.red,
-              //     ),
-              //     onPressed: () {
-              //       // Ajoutez votre logique ici
-              //       // Navigator.push(
-              //       //   context,
-              //       //   MaterialPageRoute(builder: (context) => pageFavoris()),
-              //       // );
-              //     },
-              //   ),
-              // ),
             ],
           ),
         ),
-     SizedBox(height: 20),
+        SizedBox(height: 20),
         Card(
           color: Color.fromARGB(255, 215, 194, 233),
-              
           child: Stack(
             children: [
               Column(
@@ -830,12 +666,12 @@ class product extends StatelessWidget {
                   Center(
                     child: ElevatedButton(
                       onPressed: () {
-                         //  Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(
-                  //     builder: (context) => CategoryPage(),
-                  //   ),
-                  // );
+                        //  Navigator.push(
+                        //   context,
+                        //   MaterialPageRoute(
+                        //     builder: (context) => CategoryPage(),
+                        //   ),
+                        // );
                       },
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
@@ -844,9 +680,7 @@ class product extends StatelessWidget {
                             'voir plus',
                             style: TextStyle(fontSize: 16, color: Colors.white),
                           ),
-                          Icon(Icons.shopping_cart, color: Colors.white),
                         ],
-                        
                       ),
                       style: ElevatedButton.styleFrom(
                         padding:
@@ -858,33 +692,17 @@ class product extends StatelessWidget {
                       ),
                     ),
                   ),
-                      SizedBox(height: 20,),
+                  SizedBox(
+                    height: 20,
+                  ),
                 ],
               ),
-              // Align(
-              //   alignment: Alignment(1, -1),
-              //   child:
-              //    IconButton(
-              //     icon: Icon(
-              //       Icons.favorite,
-              //       color: Colors.red,
-              //     ),
-              //     onPressed: () {
-              //       // Ajoutez votre logique ici
-              //       // Navigator.push(
-              //       //   context,
-              //       //   MaterialPageRoute(builder: (context) => pageFavoris()),
-              //       // );
-              //     },
-              //   ),
-              // ),
             ],
           ),
         ),
-       SizedBox(height: 20),
+        SizedBox(height: 20),
         Card(
           color: Color.fromARGB(255, 215, 194, 233),
-              
           child: Stack(
             children: [
               Column(
@@ -918,12 +736,12 @@ class product extends StatelessWidget {
                     child: ElevatedButton(
                       onPressed: () {
                         // Ajoutez votre logique ici
-                         //  Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(
-                  //     builder: (context) => CategoryPage(),
-                  //   ),
-                  // );
+                        //  Navigator.push(
+                        //   context,
+                        //   MaterialPageRoute(
+                        //     builder: (context) => CategoryPage(),
+                        //   ),
+                        // );
                       },
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
@@ -932,9 +750,7 @@ class product extends StatelessWidget {
                             'voir plus',
                             style: TextStyle(fontSize: 16, color: Colors.white),
                           ),
-                          Icon(Icons.shopping_cart, color: Colors.white),
                         ],
-                        
                       ),
                       style: ElevatedButton.styleFrom(
                         padding:
@@ -946,33 +762,17 @@ class product extends StatelessWidget {
                       ),
                     ),
                   ),
-                      SizedBox(height: 20,),
+                  SizedBox(
+                    height: 20,
+                  ),
                 ],
               ),
-              // Align(
-              //   alignment: Alignment(1, -1),
-              //   child:
-              //    IconButton(
-              //     icon: Icon(
-              //       Icons.favorite,
-              //       color: Colors.red,
-              //     ),
-              //     onPressed: () {
-              //       // Ajoutez votre logique ici
-              //       // Navigator.push(
-              //       //   context,
-              //       //   MaterialPageRoute(builder: (context) => pageFavoris()),
-              //       // );
-              //     },
-              //   ),
-              // ),
             ],
           ),
         ),
-      SizedBox(height: 20),
+        SizedBox(height: 20),
         Card(
           color: Color.fromARGB(255, 215, 194, 233),
-              
           child: Stack(
             children: [
               Column(
@@ -1005,12 +805,12 @@ class product extends StatelessWidget {
                   Center(
                     child: ElevatedButton(
                       onPressed: () {
-                         //  Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(
-                  //     builder: (context) => CategoryPage(),
-                  //   ),
-                  // );
+                        //  Navigator.push(
+                        //   context,
+                        //   MaterialPageRoute(
+                        //     builder: (context) => CategoryPage(),
+                        //   ),
+                        // );
                       },
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
@@ -1019,9 +819,7 @@ class product extends StatelessWidget {
                             'voir plus',
                             style: TextStyle(fontSize: 16, color: Colors.white),
                           ),
-                          Icon(Icons.shopping_cart, color: Colors.white),
                         ],
-                        
                       ),
                       style: ElevatedButton.styleFrom(
                         padding:
@@ -1033,40 +831,24 @@ class product extends StatelessWidget {
                       ),
                     ),
                   ),
-                      SizedBox(height: 20,),
+                  SizedBox(
+                    height: 20,
+                  ),
                 ],
               ),
-              // Align(
-              //   alignment: Alignment(1, -1),
-              //   child:
-              //    IconButton(
-              //     icon: Icon(
-              //       Icons.favorite,
-              //       color: Colors.red,
-              //     ),
-              //     onPressed: () {
-              //       // Ajoutez votre logique ici
-              //       // Navigator.push(
-              //       //   context,
-              //       //   MaterialPageRoute(builder: (context) => pageFavoris()),
-              //       // );
-              //     },
-              //   ),
-              // ),
             ],
           ),
         ),
-      SizedBox(height: 20),
+        SizedBox(height: 20),
         Card(
           color: Color.fromARGB(255, 215, 194, 233),
-              
           child: Stack(
             children: [
               Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Image.asset(
-                    "assets/t-shirt.png",
+                    "assets/montre.png",
                     width: 100,
                     height: 100,
                     fit: BoxFit.cover,
@@ -1076,7 +858,7 @@ class product extends StatelessWidget {
                     child: Column(
                       children: [
                         Text(
-                          "t-shirt",
+                          "montre",
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
                         SizedBox(height: 4),
@@ -1092,12 +874,12 @@ class product extends StatelessWidget {
                   Center(
                     child: ElevatedButton(
                       onPressed: () {
-                         //  Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(
-                  //     builder: (context) => CategoryPage(),
-                  //   ),
-                  // );
+                        //  Navigator.push(
+                        //   context,
+                        //   MaterialPageRoute(
+                        //     builder: (context) => CategoryPage(),
+                        //   ),
+                        // );
                       },
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
@@ -1106,9 +888,7 @@ class product extends StatelessWidget {
                             'voir plus',
                             style: TextStyle(fontSize: 16, color: Colors.white),
                           ),
-                          Icon(Icons.shopping_cart, color: Colors.white),
                         ],
-                        
                       ),
                       style: ElevatedButton.styleFrom(
                         padding:
@@ -1120,33 +900,17 @@ class product extends StatelessWidget {
                       ),
                     ),
                   ),
-                      SizedBox(height: 20,),
+                  SizedBox(
+                    height: 20,
+                  ),
                 ],
               ),
-              // Align(
-              //   alignment: Alignment(1, -1),
-              //   child:
-              //    IconButton(
-              //     icon: Icon(
-              //       Icons.favorite,
-              //       color: Colors.red,
-              //     ),
-              //     onPressed: () {
-              //       // Ajoutez votre logique ici
-              //       // Navigator.push(
-              //       //   context,
-              //       //   MaterialPageRoute(builder: (context) => pageFavoris()),
-              //       // );
-              //     },
-              //   ),
-              // ),
             ],
           ),
         ),
-       SizedBox(height: 20),
+        SizedBox(height: 20),
         Card(
           color: Color.fromARGB(255, 215, 194, 233),
-              
           child: Stack(
             children: [
               Column(
@@ -1179,12 +943,12 @@ class product extends StatelessWidget {
                   Center(
                     child: ElevatedButton(
                       onPressed: () {
-                         //  Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(
-                  //     builder: (context) => CategoryPage(),
-                  //   ),
-                  // );
+                        //  Navigator.push(
+                        //   context,
+                        //   MaterialPageRoute(
+                        //     builder: (context) => CategoryPage(),
+                        //   ),
+                        // );
                       },
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
@@ -1193,9 +957,7 @@ class product extends StatelessWidget {
                             'voir plus',
                             style: TextStyle(fontSize: 16, color: Colors.white),
                           ),
-                          Icon(Icons.shopping_cart, color: Colors.white),
                         ],
-                        
                       ),
                       style: ElevatedButton.styleFrom(
                         padding:
@@ -1207,33 +969,17 @@ class product extends StatelessWidget {
                       ),
                     ),
                   ),
-                      SizedBox(height: 20,),
+                  SizedBox(
+                    height: 20,
+                  ),
                 ],
               ),
-              // Align(
-              //   alignment: Alignment(1, -1),
-              //   child:
-              //    IconButton(
-              //     icon: Icon(
-              //       Icons.favorite,
-              //       color: Colors.red,
-              //     ),
-              //     onPressed: () {
-              //       // Ajoutez votre logique ici
-              //       // Navigator.push(
-              //       //   context,
-              //       //   MaterialPageRoute(builder: (context) => pageFavoris()),
-              //       // );
-              //     },
-              //   ),
-              // ),
             ],
           ),
         ),
-       SizedBox(height: 20),
+        SizedBox(height: 20),
         Card(
           color: Color.fromARGB(255, 215, 194, 233),
-              
           child: Stack(
             children: [
               Column(
@@ -1267,11 +1013,11 @@ class product extends StatelessWidget {
                     child: ElevatedButton(
                       onPressed: () {
                         //  Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(
-                  //     builder: (context) => CategoryPage(),
-                  //   ),
-                  // );
+                        //   context,
+                        //   MaterialPageRoute(
+                        //     builder: (context) => CategoryPage(),
+                        //   ),
+                        // );
                       },
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
@@ -1280,9 +1026,7 @@ class product extends StatelessWidget {
                             'voir plus',
                             style: TextStyle(fontSize: 16, color: Colors.white),
                           ),
-                          Icon(Icons.shopping_cart, color: Colors.white),
                         ],
-                        
                       ),
                       style: ElevatedButton.styleFrom(
                         padding:
@@ -1294,33 +1038,17 @@ class product extends StatelessWidget {
                       ),
                     ),
                   ),
-                      SizedBox(height: 20,),
+                  SizedBox(
+                    height: 20,
+                  ),
                 ],
               ),
-              // Align(
-              //   alignment: Alignment(1, -1),
-              //   child:
-              //    IconButton(
-              //     icon: Icon(
-              //       Icons.favorite,
-              //       color: Colors.red,
-              //     ),
-              //     onPressed: () {
-              //       // Ajoutez votre logique ici
-              //       // Navigator.push(
-              //       //   context,
-              //       //   MaterialPageRoute(builder: (context) => pageFavoris()),
-              //       // );
-              //     },
-              //   ),
-              // ),
             ],
           ),
         ),
-     SizedBox(height: 20),
+        SizedBox(height: 20),
         Card(
           color: Color.fromARGB(255, 215, 194, 233),
-              
           child: Stack(
             children: [
               Column(
@@ -1353,12 +1081,12 @@ class product extends StatelessWidget {
                   Center(
                     child: ElevatedButton(
                       onPressed: () {
-                         //  Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(
-                  //     builder: (context) => CategoryPage(),
-                  //   ),
-                  // );
+                        //  Navigator.push(
+                        //   context,
+                        //   MaterialPageRoute(
+                        //     builder: (context) => CategoryPage(),
+                        //   ),
+                        // );
                       },
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
@@ -1367,9 +1095,7 @@ class product extends StatelessWidget {
                             'voir plus',
                             style: TextStyle(fontSize: 16, color: Colors.white),
                           ),
-                          Icon(Icons.shopping_cart, color: Colors.white),
                         ],
-                        
                       ),
                       style: ElevatedButton.styleFrom(
                         padding:
@@ -1381,30 +1107,15 @@ class product extends StatelessWidget {
                       ),
                     ),
                   ),
-                      SizedBox(height: 20,),
+                  SizedBox(
+                    height: 20,
+                  ),
                 ],
               ),
-              // Align(
-              //   alignment: Alignment(1, -1),
-              //   child:
-              //    IconButton(
-              //     icon: Icon(
-              //       Icons.favorite,
-              //       color: Colors.red,
-              //     ),
-              //     onPressed: () {
-              //       // Ajoutez votre logique ici
-              //       // Navigator.push(
-              //       //   context,
-              //       //   MaterialPageRoute(builder: (context) => pageFavoris()),
-              //       // );
-              //     },
-              //   ),
-              // ),
             ],
           ),
         ),
-       ]),
+      ]),
     );
   }
 }
