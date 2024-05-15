@@ -1,5 +1,4 @@
 import 'package:firebase_auth/firebase_auth.dart';
-//import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:niefeko/Components/Category/MesProduits.dart';
@@ -358,8 +357,8 @@ child:
             children: [
               Image.asset(
                 product.imagePath,
-                width: 90,
-                height: 90,
+                width: 70,
+                height: 50,
                 fit: BoxFit.cover,
               ),
               Padding(
@@ -379,7 +378,7 @@ child:
                   ],
                 ),
               ),
-              SizedBox(height: 8),
+              SizedBox(height: 4),
               Center(
                 child: ElevatedButton(
                   onPressed: () => addToCart(product),

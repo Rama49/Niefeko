@@ -4,7 +4,7 @@ class Product {
   //final int id; 
   final String imagePath, name, description;
   final double price;
-  int quantity;
+  int quantity ;
 
   // Product( {
   //   //  required this.id,

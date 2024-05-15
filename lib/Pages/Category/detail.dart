@@ -4,7 +4,6 @@ import 'package:niefeko/Pages/Category/CategoriePage.dart';
 import 'package:niefeko/Pages/CartPanier/CartPanier.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-//import 'package:flutter/cupertino.dart';
 
 class Detail extends StatefulWidget{
   final Product product;
@@ -12,7 +11,7 @@ class Detail extends StatefulWidget{
    _DetailState createState() => _DetailState();
 
   }
-  int quantity = 0;
+  int quantity = 1;
   int index = 0;
 class _DetailState extends State<Detail> {
 List<bool> isFavoritedList = List.generate(20, (index) => false);
@@ -179,22 +178,16 @@ void addOrderToFirestore(Order order) {
 
       orders
           .add(order.toMap())
-          // ignore: avoid_print
           .then((value) => print("Commande ajoutée avec l'ID: ${value.id}"))
           .catchError(
-              // ignore: avoid_print
+  
               (error) => print("Erreur lors de l'ajout de la commande: $error"));
     }
 
 
-
-
-
-
   @override
   Widget build(BuildContext context){
-    //int index = 0;
-    return
+    return 
     buildCard(index ,Product(imagePath: widget.product.imagePath, name: widget.product.name, description: widget.product.description, price: widget.product.price));
   }
 
@@ -408,8 +401,9 @@ bottomNavigationBar: Container(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   IconButton(onPressed: () {
-                          if (quantity > 1) {
-                         quantity -= 1;
+                    product.quantity =quantity;
+                          if (product.quantity > 1) {
+                         product.quantity -= 1;
                           setState(() {});
                          }
                         },
@@ -417,14 +411,15 @@ bottomNavigationBar: Container(
                          ),
                   const SizedBox(width: 4,),
                   Text(
-                    "$quantity",
+                    "${product.quantity}",
                     style: TextStyle(
                       fontSize: 15,
                     ),
                   ),
                   const SizedBox(width: 4,),
                   IconButton(onPressed: () {
-                     quantity += 1;
+                    product.quantity =quantity;
+                     product.quantity += 1;
                     setState(() {});
                   },
                   icon: Icon(Icons.add)
@@ -436,7 +431,8 @@ bottomNavigationBar: Container(
            const SizedBox(width: 5),
 
             Expanded(
-              child: ElevatedButton(onPressed: () => addToCart(product),
+              child: ElevatedButton(
+                onPressed: () => addToCart(product),
                 child: Container(
                   width: 200,
                   height: 50,
