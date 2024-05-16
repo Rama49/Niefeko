@@ -4,8 +4,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:niefeko/Components/Categories/categorie.dart';
 import 'package:niefeko/Components/Deals/deal.dart';
 import 'package:niefeko/Components/produitcart/produit_Card.dart';
-import 'package:niefeko/Pages/CartPanier/CartPanier.dart';
-import 'package:niefeko/Pages/Category/CategoriePage.dart';
 import 'package:niefeko/Pages/Connexion/connexion.dart';
 import 'package:niefeko/Pages/Favoris/pagefavoris.dart';
 import 'package:niefeko/Pages/PanierHistorique/PanierPage.dart';
@@ -14,13 +12,16 @@ import 'package:niefeko/Reutilisable/carteReu.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:niefeko/Components/Category/product.dart';
 
+// ignore: camel_case_types
 class search extends StatefulWidget {
+  // ignore: use_super_parameters
   const search({Key? key}) : super(key: key);
 
   @override
   State<search> createState() => _searchState();
 }
 
+// ignore: camel_case_types
 class _searchState extends State<search> {
   List<Product> cartItems = [
     Product(name: '', price: 0, description: '', imagePath: ''),
@@ -33,6 +34,7 @@ class _searchState extends State<search> {
     });
   }
 
+  // ignore: unused_field
   bool _isLoggedOut = false;
 
   // ignore: unused_element
@@ -52,10 +54,12 @@ class _searchState extends State<search> {
         fontSize: 16.0,
       );
       Navigator.pushReplacement(
+        // ignore: use_build_context_synchronously
         context,
         MaterialPageRoute(builder: (context) => const connexion()),
       );
     } catch (e) {
+      // ignore: avoid_print
       print("Erreur lors de la déconnexion: $e");
       Fluttertoast.showToast(
         msg: "Erreur lors de la déconnexion: $e",
@@ -94,7 +98,7 @@ class _searchState extends State<search> {
                   height: MediaQuery.of(context).size.height / 3,
                   child: Column(
                     children: [
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
                       const Text(
                         "Bienvenue à Niefeko",
                         style: TextStyle(
@@ -107,7 +111,7 @@ class _searchState extends State<search> {
                       // ignore: sized_box_for_whitespace
                       Container(
                         height: 40,
-                        padding: EdgeInsets.only(right: 25, left: 25),
+                        padding: const EdgeInsets.only(right: 25, left: 25),
                         child: TextField(
                           // onChanged: searchProduct,
                           decoration: InputDecoration(

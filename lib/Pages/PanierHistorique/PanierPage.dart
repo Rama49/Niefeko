@@ -3,8 +3,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+// ignore: use_key_in_widget_constructors
 class PanierPage extends StatefulWidget {
   @override
+  // ignore: library_private_types_in_public_api
   _PanierPageState createState() => _PanierPageState();
 }
 
@@ -69,6 +71,7 @@ class _PanierPageState extends State<PanierPage> {
             );
           }
           if (snapshot.hasError) {
+            // ignore: avoid_print
             print("Error: ${snapshot.error}");
             return const Center(
               child: Text('Une erreur est survenue'),

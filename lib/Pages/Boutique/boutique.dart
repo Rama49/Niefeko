@@ -8,8 +8,10 @@ import 'package:niefeko/Pages/Recherche/recherche.dart';
 import 'package:niefeko/Pages/CartPanier/CartPanier.dart';
 import 'package:niefeko/Components/Category/product.dart';
 
+// ignore: camel_case_types, use_key_in_widget_constructors
 class boutique extends StatefulWidget {
   @override
+  // ignore: library_private_types_in_public_api
   _CategoryPageState createState() => _CategoryPageState();
 }
 
@@ -61,6 +63,7 @@ class _CategoryPageState extends State<boutique> {
     String imageUrl = product.imagePath;
     String productName = product.name;
     double price = product.price;
+    // ignore: unused_local_variable
     DateTime timestamp = DateTime.now(); // Timestamp de la commande
 
     int existingIndex =
@@ -113,6 +116,7 @@ class _CategoryPageState extends State<boutique> {
     String nom = userSnapshot['nom'];
 
     Navigator.push(
+      // ignore: use_build_context_synchronously
       context,
       MaterialPageRoute(
         builder: (context) => CartPanier(
@@ -182,6 +186,7 @@ class _CategoryPageState extends State<boutique> {
     });
 
     showDialog(
+      // ignore: use_build_context_synchronously
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('Panier validé'),
@@ -213,13 +218,13 @@ class _CategoryPageState extends State<boutique> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: Color(0xFF612C7D),
+          backgroundColor: const Color(0xFF612C7D),
           leading: IconButton(
-            icon: Icon(Icons.arrow_back, color: Colors.white),
+            icon: const Icon(Icons.arrow_back, color: Colors.white),
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => search()),
+                MaterialPageRoute(builder: (context) => const search()),
               );
             },
           ),
@@ -228,7 +233,7 @@ class _CategoryPageState extends State<boutique> {
               children: [
                 IconButton(
                   icon:
-                      Icon(Icons.shopping_cart, color: Colors.white, size: 30),
+                      const Icon(Icons.shopping_cart, color: Colors.white, size: 30),
                   onPressed: navigateToCartPage,
                 ),
                 Positioned(
@@ -239,7 +244,7 @@ class _CategoryPageState extends State<boutique> {
                     radius: 10,
                     child: Text(
                       cartItemCount.toString(),
-                      style: TextStyle(color: Colors.white, fontSize: 12),
+                      style: const TextStyle(color: Colors.white, fontSize: 12),
                     ),
                   ),
                 ),
@@ -249,28 +254,28 @@ class _CategoryPageState extends State<boutique> {
         ),
         body: SingleChildScrollView(
           child: Column(children: [
-             SizedBox(height: 20,),
-            Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
+             const SizedBox(height: 20,),
+            const Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
               Text(
                 "Fournisseur1",
                 style: TextStyle(fontSize: 25),
               ),
             ]),
-            SizedBox(height: 20,),
-            Column(
+            const SizedBox(height: 20,),
+            const Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  padding: EdgeInsets.symmetric(horizontal: 20),
                   child: Text(
                       "Notre partenaire est une marque de mode élégante et moderne, connue pour ses créations stylées et tendance."),
                 ),
               ],
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             filteredImagePaths.isEmpty
-                ? Padding(
-                    padding: const EdgeInsets.all(8.0),
+                ? const Padding(
+                    padding: EdgeInsets.all(8.0),
                     child: Text(
                       "Produit non trouvé",
                       style: TextStyle(
@@ -282,8 +287,8 @@ class _CategoryPageState extends State<boutique> {
                   )
                 : GridView.builder(
                     shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    physics: const NeverScrollableScrollPhysics(),
+                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
                       crossAxisSpacing: 8,
                       mainAxisSpacing: 8,
@@ -332,22 +337,23 @@ class _CategoryPageState extends State<boutique> {
                   children: [
                     Text(
                       product.name,
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                      style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
-                    SizedBox(height: 4),
+                    const SizedBox(height: 4),
                     Text(
                       '${product.price}',
-                      style: TextStyle(
+                      style: const TextStyle(
                           fontWeight: FontWeight.bold, color: Colors.green),
                     ),
                   ],
                 ),
               ),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               Center(
                 child: ElevatedButton(
                   onPressed: () => addToCart(product),
-                  child: Row(
+                  // ignore: sort_child_properties_last
+                  child: const Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(
@@ -358,8 +364,8 @@ class _CategoryPageState extends State<boutique> {
                     ],
                   ),
                   style: ElevatedButton.styleFrom(
-                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                    backgroundColor: Color(0xFF612C7D),
+                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                    backgroundColor: const Color(0xFF612C7D),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(7),
                     ),
@@ -369,7 +375,7 @@ class _CategoryPageState extends State<boutique> {
             ],
           ),
           Align(
-            alignment: Alignment(1, -1),
+            alignment: const Alignment(1, -1),
             child: IconButton(
               icon: Icon(
                 isFavoritedList[index] ? Icons.favorite : Icons.favorite_border,
@@ -415,6 +421,7 @@ class _CategoryPageState extends State<boutique> {
     User? user = FirebaseAuth.instance.currentUser;
     if (user == null) {
       // Gérer le cas où l'utilisateur n'est pas connecté
+      // ignore: avoid_print
       print("L'utilisateur n'est pas connecté.");
       return;
     }
@@ -428,8 +435,10 @@ class _CategoryPageState extends State<boutique> {
           'userID': userID, // Ajout de l'ID de l'utilisateur
         })
         .then((value) =>
+            // ignore: avoid_print
             print("Produit ajouté aux favoris avec l'ID: ${value.id}"))
         .catchError(
+            // ignore: avoid_print
             (error) => print("Erreur lors de l'ajout aux favoris: $error"));
   }
 }
