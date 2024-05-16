@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:niefeko/Components/Deals/deal.dart';
+import 'package:niefeko/Pages/Boutique/boutique.dart';
 
 class product extends StatelessWidget {
   const product({super.key});
@@ -13,7 +14,7 @@ class product extends StatelessWidget {
         "Nos Boutiques",
         style: TextStyle(
           fontWeight: FontWeight.bold,
-          fontSize: 25,
+          fontSize: 20,
         ),
       ),
       SizedBox(height: 20),
@@ -25,7 +26,10 @@ class product extends StatelessWidget {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => deal()),
+                MaterialPageRoute(
+                  builder: (context) => boutique(),
+                  
+                ),
               );
             },
             child: Stack(
@@ -107,7 +111,7 @@ class product extends StatelessWidget {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => deal()),
+                MaterialPageRoute(builder: (context) => boutique()),
               );
             },
             child: Stack(
@@ -189,7 +193,7 @@ class product extends StatelessWidget {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => deal()),
+                MaterialPageRoute(builder: (context) => boutique()),
               );
             },
             child: Stack(
@@ -271,7 +275,7 @@ class product extends StatelessWidget {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => deal()),
+                MaterialPageRoute(builder: (context) => boutique()),
               );
             },
             child: Stack(
@@ -353,7 +357,7 @@ class product extends StatelessWidget {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => deal()),
+                MaterialPageRoute(builder: (context) => boutique()),
               );
             },
             child: Stack(
@@ -435,7 +439,7 @@ class product extends StatelessWidget {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => deal()),
+                MaterialPageRoute(builder: (context) => boutique()),
               );
             },
             child: Stack(
@@ -517,7 +521,7 @@ class product extends StatelessWidget {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => deal()),
+                MaterialPageRoute(builder: (context) => boutique()),
               );
             },
             child: Stack(
@@ -599,7 +603,7 @@ class product extends StatelessWidget {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => deal()),
+                MaterialPageRoute(builder: (context) => boutique()),
               );
             },
             child: Stack(
@@ -681,7 +685,7 @@ class product extends StatelessWidget {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => deal()),
+                MaterialPageRoute(builder: (context) => boutique()),
               );
             },
             child: Stack(
@@ -763,7 +767,7 @@ class product extends StatelessWidget {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => deal()),
+                MaterialPageRoute(builder: (context) => boutique()),
               );
             },
             child: Stack(
@@ -845,7 +849,7 @@ class product extends StatelessWidget {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => deal()),
+                MaterialPageRoute(builder: (context) => boutique()),
               );
             },
             child: Stack(

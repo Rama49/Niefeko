@@ -23,7 +23,7 @@ class _dealState extends State<deal> {
                 "Special Vente",
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  fontSize: 25,
+                  fontSize: 20,
                 ),
               ),
               GestureDetector(
