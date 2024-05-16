@@ -93,6 +93,16 @@ flutter:
       - assets/tshirt-polo.jpg
       - assets/tshirt1.jpg
       - assets/tshirtRouge.png
+      - assets/logoAfricavivre.png
+      - assets/logoafriquevert.png
+      - assets/logoanka.png
+      - assets/logoApi.png
+      - assets/logoAramet.png
+      - assets/logoBakeli.png
+      - assets/logoCap.png
+      - assets/logoDjolo.png
+      - assets/logoPacao.png
+      - assets/logo.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

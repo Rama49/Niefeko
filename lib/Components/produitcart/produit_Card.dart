@@ -534,7 +534,7 @@ class product extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Image.asset(
-                      "assets/Cap.png",
+                      "assets/logoCap.png",
                       width: 100,
                       height: 100,
                       fit: BoxFit.cover,
