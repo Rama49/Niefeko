@@ -4,8 +4,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:niefeko/Components/Categories/categorie.dart';
 import 'package:niefeko/Components/Deals/deal.dart';
 import 'package:niefeko/Components/produitcart/produit_Card.dart';
-import 'package:niefeko/Pages/CartPanier/CartPanier.dart';
-import 'package:niefeko/Pages/Category/CategoriePage.dart';
 import 'package:niefeko/Pages/Connexion/connexion.dart';
 import 'package:niefeko/Pages/Favoris/pagefavoris.dart';
 import 'package:niefeko/Pages/PanierHistorique/PanierPage.dart';
@@ -21,6 +19,7 @@ class search extends StatefulWidget {
   State<search> createState() => _searchState();
 }
 
+// ignore: camel_case_types
 class _searchState extends State<search> {
   List<Product> cartItems = [
     Product(name: '', price: 0, description: '', imagePath: ''),
@@ -33,14 +32,12 @@ class _searchState extends State<search> {
     });
   }
 
-  bool _isLoggedOut = false;
 
   // ignore: unused_element
   Future<void> _signOut() async {
     try {
       await FirebaseAuth.instance.signOut();
       setState(() {
-        _isLoggedOut = true;
       });
       Fluttertoast.showToast(
         msg: "Vous vous êtes déconnecté avec succès",
@@ -52,10 +49,12 @@ class _searchState extends State<search> {
         fontSize: 16.0,
       );
       Navigator.pushReplacement(
+        // ignore: use_build_context_synchronously
         context,
         MaterialPageRoute(builder: (context) => const connexion()),
       );
     } catch (e) {
+      // ignore: avoid_print
       print("Erreur lors de la déconnexion: $e");
       Fluttertoast.showToast(
         msg: "Erreur lors de la déconnexion: $e",
@@ -89,7 +88,7 @@ class _searchState extends State<search> {
                   padding: EdgeInsets.only(
                     bottom: MediaQuery.of(context).padding.bottom != 0
                         ? MediaQuery.of(context).padding.bottom
-                        : 250, // Ajoutez le padding en bas
+                        : 250,
                   ),
                   height: MediaQuery.of(context).size.height / 3,
                   child: Column(
@@ -107,7 +106,7 @@ class _searchState extends State<search> {
                       // ignore: sized_box_for_whitespace
                       Container(
                         height: 40,
-                        padding: EdgeInsets.only(right: 25, left: 25),
+                        padding: const EdgeInsets.only(right: 25, left: 25),
                         child: TextField(
                           // onChanged: searchProduct,
                           decoration: InputDecoration(
@@ -120,14 +119,13 @@ class _searchState extends State<search> {
                               borderRadius: BorderRadius.circular(8),
                               borderSide: BorderSide.none,
                             ),
-                            hintText: "Rechercher un produit",
+                            hintText: "Recherche un produit",
                             prefixIcon: const Icon(Icons.search),
                             prefixIconColor: Colors.black,
                           ),
                         ),
                       ),
                       const SizedBox(height: 20),
-
                       // Carousel
                       CarouselSlider(
                         items: [
@@ -196,8 +194,6 @@ class _searchState extends State<search> {
                       ),
                     ],
                   )),
-
-              // Votre Container contenant la catégorie
               const Column(
                 children: [
                   SizedBox(height: 120),
