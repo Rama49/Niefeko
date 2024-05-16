@@ -42,7 +42,7 @@ class product extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Image.asset(
-                      "assets/sac1.png",
+                      "assets/logoAfricavivre.png",
                       width: 100,
                       height: 100,
                       fit: BoxFit.cover,
@@ -124,7 +124,7 @@ class product extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Image.asset(
-                      "assets/casque.png",
+                      "assets/logoafriquevert.png",
                       width: 100,
                       height: 100,
                       fit: BoxFit.cover,
@@ -206,7 +206,7 @@ class product extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Image.asset(
-                      "assets/chaussure.png",
+                      "assets/logoanka.png",
                       width: 100,
                       height: 100,
                       fit: BoxFit.cover,
@@ -288,7 +288,7 @@ class product extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Image.asset(
-                      "assets/coquillage.png",
+                      "assets/logoApi.png",
                       width: 100,
                       height: 100,
                       fit: BoxFit.cover,
@@ -370,7 +370,7 @@ class product extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Image.asset(
-                      "assets/gourde.png",
+                      "assets/logoAramet.png",
                       width: 100,
                       height: 100,
                       fit: BoxFit.cover,
@@ -452,7 +452,7 @@ class product extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Image.asset(
-                      "assets/jordan.png",
+                      "assets/logoBakeli.png",
                       width: 100,
                       height: 100,
                       fit: BoxFit.cover,
@@ -534,7 +534,7 @@ class product extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Image.asset(
-                      "assets/lunette.png",
+                      "assets/Cap.png",
                       width: 100,
                       height: 100,
                       fit: BoxFit.cover,
@@ -616,7 +616,7 @@ class product extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Image.asset(
-                      "assets/montre.png",
+                      "assets/logoDjolo.png",
                       width: 100,
                       height: 100,
                       fit: BoxFit.cover,
@@ -698,7 +698,7 @@ class product extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Image.asset(
-                      "assets/pantalon.png",
+                      "assets/logoPacao.png",
                       width: 100,
                       height: 100,
                       fit: BoxFit.cover,
@@ -780,7 +780,7 @@ class product extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Image.asset(
-                      "assets/pot.png",
+                      "assets/logoafriquevert.png",
                       width: 100,
                       height: 100,
                       fit: BoxFit.cover,
@@ -862,7 +862,7 @@ class product extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Image.asset(
-                      "assets/tshirtRouge.png",
+                      "assets/logoApi.png",
                       width: 100,
                       height: 100,
                       fit: BoxFit.cover,
