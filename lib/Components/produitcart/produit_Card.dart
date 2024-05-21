@@ -1,27 +1,31 @@
+// ignore: unnecessary_import
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+// ignore: unnecessary_import
 import 'package:flutter/widgets.dart';
+// ignore: unused_import
 import 'package:niefeko/Components/Deals/deal.dart';
 import 'package:niefeko/Pages/Boutique/boutique.dart';
 
+// ignore: camel_case_types
 class product extends StatelessWidget {
   const product({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      Text(
+      const Text(
         "Nos Boutiques",
         style: TextStyle(
           fontWeight: FontWeight.bold,
           fontSize: 20,
         ),
       ),
-      SizedBox(height: 20),
+      const SizedBox(height: 20),
       Padding(
         padding: const EdgeInsets.symmetric(horizontal: 25),
         child: Card(
-          color: Color.fromARGB(255, 215, 194, 233),
+          color: const Color.fromARGB(255, 215, 194, 233),
           child: InkWell(
             onTap: () {
               Navigator.push(
@@ -38,13 +42,13 @@ class product extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Image.asset(
-                      "assets/sac1.png",
+                      "assets/logoAfricavivre.png",
                       width: 100,
                       height: 100,
                       fit: BoxFit.cover,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
+                    const Padding(
+                      padding: EdgeInsets.all(8.0),
                       child: Column(
                         children: [
                           Text(
@@ -59,7 +63,7 @@ class product extends StatelessWidget {
                                 color: Colors.green),
                           ),
                           Padding(
-                            padding: const EdgeInsets.only(left: 105),
+                            padding: EdgeInsets.only(left: 105),
                             child: Row(
                               children: [
                                 Icon(
@@ -94,7 +98,7 @@ class product extends StatelessWidget {
                         ],
                       ),
                     ),
-                    SizedBox(height: 8),
+                    const SizedBox(height: 8),
                   ],
                 ),
               ],
@@ -102,11 +106,11 @@ class product extends StatelessWidget {
           ),
         ),
       ),
-      SizedBox(height: 20),
+      const SizedBox(height: 20),
       Padding(
         padding: const EdgeInsets.symmetric(horizontal: 25),
         child: Card(
-          color: Color.fromARGB(255, 215, 194, 233),
+          color: const Color.fromARGB(255, 215, 194, 233),
           child: InkWell(
             onTap: () {
               Navigator.push(
@@ -120,13 +124,13 @@ class product extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Image.asset(
-                      "assets/casque.png",
+                      "assets/logoafriquevert.png",
                       width: 100,
                       height: 100,
                       fit: BoxFit.cover,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
+                    const Padding(
+                      padding: EdgeInsets.all(8.0),
                       child: Column(
                         children: [
                           Text(
@@ -141,7 +145,7 @@ class product extends StatelessWidget {
                                 color: Colors.green),
                           ),
                           Padding(
-                            padding: const EdgeInsets.only(left: 105),
+                            padding: EdgeInsets.only(left: 105),
                             child: Row(
                               children: [
                                 Icon(
@@ -176,7 +180,7 @@ class product extends StatelessWidget {
                         ],
                       ),
                     ),
-                    SizedBox(height: 8),
+                    const SizedBox(height: 8),
                   ],
                 ),
               ],
@@ -184,11 +188,11 @@ class product extends StatelessWidget {
           ),
         ),
       ),
-      SizedBox(height: 20),
+      const SizedBox(height: 20),
       Padding(
         padding: const EdgeInsets.symmetric(horizontal: 25),
         child: Card(
-          color: Color.fromARGB(255, 215, 194, 233),
+          color: const Color.fromARGB(255, 215, 194, 233),
           child: InkWell(
             onTap: () {
               Navigator.push(
@@ -202,13 +206,13 @@ class product extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Image.asset(
-                      "assets/chaussure.png",
+                      "assets/logoanka.png",
                       width: 100,
                       height: 100,
                       fit: BoxFit.cover,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
+                    const Padding(
+                      padding: EdgeInsets.all(8.0),
                       child: Column(
                         children: [
                           Text(
@@ -223,7 +227,7 @@ class product extends StatelessWidget {
                                 color: Colors.green),
                           ),
                           Padding(
-                            padding: const EdgeInsets.only(left: 105),
+                            padding: EdgeInsets.only(left: 105),
                             child: Row(
                               children: [
                                 Icon(
@@ -258,7 +262,7 @@ class product extends StatelessWidget {
                         ],
                       ),
                     ),
-                    SizedBox(height: 8),
+                    const SizedBox(height: 8),
                   ],
                 ),
               ],
@@ -266,11 +270,11 @@ class product extends StatelessWidget {
           ),
         ),
       ),
-      SizedBox(height: 20),
+      const SizedBox(height: 20),
       Padding(
         padding: const EdgeInsets.symmetric(horizontal: 25),
         child: Card(
-          color: Color.fromARGB(255, 215, 194, 233),
+          color: const Color.fromARGB(255, 215, 194, 233),
           child: InkWell(
             onTap: () {
               Navigator.push(
@@ -284,13 +288,13 @@ class product extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Image.asset(
-                      "assets/coquillage.png",
+                      "assets/logoApi.png",
                       width: 100,
                       height: 100,
                       fit: BoxFit.cover,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
+                    const Padding(
+                      padding: EdgeInsets.all(8.0),
                       child: Column(
                         children: [
                           Text(
@@ -305,7 +309,7 @@ class product extends StatelessWidget {
                                 color: Colors.green),
                           ),
                           Padding(
-                            padding: const EdgeInsets.only(left: 105),
+                            padding: EdgeInsets.only(left: 105),
                             child: Row(
                               children: [
                                 Icon(
@@ -340,7 +344,7 @@ class product extends StatelessWidget {
                         ],
                       ),
                     ),
-                    SizedBox(height: 8),
+                    const SizedBox(height: 8),
                   ],
                 ),
               ],
@@ -348,11 +352,11 @@ class product extends StatelessWidget {
           ),
         ),
       ),
-      SizedBox(height: 20),
+      const SizedBox(height: 20),
       Padding(
         padding: const EdgeInsets.symmetric(horizontal: 25),
         child: Card(
-          color: Color.fromARGB(255, 215, 194, 233),
+          color: const Color.fromARGB(255, 215, 194, 233),
           child: InkWell(
             onTap: () {
               Navigator.push(
@@ -366,13 +370,13 @@ class product extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Image.asset(
-                      "assets/gourde.png",
+                      "assets/logoAramet.png",
                       width: 100,
                       height: 100,
                       fit: BoxFit.cover,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
+                    const Padding(
+                      padding: EdgeInsets.all(8.0),
                       child: Column(
                         children: [
                           Text(
@@ -387,7 +391,7 @@ class product extends StatelessWidget {
                                 color: Colors.green),
                           ),
                           Padding(
-                            padding: const EdgeInsets.only(left: 105),
+                            padding: EdgeInsets.only(left: 105),
                             child: Row(
                               children: [
                                 Icon(
@@ -422,7 +426,7 @@ class product extends StatelessWidget {
                         ],
                       ),
                     ),
-                    SizedBox(height: 8),
+                    const SizedBox(height: 8),
                   ],
                 ),
               ],
@@ -430,11 +434,11 @@ class product extends StatelessWidget {
           ),
         ),
       ),
-      SizedBox(height: 20),
+      const SizedBox(height: 20),
       Padding(
         padding: const EdgeInsets.symmetric(horizontal: 25),
         child: Card(
-          color: Color.fromARGB(255, 215, 194, 233),
+          color: const Color.fromARGB(255, 215, 194, 233),
           child: InkWell(
             onTap: () {
               Navigator.push(
@@ -448,13 +452,13 @@ class product extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Image.asset(
-                      "assets/jordan.png",
+                      "assets/logoBakeli.png",
                       width: 100,
                       height: 100,
                       fit: BoxFit.cover,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
+                    const Padding(
+                      padding: EdgeInsets.all(8.0),
                       child: Column(
                         children: [
                           Text(
@@ -469,7 +473,7 @@ class product extends StatelessWidget {
                                 color: Colors.green),
                           ),
                           Padding(
-                            padding: const EdgeInsets.only(left: 105),
+                            padding: EdgeInsets.only(left: 105),
                             child: Row(
                               children: [
                                 Icon(
@@ -504,7 +508,7 @@ class product extends StatelessWidget {
                         ],
                       ),
                     ),
-                    SizedBox(height: 8),
+                    const SizedBox(height: 8),
                   ],
                 ),
               ],
@@ -512,11 +516,11 @@ class product extends StatelessWidget {
           ),
         ),
       ),
-      SizedBox(height: 20),
+      const SizedBox(height: 20),
       Padding(
         padding: const EdgeInsets.symmetric(horizontal: 25),
         child: Card(
-          color: Color.fromARGB(255, 215, 194, 233),
+          color: const Color.fromARGB(255, 215, 194, 233),
           child: InkWell(
             onTap: () {
               Navigator.push(
@@ -530,13 +534,13 @@ class product extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Image.asset(
-                      "assets/lunette.png",
+                      "assets/logoCap.png",
                       width: 100,
                       height: 100,
                       fit: BoxFit.cover,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
+                    const Padding(
+                      padding: EdgeInsets.all(8.0),
                       child: Column(
                         children: [
                           Text(
@@ -551,7 +555,7 @@ class product extends StatelessWidget {
                                 color: Colors.green),
                           ),
                           Padding(
-                            padding: const EdgeInsets.only(left: 105),
+                            padding: EdgeInsets.only(left: 105),
                             child: Row(
                               children: [
                                 Icon(
@@ -586,7 +590,7 @@ class product extends StatelessWidget {
                         ],
                       ),
                     ),
-                    SizedBox(height: 8),
+                    const SizedBox(height: 8),
                   ],
                 ),
               ],
@@ -594,11 +598,11 @@ class product extends StatelessWidget {
           ),
         ),
       ),
-      SizedBox(height: 20),
+      const SizedBox(height: 20),
       Padding(
         padding: const EdgeInsets.symmetric(horizontal: 25),
         child: Card(
-          color: Color.fromARGB(255, 215, 194, 233),
+          color: const Color.fromARGB(255, 215, 194, 233),
           child: InkWell(
             onTap: () {
               Navigator.push(
@@ -612,13 +616,13 @@ class product extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Image.asset(
-                      "assets/montre.png",
+                      "assets/logoDjolo.png",
                       width: 100,
                       height: 100,
                       fit: BoxFit.cover,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
+                    const Padding(
+                      padding: EdgeInsets.all(8.0),
                       child: Column(
                         children: [
                           Text(
@@ -633,7 +637,7 @@ class product extends StatelessWidget {
                                 color: Colors.green),
                           ),
                           Padding(
-                            padding: const EdgeInsets.only(left: 105),
+                            padding: EdgeInsets.only(left: 105),
                             child: Row(
                               children: [
                                 Icon(
@@ -668,7 +672,7 @@ class product extends StatelessWidget {
                         ],
                       ),
                     ),
-                    SizedBox(height: 8),
+                    const SizedBox(height: 8),
                   ],
                 ),
               ],
@@ -676,11 +680,11 @@ class product extends StatelessWidget {
           ),
         ),
       ),
-      SizedBox(height: 20),
+      const SizedBox(height: 20),
       Padding(
         padding: const EdgeInsets.symmetric(horizontal: 25),
         child: Card(
-          color: Color.fromARGB(255, 215, 194, 233),
+          color: const Color.fromARGB(255, 215, 194, 233),
           child: InkWell(
             onTap: () {
               Navigator.push(
@@ -694,13 +698,13 @@ class product extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Image.asset(
-                      "assets/pantalon.png",
+                      "assets/logoPacao.png",
                       width: 100,
                       height: 100,
                       fit: BoxFit.cover,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
+                    const Padding(
+                      padding: EdgeInsets.all(8.0),
                       child: Column(
                         children: [
                           Text(
@@ -715,7 +719,7 @@ class product extends StatelessWidget {
                                 color: Colors.green),
                           ),
                           Padding(
-                            padding: const EdgeInsets.only(left: 105),
+                            padding: EdgeInsets.only(left: 105),
                             child: Row(
                               children: [
                                 Icon(
@@ -750,7 +754,7 @@ class product extends StatelessWidget {
                         ],
                       ),
                     ),
-                    SizedBox(height: 8),
+                    const SizedBox(height: 8),
                   ],
                 ),
               ],
@@ -758,11 +762,11 @@ class product extends StatelessWidget {
           ),
         ),
       ),
-      SizedBox(height: 20),
+      const SizedBox(height: 20),
       Padding(
         padding: const EdgeInsets.symmetric(horizontal: 25),
         child: Card(
-          color: Color.fromARGB(255, 215, 194, 233),
+          color: const Color.fromARGB(255, 215, 194, 233),
           child: InkWell(
             onTap: () {
               Navigator.push(
@@ -776,13 +780,13 @@ class product extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Image.asset(
-                      "assets/pot.png",
+                      "assets/logoafriquevert.png",
                       width: 100,
                       height: 100,
                       fit: BoxFit.cover,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
+                    const Padding(
+                      padding: EdgeInsets.all(8.0),
                       child: Column(
                         children: [
                           Text(
@@ -797,7 +801,7 @@ class product extends StatelessWidget {
                                 color: Colors.green),
                           ),
                           Padding(
-                            padding: const EdgeInsets.only(left: 105),
+                            padding: EdgeInsets.only(left: 105),
                             child: Row(
                               children: [
                                 Icon(
@@ -832,7 +836,7 @@ class product extends StatelessWidget {
                         ],
                       ),
                     ),
-                    SizedBox(height: 8),
+                    const SizedBox(height: 8),
                   ],
                 ),
               ],
@@ -840,11 +844,11 @@ class product extends StatelessWidget {
           ),
         ),
       ),
-      SizedBox(height: 20),
+      const SizedBox(height: 20),
       Padding(
         padding: const EdgeInsets.symmetric(horizontal: 25),
         child: Card(
-          color: Color.fromARGB(255, 215, 194, 233),
+          color: const Color.fromARGB(255, 215, 194, 233),
           child: InkWell(
             onTap: () {
               Navigator.push(
@@ -858,13 +862,13 @@ class product extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Image.asset(
-                      "assets/tshirtRouge.png",
+                      "assets/logoApi.png",
                       width: 100,
                       height: 100,
                       fit: BoxFit.cover,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
+                    const Padding(
+                      padding: EdgeInsets.all(8.0),
                       child: Column(
                         children: [
                           Text(
@@ -879,7 +883,7 @@ class product extends StatelessWidget {
                                 color: Colors.green),
                           ),
                           Padding(
-                            padding: const EdgeInsets.only(left: 105),
+                            padding: EdgeInsets.only(left: 105),
                             child: Row(
                               children: [
                                 Icon(
@@ -914,7 +918,7 @@ class product extends StatelessWidget {
                         ],
                       ),
                     ),
-                    SizedBox(height: 8),
+                    const SizedBox(height: 8),
                   ],
                 ),
               ],
@@ -922,7 +926,7 @@ class product extends StatelessWidget {
           ),
         ),
       ),
-      SizedBox(height: 20),
+      const SizedBox(height: 20),
     ]);
   }
 }

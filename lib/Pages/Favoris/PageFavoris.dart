@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:niefeko/Components/Category/product.dart';
+// ignore: unused_import
 import 'package:niefeko/Pages/Category/CategoriePage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 // ignore: camel_case_types
@@ -19,11 +20,12 @@ class pagefavoris extends StatelessWidget {
         ),
         iconTheme: const IconThemeData(color: Colors.white),
       ),
-      body: ProductList(),
+      body: const ProductList(),
     );
   }
 }
 class ProductList extends StatelessWidget {
+  // ignore: use_super_parameters
   const ProductList({Key? key}) : super(key: key);
 
   @override
@@ -31,7 +33,7 @@ class ProductList extends StatelessWidget {
     User? user = FirebaseAuth.instance.currentUser;
     if (user == null) {
       // Gérer le cas où l'utilisateur n'est pas connecté
-      return Center(
+      return const Center(
         child: Text('Veuillez vous connecter pour voir vos favoris.'),
       );
     }
@@ -49,13 +51,16 @@ class ProductList extends StatelessWidget {
         }
 
         if (snapshot.hasError) {
+          // ignore: avoid_print
           print('Erreur lors de la récupération des favoris: ${snapshot.error}');
           return const Center(child: Text('Une erreur s\'est produite.'));
         }
 
         final docs = snapshot.data!.docs;
+        // ignore: avoid_print
         print('Nombre de favoris récupérés: ${docs.length}'); // Débogage
         if (snapshot.data!.docs.isEmpty) {
+          // ignore: avoid_print
           print('Aucun produit trouvé dans les favoris.');
           return const Center(
             child: Text('Aucun produit trouvé dans les favoris.'),

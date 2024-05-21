@@ -68,10 +68,10 @@ class CartPanier extends StatelessWidget {
                           title: Text(product.name),
                           subtitle: Text('${product.price}cfa'),
                           trailing: IconButton(
-                            icon: Icon(Icons.delete, color: Colors.red,),
+                            icon: const Icon(Icons.delete, color: Colors.red),
                             onPressed: () {
                               removeFromCart(index);
-                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                                 content: Text('Produit supprimé du panier'),
                               ));
                             },

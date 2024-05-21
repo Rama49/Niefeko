@@ -12,7 +12,9 @@ import 'package:niefeko/Reutilisable/carteReu.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:niefeko/Components/Category/product.dart';
 
+// ignore: camel_case_types
 class search extends StatefulWidget {
+  // ignore: use_super_parameters
   const search({Key? key}) : super(key: key);
 
   @override
@@ -32,6 +34,8 @@ class _searchState extends State<search> {
     });
   }
 
+  // ignore: unused_field
+  bool _isLoggedOut = false;
 
   // ignore: unused_element
   Future<void> _signOut() async {
@@ -93,7 +97,7 @@ class _searchState extends State<search> {
                   height: MediaQuery.of(context).size.height / 3,
                   child: Column(
                     children: [
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
                       const Text(
                         "Bienvenue à Niefeko",
                         style: TextStyle(

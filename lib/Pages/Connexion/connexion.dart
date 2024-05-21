@@ -5,13 +5,17 @@ import 'package:niefeko/Pages/Recherche/recherche.dart';
 import 'package:niefeko/Pages/Inscription/inscription.dart';
 import 'package:niefeko/Pages/resetpassword/ResetPassword.dart';
 
+// ignore: camel_case_types
 class connexion extends StatefulWidget {
+  // ignore: use_super_parameters
   const connexion({Key? key}) : super(key: key);
 
   @override
+  // ignore: library_private_types_in_public_api
   _connexionState createState() => _connexionState();
 }
 
+// ignore: camel_case_types
 class _connexionState extends State<connexion> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
@@ -20,6 +24,7 @@ class _connexionState extends State<connexion> {
 
   Future<void> _signInWithEmailAndPassword() async {
     try {
+      // ignore: unused_local_variable
       UserCredential userCredential =
           await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: _emailController.text,
@@ -35,10 +40,12 @@ class _connexionState extends State<connexion> {
         fontSize: 16.0,
       );
       Navigator.pushReplacement(
+        // ignore: use_build_context_synchronously
         context,
         MaterialPageRoute(builder: (context) => const search()),
       );
     } catch (e) {
+      // ignore: avoid_print
       print("Erreur de connexion: $e");
       Fluttertoast.showToast(
         msg: "Erreur de connexion: $e",
@@ -73,13 +80,13 @@ class _connexionState extends State<connexion> {
                 ),
                 Container(
                   margin: const EdgeInsets.all(5),
-                  child: Text(
+                  child: const Text(
                     "Connectez-vous à votre compte",
                     style: TextStyle(fontSize: 15, color: Colors.white, fontWeight: FontWeight.bold),
                     textAlign: TextAlign.center,
                   ),
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 Form(
                   key: _formKey,
                   child: Column(
@@ -164,7 +171,7 @@ class _connexionState extends State<connexion> {
                             padding: EdgeInsets.zero,
                             tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                           ),
-                          child: Align(
+                          child: const Align(
                             alignment: Alignment.bottomRight,
                             child: Text(
                               "Mot de passe oublié ?",
@@ -213,7 +220,7 @@ class _connexionState extends State<connexion> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => Inscription()),
+                                  builder: (context) => const Inscription()),
                             );
                           },
                           style: ElevatedButton.styleFrom(

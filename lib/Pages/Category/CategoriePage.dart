@@ -9,8 +9,10 @@ import 'package:niefeko/Pages/CartPanier/CartPanier.dart';
 import 'package:niefeko/Components/Category/product.dart';
 
 
+// ignore: use_key_in_widget_constructors
 class CategoryPage extends StatefulWidget {
   @override
+  // ignore: library_private_types_in_public_api
   _CategoryPageState createState() => _CategoryPageState();
 
 }
@@ -67,6 +69,7 @@ class _CategoryPageState extends State<CategoryPage> {
       String imageUrl = product.imagePath;
       String productName = product.name;
       double price = product.price;
+      // ignore: unused_local_variable
       DateTime timestamp = DateTime.now(); // Timestamp de la commande
 
       // String idClient = ""; // Remplir avec l'ID du client
@@ -128,6 +131,7 @@ class _CategoryPageState extends State<CategoryPage> {
       String nom = userSnapshot['nom'];
 
       Navigator.push(
+        // ignore: use_build_context_synchronously
         context,
         MaterialPageRoute(
           builder: (context) => CartPanier(
@@ -197,6 +201,7 @@ class _CategoryPageState extends State<CategoryPage> {
       });
 
       showDialog(
+        // ignore: use_build_context_synchronously
         context: context,
         builder: (context) => AlertDialog(
           title: const Text('Panier validé'),
@@ -227,13 +232,13 @@ void addOrderToFirestore(Order order) {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xFF612C7D),
+        backgroundColor: const Color(0xFF612C7D),
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.white),
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
          onPressed: () {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => search()),
+      MaterialPageRoute(builder: (context) => const search()),
     );
   },
         ),
@@ -241,7 +246,7 @@ void addOrderToFirestore(Order order) {
           Stack(
             children: [
               IconButton(
-                icon: Icon(Icons.shopping_cart, color: Colors.white, size: 30),
+                icon: const Icon(Icons.shopping_cart, color: Colors.white, size: 30),
                 onPressed: navigateToCartPage,
               ),
               Positioned(
@@ -252,7 +257,7 @@ void addOrderToFirestore(Order order) {
                   radius: 10,
                   child: Text(
                     cartItemCount.toString(),
-                    style: TextStyle(color: Colors.white, fontSize: 12),
+                    style: const TextStyle(color: Colors.white, fontSize: 12),
                   ),
                 ),
               ),
@@ -264,7 +269,7 @@ void addOrderToFirestore(Order order) {
         child: Column(
           children: [
             Container(
-              color: Color(0xFF612C7D),
+              color: const Color(0xFF612C7D),
               padding: const EdgeInsets.all(8.0),
               child: Container(
                 decoration: BoxDecoration(
@@ -273,7 +278,7 @@ void addOrderToFirestore(Order order) {
                 ),
                 child: TextField(
                   onChanged: searchProduct,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     hintText: 'Search...',
                     prefixIcon: Icon(Icons.search, color: Colors.grey),
                     border: InputBorder.none,
@@ -281,11 +286,11 @@ void addOrderToFirestore(Order order) {
                 ),
               ),
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Container(
-                padding: EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(8.0),
                 child: Row(
                   children: List.generate(
                     filteredImagePaths.length,
@@ -300,10 +305,10 @@ void addOrderToFirestore(Order order) {
                 ),
               ),
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             filteredImagePaths.isEmpty
-                ? Padding(
-                    padding: const EdgeInsets.all(8.0),
+                ? const Padding(
+                    padding: EdgeInsets.all(8.0),
                     child: Text(
                       "Produit non trouvé",
                       style: TextStyle(
@@ -315,8 +320,8 @@ void addOrderToFirestore(Order order) {
                   )
                 : GridView.builder(
                     shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    physics: const NeverScrollableScrollPhysics(),
+                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
                       crossAxisSpacing: 8,
                       mainAxisSpacing: 8,
@@ -365,22 +370,23 @@ child:
                   children: [
                     Text(
                       product.name,
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                      style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
-                    SizedBox(height: 4),
+                    const SizedBox(height: 4),
                     Text(
                       '${product.price}',
-                      style: TextStyle(
+                      style: const TextStyle(
                           fontWeight: FontWeight.bold, color: Colors.green),
                     ),
                   ],
                 ),
               ),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               Center(
                 child: ElevatedButton(
                   onPressed: () => addToCart(product),
-                  child: Row(
+                  // ignore: sort_child_properties_last
+                  child: const Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(
@@ -391,8 +397,8 @@ child:
                     ],
                   ),
                   style: ElevatedButton.styleFrom(
-                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                    backgroundColor: Color(0xFF612C7D),
+                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                    backgroundColor: const Color(0xFF612C7D),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(7),
                     ),
@@ -402,7 +408,7 @@ child:
             ],
           ),
           Align(
-            alignment: Alignment(1, -1),
+            alignment: const Alignment(1, -1),
             child: IconButton(
               icon: Icon(
                 isFavoritedList[index] ? Icons.favorite : Icons.favorite_border,
@@ -449,6 +455,7 @@ child:
   User? user = FirebaseAuth.instance.currentUser;
   if (user == null) {
     // Gérer le cas où l'utilisateur n'est pas connecté
+    // ignore: avoid_print
     print("L'utilisateur n'est pas connecté.");
     return;
   }
@@ -462,8 +469,10 @@ child:
         'userID': userID, // Ajout de l'ID de l'utilisateur
       })
       .then((value) =>
+          // ignore: avoid_print
           print("Produit ajouté aux favoris avec l'ID: ${value.id}"))
       .catchError((error) =>
+          // ignore: avoid_print
           print("Erreur lors de l'ajout aux favoris: $error"));
 }
 
