@@ -42,6 +42,7 @@ class _searchState extends State<search> {
     try {
       await FirebaseAuth.instance.signOut();
       setState(() {
+        _isLoggedOut = true;
       });
       Fluttertoast.showToast(
         msg: "Vous vous êtes déconnecté avec succès",
@@ -92,7 +93,7 @@ class _searchState extends State<search> {
                   padding: EdgeInsets.only(
                     bottom: MediaQuery.of(context).padding.bottom != 0
                         ? MediaQuery.of(context).padding.bottom
-                        : 250,
+                        : 250, // Ajoutez le padding en bas
                   ),
                   height: MediaQuery.of(context).size.height / 3,
                   child: Column(
@@ -123,13 +124,14 @@ class _searchState extends State<search> {
                               borderRadius: BorderRadius.circular(8),
                               borderSide: BorderSide.none,
                             ),
-                            hintText: "Recherche un produit",
+                            hintText: "Rechercher un produit",
                             prefixIcon: const Icon(Icons.search),
                             prefixIconColor: Colors.black,
                           ),
                         ),
                       ),
                       const SizedBox(height: 20),
+
                       // Carousel
                       CarouselSlider(
                         items: [
@@ -198,6 +200,8 @@ class _searchState extends State<search> {
                       ),
                     ],
                   )),
+
+              // Votre Container contenant la catégorie
               const Column(
                 children: [
                   SizedBox(height: 120),
