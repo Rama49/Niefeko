@@ -81,45 +81,36 @@ class _searchState extends State<search> {
     return Scaffold(
       body: SingleChildScrollView(
         scrollDirection: Axis.vertical,
-        child: Flexible(
-          child: Column(
-            children: [
-              // Section de recherche
-              Container(
-                  decoration: const BoxDecoration(
-                    color: Color(0xFF593070),
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(40.0),
-                      bottomRight: Radius.circular(40.0),
+        child: Column(
+          children: [
+            // Section de recherche
+            Container(
+              decoration: const BoxDecoration(
+                color: Color(0xFF593070),
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(40.0),
+                  bottomRight: Radius.circular(40.0),
+                ),
+              ),
+              padding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).padding.bottom != 0
+                    ? MediaQuery.of(context).padding.bottom
+                    : 250, // Ajoutez le padding en bas
+              ),
+              height: MediaQuery.of(context).size.height / 3,
+              child: Column(
+                children: [
+                  SizedBox(height: 20),
+                  const Text(
+                    "Bienvenue à Niefeko",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 25,
                     ),
                   ),
-                 
-
-
-
-
-
-                         padding: EdgeInsets.only(
-          bottom: MediaQuery.of(context).padding.bottom != 0
-              ? MediaQuery.of(context).padding.bottom
-              : 250, // Ajoutez le padding en bas
-        ),
-        height: MediaQuery.of(context).size.height / 3,
-
-                  child: Column(
-                    children: [
-                      SizedBox(height: 20),
-                      const Text(
-                        "Bienvenue à Niefeko",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 25,
-                        ),
-                      ),
-                      const SizedBox(height: 20),
-                      // ignore: sized_box_for_whitespace
-                     Container(
+                  const SizedBox(height: 20),
+                  Container(
                     height: 40,
                     padding: EdgeInsets.only(right: 25, left: 25),
                     child: TextField(
@@ -140,87 +131,85 @@ class _searchState extends State<search> {
                       ),
                     ),
                   ),
-                      const SizedBox(height: 20),
-
-                      // Carousel
-                      CarouselSlider(
-                        items: [
-                          //1st Image of Slider
-                          carteReu(
-                            image: Image.asset(
-                              "assets/sac1.png",
-                              fit: BoxFit.cover,
-                            ),
-                            title: "Nouveau",
-                            paragraph: "50%",
-                            texte: "Trouvez ce que vous aimez, à prix malins !",
-                          ),
-                          //2nd Image of Slider
-                          carteReu(
-                            image: Image.asset(
-                              "assets/lunette.png",
-                              fit: BoxFit.cover,
-                            ),
-                            title: "Nouveau",
-                            paragraph: "50%",
-                            texte: "Trouvez ce que vous aimez, à prix malins !",
-                          ),
-                          //3rd Image of Slider
-                          carteReu(
-                            image: Image.asset(
-                              "assets/shoes.png",
-                              fit: BoxFit.cover,
-                            ),
-                            title: "Nouveau",
-                            paragraph: "50%",
-                            texte: "Trouvez ce que vous aimez, à prix malins !",
-                          ),
-                          //4th Image of Slider
-                          carteReu(
-                            image: Image.asset(
-                              "assets/t-shirt.png",
-                              fit: BoxFit.cover,
-                            ),
-                            title: "Nouveau",
-                            paragraph: "50%",
-                            texte: "Trouvez ce que vous aimez, à prix malins !",
-                          ),
-                          //5th Image of Slider
-                          carteReu(
-                            image: Image.asset(
-                              "assets/sac1.png",
-                              fit: BoxFit.cover,
-                            ),
-                            title: "Nouveau",
-                            paragraph: "50%",
-                            texte: "Trouvez ce que vous aimez, à prix malins !",
-                          ),
-                        ],
-                        //Slider Container properties
-                        options: CarouselOptions(
-                          enlargeCenterPage: true,
-                          autoPlay: true,
-                          aspectRatio: 12 / 9,
-                          autoPlayCurve: Curves.fastOutSlowIn,
-                          enableInfiniteScroll: true,
-                          autoPlayAnimationDuration:
-                              const Duration(milliseconds: 800),
-                          viewportFraction: 0.8,
+                  const SizedBox(height: 20),
+                  // Carousel
+                  CarouselSlider(
+                    items: [
+                      //1st Image of Slider
+                      carteReu(
+                        image: Image.asset(
+                          "assets/sac1.png",
+                          fit: BoxFit.cover,
                         ),
+                        title: "Nouveau",
+                        paragraph: "50%",
+                        texte: "Trouvez ce que vous aimez, à prix malins !",
+                      ),
+                      //2nd Image of Slider
+                      carteReu(
+                        image: Image.asset(
+                          "assets/lunette.png",
+                          fit: BoxFit.cover,
+                        ),
+                        title: "Nouveau",
+                        paragraph: "50%",
+                        texte: "Trouvez ce que vous aimez, à prix malins !",
+                      ),
+                      //3rd Image of Slider
+                      carteReu(
+                        image: Image.asset(
+                          "assets/shoes.png",
+                          fit: BoxFit.cover,
+                        ),
+                        title: "Nouveau",
+                        paragraph: "50%",
+                        texte: "Trouvez ce que vous aimez, à prix malins !",
+                      ),
+                      //4th Image of Slider
+                      carteReu(
+                        image: Image.asset(
+                          "assets/t-shirt.png",
+                          fit: BoxFit.cover,
+                        ),
+                        title: "Nouveau",
+                        paragraph: "50%",
+                        texte: "Trouvez ce que vous aimez, à prix malins !",
+                      ),
+                      //5th Image of Slider
+                      carteReu(
+                        image: Image.asset(
+                          "assets/sac1.png",
+                          fit: BoxFit.cover,
+                        ),
+                        title: "Nouveau",
+                        paragraph: "50%",
+                        texte: "Trouvez ce que vous aimez, à prix malins !",
                       ),
                     ],
-                  )),
-
-              // Votre Container contenant la catégorie
-              const Column(
-                children: [
-                  SizedBox(height: 120),
-                  Categorie(),
-                  deal(),
+                    //Slider Container properties
+                    options: CarouselOptions(
+                      enlargeCenterPage: true,
+                      autoPlay: true,
+                      aspectRatio: 12 / 9,
+                      autoPlayCurve: Curves.fastOutSlowIn,
+                      enableInfiniteScroll: true,
+                      autoPlayAnimationDuration:
+                          const Duration(milliseconds: 800),
+                      viewportFraction: 0.8,
+                    ),
+                  ),
                 ],
               ),
-            ],
-          ),
+            ),
+            // Votre Container contenant la catégorie
+            const Column(
+              children: [
+                SizedBox(height: 120),
+                Categorie(),
+                deal(),
+              ],
+            ),
+          ],
         ),
       ),
       bottomNavigationBar: BottomAppBar(
