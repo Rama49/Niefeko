@@ -125,7 +125,7 @@ class SettingsPage extends StatelessWidget {
                           // ignore: use_build_context_synchronously
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const connexion()),
+                              builder: (context) => const Connexion()),
                         );
                       } catch (error) {
                         // Afficher un message d'erreur en cas de problème de déconnexion

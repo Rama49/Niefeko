@@ -56,7 +56,7 @@ class _searchState extends State<search> {
       Navigator.pushReplacement(
         // ignore: use_build_context_synchronously
         context,
-        MaterialPageRoute(builder: (context) => const connexion()),
+        MaterialPageRoute(builder: (context) => const Connexion()),
       );
     } catch (e) {
       // ignore: avoid_print

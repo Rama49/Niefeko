@@ -1,3 +1,4 @@
+
 // Pages/Inscription/inscription.dart
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -33,11 +34,9 @@ class InscriptionState extends State<Inscription> {
     super.initState();
     Firebase.initializeApp().then((_) {
       
-      
       // ignore: avoid_print
       print("Firebase initialisé avec succès !");
     }).catchError((error) {
-     
       // ignore: avoid_print
       print("Erreur lors de l'initialisation de Firebase : $error");
     });
@@ -167,7 +166,7 @@ class InscriptionState extends State<Inscription> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => const connexion(),
+                                builder: (context) => const Connexion(),
                               ),
                             );
                           },
@@ -298,7 +297,7 @@ class InscriptionState extends State<Inscription> {
         Navigator.push(
           // ignore: use_build_context_synchronously
           context,
-          MaterialPageRoute(builder: (context) => const connexion()),
+          MaterialPageRoute(builder: (context) => const Connexion()),
         );
 
         _nomController.clear();

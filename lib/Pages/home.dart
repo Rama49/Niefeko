@@ -75,7 +75,7 @@ class _MyHomePageState extends State<MyHomePage> {
             curve: Curves.easeInOut,
             child: _showSplash
                 ? const SizedBox.shrink()
-                : const connexion(),
+                : const Connexion(),
           ),
         ],
       ),

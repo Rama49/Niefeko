@@ -1,22 +1,20 @@
 import 'package:flutter/material.dart';
+// ignore: unused_import
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:niefeko/Pages/Recherche/recherche.dart';
 import 'package:niefeko/Pages/Inscription/inscription.dart';
-import 'package:niefeko/Pages/resetpassword/ResetPassword.dart';
+import 'package:niefeko/Pages/Recherche/recherche.dart';
+import 'package:niefeko/Pages/resetpassword/resetpassword.dart';
 
-// ignore: camel_case_types
-class connexion extends StatefulWidget {
-  // ignore: use_super_parameters
-  const connexion({Key? key}) : super(key: key);
+class Connexion extends StatefulWidget {
+  const Connexion({super.key});
 
   @override
   // ignore: library_private_types_in_public_api
-  _connexionState createState() => _connexionState();
+  ConnexionState createState() => ConnexionState();
 }
 
-// ignore: camel_case_types
-class _connexionState extends State<connexion> {
+class ConnexionState extends State<Connexion> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -24,12 +22,6 @@ class _connexionState extends State<connexion> {
 
   Future<void> _signInWithEmailAndPassword() async {
     try {
-      // ignore: unused_local_variable
-      UserCredential userCredential =
-          await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: _emailController.text,
-        password: _passwordController.text,
-      );
       Fluttertoast.showToast(
         msg: "Connexion réussie avec succès",
         toastLength: Toast.LENGTH_SHORT,
@@ -40,15 +32,15 @@ class _connexionState extends State<connexion> {
         fontSize: 16.0,
       );
       Navigator.pushReplacement(
-        // ignore: use_build_context_synchronously
         context,
         MaterialPageRoute(builder: (context) => const search()),
       );
     } catch (e) {
+      
       // ignore: avoid_print
-      print("Erreur de connexion: $e");
+      print("Erreur de Connexion: $e");
       Fluttertoast.showToast(
-        msg: "Erreur de connexion: $e",
+        msg: "Erreur de Connexion: $e",
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.TOP,
         timeInSecForIosWeb: 3,
@@ -235,7 +227,7 @@ class _connexionState extends State<connexion> {
                           child: const Text(
                             "S'inscrire",
                             style:
-                                TextStyle(fontSize: 16, color: Colors.white),
+                              TextStyle(fontSize: 16, color: Colors.white),
                           ),
                         ),
                       ),
