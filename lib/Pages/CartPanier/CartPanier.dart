@@ -1,11 +1,5 @@
-// ignore: duplicate_ignore
-// ignore: file_names
-// ignore_for_file: file_names
-
 import 'package:flutter/material.dart';
-//import 'package:niefeko/Components/Category/detail.dart';
 import 'package:niefeko/Components/Category/product.dart';
-//import 'package:niefeko/Pages/Category/CategoriePage.dart'; // Importez les classes nécessaires depuis le fichier de catégorie
 
 class CartPanier extends StatelessWidget {
   final List<Product> cartItems;
@@ -17,7 +11,7 @@ class CartPanier extends StatelessWidget {
   final Function(BuildContext context, String, String, String) validateCart;
 
   const CartPanier({
-    super.key,
+    Key? key,
     required this.cartItems,
     required this.removeFromCart,
     required this.idClient,
@@ -25,7 +19,16 @@ class CartPanier extends StatelessWidget {
     required this.nom,
     required this.email,
     required this.validateCart,
-  });
+  }) : super(key: key);
+
+  // Méthode pour calculer le prix total
+  double getTotalPrice() {
+    double total = 0.0;
+    for (var product in cartItems) {
+      total += product.price;
+    }
+    return total;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,15 +52,7 @@ class CartPanier extends StatelessWidget {
                     itemCount: cartItems.length,
                     itemBuilder: (context, index) {
                       final product = cartItems[index];
-                      return 
-                      GestureDetector(
-  onTap: () {
-      // Navigator.push(
-      //   context,
-      //   MaterialPageRoute(builder: (context) => Product(imagePath: imagePath, name: name, price: price)),
-      // );
-  },
-                    child: Card(
+                      return Card(
                         child: ListTile(
                           leading: Image.asset(
                             product.imagePath,
@@ -66,20 +61,68 @@ class CartPanier extends StatelessWidget {
                             fit: BoxFit.cover,
                           ),
                           title: Text(product.name),
-                          subtitle: Text('${product.price}cfa'),
+                          subtitle: Text('${product.price} cfa'),
                           trailing: IconButton(
+<<<<<<< HEAD
                             icon: const Icon(Icons.delete, color: Colors.red),
                             onPressed: () {
                               removeFromCart(index);
                               ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                                 content: Text('Produit supprimé du panier'),
                               ));
+=======
+                            icon: const Icon(Icons.delete),
+                            onPressed: () {
+                              // Afficher la boîte de dialogue de confirmation
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: const Text('Confirmer la suppression'),
+                                    content: const Text('Voulez-vous vraiment supprimer ce produit ?'),
+                                    actions: <Widget>[
+                                      TextButton(
+                                        child: const Text('Annuler'),
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                      ),
+                                      TextButton(
+                                        child: const Text('Supprimer'),
+                                        onPressed: () {
+                                          // Supprimer le produit du panier
+                                          removeFromCart(index);
+                                          // Fermer la boîte de dialogue
+                                          Navigator.of(context).pop();
+                                          // Afficher un message de confirmation
+                                          ScaffoldMessenger.of(context).showSnackBar(
+                                            const SnackBar(
+                                              content: Text('Produit supprimé du panier'),
+                                            ),
+                                          );
+                                        },
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+>>>>>>> 1079f3db9f48e576bda93a788b81c25c376cd651
                             },
                           ),
                         ),
-                      ));
-
+                      );
                     },
+                  ),
+                ),
+                // Afficher le prix total
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Text(
+                    'Prix total: ${getTotalPrice()} cfa',
+                    style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
                 Center(
@@ -88,10 +131,11 @@ class CartPanier extends StatelessWidget {
                     child: ElevatedButton(
                       onPressed: () {
                         validateCart(context, idClient, prenom, nom);
-                        ScaffoldMessenger.of(context)
-                            .showSnackBar(const SnackBar(
-                          content: Text('Panier validé'),
-                        ));
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Panier validé'),
+                          ),
+                        );
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFF612C7D),
