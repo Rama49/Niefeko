@@ -63,14 +63,6 @@ class CartPanier extends StatelessWidget {
                           title: Text(product.name),
                           subtitle: Text('${product.price} cfa'),
                           trailing: IconButton(
-<<<<<<< HEAD
-                            icon: const Icon(Icons.delete, color: Colors.red),
-                            onPressed: () {
-                              removeFromCart(index);
-                              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                                content: Text('Produit supprimé du panier'),
-                              ));
-=======
                             icon: const Icon(Icons.delete),
                             onPressed: () {
                               // Afficher la boîte de dialogue de confirmation
@@ -106,7 +98,6 @@ class CartPanier extends StatelessWidget {
                                   );
                                 },
                               );
->>>>>>> 1079f3db9f48e576bda93a788b81c25c376cd651
                             },
                           ),
                         ),

@@ -1,24 +1,43 @@
-import 'package:firebase_auth/firebase_auth.dart';
-//import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:niefeko/Components/Category/MesProduits.dart';
-import 'package:niefeko/Pages/Category/detail.dart';
-import 'package:niefeko/Pages/Recherche/recherche.dart';
 import 'package:niefeko/Pages/CartPanier/CartPanier.dart';
-import 'package:niefeko/Components/Category/product.dart';
+import 'package:niefeko/Pages/Favoris/PageFavoris.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:niefeko/Pages/CartPanier/CartPanier.dart';
+import 'package:niefeko/Pages/PanierHistorique/PanierPage.dart';
+
+class Product {
+  final String imagePath;
+  final String name;
+  final double price;
+  int quantity; // Champ pour stocker la quantité du produit
+
+  // Product({required this.imagePath, required this.name, required this.price});
+
+  // Convertir le produit en un map pour Firestore
+  Map<String, dynamic> toMap() {
+    return {
+      'imagePath': imagePath,
+      'name': name,
+      'price': price,
+    };
+  }
+
+  Product({
+    required this.imagePath,
+    required this.name,
+    required this.price,
+    this.quantity = 1,
+  });
+}
 
 class CategoryPage extends StatefulWidget {
   @override
-  // ignore: library_private_types_in_public_api
   _CategoryPageState createState() => _CategoryPageState();
 }
 
 class _CategoryPageState extends State<CategoryPage> {
   List<bool> isFavoritedList = List.generate(20, (index) => false);
-  List<double> prices = [];
-  List<String> filteredImagePaths = [];
-  //List<String> names = [];
   List<String> imagePaths = [
     'assets/casque.png',
     'assets/chaussure.png',
@@ -41,6 +60,8 @@ class _CategoryPageState extends State<CategoryPage> {
     'assets/tshirtRouge.png',
     'assets/torche.png',
   ];
+  List<double> prices = List.generate(20, (index) => 1000.0);
+  List<String> filteredImagePaths = [];
   int cartItemCount = 0;
   List<Product> cartItems = [];
 
@@ -51,79 +72,50 @@ class _CategoryPageState extends State<CategoryPage> {
   }
 
   void searchProduct(String query) {
-  setState(() {
-    filteredImagePaths = imagePaths
-      .where((path) => path.toLowerCase().contains(query.toLowerCase()))
-      .toList();
-
-    // Ajouter une logique pour rechercher dans les noms de produits
-    List<String> filteredProducts = MesProduits.allProducts
-      .where((product) => product.name.toLowerCase().contains(query.toLowerCase()))
-      .map((product) => product.imagePath)
-      .toList();
-
-    // Ajouter les produits filtrés à la liste des images filtrées
-    filteredImagePaths.addAll(filteredProducts);
-    
-    // Supprimer les doublons de la liste des images filtrées
-    filteredImagePaths = filteredImagePaths.toSet().toList();
-  });
-}
-
-
-  void addToCart(Product product) async {
-  String imageUrl = product.imagePath;
-  String productName = product.name;
-  double price = product.price;
-  DateTime timestamp = DateTime.now(); // Timestamp de la commande
-
-  // Vérifier si le produit existe déjà dans le panier
-  int existingIndex =
-      cartItems.indexWhere((product) => product.name == productName);
-  if (existingIndex != -1) {
-    // Le produit existe déjà dans le panier, augmentez simplement la quantité
     setState(() {
-      cartItems[existingIndex].quantity++; // Augmenter la quantité du produit
-      cartItemCount++; // Augmenter le nombre total d'articles dans le panier
-    });
-  } else {
-    // Le produit n'existe pas encore dans le panier, l'ajouter
-    setState(() {
-      cartItems.add(Product(
-        imagePath: imageUrl,
-        name: productName,
-        description: 'description',
-        price: price,
-        quantity: 1, // Initialiser la quantité à 1
-      ));
-      cartItemCount++; // Augmenter le nombre total d'articles dans le panier
+      filteredImagePaths = imagePaths
+          .where((path) => path.toLowerCase().contains(query.toLowerCase()))
+          .toList();
     });
   }
 
-  // Show an alert dialog after adding the product to the cart
-  showAddToCartDialog(context, productName);
-}
+  void addToCart(int index) async {
+    String imageUrl = imagePaths[index];
+    String productName =
+        filteredImagePaths[index].split('/').last.split('.').first;
+    double price = prices[index];
+    DateTime timestamp = DateTime.now(); // Timestamp de la commande
 
-void showAddToCartDialog(BuildContext context, String productName) {
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return AlertDialog(
-        title: Text('Produit ajouté'),
-        content: Text('$productName a été ajouté à votre panier.'),
-        actions: [
-          TextButton(
-            child: Text('OK'),
-            onPressed: () {
-              Navigator.of(context).pop(); // Close the dialog
-            },
-          ),
-        ],
-      );
-    },
-  );
-}
+    // TODO: Récupérer l'ID du client, le prénom et le nom du client
+    String idClient = ""; // Remplir avec l'ID du client
+    String prenom = ""; // Remplir avec le prénom du client
+    String nom = ""; // Remplir avec le nom du client
 
+    // Calculer le montant total
+    double totalAmount = price * 1; // Pour l'exemple, mettons la quantité à 1
+
+    // Vérifier si le produit existe déjà dans le panier
+    int existingIndex =
+        cartItems.indexWhere((product) => product.name == productName);
+    if (existingIndex != -1) {
+      // Le produit existe déjà dans le panier, augmentez simplement la quantité
+      setState(() {
+        cartItems[existingIndex].quantity++; // Augmenter la quantité du produit
+        cartItemCount++; // Augmenter le nombre total d'articles dans le panier
+      });
+    } else {
+      // Le produit n'existe pas encore dans le panier, l'ajouter
+      setState(() {
+        cartItems.add(Product(
+          imagePath: imageUrl,
+          name: productName,
+          price: price,
+          quantity: 1, // Initialiser la quantité à 1
+        ));
+        cartItemCount++; // Augmenter le nombre total d'articles dans le panier
+      });
+    }
+  }
 
   void removeFromCart(int index) {
     setState(() {
@@ -132,7 +124,7 @@ void showAddToCartDialog(BuildContext context, String productName) {
     });
   }
 
-  Future<void> navigateToCartPage() async {
+  void navigateToCartPage() async {
     User? user = FirebaseAuth.instance.currentUser;
     if (user == null) {
       // Redirection vers la page de connexion si l'utilisateur n'est pas connecté
@@ -188,17 +180,16 @@ void showAddToCartDialog(BuildContext context, String productName) {
     String email = userSnapshot[
         'email']; // Si l'email est stocké dans la collection "Inscription"
 
-    // ignore: avoid_function_literals_in_foreach_calls
     cartItems.forEach((product) {
       String imageUrl = product.imagePath;
       String productName = product.name;
       double price = product.price;
-<<<<<<< HEAD
-      // ignore: unused_local_variable
-      DateTime timestamp = DateTime.now(); // Timestamp de la commande
-=======
       DateTime timestamp = DateTime.now();
+
+      double totalAmount = price *
+          product
               .quantity; // Calculer le montant total en multipliant le prix par la quantité
+
       Order order = Order(
         imageUrl: imageUrl,
         idClient: userID,
@@ -220,176 +211,48 @@ void showAddToCartDialog(BuildContext context, String productName) {
       cartItemCount = 0;
     });
 
-<<<<<<< HEAD
-
-  Future<void> navigateToCartPage() async {
-     User? user = FirebaseAuth.instance.currentUser;
-      if (user == null) {
-        // Redirection vers la page de connexion si l'utilisateur n'est pas connecté
-        // Vous pouvez implémenter cela selon vos besoins
-        return;
-      }
-
-      String userID = user.uid;
-      String email = user.email!;
-
-      DocumentSnapshot userSnapshot = await FirebaseFirestore.instance
-          .collection('Inscription')
-          .doc(userID)
-          .get();
-
-      String prenom = userSnapshot['prenom'];
-      String nom = userSnapshot['nom'];
-
-      Navigator.push(
-        // ignore: use_build_context_synchronously
-        context,
-        MaterialPageRoute(
-          builder: (context) => CartPanier(
-            cartItems: cartItems,
-            removeFromCart: removeFromCart,
-            idClient: userID,
-            prenom: prenom,
-            nom: nom, // Passer la valeur de nom
-            email: email,
-            validateCart: validateCart,
-=======
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Panier validé'),
-        content: const Text('Votre panier a été validé avec succès.'),
+        title: Text('Panier validé'),
+        content: Text('Votre panier a été validé avec succès.'),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('OK'),
->>>>>>> 1079f3db9f48e576bda93a788b81c25c376cd651
+            child: Text('OK'),
           ),
         ],
       ),
     );
   }
 
-  void addOrderToFirestore(Order order) {
-    CollectionReference orders =
-        FirebaseFirestore.instance.collection('Panier');
+  // void addOrderToFirestore(Order order) {
+  //   CollectionReference orders =
+  //       FirebaseFirestore.instance.collection('Panier');
 
-<<<<<<< HEAD
-      String userID = user.uid;
-
-      DocumentSnapshot userSnapshot = await FirebaseFirestore.instance
-          .collection('Inscription')
-          .doc(userID)
-          .get();
-
-      String prenom = userSnapshot['prenom'];
-      String nom = userSnapshot['nom'];
-      String email = userSnapshot[
-          'email']; // Si l'email est stocké dans la collection "Inscription"
-
-      // ignore: avoid_function_literals_in_foreach_calls
-      cartItems.forEach((product) {
-        String imageUrl = product.imagePath;
-        String productName = product.name;
-        double price = product.price;
-        DateTime timestamp = DateTime.now();
-
-        double totalAmount = price *
-            product
-                .quantity; // Calculer le montant total en multipliant le prix par la quantité
-
-        Order order = Order(
-          imageUrl: imageUrl,
-          idClient: userID,
-          prenom: prenom,
-          nom: nom,
-          email: email,
-          nomProduit: productName,
-          nbrProduit: product.quantity, // Utiliser la quantité du produit
-          prix: price,
-          totalAmount: totalAmount,
-          timestamp: timestamp,
-        );
-
-        addOrderToFirestore(order);
-      });
-
-      setState(() {
-        cartItems.clear();
-        cartItemCount = 0;
-      });
-
-      showDialog(
-        // ignore: use_build_context_synchronously
-        context: context,
-        builder: (context) => AlertDialog(
-          title: const Text('Panier validé'),
-          content: const Text('Votre panier a été validé avec succès.'),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text('OK'),
-            ),
-          ],
-        ),
-      );
-    }
-void addOrderToFirestore(Order order) {
-      CollectionReference orders =
-          FirebaseFirestore.instance.collection('Panier');
-
-      orders
-          .add(order.toMap())
-          // ignore: avoid_print
-          .then((value) => print("Commande ajoutée avec l'ID: ${value.id}"))
-          .catchError(
-              // ignore: avoid_print
-              (error) => print("Erreur lors de l'ajout de la commande: $error"));
-    }
-=======
-    orders
-        .add(order.toMap())
-        // ignore: avoid_print
-        .then((value) => print("Commande ajoutée avec l'ID: ${value.id}"))
-        .catchError((error) =>
-            // ignore: avoid_print
-            print("Erreur lors de l'ajout de la commande: $error"));
-  }
->>>>>>> 1079f3db9f48e576bda93a788b81c25c376cd651
+  //   orders
+  //       .add(order.toMap())
+  //       .then((value) => print("Commande ajoutée avec l'ID: ${value.id}"))
+  //       .catchError(
+  //           (error) => print("Erreur lors de l'ajout de la commande: $error"));
+  // }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color(0xFF612C7D),
+        backgroundColor: Color(0xFF612C7D),
         leading: IconButton(
-<<<<<<< HEAD
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
-         onPressed: () {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const search()),
-    );
-  },
-=======
           icon: Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => search()),
-            );
+            Navigator.pop(context);
           },
->>>>>>> 1079f3db9f48e576bda93a788b81c25c376cd651
         ),
         actions: [
           Stack(
             children: [
               IconButton(
-<<<<<<< HEAD
-                icon: const Icon(Icons.shopping_cart, color: Colors.white, size: 30),
-=======
-                icon: Icon(Icons.shopping_cart, color: Colors.white, size: 40),
->>>>>>> 1079f3db9f48e576bda93a788b81c25c376cd651
+                icon: Icon(Icons.shopping_cart, color: Colors.white, size: 30),
                 onPressed: navigateToCartPage,
               ),
               Positioned(
@@ -400,7 +263,7 @@ void addOrderToFirestore(Order order) {
                   radius: 10,
                   child: Text(
                     cartItemCount.toString(),
-                    style: const TextStyle(color: Colors.white, fontSize: 12),
+                    style: TextStyle(color: Colors.white, fontSize: 12),
                   ),
                 ),
               ),
@@ -412,7 +275,7 @@ void addOrderToFirestore(Order order) {
         child: Column(
           children: [
             Container(
-              color: const Color(0xFF612C7D),
+              color: Color(0xFF612C7D),
               padding: const EdgeInsets.all(8.0),
               child: Container(
                 decoration: BoxDecoration(
@@ -421,19 +284,19 @@ void addOrderToFirestore(Order order) {
                 ),
                 child: TextField(
                   onChanged: searchProduct,
-                  decoration: const InputDecoration(
-                    hintText: 'Search...',
+                  decoration: InputDecoration(
+                    hintText: 'Recherche...',
                     prefixIcon: Icon(Icons.search, color: Colors.grey),
                     border: InputBorder.none,
                   ),
                 ),
               ),
             ),
-            const SizedBox(height: 10),
+            SizedBox(height: 10),
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Container(
-                padding: const EdgeInsets.all(8.0),
+                padding: EdgeInsets.all(8.0),
                 child: Row(
                   children: List.generate(
                     filteredImagePaths.length,
@@ -441,18 +304,17 @@ void addOrderToFirestore(Order order) {
                       padding: const EdgeInsets.all(8.0),
                       child: CircleAvatar(
                         radius: 50,
-                        backgroundImage:
-                            AssetImage(filteredImagePaths[index]),
+                        backgroundImage: AssetImage(filteredImagePaths[index]),
                       ),
                     ),
                   ),
                 ),
               ),
             ),
-            const SizedBox(height: 10),
+            SizedBox(height: 10),
             filteredImagePaths.isEmpty
-                ? const Padding(
-                    padding: EdgeInsets.all(8.0),
+                ? Padding(
+                    padding: const EdgeInsets.all(8.0),
                     child: Text(
                       "Produit non trouvé",
                       style: TextStyle(
@@ -464,44 +326,63 @@ void addOrderToFirestore(Order order) {
                   )
                 : GridView.builder(
                     shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    physics: NeverScrollableScrollPhysics(),
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
                       crossAxisSpacing: 8,
                       mainAxisSpacing: 8,
                     ),
-                    itemCount: MesProduits.allProducts.length,
+                    itemCount: filteredImagePaths.length,
                     itemBuilder: (context, index) {
-                      final allproducts = MesProduits.allProducts[index];
-                      return GestureDetector(
-                        onTap: () => //{
-
-                            Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => Detail(
-                              product: allproducts,
-                            ),
-                          ),
-                        ),
-                        //},
-                        child: buildCard(index,
-                          Product(
-                            imagePath: allproducts.imagePath,
-                            name: allproducts.name,
-                            description: allproducts.description,
-                            price: allproducts.price
-                          )
-                        ),
-                      );
-                    }),
+                      return buildCard(index);
+                    },
+                  ),
+          ],
+        ),
+      ),
+      bottomNavigationBar: BottomAppBar(
+        color: Color(0xFF612C7D),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            IconButton(
+              onPressed: () {
+                // Ajoutez ici votre logique de navigation pour l'écran d'accueil
+              },
+              icon: Icon(Icons.home, color: Colors.white),
+            ),
+            IconButton(
+              onPressed: () {
+                // Naviguer vers la page d'historique des commandes
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => PanierPage()),
+                );
+              },
+              icon: Icon(Icons.shopping_cart, color: Colors.white),
+            ),
+            IconButton(
+              onPressed: () {
+                // Ajoutez ici votre logique de navigation pour l'écran des favoris
+              },
+              icon: Icon(Icons.favorite, color: Colors.white),
+            ),
+            IconButton(
+              onPressed: () {
+                // Ajoutez ici votre logique de navigation pour l'écran des paramètres
+              },
+              icon: Icon(Icons.settings, color: Colors.white),
+            ),
           ],
         ),
       ),
     );
   }
 
-  Widget buildCard(index, Product product) {
+  Widget buildCard(int index) {
+    String imageName =
+        filteredImagePaths[index].split('/').last.split('.').first;
+    double price = prices[index];
     return Card(
       child: Stack(
         children: [
@@ -509,9 +390,9 @@ void addOrderToFirestore(Order order) {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Image.asset(
-                product.imagePath,
-                width: 50,
-                height: 50,
+                filteredImagePaths[index],
+                width: 90,
+                height: 90,
                 fit: BoxFit.cover,
               ),
               Padding(
@@ -519,31 +400,23 @@ void addOrderToFirestore(Order order) {
                 child: Column(
                   children: [
                     Text(
-                      product.name,
-                      style: const TextStyle(fontWeight: FontWeight.bold),
+                      imageName,
+                      style: TextStyle(fontWeight: FontWeight.bold),
                     ),
-                    const SizedBox(height: 4),
+                    SizedBox(height: 4),
                     Text(
-                      '${product.price}',
-<<<<<<< HEAD
-                      style: const TextStyle(
-                          fontWeight: FontWeight.bold, color: Colors.green),
-=======
+                      '\$$price',
                       style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.green,
-                      ),
->>>>>>> 1079f3db9f48e576bda93a788b81c25c376cd651
+                          fontWeight: FontWeight.bold, color: Colors.green),
                     ),
                   ],
                 ),
               ),
-              const SizedBox(height: 8),
+              SizedBox(height: 8),
               Center(
                 child: ElevatedButton(
-                  onPressed: () => addToCart(product),
-                  // ignore: sort_child_properties_last
-                  child: const Row(
+                  onPressed: () => addToCart(index),
+                  child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(
@@ -554,14 +427,8 @@ void addOrderToFirestore(Order order) {
                     ],
                   ),
                   style: ElevatedButton.styleFrom(
-<<<<<<< HEAD
-                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                    backgroundColor: const Color(0xFF612C7D),
-=======
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                    backgroundColor: Color(0xFF612C7D),
->>>>>>> 1079f3db9f48e576bda93a788b81c25c376cd651
+                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                    primary: Color(0xFF612C7D),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(7),
                     ),
@@ -571,32 +438,33 @@ void addOrderToFirestore(Order order) {
             ],
           ),
           Align(
-            alignment: const Alignment(1, -1),
+            alignment: Alignment(1, -1),
             child: IconButton(
               icon: Icon(
                 isFavoritedList[index] ? Icons.favorite : Icons.favorite_border,
                 color: isFavoritedList[index] ? Colors.red : Colors.grey,
               ),
               onPressed: () {
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(builder: (context) => pageFavoris()),
+                // );
+
                 setState(() {
                   isFavoritedList[index] = !isFavoritedList[index];
                 });
 
-                // Vérifier si le produit est ajouté aux favoris
+                // Vérifiez si le produit est ajouté aux favoris
                 if (isFavoritedList[index]) {
-                  // Créer une instance de produit
+                  // Créez une instance de produit
                   Product favoriteProduct = Product(
-                    imagePath: product.imagePath,
-                    name: product.name,
-                    description: 'ma description',
-                    price: product.price,
+                    imagePath: imagePaths[index],
+                    name: imageName,
+                    price: price,
                   );
 
                   // Ajouter le produit aux favoris dans Firestore
                   addFavoriteToFirestore(favoriteProduct);
-
-                  // Afficher une alerte pour confirmer l'ajout aux favoris
-                  showAddToFavoritesDialog(context, product.name);
                 }
               },
             ),
@@ -607,79 +475,32 @@ void addOrderToFirestore(Order order) {
   }
 
   // Méthode pour ajouter un produit aux favoris dans Firestore
-  // Méthode pour ajouter un produit aux favoris dans Firestore
   void addFavoriteToFirestore(Product favoriteProduct) {
+    // Référence à la collection "favorites" dans Firestore
     CollectionReference favorites =
         FirebaseFirestore.instance.collection('favoris');
 
-<<<<<<< HEAD
-  User? user = FirebaseAuth.instance.currentUser;
-  if (user == null) {
-    // Gérer le cas où l'utilisateur n'est pas connecté
-    // ignore: avoid_print
-    print("L'utilisateur n'est pas connecté.");
-    return;
-  }
-
-  String userID = user.uid;
-
-  // Ajouter le produit aux favoris dans Firestore avec l'ID de l'utilisateur
-  favorites
-      .add({
-        ...favoriteProduct.toMap(), // Les données du produit
-        'userID': userID, // Ajout de l'ID de l'utilisateur
-      })
-      .then((value) =>
-          // ignore: avoid_print
-          print("Produit ajouté aux favoris avec l'ID: ${value.id}"))
-      .catchError((error) =>
-          // ignore: avoid_print
-          print("Erreur lors de l'ajout aux favoris: $error"));
-}
-=======
-    User? user = FirebaseAuth.instance.currentUser;
-    if (user == null) {
-      // Gérer le cas où l'utilisateur n'est pas connecté
-      print("L'utilisateur n'est pas connecté.");
-      return;
-    }
-
-    String userID = user.uid;
-
-    // Ajouter le produit aux favoris dans Firestore avec l'ID de l'utilisateur
+    // Ajouter le produit aux favoris dans Firestore
     favorites
-        .add({
-          ...favoriteProduct.toMap(), // Les données du produit
-          'userID': userID, // Ajout de l'ID de l'utilisateur
-        })
+        .add(favoriteProduct.toMap())
         .then((value) =>
             print("Produit ajouté aux favoris avec l'ID: ${value.id}"))
         .catchError(
             (error) => print("Erreur lors de l'ajout aux favoris: $error"));
   }
 
-  // Afficher une alerte après l'ajout d'un produit aux favoris
-  void showAddToFavoritesDialog(BuildContext context, String productName) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Produit ajouté aux favoris'),
-          content: Text('$productName a été ajouté à vos favoris.'),
-          actions: [
-            TextButton(
-              child: Text('OK'),
-              onPressed: () {
-                Navigator.of(context).pop(); // Fermer la boîte de dialogue
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
->>>>>>> 1079f3db9f48e576bda93a788b81c25c376cd651
+  void addOrderToFirestore(Order order) {
+    // Référence à la collection "orders" dans Firestore
+    CollectionReference orders =
+        FirebaseFirestore.instance.collection('Panier');
 
+    // Ajouter la commande à Firestore
+    orders
+        .add(order.toMap())
+        .then((value) => print("Commande ajoutée avec l'ID: ${value.id}"))
+        .catchError(
+            (error) => print("Erreur lors de l'ajout de la commande: $error"));
+  }
 }
 
 class Order {
@@ -707,7 +528,6 @@ class Order {
     required this.timestamp,
   });
 
-  // Convertir la commande en un map pour Firestore
   Map<String, dynamic> toMap() {
     return {
       'imageUrl': imageUrl,
