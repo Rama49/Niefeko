@@ -34,11 +34,9 @@ class InscriptionState extends State<Inscription> {
     Firebase.initializeApp().then((_) {
       
       
-      // ignore: avoid_print
       print("Firebase initialisé avec succès !");
     }).catchError((error) {
      
-      // ignore: avoid_print
       print("Erreur lors de l'initialisation de Firebase : $error");
     });
   }
