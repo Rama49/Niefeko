@@ -227,7 +227,9 @@ class _searchState extends State<search> {
                   MaterialPageRoute(builder: (context) => search()),
                 );
               },
-              icon: const Icon(Icons.home, color: Colors.white),
+              
+              icon: const Icon(Icons.home, color: Colors.white,),
+              
             ),
             IconButton(
               onPressed: () {
