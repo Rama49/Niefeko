@@ -110,9 +110,9 @@ class ProductCard extends StatelessWidget {
               context: context,
               builder: (BuildContext context) {
                 return AlertDialog(
-                  title: const Text('Confirmer la suppression'),
+                  // title: const Text('Confirmer la suppression'),
                   content:
-                      const Text('Voulez-vous vraiment supprimer ce produit ?'),
+                      const Text('Voulez-vous vraiment retirer ce produit ?'),
                   actions: <Widget>[
                     TextButton(
                       child: const Text('Annuler'),
@@ -121,7 +121,7 @@ class ProductCard extends StatelessWidget {
                       },
                     ),
                     TextButton(
-                      child: const Text('Supprimer'),
+                      child: const Text('Retirer'),
                       onPressed: () {
                         FirebaseFirestore.instance
                           .collection('favoris')
