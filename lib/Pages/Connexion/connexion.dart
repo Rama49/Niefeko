@@ -75,7 +75,10 @@ class _connexionState extends State<connexion> {
                   margin: const EdgeInsets.all(5),
                   child: Text(
                     "Connectez-vous à votre compte",
-                    style: TextStyle(fontSize: 15, color: Colors.white, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                        fontSize: 15,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold),
                     textAlign: TextAlign.center,
                   ),
                 ),
@@ -149,9 +152,10 @@ class _connexionState extends State<connexion> {
                           },
                         ),
                       ),
-                      const SizedBox(height: 10),
+                      const SizedBox(height: 15),
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20, vertical: 10),
                         child: TextButton(
                           onPressed: () {
                             Navigator.push(
@@ -176,31 +180,36 @@ class _connexionState extends State<connexion> {
                           ),
                         ),
                       ),
-                      // const SizedBox(
-                      //   height: 10,
-                      // ),
+                      const SizedBox(
+                        height: 10,
+                      ),
                       Padding(
                         padding: const EdgeInsets.only(bottom: 5),
-                        child: ElevatedButton(
-                          onPressed: () {
-                            if (_formKey.currentState!.validate()) {
-                              _signInWithEmailAndPassword();
-                            }
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color.fromARGB(255, 255, 255, 255),
-                            padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 10),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(5),
-                              side: const BorderSide(
-                                  color: Color(0xFF593070)),
+                        child: SizedBox(
+                          width: double.infinity,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              if (_formKey.currentState!.validate()) {
+                                _signInWithEmailAndPassword();
+                              }
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor:
+                                  const Color.fromARGB(255, 255, 255, 255),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 40, vertical: 10),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5),
+                                side:
+                                    const BorderSide(color: Color(0xFF593070)),
+                              ),
                             ),
-                          ),
-                          child: const Text(
-                            "Se connecter",
-                            style: TextStyle(
-                              fontSize: 16.0,
-                              color: Color(0xFF593070),
+                            child: const Text(
+                              "Se connecter",
+                              style: TextStyle(
+                                fontSize: 16.0,
+                                color: Color(0xFF593070),
+                              ),
                             ),
                           ),
                         ),
@@ -208,27 +217,30 @@ class _connexionState extends State<connexion> {
                       // const SizedBox(height: 20),
                       Padding(
                         padding: const EdgeInsets.only(top: 2, bottom: 20),
-                        child: ElevatedButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => Inscription()),
-                            );
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFF593070),
-                            padding: const EdgeInsets.symmetric(horizontal: 55, vertical: 10),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(5),
-                              side: const BorderSide(
-                                  color: Colors.white),
+                        child: SizedBox(
+                          width: double.infinity,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => Inscription()),
+                              );
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color(0xFF593070),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 55, vertical: 10),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5),
+                                side: const BorderSide(color: Colors.white),
+                              ),
                             ),
-                          ),
-                          child: const Text(
-                            "S'inscrire",
-                            style:
-                                TextStyle(fontSize: 16, color: Colors.white),
+                            child: const Text(
+                              "S'inscrire",
+                              style:
+                                  TextStyle(fontSize: 16, color: Colors.white),
+                            ),
                           ),
                         ),
                       ),

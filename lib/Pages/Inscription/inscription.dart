@@ -64,73 +64,75 @@ class InscriptionState extends State<Inscription> {
                 ),
                 Form(
                   key: _formKey,
-                  child: Column(
-                    children: [
-                      _buildInputField(
-                        label: 'Nom',
-                        controller: _nomController,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Veuillez entrer votre nom';
-                          }
-                          return null;
-                        },
-                      ),
-                      _buildInputField(
-                        label: 'Prénom',
-                        controller: _prenomController,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Veuillez entrer votre prénom';
-                          }
-                          return null;
-                        },
-                      ),
-                      _buildInputField(
-                        label: 'Email',
-                        controller: _emailController,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Veuillez entrer votre email';
-                          }
-                          return null;
-                        },
-                      ),
-                      _buildPasswordField(
-                        label: 'Mot de passe',
-                        controller: _passwordController,
-                        obscureText: _passwordObscureText,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Veuillez entrer votre mot de passe';
-                          }
-                          return null;
-                        },
-                        onPressed: () {
-                          setState(() {
-                            _passwordObscureText = !_passwordObscureText;
-                          });
-                        },
-                      ),
-                      _buildPasswordField(
-                        label: 'Confirmer mot de passe',
-                        controller: _confirmPasswordController,
-                        obscureText: _confirmPasswordObscureText,
-                        validator: (value) {
-                          if (value != _passwordController.text) {
-                            return 'Les mots de passe ne correspondent pas';
-                          }
-                          return null;
-                        },
-                        onPressed: () {
-                          setState(() {
-                            _confirmPasswordObscureText =
-                                !_confirmPasswordObscureText;
-                          });
-                        },
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 20, bottom: 5),
+                  child: Column(children: [
+                    _buildInputField(
+                      label: 'Nom',
+                      controller: _nomController,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Veuillez entrer votre nom';
+                        }
+                        return null;
+                      },
+                    ),
+                    _buildInputField(
+                      label: 'Prénom',
+                      controller: _prenomController,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Veuillez entrer votre prénom';
+                        }
+                        return null;
+                      },
+                    ),
+                    _buildInputField(
+                      label: 'Email',
+                      controller: _emailController,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Veuillez entrer votre email';
+                        }
+                        return null;
+                      },
+                    ),
+                    _buildPasswordField(
+                      label: 'Mot de passe',
+                      controller: _passwordController,
+                      obscureText: _passwordObscureText,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Veuillez entrer votre mot de passe';
+                        }
+                        return null;
+                      },
+                      onPressed: () {
+                        setState(() {
+                          _passwordObscureText = !_passwordObscureText;
+                        });
+                      },
+                    ),
+                    _buildPasswordField(
+                      label: 'Confirmer mot de passe',
+                      controller: _confirmPasswordController,
+                      obscureText: _confirmPasswordObscureText,
+                      validator: (value) {
+                        if (value != _passwordController.text) {
+                          return 'Les mots de passe ne correspondent pas';
+                        }
+                        return null;
+                      },
+                      onPressed: () {
+                        setState(() {
+                          _confirmPasswordObscureText =
+                              !_confirmPasswordObscureText;
+                        });
+                      },
+                    ),
+                    SizedBox(height: 15),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 20, bottom: 5),
+                      child: SizedBox(
+                        width: double.infinity,
                         child: ElevatedButton(
                           onPressed: () async {
                             await registerUser();
@@ -138,17 +140,11 @@ class InscriptionState extends State<Inscription> {
                           style: ElevatedButton.styleFrom(
                             backgroundColor:
                                 const Color.fromARGB(255, 255, 255, 255),
-                                      
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 100, vertical: 20),
+                            padding: const EdgeInsets.symmetric(vertical: 15),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(7),
-                              side: const BorderSide(
-                                  color: Colors.white), 
+                              side: const BorderSide(color: Colors.white),
                             ),
-
-                            minimumSize:
-                                const Size(150, 0), // Définir la largeur fixe
                           ),
                           child: const Text(
                             "S'inscrire",
@@ -157,38 +153,40 @@ class InscriptionState extends State<Inscription> {
                           ),
                         ),
                       ),
-                      SizedBox(height: 20),
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 20),
-                        child: ElevatedButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const connexion(),
-                              ),
-                            );
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFF612C7D),
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 100),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(7),
-                              side: const BorderSide(
-                                  color: Colors.white), // Bordure blanche
-                            ),
-                            minimumSize:
-                                const Size(150, 0), // Définir la largeur fixe
+                    ),
+                    SizedBox(height: 10),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const connexion(),
                           ),
+                        );
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFF612C7D),
+                        padding: const EdgeInsets.symmetric(
+                            vertical:
+                                15), // Ajuster le padding vertical si nécessaire
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(7),
+                          side: const BorderSide(
+                              color: Colors.white), // Bordure blanche
+                        ),
+                      ),
+                      child: const SizedBox(
+                        width: double.infinity,
+                        child: Center(
                           child: Text(
                             "Se connecter",
                             style: TextStyle(fontSize: 16, color: Colors.white),
                           ),
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                    SizedBox(height: 20),
+                  ]),
                 ),
               ],
             ),
