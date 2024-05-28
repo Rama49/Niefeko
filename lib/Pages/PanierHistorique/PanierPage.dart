@@ -1,27 +1,26 @@
-// Pages/PanierHistorique/PanierPage.dart
-// ignore: duplicate_ignore
-// ignore: file_names
-// ignore_for_file: file_names
-
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
-// ignore: use_key_in_widget_constructors
 class PanierPage extends StatefulWidget {
   @override
-  // ignore: library_private_types_in_public_api
   _PanierPageState createState() => _PanierPageState();
 }
 
 class _PanierPageState extends State<PanierPage> {
   late Stream<QuerySnapshot> _ordersStream;
+  late String _currentUserUid; // ID de l'utilisateur actuellement connecté
 
   @override
   void initState() {
     super.initState();
+    // Récupérer l'ID de l'utilisateur actuellement connecté
+    _currentUserUid = FirebaseAuth.instance.currentUser!.uid;
+    // Filtrer les commandes par ID d'utilisateur
     _ordersStream = FirebaseFirestore.instance
         .collection('Panier')
+        .where('idClient', isEqualTo: _currentUserUid) // Filtrer par ID utilisateur
         .orderBy('timestamp', descending: true)
         .snapshots();
   }
@@ -70,6 +69,7 @@ class _PanierPageState extends State<PanierPage> {
             );
           }
           if (snapshot.hasError) {
+            print("Error: ${snapshot.error}");
             return const Center(
               child: Text('Une erreur est survenue'),
             );

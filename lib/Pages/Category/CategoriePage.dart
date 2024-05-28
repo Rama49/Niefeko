@@ -128,7 +128,7 @@ class _CategoryPageState extends State<CategoryPage> {
 
       Navigator.push(
         context,
-        MaterialPageRoute(
+        MaterialPageRoute( 
           builder: (context) => CartPanier(
             cartItems: cartItems,
             removeFromCart: removeFromCart,
@@ -346,7 +346,7 @@ void addOrderToFirestore(Order order) {
     )
     );
   }  
-  Widget buildCard(index, Product product){
+Widget buildCard(index, Product product){
   return Card(
 child: 
  Stack(

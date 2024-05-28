@@ -1,10 +1,8 @@
 // Pages/Favoris/PageFavoris.dart
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-//import 'package:niefeko/Components/Recherche/recherche.dart';
-//import 'package:niefeko/Pages/Category/CategoriePage.dart';
 import 'package:niefeko/Components/Category/product.dart';
-
+import 'package:niefeko/Pages/Category/CategoriePage.dart';
 
 // ignore: camel_case_types
 class pagefavoris extends StatelessWidget {
@@ -53,15 +51,12 @@ class ProductList extends StatelessWidget {
 
             String imagePath = data['imagePath'] ?? 'assets/sac1.png';
             String name = data['name'] ?? 'sac';
-            String description = data['desciption']?? 'Description du produit';
-            double price = data['price'] ?? 10000;
-            String idClient = data['idClient'] ?? 'idClient';
+            double price = (data['price'] ?? 10000).toDouble();
 
             Product product = Product(
               imagePath: imagePath,
               name: name,
-              description: description,
-              price: price,
+              price: price, description: '',
             );
 
             return ProductCard(product: product, documentId: document.id);

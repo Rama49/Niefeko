@@ -71,7 +71,7 @@ class MesProduits{
       price: 3000),
 
       Product(
-      imagePath: 'assets/sac.jpg', 
+      imagePath: 'assets/sac1.png', 
       name: 'Sac', 
       description: 'Un sac à main, est un accessoire de mode qui permet de ranger des objets utiles au quotidien, comme les clés',
       price: 30000),
