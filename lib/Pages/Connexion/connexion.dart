@@ -36,7 +36,7 @@ class _connexionState extends State<connexion> {
       );
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => const search()),
+        MaterialPageRoute(builder: (context) => search()),
       );
     } catch (e) {
       print("Erreur de connexion: $e");
