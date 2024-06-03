@@ -8,12 +8,12 @@ import 'package:niefeko/Pages/Recherche/recherche.dart';
 import 'package:niefeko/Pages/CartPanier/CartPanier.dart';
 import 'package:niefeko/Components/Category/product.dart';
 
-class CategoryPage extends StatefulWidget {
+class MemeCategorie11 extends StatefulWidget {
   @override
-  _CategoryPageState createState() => _CategoryPageState();
+  _MemeCategoryPageState createState() => _MemeCategoryPageState();
 }
 
-class _CategoryPageState extends State<CategoryPage> {
+class _MemeCategoryPageState extends State<MemeCategorie11> {
   List<bool> isFavoritedList = List.generate(20, (index) => false);
   List<double> prices = [];
   List<String> filteredImagePaths = [];
@@ -305,7 +305,6 @@ class _CategoryPageState extends State<CategoryPage> {
               ),
             ),
             SizedBox(height: 10),
-            
             // SingleChildScrollView(
             //   scrollDirection: Axis.horizontal,
             //   child: Container(
@@ -324,7 +323,6 @@ class _CategoryPageState extends State<CategoryPage> {
             //     ),
             //   ),
             // ),
-        
             SizedBox(height: 10),
             filteredImagePaths.isEmpty
                 ? Padding(
@@ -383,7 +381,7 @@ class _CategoryPageState extends State<CategoryPage> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Image.asset(
-                product.imagePath,
+                'assets/lunette.png',
                 width: 50,
                 height: 50,
                 fit: BoxFit.cover,
