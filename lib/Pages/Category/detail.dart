@@ -21,6 +21,7 @@ class Couleur{
 class Detail extends StatefulWidget{
   final Product product;
   const Detail({super.key, required this.product});
+   // ignore: library_private_types_in_public_api, annotate_overrides
    _DetailState createState() => _DetailState();
 
   }
@@ -106,6 +107,7 @@ void addToCart(Product product) async {
       String nom = userSnapshot['nom'];
 
       Navigator.push(
+        // ignore: use_build_context_synchronously
         context,
         MaterialPageRoute(
           builder: (context) => CartPanier(
@@ -179,6 +181,7 @@ void addToCart(Product product) async {
       });
 
       showDialog(
+        // ignore: use_build_context_synchronously
         context: context,
         builder: (context) => AlertDialog(
           title: const Text('Panier validé'),
@@ -219,7 +222,7 @@ void addOrderToFirestore(Order order) {
     backgroundColor: Color(0xFF593070),
     body: Column(
       children: [
-        SizedBox(height: 36),
+        const SizedBox(height: 36),
        Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -291,7 +294,7 @@ void addOrderToFirestore(Order order) {
               ),
             ),
           ),
-          Padding(padding: const EdgeInsets.only(top: 15, left: 40, right: 40)),
+          const Padding(padding: EdgeInsets.only(top: 15, left: 40, right: 40)),
           Expanded(
             child: Stack(
               children: [
@@ -310,7 +313,7 @@ void addOrderToFirestore(Order order) {
                       children: [
                         Text(
                           product.name,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 25,
                             fontWeight: FontWeight.bold,
                             color: Color(0xFF593070),
@@ -361,7 +364,7 @@ void addOrderToFirestore(Order order) {
                         const SizedBox(height: 10),
                         Text(
                           product.description,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w200,
                           ),
@@ -516,8 +519,10 @@ bottomNavigationBar: Container(
     favorites
         .add(favoriteProduct.toMap())
         .then((value) =>
+            // ignore: avoid_print
             print("Produit ajouté aux favoris avec l'ID: ${value.id}"))
         .catchError(
+            // ignore: avoid_print
             (error) => print("Erreur lors de l'ajout aux favoris: $error"));
   }
 }

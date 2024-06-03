@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:niefeko/Components/Categories/categorie.dart';
 import 'package:niefeko/Components/Deals/deal.dart';
-import 'package:niefeko/Pages/CartPanier/CartPanier.dart';
-import 'package:niefeko/Pages/Category/CategoriePage.dart';
+import 'package:niefeko/Components/produitcart/produit_Card.dart';
 import 'package:niefeko/Pages/Connexion/connexion.dart';
 import 'package:niefeko/Pages/Favoris/pagefavoris.dart';
 import 'package:niefeko/Pages/PanierHistorique/PanierPage.dart';
@@ -13,14 +12,16 @@ import 'package:niefeko/Reutilisable/carteReu.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:niefeko/Components/Category/product.dart';
 
-
+// ignore: camel_case_types
 class search extends StatefulWidget {
+  // ignore: use_super_parameters
   const search({Key? key}) : super(key: key);
 
   @override
   State<search> createState() => _searchState();
 }
 
+// ignore: camel_case_types
 class _searchState extends State<search> {
   List<Product> cartItems = [
     Product(name: '', price: 0, description: '', imagePath: ''),
@@ -33,6 +34,7 @@ class _searchState extends State<search> {
     });
   }
 
+  // ignore: unused_field
   bool _isLoggedOut = false;
 
   // ignore: unused_element
@@ -51,7 +53,6 @@ class _searchState extends State<search> {
         textColor: Colors.white,
         fontSize: 16.0,
       );
-      // ignore: use_build_context_synchronously
       Navigator.pushReplacement(
         // ignore: use_build_context_synchronously
         context,
@@ -65,7 +66,7 @@ class _searchState extends State<search> {
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.CENTER,
         timeInSecForIosWeb: 3,
-        backgroundColor: Colors.red,
+        backgroundColor: const Color(0xFF612C7D),
         textColor: Colors.white,
         fontSize: 16.0,
       );
@@ -77,47 +78,39 @@ class _searchState extends State<search> {
     return Scaffold(
       body: SingleChildScrollView(
         scrollDirection: Axis.vertical,
-        child: Flexible(
-          child: Column(
-            children: [
-              // Section de recherche
-              Container(
-                  decoration: const BoxDecoration(
-                    color: Color(0xFF593070),
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(40.0),
-                      bottomRight: Radius.circular(40.0),
+        child: Column(
+          children: [
+            // Section de recherche
+            Container(
+              decoration: const BoxDecoration(
+                color: Color(0xFF593070),
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(40.0),
+                  bottomRight: Radius.circular(40.0),
+                ),
+              ),
+              padding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).padding.bottom != 0
+                    ? MediaQuery.of(context).padding.bottom
+                    : 250, // Ajoutez le padding en bas
+              ),
+              height: MediaQuery.of(context).size.height / 3,
+              child: Column(
+                children: [
+                  const SizedBox(height: 20),
+                  const Text(
+                    "Bienvenue à Niefeko",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 25,
                     ),
                   ),
-                 
-
-
-
-
-
-                         padding: EdgeInsets.only(
-          bottom: MediaQuery.of(context).padding.bottom != 0
-              ? MediaQuery.of(context).padding.bottom
-              : 250, // Ajoutez le padding en bas
-        ),
-        height: MediaQuery.of(context).size.height / 3,
-
-                  child: Column(
-                    children: [
-                      SizedBox(height: 20),
-                      const Text(
-                        "Bienvenue à Niefeko",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 25,
-                        ),
-                      ),
-                      const SizedBox(height: 20),
-                      // ignore: sized_box_for_whitespace
-                     Container(
+                  const SizedBox(height: 20),
+                  // ignore: sized_box_for_whitespace
+                  Container(
                     height: 40,
-                    padding: EdgeInsets.only(right: 25, left: 25),
+                    padding: const EdgeInsets.only(right: 25, left: 25),
                     child: TextField(
                       // onChanged: searchProduct,
                       decoration: InputDecoration(
@@ -136,132 +129,168 @@ class _searchState extends State<search> {
                       ),
                     ),
                   ),
-                      const SizedBox(height: 20),
+                  const SizedBox(height: 20),
 
-                      // Carousel
-                      CarouselSlider(
-                        items: [
-                          //1st Image of Slider
-                          carteReu(
-                            image: Image.asset(
-                              "assets/sac1.png",
-                              fit: BoxFit.cover,
-                            ),
-                            title: "Nouveau",
-                            paragraph: "50%",
-                            texte: "Trouvez ce que vous aimez, à prix malins !",
-                          ),
-                          //2nd Image of Slider
-                          carteReu(
-                            image: Image.asset(
-                              "assets/lunette.png",
-                              fit: BoxFit.cover,
-                            ),
-                            title: "Nouveau",
-                            paragraph: "50%",
-                            texte: "Trouvez ce que vous aimez, à prix malins !",
-                          ),
-                          //3rd Image of Slider
-                          carteReu(
-                            image: Image.asset(
-                              "assets/shoes.png",
-                              fit: BoxFit.cover,
-                            ),
-                            title: "Nouveau",
-                            paragraph: "50%",
-                            texte: "Trouvez ce que vous aimez, à prix malins !",
-                          ),
-                          //4th Image of Slider
-                          carteReu(
-                            image: Image.asset(
-                              "assets/t-shirt.png",
-                              fit: BoxFit.cover,
-                            ),
-                            title: "Nouveau",
-                            paragraph: "50%",
-                            texte: "Trouvez ce que vous aimez, à prix malins !",
-                          ),
-                          //5th Image of Slider
-                          carteReu(
-                            image: Image.asset(
-                              "assets/sac1.png",
-                              fit: BoxFit.cover,
-                            ),
-                            title: "Nouveau",
-                            paragraph: "50%",
-                            texte: "Trouvez ce que vous aimez, à prix malins !",
-                          ),
-                        ],
-                        //Slider Container properties
-                        options: CarouselOptions(
-                          enlargeCenterPage: true,
-                          autoPlay: true,
-                          aspectRatio: 12 / 9,
-                          autoPlayCurve: Curves.fastOutSlowIn,
-                          enableInfiniteScroll: true,
-                          autoPlayAnimationDuration:
-                              const Duration(milliseconds: 800),
-                          viewportFraction: 0.8,
+                  // Carousel
+                  CarouselSlider(
+                    items: [
+                      //1st Image of Slider
+                      carteReu(
+                        image: Image.asset(
+                          "assets/sac1.png",
+                          fit: BoxFit.cover,
                         ),
+                        title: "Nouveau",
+                        paragraph: "50%",
+                        texte: "Trouvez ce que vous aimez, à prix malins !",
+                      ),
+                      //2nd Image of Slider
+                      carteReu(
+                        image: Image.asset(
+                          "assets/lunette.png",
+                          fit: BoxFit.cover,
+                        ),
+                        title: "Nouveau",
+                        paragraph: "50%",
+                        texte: "Trouvez ce que vous aimez, à prix malins !",
+                      ),
+                      //3rd Image of Slider
+                      carteReu(
+                        image: Image.asset(
+                          "assets/shoes.png",
+                          fit: BoxFit.cover,
+                        ),
+                        title: "Nouveau",
+                        paragraph: "50%",
+                        texte: "Trouvez ce que vous aimez, à prix malins !",
+                      ),
+                      //4th Image of Slider
+                      carteReu(
+                        image: Image.asset(
+                          "assets/t-shirt.png",
+                          fit: BoxFit.cover,
+                        ),
+                        title: "Nouveau",
+                        paragraph: "50%",
+                        texte: "Trouvez ce que vous aimez, à prix malins !",
+                      ),
+                      //5th Image of Slider
+                      carteReu(
+                        image: Image.asset(
+                          "assets/sac1.png",
+                          fit: BoxFit.cover,
+                        ),
+                        title: "Nouveau",
+                        paragraph: "50%",
+                        texte: "Trouvez ce que vous aimez, à prix malins !",
                       ),
                     ],
-                  )),
-
-              // Votre Container contenant la catégorie
-              const Column(
-                children: [
-                  SizedBox(height: 120),
-                  Categorie(),
-                  deal(),
+                    //Slider Container properties
+                    options: CarouselOptions(
+                      enlargeCenterPage: true,
+                      autoPlay: true,
+                      aspectRatio: 12 / 9,
+                      autoPlayCurve: Curves.fastOutSlowIn,
+                      enableInfiniteScroll: true,
+                      autoPlayAnimationDuration:
+                          const Duration(milliseconds: 800),
+                      viewportFraction: 0.8,
+                    ),
+                  ),
                 ],
               ),
-            ],
-          ),
+            ),
+
+            // Votre Container contenant la catégorie
+            const Column(
+              children: [
+                SizedBox(height: 120),
+                Categorie(),
+                deal(),
+                product(),
+              ],
+            ),
+          ],
         ),
       ),
       bottomNavigationBar: BottomAppBar(
         color: const Color(0xFF612C7D),
+        height: 90,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            IconButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  // ignore: prefer_const_constructors
-                  MaterialPageRoute(builder: (context) => search()),
-                );
-              },
-              icon: const Icon(Icons.home, color: Colors.white),
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                IconButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const search()),
+                    );
+                  },
+                  icon: const Icon(Icons.home, color: Colors.white),
+                ),
+                const Text(
+                  "Accueil",
+                  style: TextStyle(color: Colors.white, fontSize: 10),
+                ),
+              ],
             ),
-            IconButton(
-              onPressed: () {
-                // Naviguer vers la page d'historique des commandes
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => PanierPage()),
-                );
-              },
-              icon: const Icon(Icons.shopping_cart, color: Colors.white),
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                IconButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => PanierPage()),
+                    );
+                  },
+                  icon: const Icon(Icons.shopping_cart, color: Colors.white),
+                ),
+                const Text(
+                  "Panier",
+                  style: TextStyle(color: Colors.white),
+                ),
+              ],
             ),
-            IconButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const pagefavoris()),
-                );
-                // Ajoutez ici votre logique de navigation pour l'écran des favoris
-              },
-              icon: const Icon(Icons.favorite, color: Colors.white),
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                IconButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const pagefavoris()),
+                    );
+                  },
+                  icon: const Icon(Icons.favorite, color: Colors.white),
+                ),
+                const Text(
+                  "Favoris",
+                  style: TextStyle(color: Colors.white),
+                ),
+              ],
             ),
-            IconButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => SettingsPage()),
-                );
-              },
-              icon: const Icon(Icons.settings, color: Colors.white),
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                IconButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => SettingsPage()),
+                    );
+                  },
+                  icon: const Icon(Icons.settings, color: Colors.white),
+                ),
+                const Text(
+                  "Paramètres",
+                  style: TextStyle(color: Colors.white),
+                ),
+              ],
             ),
           ],
         ),

@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:niefeko/Pages/Connexion/connexion.dart';
 // ignore: unused_import
 import 'package:niefeko/Pages/Inscription/inscription.dart';
+import 'package:niefeko/Pages/Recherche/recherche.dart';
 import 'package:niefeko/Pages/Splash/splash.dart';
 
 void main() {

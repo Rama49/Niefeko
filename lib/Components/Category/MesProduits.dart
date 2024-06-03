@@ -1,3 +1,4 @@
+// ignore: file_names
 //import 'package:niefeko/Components/Category/detail.dart';
 import 'product.dart';
 

@@ -3,6 +3,10 @@
 
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:niefeko/Pages/memeCategorie/MemeCategorie.dart';
+import 'package:niefeko/Pages/memeCategorie/memeCategorie0.dart';
+import 'package:niefeko/Pages/memeCategorie/memeCategorie10.dart';
+import 'package:niefeko/Pages/memeCategorie/memeCategorie11.dart';
 
 class Categorie extends StatefulWidget {
   // ignore: use_key_in_widget_constructors
@@ -34,15 +38,44 @@ class _CategorieState extends State<Categorie> {
           const SizedBox(height: 20),
           CarouselSlider(
             items: [
-              //1st Image of Slider
-              buildCarouselItem("assets/gourde.png", "Gourde"),
-              //2nd Image of Slider
-              buildCarouselItem("assets/pantalon.png", "Pantalon"),
-              //3rd Image of Slider
-              buildCarouselItem("assets/lunnete1.png", "Lunettes"),
+              InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => MemeCategorie()),
+                  );
+                },
+                child: buildCarouselItem("assets/gourde.png", "Gourde"),
+              ),
+
+              InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => MemeCategorie0()),
+                  );
+                },
+                child: buildCarouselItem("assets/pantalon.png", "Pantalon"),
+              ),
+              InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => MemeCategorie11()),
+                  );
+                },
+                child: buildCarouselItem("assets/lunnete1.png", "Lunettes"),
+              ),
               //4th Image of Slider
-              buildCarouselItem("assets/torche.png", "Torche"),
-              //5th Image of Slider
+              InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => MemeCategorie10()),
+                  );
+                },
+                child: buildCarouselItem("assets/torche.png", "Torche"),
+              ),
               // buildCarouselItem("assets/maronshoes.png", "Maronshoes"),
             ],
             //Slider Container properties

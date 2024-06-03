@@ -2,13 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:niefeko/Pages/Category/CategoriePage.dart';
 
+// ignore: camel_case_types
 class deal extends StatefulWidget {
+  // ignore: use_super_parameters
   const deal({Key? key}) : super(key: key);
 
   @override
   State<deal> createState() => _dealState();
 }
 
+// ignore: camel_case_types
 class _dealState extends State<deal> {
   @override
   Widget build(BuildContext context) {
@@ -23,7 +26,7 @@ class _dealState extends State<deal> {
                 "Special Vente",
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  fontSize: 25,
+                  fontSize: 20,
                 ),
               ),
               GestureDetector(
@@ -35,9 +38,9 @@ class _dealState extends State<deal> {
                     ),
                   );
                 },
-                child: Row(
+                child: const Row(
                   mainAxisAlignment: MainAxisAlignment.start,
-                  children: const [
+                  children: [
                     Text(
                       "Voir Plus",
                       style: TextStyle(

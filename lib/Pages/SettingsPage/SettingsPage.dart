@@ -28,7 +28,7 @@ class SettingsPage extends StatelessWidget {
             .snapshots(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(
+            return const Center(
                 child:
                     CircularProgressIndicator()); // Afficher un indicateur de chargement en attendant les données
           }
@@ -39,7 +39,7 @@ class SettingsPage extends StatelessWidget {
 
           if (!snapshot.hasData || !snapshot.data!.exists) {
             // Si aucun document n'est trouvé pour cet utilisateur, gérer en conséquence
-            return Center(
+            return const Center(
                 child: Text('Aucune donnée trouvée pour cet utilisateur'));
           }
 
@@ -50,12 +50,12 @@ class SettingsPage extends StatelessWidget {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Padding(
-                padding: const EdgeInsets.all(16.0),
+              const Padding(
+                padding: EdgeInsets.all(16.0),
                 child: Icon(
                   Icons.person,
                   size: 100.0,
-                  color: const Color.fromARGB(255, 215, 194, 233),
+                  color: Color.fromARGB(255, 215, 194, 233),
                 ),
               ),
               Padding(
@@ -64,11 +64,11 @@ class SettingsPage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text('Prénom: $prenom',
-                        style: TextStyle(color: Colors.white, fontSize: 20)),
+                        style: const TextStyle(color: Colors.white, fontSize: 20)),
                     Text('Nom: $nom',
-                        style: TextStyle(color: Colors.white, fontSize: 20)),
+                        style: const TextStyle(color: Colors.white, fontSize: 20)),
                     Text('Email: $email',
-                        style: TextStyle(color: Colors.white, fontSize: 20)),
+                        style: const TextStyle(color: Colors.white, fontSize: 20)),
                   ],
                 ),
               ),
@@ -78,7 +78,7 @@ class SettingsPage extends StatelessWidget {
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(7),
-                    border: Border.all(color: Color(0xFF612C7D)),
+                    border: Border.all(color: const Color(0xFF612C7D)),
                   ),
                   child: ListTile(
                     title: const Text('Modifier le mot de passe',
@@ -97,7 +97,7 @@ class SettingsPage extends StatelessWidget {
                 padding: const EdgeInsets.only(top: 20, bottom: 20, right: 16, left: 16),
                 child: Container(
                   decoration: BoxDecoration(
-                    color: Color(0xFF612C7D),
+                    color: const Color(0xFF612C7D),
                     borderRadius: BorderRadius.circular(7),
                     border: Border.all(color: Colors.white),
                   ),
@@ -122,6 +122,7 @@ class SettingsPage extends StatelessWidget {
                         // Naviguer vers la page de connexion
                         // ignore: use_build_context_synchronously
                         Navigator.pushReplacement(
+                          // ignore: use_build_context_synchronously
                           context,
                           MaterialPageRoute(
                               builder: (context) => const connexion()),
