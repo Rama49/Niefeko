@@ -106,7 +106,6 @@ class _searchState extends State<search> {
                       fontSize: 25,
                     ),
                   ),
-                  const SizedBox(height: 20),
                   // ignore: sized_box_for_whitespace
                   Container(
                     height: 40,
@@ -129,6 +128,7 @@ class _searchState extends State<search> {
                       ),
                     ),
                   ),
+                  const SizedBox(height: 20),
                   const SizedBox(height: 20),
 
                   // Carousel
