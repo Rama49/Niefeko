@@ -51,23 +51,23 @@ class _CategoryPageState extends State<CategoryPage> {
 
   void searchProduct(String query) {
   setState(() {
-    filteredImagePaths = imagePaths
-      .where((path) => path.toLowerCase().contains(query.toLowerCase()))
-      .toList();
+    filteredImagePaths = []; // Réinitialiser les chemins d'image filtrés
 
-    // Ajouter une logique pour rechercher dans les noms de produits
-    List<String> filteredProducts = MesProduits.allProducts
-      .where((product) => product.name.toLowerCase().contains(query.toLowerCase()))
-      .map((product) => product.imagePath)
-      .toList();
+    // Filtrer les produits en fonction de la requête de recherche
+    List<Product> filteredProducts = MesProduits.allProducts
+        .where((product) =>
+            product.name.toLowerCase().contains(query.toLowerCase()))
+        .toList();
 
-    // Ajouter les produits filtrés à la liste des images filtrées
-    filteredImagePaths.addAll(filteredProducts);
-    
-    // Supprimer les doublons de la liste des images filtrées
-    filteredImagePaths = filteredImagePaths.toSet().toList();
+    // Mettre à jour les produits affichés dans les cartes
+    cartItems.clear();
+    cartItems.addAll(filteredProducts);
+
+    // Mettre à jour les chemins d'image filtrés pour les cartes
+    filteredImagePaths.addAll(cartItems.map((product) => product.imagePath));
   });
 }
+
 
 
   void addToCart(Product product) async {
@@ -280,7 +280,9 @@ void showAddToCartDialog(BuildContext context, String productName) {
                   ),
                 ),
               ),
+              
             ],
+            
           ),
         ],
       ),
@@ -382,14 +384,14 @@ void showAddToCartDialog(BuildContext context, String productName) {
       child: Stack(
         children: [
           Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center, 
             children: [
               Image.asset(
                 product.imagePath,
                 width: 50,
                 height: 50,
                 fit: BoxFit.cover,
-              ),
+              ), 
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Column(
@@ -425,7 +427,7 @@ void showAddToCartDialog(BuildContext context, String productName) {
                   ),
                   style: ElevatedButton.styleFrom(
                     padding:
-                        EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                      EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                     backgroundColor: Color(0xFF612C7D),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(7),
