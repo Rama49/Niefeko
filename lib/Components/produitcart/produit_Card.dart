@@ -895,15 +895,11 @@ class product extends StatelessWidget {
     ]);
   }
 void _launchURL() async {
-  const url = 'https://bitazimut.com/niefeko/';
-  try {
+    const url = 'https://bitazimut.com/niefeko/';
     if (await canLaunch(url)) {
       await launch(url);
     } else {
       throw 'Could not launch $url';
     }
-  } catch (e) {
-    print('Error launching URL: $e');
   }
-}
 }
