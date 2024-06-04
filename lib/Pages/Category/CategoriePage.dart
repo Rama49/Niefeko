@@ -307,27 +307,31 @@ void showAddToCartDialog(BuildContext context, String productName) {
                 ),
               ),
             ),
+            
             SizedBox(height: 10),
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Container(
-                padding: EdgeInsets.all(8.0),
-                child: Row(
-                  children: List.generate(
-                    filteredImagePaths.length,
-                    (index) => Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: CircleAvatar(
-                        radius: 50,
-                        backgroundImage:
-                            AssetImage(filteredImagePaths[index]),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
+
+            // SingleChildScrollView(
+              // scrollDirection: Axis.horizontal,
+              // child: Container(
+              //   padding: EdgeInsets.all(8.0),
+              //   child: Row(
+              //     children: List.generate(
+              //       filteredImagePaths.length,
+              //       (index) => Padding(
+              //         padding: const EdgeInsets.all(8.0),
+              //         child: CircleAvatar(
+              //           radius: 50,
+                    //     backgroundImage:
+                    //         AssetImage(filteredImagePaths[index]),
+                    //   ),
+                    // ),
+            //       ),
+            //     ),
+            //   ),
+            // ),
+          
             SizedBox(height: 10),
+
             filteredImagePaths.isEmpty
                 ? Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -564,4 +568,3 @@ class Order {
     };
   }
 }
-cl

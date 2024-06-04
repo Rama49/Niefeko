@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
+// ignore: use_key_in_widget_constructors
 class ConterCart extends StatefulWidget {
   @override
+  // ignore: library_private_types_in_public_api
   _ConterCartState createState() => _ConterCartState();
 }
 
@@ -30,7 +32,7 @@ class _ConterCartState extends State<ConterCart> {
                 }
               });
             },
-            child: Icon(Icons.remove),
+            child: const Icon(Icons.remove),
           ),
         ),
         Padding(
@@ -56,7 +58,7 @@ class _ConterCartState extends State<ConterCart> {
                 numOfItems++;
               });
             },
-            child: Icon(Icons.add),
+            child: const Icon(Icons.add),
           ),
         ),
       ],

@@ -32,6 +32,7 @@ dependencies:
     sdk: flutter
   carousel_slider: <=4.2.1 
   intl: ^0.17.0
+  url_launcher: ^6.0.20
   
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -41,6 +42,8 @@ dependencies:
   cloud_firestore: <=4.17.2
   firebase_storage: <=11.7.4  
   fluttertoast: <=8.2.5
+  webview_flutter: ^4.8.0
+  
 
 dev_dependencies:
   flutter_test:
@@ -91,6 +94,16 @@ flutter:
       - assets/tshirt-polo.jpg
       - assets/tshirt1.jpg
       - assets/tshirtRouge.png
+      - assets/logoAfricavivre.png
+      - assets/logoafriquevert.png
+      - assets/logoanka.png
+      - assets/logoApi.png
+      - assets/logoAramet.png
+      - assets/logoBakeli.png
+      - assets/logoCap.png
+      - assets/logoDjolo.png
+      - assets/logoPacao.png
+      - assets/logo.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
@@ -120,6 +133,6 @@ flutter:
 flutter_launcher_icons:
  android: "launcher_icon"
  ios: "AppIcon"
- image_path: "assets/logoNiefeko1.png"
+ image_path: "assets/logo.png"
  min_sdk_android: 21
  remove_alpha_ios: true
