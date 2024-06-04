@@ -96,8 +96,11 @@ class _searchState extends State<search> {
               ),
               height: MediaQuery.of(context).size.height / 3,
               child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  const SizedBox(height: 20),
+                  
+                  const SizedBox(height: 60),
                   const Text(
                     "Bienvenue à Niefeko",
                     style: TextStyle(
