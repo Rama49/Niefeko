@@ -4,42 +4,56 @@ import 'package:niefeko/Pages/Category/CategoriePage.dart';
 import 'package:niefeko/Pages/CartPanier/CartPanier.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-//import 'package:flutter/cupertino.dart';
+import 'package:niefeko/Pages/Recherche/recherche.dart';
+
+
+class Couleur{
+  final Color bleu, rouge, vert, jaune, noir;
+  Couleur ({
+    required this.bleu, 
+    required this.rouge, 
+    required this.vert, 
+    required this.jaune, 
+    required this.noir
+  });
+}
 
 class Detail extends StatefulWidget{
   final Product product;
   const Detail({super.key, required this.product});
-   // ignore: library_private_types_in_public_api, annotate_overrides
    _DetailState createState() => _DetailState();
 
   }
-  int quantity = 0;
+  //int quantity = 1;
   int index = 0;
 class _DetailState extends State<Detail> {
-List<bool> isFavoritedList = List.generate(20, (index) => false);
+  List<bool> isFavoritedList = List.generate(20, (index) => false);
   List<double> prices = [];
   List<String> filteredImagePaths = [];
   List<String> imagePaths = [];
   int cartItemCount = 0;
   List<Product> cartItems = [];
+  List<String> nomFournisseur = [];
   @override
   void initState() {
     super.initState();
     filteredImagePaths.addAll(imagePaths);
   }
+  void removeToCart(Product product){
+    int existingIndex = 0;
+    setState(() {
+
+      cartItems[existingIndex].quantity--;
+      cartItemCount--;
+    });
+  }
+
 void addToCart(Product product) async {
       String imageUrl = product.imagePath;
       String productName = product.name;
       double price = product.price;
-      // DateTime timestamp = DateTime.now(); // Timestamp de la commande
-
-      // String idClient = ""; // Remplir avec l'ID du client
-      // String prenom = ""; // Remplir avec le prénom du client
-      // String nom = ""; // Remplir avec le nom du client
-
-      // Calculer le montant total
-      //double totalAmount = price * 1; // Pour l'exemple, mettons la quantité à 1
-
+      //String description = product.description;
+      
       // Vérifier si le produit existe déjà dans le panier
       int existingIndex =
           cartItems.indexWhere((product) => product.name == productName);
@@ -55,7 +69,7 @@ void addToCart(Product product) async {
           cartItems.add(Product(
             imagePath: imageUrl,
             name: productName,
-            description: 'description',
+            description: product.description,
             price: price,
             quantity: 1, // Initialiser la quantité à 1
           ));
@@ -92,7 +106,6 @@ void addToCart(Product product) async {
       String nom = userSnapshot['nom'];
 
       Navigator.push(
-        // ignore: use_build_context_synchronously
         context,
         MaterialPageRoute(
           builder: (context) => CartPanier(
@@ -134,6 +147,7 @@ void addToCart(Product product) async {
         String imageUrl = product.imagePath;
         String productName = product.name;
         double price = product.price;
+        //String description = product.description;
         DateTime timestamp = DateTime.now();
 
         double totalAmount = price *
@@ -147,6 +161,9 @@ void addToCart(Product product) async {
           nom: nom,
           email: email,
           nomProduit: productName,
+          description: product.description,
+          nomFournisseur: 'nom du fournisseur',
+          //couleur: couleur,
           nbrProduit: product.quantity, // Utiliser la quantité du produit
           prix: price,
           totalAmount: totalAmount,
@@ -162,7 +179,6 @@ void addToCart(Product product) async {
       });
 
       showDialog(
-        // ignore: use_build_context_synchronously
         context: context,
         builder: (context) => AlertDialog(
           title: const Text('Panier validé'),
@@ -182,34 +198,28 @@ void addOrderToFirestore(Order order) {
 
       orders
           .add(order.toMap())
-          // ignore: avoid_print
           .then((value) => print("Commande ajoutée avec l'ID: ${value.id}"))
           .catchError(
-              // ignore: avoid_print
+  
               (error) => print("Erreur lors de l'ajout de la commande: $error"));
     }
 
 
-
-
-
-
   @override
   Widget build(BuildContext context){
-    //int index = 0;
-    return
+    return 
     buildCard(index ,Product(imagePath: widget.product.imagePath, name: widget.product.name, description: widget.product.description, price: widget.product.price));
   }
 
 
  // @override
   Widget buildCard(index, Product product){
-   // List<bool> isFavoritedList = List.generate(20, (index) => false);
-   return Scaffold(
-    backgroundColor: const Color(0xFF593070),
+    List<Color> colors = [Colors.red, Colors.blue, Colors.green, Colors.yellow, Colors.black];   
+    return Scaffold(
+    backgroundColor: Color(0xFF593070),
     body: Column(
       children: [
-        const SizedBox(height: 36),
+        SizedBox(height: 36),
        Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -222,15 +232,15 @@ void addOrderToFirestore(Order order) {
                     ),
                   );
                 },
-                style: IconButton.styleFrom(
+                //style: IconButton.styleFrom(
                     //backgroundColor: Colors.white,
-                    fixedSize: const Size(55, 55),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15))),
+                    //fixedSize: const Size(55, 55),
+                    // shape: RoundedRectangleBorder(
+                    //     borderRadius: BorderRadius.circular(15))
+                      //  ),
                 icon: const Icon(Icons.arrow_back),
                 color: Colors.white,
               ),
-             //IconButton(onPressed: (){}, icon: Icon(Icons.favorite_border_outlined,color: Colors.white,)),
               IconButton(
                 icon: Icon(
                 isFavoritedList[index] ? Icons.favorite : Icons.favorite_border,
@@ -261,10 +271,10 @@ void addOrderToFirestore(Order order) {
                     shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(15))),
           )
-          ],
+     ],
       ),
           Container(
-            height: MediaQuery.of(context).size.height * .25,
+            height: MediaQuery.of(context).size.height * .20,
             padding: const EdgeInsets.only(bottom: 30),
             width: double.infinity,
             child: Image.asset(product.imagePath),
@@ -281,7 +291,7 @@ void addOrderToFirestore(Order order) {
               ),
             ),
           ),
-          const Padding(padding: EdgeInsets.only(top: 15, left: 40, right: 40)),
+          Padding(padding: const EdgeInsets.only(top: 15, left: 40, right: 40)),
           Expanded(
             child: Stack(
               children: [
@@ -300,34 +310,48 @@ void addOrderToFirestore(Order order) {
                       children: [
                         Text(
                           product.name,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 25,
                             fontWeight: FontWeight.bold,
                             color: Color(0xFF593070),
                           ),
                         ),
-                       // Row(
-                         // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          //children: [
-                            // Text(
-                            //   'Dans notre nouvelle collection',
-                            //   style: TextStyle(
-                            //     fontSize: 20,
-                            //     fontWeight: FontWeight.w600,
-                            //     color: Color(0xFF593070),
-                            //   ),
-                            // ),
-                          //],
-                        //),
-                        Text(
-                          '${product.price}',
-                          style: const TextStyle(
-                            fontSize: 18,
+                         Text(
+                          '${product.price}F',
+                          style: TextStyle(
+                            fontSize: 20,
                             fontWeight: FontWeight.w600,
                           ),
                         ),
                         const SizedBox(height: 10),
-                        const Text(
+                       Row(
+                         mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            ElevatedButton(
+                               onPressed: (){
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => search(),
+                    ),
+                  );
+                },
+                               child: Row(
+                                children: const [
+                                Text('fournisseur',
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w600,
+                                    color: Color(0xFF593070),
+                                    ),
+                                  ),
+                                  Icon(Icons.storage_rounded),
+                                  ]
+                            ),
+                       )],
+                        ),
+                      
+                        Text(
                           'Description',
                           style: TextStyle(
                             fontSize: 20,
@@ -337,7 +361,7 @@ void addOrderToFirestore(Order order) {
                         const SizedBox(height: 10),
                         Text(
                           product.description,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w200,
                           ),
@@ -348,7 +372,8 @@ void addOrderToFirestore(Order order) {
                           child: ListView.builder(
                             scrollDirection: Axis.horizontal,
                             itemCount: 5,
-                            itemBuilder: (context, index) => Container(
+                            itemBuilder: (context, Color) => 
+                            Container(
                               margin: const EdgeInsets.only(right: 6),
                               width: 200,
                               //height: 10,
@@ -357,17 +382,24 @@ void addOrderToFirestore(Order order) {
                                 borderRadius: BorderRadius.circular(40),
                               ),
 
-                              child: const Row(
+                              child: ElevatedButton(onPressed: (){
+                                          setState(() {
+                                          addToCart(product);
+                                                      },);},
+                              child: Row(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
-                                    Image(
+                                    //ColorFiltered(colorFilter: ColorFilter.mode(Colors.black, BlendMode.colorBurn)),
+                                     Image(
                                         height: 70,
-                                        image: AssetImage('sac.jpg')),
+                                        image: AssetImage(product.imagePath), color: colors[Color]),
                                     Text(
-                                      "Sac à main",
+                                      product.name, 
+                                      //textAlign: TextAlign.center,
                                       style: TextStyle(fontSize: 15),
                                     )
-                                  ]),
+                                  ]
+                                  ),)
                             ),
                           ),
                         ),
@@ -383,25 +415,26 @@ void addOrderToFirestore(Order order) {
       ),
       
 bottomNavigationBar: Container(
-        height: 100,
-        color: const Color(0xFF593070),
-        //padding: EdgeInsets.symmetric(horizontal: 20),
-        // alignment: Alignment.center,
-        // width: double.infinity,
-        // height: MediaQuery.of(context).size.height,
-        // decoration: BoxDecoration(color: Color(0xFF593070),
-        // borderRadius: BorderRadius.only(
-        //   topLeft: Radius.circular(10),
-        //   topRight: Radius.circular(10)
-        // )
-        // ),
+        height: 140,
+        // width: 200,
+        // color: Color(0xFF593070),
+        padding: EdgeInsets.symmetric(horizontal: 20),
+        alignment: Alignment.center,
+        width: double.infinity,
+        //height: MediaQuery.of(context).size.height,
+        decoration: BoxDecoration(color: Color(0xFF593070),
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(10),
+          topRight: Radius.circular(10)
+        )
+        ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Container(
-              width: 200,
+              width: 150,
               height: 50,
-              padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(30),
                 border: Border.all(color: Colors.white),
@@ -410,38 +443,44 @@ bottomNavigationBar: Container(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
+
                   IconButton(onPressed: () {
-                          if (quantity > 1) {
-                         quantity -= 1;
-                          setState(() {});
+                          if (cartItemCount > 1) {
+                          setState(() {
+                            //cartItemCount --;
+                            removeToCart(product);
+                          });
                          }
                         },
-                         icon: const Icon(Icons.remove)
+                         icon: Icon(Icons.remove_circle, color: Color(0xFF593070), size: 25,)
                          ),
                   const SizedBox(width: 4,),
                   Text(
-                    "$quantity",
-                    style: const TextStyle(
-                      fontSize: 15,
+                    "${cartItemCount}",
+                    style: TextStyle(
+                      fontSize: 20,
                     ),
                   ),
                   const SizedBox(width: 4,),
                   IconButton(onPressed: () {
-                     quantity += 1;
-                    setState(() {});
+                    setState(() {
+                      //cartItemCount ++ ;
+                      addToCart(product);
+                    });
                   },
-                  icon: const Icon(Icons.add)
+                  icon: Icon(Icons.add_circle, color: Color(0xFF593070), size: 25,)
                  )
                 ],
               ),
             ),
 
-           const SizedBox(width: 5),
+           const SizedBox(width: 15),
 
             Expanded(
-              child: ElevatedButton(onPressed: () => addToCart(product),
+              child: ElevatedButton(
+                onPressed: () => navigateToCartPage(),
                 child: Container(
-                  width: 200,
+                  width: 150,
                   height: 50,
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
@@ -477,10 +516,8 @@ bottomNavigationBar: Container(
     favorites
         .add(favoriteProduct.toMap())
         .then((value) =>
-            // ignore: avoid_print
             print("Produit ajouté aux favoris avec l'ID: ${value.id}"))
         .catchError(
-            // ignore: avoid_print
             (error) => print("Erreur lors de l'ajout aux favoris: $error"));
   }
 }
@@ -492,7 +529,10 @@ class Order {
   final String nom;
   final String email;
   final String nomProduit;
+  final String nomFournisseur;
   final int nbrProduit;
+  final String description;
+  //final String couleur;
   final double prix;
   final double totalAmount;
   final DateTime timestamp;
@@ -504,7 +544,10 @@ class Order {
     required this.nom,
     required this.email,
     required this.nomProduit,
+    required this.description,
+    required this.nomFournisseur,
     required this.nbrProduit,
+    //required this.couleur,
     required this.prix,
     required this.totalAmount,
     required this.timestamp,
@@ -518,8 +561,11 @@ class Order {
       'prenom': prenom,
       'nom': nom,
       'email': email,
+      'description': description,
       'nomProduit': nomProduit,
+      'nomFournisseur': nomFournisseur,
       'nbrProduit': nbrProduit,
+      //'couelur': couleur,
       'prix': prix,
       'totalAmount': totalAmount,
       'timestamp': timestamp,

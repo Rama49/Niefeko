@@ -1,8 +1,16 @@
 {
     "cSpell.words": [
+<<<<<<< HEAD
+        "aimez",
+        "allproducts",
+        "Categorie",
+        "texte",
+        "Trouvez"
+=======
         "allproducts",
         "fluttertoast",
         "niefeko"
+>>>>>>> master
     ],
     "cSpell.enableFiletypes": [
         "bat"

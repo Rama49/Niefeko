@@ -96,8 +96,11 @@ class _searchState extends State<search> {
               ),
               height: MediaQuery.of(context).size.height / 3,
               child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  SizedBox(height: 20),
+                  
+                  const SizedBox(height: 60),
                   const Text(
                     "Bienvenue à Niefeko",
                     style: TextStyle(
@@ -106,20 +109,31 @@ class _searchState extends State<search> {
                       fontSize: 25,
                     ),
                   ),
+                  // ignore: sized_box_for_whitespace
+                  // Container(
+                  //   height: 40,
+                  //   padding: const EdgeInsets.only(right: 25, left: 25),
+                  //   child: TextField(
+                  //     // onChanged: searchProduct,
+                  //     decoration: InputDecoration(
+                  //       contentPadding: const EdgeInsets.symmetric(
+                  //         vertical: 3,
+                  //       ),
+                  //       filled: true,
+                  //       fillColor: Colors.white,
+                  //       border: OutlineInputBorder(
+                  //         borderRadius: BorderRadius.circular(8),
+                  //         borderSide: BorderSide.none,
+                  //       ),
+                  //       hintText: "Rechercher un produit",
+                  //       prefixIcon: const Icon(Icons.search),
+                  //       prefixIconColor: Colors.black,
+                  //     ),
+                  //   ),
+                  // ),
                   const SizedBox(height: 20),
-                  Container(
-                    height: 40,
-                    padding: EdgeInsets.only(right: 25, left: 25),
-                    child: TextField(
-                      // onChanged: searchProduct,
-                      decoration: InputDecoration(
-                        contentPadding: const EdgeInsets.symmetric(
-                          vertical: 3,
-                        ),
-                      ),
-                    ),
-                  ),
                   const SizedBox(height: 20),
+
                   // Carousel
                   CarouselSlider(
                     items: [
@@ -189,12 +203,14 @@ class _searchState extends State<search> {
                 ],
               ),
             ),
+
             // Votre Container contenant la catégorie
             const Column(
               children: [
                 SizedBox(height: 120),
                 Categorie(),
                 deal(),
+                product(),
               ],
             ),
           ],
@@ -202,47 +218,82 @@ class _searchState extends State<search> {
       ),
       bottomNavigationBar: BottomAppBar(
         color: const Color(0xFF612C7D),
+        height: 90,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            IconButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  // ignore: prefer_const_constructors
-                  MaterialPageRoute(builder: (context) => search()),
-                );
-              },
-              icon: const Icon(Icons.home, color: Colors.white),
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                IconButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const search()),
+                    );
+                  },
+                  icon: const Icon(Icons.home, color: Colors.white),
+                ),
+                const Text(
+                  "Accueil",
+                  style: TextStyle(color: Colors.white, fontSize: 10),
+                ),
+              ],
             ),
-            IconButton(
-              onPressed: () {
-                // Naviguer vers la page d'historique des commandes
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => PanierPage()),
-                );
-              },
-              icon: const Icon(Icons.shopping_cart, color: Colors.white),
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                IconButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => PanierPage()),
+                    );
+                  },
+                  icon: const Icon(Icons.shopping_cart, color: Colors.white),
+                ),
+                const Text(
+                  "Panier",
+                  style: TextStyle(color: Colors.white),
+                ),
+              ],
             ),
-            IconButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const pagefavoris()),
-                );
-                // Ajoutez ici votre logique de navigation pour l'écran des favoris
-              },
-              icon: const Icon(Icons.favorite, color: Colors.white),
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                IconButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const pagefavoris()),
+                    );
+                  },
+                  icon: const Icon(Icons.favorite, color: Colors.white),
+                ),
+                const Text(
+                  "Favoris",
+                  style: TextStyle(color: Colors.white),
+                ),
+              ],
             ),
-            IconButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => SettingsPage()),
-                );
-              },
-              icon: const Icon(Icons.settings, color: Colors.white),
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                IconButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => SettingsPage()),
+                    );
+                  },
+                  icon: const Icon(Icons.settings, color: Colors.white),
+                ),
+                const Text(
+                  "Paramètres",
+                  style: TextStyle(color: Colors.white),
+                ),
+              ],
             ),
           ],
         ),
