@@ -25,6 +25,10 @@ class carteReu extends StatelessWidget {
         decoration: BoxDecoration(
       color: Color.fromARGB(255, 85, 58, 112),
       borderRadius: BorderRadius.circular(borderRadius),
+          border: Border.all(
+            color: Colors.grey, // Couleur de la bordure
+            width: 2.0, // Épaisseur de la bordure
+          ),
         ),
       
         child: Row(
@@ -46,7 +50,7 @@ class carteReu extends StatelessWidget {
                       style: TextStyle(
                           fontWeight: FontWeight.w700,
                           color: Colors.white,
-                          fontSize: 30)),
+                          fontSize: 25)),
                   width: 100,
                 ),
                 Container(
