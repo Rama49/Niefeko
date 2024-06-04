@@ -34,7 +34,7 @@ class carteReu extends StatelessWidget {
           color: const Color.fromARGB(255, 85, 58, 112),
           borderRadius: BorderRadius.circular(borderRadius),
           border: Border.all(
-            color: Colors.white, // Couleur de la bordure
+            color: Colors.grey, // Couleur de la bordure
             width: 2.0, // Épaisseur de la bordure
           ),
         ),
@@ -54,7 +54,7 @@ class carteReu extends StatelessWidget {
                   child: Text(paragraph,
                       style: const TextStyle(
                           fontWeight: FontWeight.w700,
-                          color: Colors.grey,
+                          color: Colors.white,
                           fontSize: 25)),
                   width: 100,
                 ),
