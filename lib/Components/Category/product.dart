@@ -6,6 +6,8 @@ class Product {
   final double price;
   int quantity;
 
+  Object? get category => null;
+
   // Product( {
   //   //  required this.id,
   //     required this.imagePath,

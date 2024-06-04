@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+// ignore: camel_case_types
 class input extends StatelessWidget {
   const input({super.key});
 
@@ -7,7 +8,7 @@ class input extends StatelessWidget {
   Widget build(BuildContext context) {
     return   Container(
                     height: 40,
-                    padding: EdgeInsets.only(right: 25, left: 25),
+                    padding: const EdgeInsets.only(right: 25, left: 25),
                     child: TextField(
                       // onChanged: searchProduct,
                       decoration: InputDecoration(
