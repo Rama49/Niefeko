@@ -6,6 +6,7 @@ import 'package:flutter/widgets.dart';
 // ignore: unused_import
 import 'package:niefeko/Components/Deals/deal.dart';
 import 'package:niefeko/Pages/Boutique/boutique.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 // ignore: camel_case_types
 class product extends StatelessWidget {
@@ -28,13 +29,7 @@ class product extends StatelessWidget {
           color: const Color.fromARGB(255, 215, 194, 233),
           child: InkWell(
             onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => boutique(),
-                  
-                ),
-              );
+              _launchURL();
             },
             child: Stack(
               children: [
@@ -112,11 +107,8 @@ class product extends StatelessWidget {
         child: Card(
           color: const Color.fromARGB(255, 215, 194, 233),
           child: InkWell(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => boutique()),
-              );
+             onTap: () {
+              _launchURL();
             },
             child: Stack(
               children: [
@@ -195,10 +187,7 @@ class product extends StatelessWidget {
           color: const Color.fromARGB(255, 215, 194, 233),
           child: InkWell(
             onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => boutique()),
-              );
+              _launchURL();
             },
             child: Stack(
               children: [
@@ -276,11 +265,8 @@ class product extends StatelessWidget {
         child: Card(
           color: const Color.fromARGB(255, 215, 194, 233),
           child: InkWell(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => boutique()),
-              );
+             onTap: () {
+              _launchURL();
             },
             child: Stack(
               children: [
@@ -358,11 +344,8 @@ class product extends StatelessWidget {
         child: Card(
           color: const Color.fromARGB(255, 215, 194, 233),
           child: InkWell(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => boutique()),
-              );
+             onTap: () {
+              _launchURL();
             },
             child: Stack(
               children: [
@@ -440,11 +423,8 @@ class product extends StatelessWidget {
         child: Card(
           color: const Color.fromARGB(255, 215, 194, 233),
           child: InkWell(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => boutique()),
-              );
+             onTap: () {
+              _launchURL();
             },
             child: Stack(
               children: [
@@ -522,11 +502,8 @@ class product extends StatelessWidget {
         child: Card(
           color: const Color.fromARGB(255, 215, 194, 233),
           child: InkWell(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => boutique()),
-              );
+             onTap: () {
+              _launchURL();
             },
             child: Stack(
               children: [
@@ -605,10 +582,7 @@ class product extends StatelessWidget {
           color: const Color.fromARGB(255, 215, 194, 233),
           child: InkWell(
             onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => boutique()),
-              );
+              _launchURL();
             },
             child: Stack(
               children: [
@@ -686,11 +660,8 @@ class product extends StatelessWidget {
         child: Card(
           color: const Color.fromARGB(255, 215, 194, 233),
           child: InkWell(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => boutique()),
-              );
+             onTap: () {
+              _launchURL();
             },
             child: Stack(
               children: [
@@ -768,11 +739,8 @@ class product extends StatelessWidget {
         child: Card(
           color: const Color.fromARGB(255, 215, 194, 233),
           child: InkWell(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => boutique()),
-              );
+             onTap: () {
+              _launchURL();
             },
             child: Stack(
               children: [
@@ -851,10 +819,7 @@ class product extends StatelessWidget {
           color: const Color.fromARGB(255, 215, 194, 233),
           child: InkWell(
             onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => boutique()),
-              );
+              _launchURL();
             },
             child: Stack(
               children: [
@@ -928,5 +893,18 @@ class product extends StatelessWidget {
       ),
       const SizedBox(height: 20),
     ]);
+  }
+
+  void _launchURL() async {
+    const url = 'https://bitazimut.com/niefeko/';
+    try {
+      if (await canLaunch(url)) {
+        await launch(url);
+      } else {
+        throw 'Could not launch $url';
+      }
+    } catch (e) {
+      print('Error launching URL: $e');
+    }
   }
 }
