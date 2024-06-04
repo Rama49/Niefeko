@@ -29,7 +29,7 @@ class product extends StatelessWidget {
           color: const Color.fromARGB(255, 215, 194, 233),
           child: InkWell(
             onTap: () {
-              _launchURL();
+              
             },
             child: Stack(
               children: [
