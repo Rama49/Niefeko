@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 import 'package:niefeko/Pages/Recherche/recherche.dart';
 import 'package:niefeko/Pages/Inscription/inscription.dart';
 import 'package:niefeko/Pages/resetpassword/ResetPassword.dart';
@@ -20,24 +21,53 @@ class _connexionState extends State<connexion> {
 
   Future<void> _signInWithEmailAndPassword() async {
     try {
-      UserCredential userCredential =
-          await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: _emailController.text,
-        password: _passwordController.text,
+      final url = Uri.parse('https://niefeko.com/wp-json/jwt-auth/v1/token');
+      final response = await http.post(
+        url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, String>{
+          'username': _emailController.text,
+          'password': _passwordController.text,
+        }),
       );
-      Fluttertoast.showToast(
-        msg: "Connexion réussie avec succès",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.TOP,
-        timeInSecForIosWeb: 3,
-        backgroundColor: Colors.white,
-        textColor: const Color.fromARGB(255, 68, 8, 219),
-        fontSize: 16.0,
-      );
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => search()),
-      );
+
+      if (response.statusCode == 200) {
+        // Si la connexion réussit
+        // Analyse de la réponse JSON pour obtenir le jeton d'accès
+        final responseData = jsonDecode(response.body);
+        final token = responseData['token'];
+
+        // Enregistrement du token dans les préférences ou utilisation ultérieure
+
+        print('Connexion réussie avec succès.'); // Affichage du message sur le terminal
+
+        Fluttertoast.showToast(
+          msg: "Connexion réussie avec succès",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.TOP,
+          timeInSecForIosWeb: 3,
+          backgroundColor: Colors.white,
+          textColor: const Color.fromARGB(255, 68, 8, 219),
+          fontSize: 16.0,
+        );
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => search()),
+        );
+      } else {
+        // Si la connexion échoue
+        Fluttertoast.showToast(
+          msg: "Erreur de connexion: ${response.body}",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.TOP,
+          timeInSecForIosWeb: 3,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0,
+        );
+      }
     } catch (e) {
       print("Erreur de connexion: $e");
       Fluttertoast.showToast(
@@ -161,7 +191,7 @@ class _connexionState extends State<connexion> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => Resetpassword()),
+                                builder: (context) => Resetpassword()),
                             );
                           },
                           style: TextButton.styleFrom(
@@ -239,7 +269,7 @@ class _connexionState extends State<connexion> {
                             child: const Text(
                               "S'inscrire",
                               style:
-                                  TextStyle(fontSize: 16, color: Colors.white),
+                                TextStyle(fontSize: 16, color: Colors.white),
                             ),
                           ),
                         ),
