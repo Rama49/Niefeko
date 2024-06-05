@@ -44,10 +44,12 @@ class carteReu extends StatelessWidget {
               children: [
                 Container(
                   child: Text(title,
-                      style: const TextStyle(
-                          fontWeight: FontWeight.w700,
-                          color: Colors.white,
-                          fontSize: 30)),
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w700,
+                      color: Colors.white,
+                      fontSize: 30
+                    )
+                  ),
                 ),
                 Container(
                   padding: const EdgeInsets.only(left: 5),
