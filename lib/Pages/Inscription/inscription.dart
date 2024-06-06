@@ -1,12 +1,8 @@
-// Pages/Inscription/inscription.dart
 import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 import 'package:niefeko/Pages/Connexion/connexion.dart';
-// ignore: unused_import
-import 'package:niefeko/Reutilisable/buttonreu.dart';
 
 class Inscription extends StatefulWidget {
   const Inscription({super.key});
@@ -22,21 +18,10 @@ class InscriptionState extends State<Inscription> {
   final TextEditingController _prenomController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController =
-      TextEditingController();
+  final TextEditingController _confirmPasswordController = TextEditingController();
 
   bool _passwordObscureText = true;
   bool _confirmPasswordObscureText = true;
-
-  @override
-  void initState() {
-    super.initState();
-    Firebase.initializeApp().then((_) {
-      print("Firebase initialisé avec succès !");
-    }).catchError((error) {
-      print("Erreur lors de l'initialisation de Firebase : $error");
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -123,12 +108,11 @@ class InscriptionState extends State<Inscription> {
                       },
                       onPressed: () {
                         setState(() {
-                          _confirmPasswordObscureText =
-                              !_confirmPasswordObscureText;
+                          _confirmPasswordObscureText = !_confirmPasswordObscureText;
                         });
                       },
                     ),
-                    SizedBox(height: 15),
+                    const SizedBox(height: 15),
                     Padding(
                       padding: const EdgeInsets.only(top: 20, bottom: 5),
                       child: SizedBox(
@@ -138,8 +122,7 @@ class InscriptionState extends State<Inscription> {
                             await registerUser();
                           },
                           style: ElevatedButton.styleFrom(
-                            backgroundColor:
-                                const Color.fromARGB(255, 255, 255, 255),
+                            backgroundColor: const Color.fromARGB(255, 255, 255, 255),
                             padding: const EdgeInsets.symmetric(vertical: 15),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(7),
@@ -148,13 +131,12 @@ class InscriptionState extends State<Inscription> {
                           ),
                           child: const Text(
                             "S'inscrire",
-                            style: TextStyle(
-                                fontSize: 16, color: Color(0xFF593070)),
+                            style: TextStyle(fontSize: 16, color: Color(0xFF593070)),
                           ),
                         ),
                       ),
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     ElevatedButton(
                       onPressed: () {
                         Navigator.push(
@@ -166,13 +148,10 @@ class InscriptionState extends State<Inscription> {
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFF612C7D),
-                        padding: const EdgeInsets.symmetric(
-                            vertical:
-                                15), // Ajuster le padding vertical si nécessaire
+                        padding: const EdgeInsets.symmetric(vertical: 15),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(7),
-                          side: const BorderSide(
-                              color: Colors.white), // Bordure blanche
+                          side: const BorderSide(color: Colors.white),
                         ),
                       ),
                       child: const SizedBox(
@@ -185,7 +164,7 @@ class InscriptionState extends State<Inscription> {
                         ),
                       ),
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                   ]),
                 ),
               ],
@@ -215,7 +194,7 @@ class InscriptionState extends State<Inscription> {
           enabledBorder: const OutlineInputBorder(
             borderSide: BorderSide(color: Colors.white),
           ),
-          contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
+          contentPadding: const EdgeInsets.symmetric(vertical: 0, horizontal: 10),
           focusedBorder: const OutlineInputBorder(
             borderSide: BorderSide(color: Colors.white),
           ),
@@ -246,7 +225,7 @@ class InscriptionState extends State<Inscription> {
           enabledBorder: const OutlineInputBorder(
             borderSide: BorderSide(color: Colors.white),
           ),
-          contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
+          contentPadding: const EdgeInsets.symmetric(vertical: 0, horizontal: 10),
           focusedBorder: const OutlineInputBorder(
             borderSide: BorderSide(color: Colors.white),
           ),
@@ -265,49 +244,66 @@ class InscriptionState extends State<Inscription> {
   Future<void> registerUser() async {
     if (_formKey.currentState!.validate()) {
       try {
-        UserCredential userCredential =
-            await FirebaseAuth.instance.createUserWithEmailAndPassword(
-          email: _emailController.text,
-          password: _passwordController.text,
+        final url = Uri.parse('https://niefeko.com/wp-json/jwt-auth/v1/register');
+        final response = await http.post(
+          url,
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+          },
+          body: jsonEncode(<String, String>{
+            'email': _emailController.text,
+            'lastname': _prenomController.text,
+            'firstname': _nomController.text,
+            'password': _passwordController.text,
+          }),
         );
 
-        String userID = userCredential.user!.uid;
+        if (response.statusCode == 200) {
+          print("Inscription réussie avec succès");
 
-        await FirebaseFirestore.instance
-            .collection('Inscription')
-            .doc(userID)
-            .set({
-          'nom': _nomController.text,
-          'prenom': _prenomController.text,
-          'email': _emailController.text,
-          'password': _passwordController.text,
-          'confirmPassword': _confirmPasswordController.text,
-        });
+          Fluttertoast.showToast(
+            msg: "Inscription réussie avec succès",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.TOP,
+            timeInSecForIosWeb: 3,
+            backgroundColor: Colors.white,
+            textColor: Colors.purple,
+            fontSize: 16.0,
+          );
 
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const connexion()),
+          );
+
+          _nomController.clear();
+          _prenomController.clear();
+          _emailController.clear();
+          _passwordController.clear();
+          _confirmPasswordController.clear();
+        } else {
+          print('Erreur lors de l\'inscription : ${response.statusCode}');
+          Fluttertoast.showToast(
+            msg: "Erreur lors de l'inscription",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.TOP,
+            timeInSecForIosWeb: 3,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16.0,
+          );
+        }
+      } catch (e) {
+        print('Erreur lors de l\'inscription : $e');
         Fluttertoast.showToast(
-          msg: "Inscription réussie avec succès",
+          msg: "Erreur lors de l'inscription",
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.TOP,
           timeInSecForIosWeb: 3,
-          backgroundColor: Colors.white,
-          textColor: Colors.purple,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
           fontSize: 16.0,
         );
-
-        Navigator.push(
-          // ignore: use_build_context_synchronously
-          context,
-          MaterialPageRoute(builder: (context) => const connexion()),
-        );
-
-        _nomController.clear();
-        _prenomController.clear();
-        _emailController.clear();
-        _passwordController.clear();
-        _confirmPasswordController.clear();
-      } catch (e) {
-        // ignore: avoid_print
-        print('Erreur lors de l\'Inscription : $e');
       }
     }
   }
