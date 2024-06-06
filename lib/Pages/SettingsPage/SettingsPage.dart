@@ -11,9 +11,15 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-  String? firstName = '';
-  String? lastName = '';
-  String? email = '';
+  String? firstName;
+  String? lastName;
+  String? email;
+
+  @override
+  void initState() {
+    super.initState();
+    _getUserData();
+  }
 
   Future<void> _getUserData() async {
     try {
@@ -26,9 +32,7 @@ class _SettingsPageState extends State<SettingsPage> {
 
       final response = await http.get(
         Uri.parse('https://niefeko.com/wp-json/api/user'),
-        headers: {
-          'Authorization': 'Bearer $token',
-        },
+        headers: {'Authorization': 'Bearer $token'},
       );
 
       if (response.statusCode == 200) {
@@ -43,19 +47,55 @@ class _SettingsPageState extends State<SettingsPage> {
       }
     } catch (error) {
       print('Error fetching user data: $error');
+      // Gérer l'erreur ici
+    }
+  }
+
+  Future<void> _logout() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      prefs.remove('token');
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const connexion()),
+      );
+      print('Déconnexion réussie');
+    } catch (error) {
+      print('Error during logout: $error');
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Failed to load user data'),
+        const SnackBar(
+          content: Text('Erreur lors de la déconnexion'),
           duration: Duration(seconds: 2),
         ),
       );
     }
   }
 
-  @override
-  void initState() {
-    super.initState();
-    _getUserData();
+  Future<void> _confirmLogout() async {
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Confirmation'),
+          content: const Text('Êtes-vous sûr de vouloir vous déconnecter ?'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Annuler'),
+            ),
+            TextButton(
+              onPressed: () {
+                _logout();
+                Navigator.of(context).pop();
+              },
+              child: const Text('Déconnexion'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -64,10 +104,7 @@ class _SettingsPageState extends State<SettingsPage> {
       backgroundColor: const Color(0xFF612C7D),
       appBar: AppBar(
         backgroundColor: const Color(0xFF612C7D),
-        title: const Text(
-          'Paramètres',
-          style: TextStyle(color: Colors.white),
-        ),
+        title: const Text('Paramètres', style: TextStyle(color: Colors.white)),
         iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: Column(
@@ -87,18 +124,21 @@ class _SettingsPageState extends State<SettingsPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // Informations sur l'utilisateur (prénom, nom, email)
-                Text(
-                  'Prénom: $firstName',
-                  style: const TextStyle(color: Colors.white, fontSize: 20),
-                ),
-                Text(
-                  'Nom: $lastName',
-                  style: const TextStyle(color: Colors.white, fontSize: 20),
-                ),
-                Text(
-                  'Email: $email',
-                  style: const TextStyle(color: Colors.white, fontSize: 20),
-                ),
+                if (firstName != null)
+                  Text(
+                    'Prénom: $firstName',
+                    style: const TextStyle(color: Colors.white, fontSize: 20),
+                  ),
+                if (lastName != null)
+                  Text(
+                    'Nom: $lastName',
+                    style: const TextStyle(color: Colors.white, fontSize: 20),
+                  ),
+                if (email != null)
+                  Text(
+                    'Email: $email',
+                    style: const TextStyle(color: Colors.white, fontSize: 20),
+                  ),
               ],
             ),
           ),
@@ -130,25 +170,7 @@ class _SettingsPageState extends State<SettingsPage> {
               ),
               child: ListTile(
                 title: const Text('Déconnexion', style: TextStyle(color: Colors.white)),
-                onTap: () async {
-                  try {
-                    final prefs = await SharedPreferences.getInstance();
-                    prefs.remove('token');
-
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(builder: (context) => const connexion()),
-                    );
-                  } catch (error) {
-                    print('Error during logout: $error');
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Erreur lors de la déconnexion'),
-                        duration: Duration(seconds: 2),
-                      ),
-                    );
-                  }
-                },
+                onTap: _confirmLogout,
               ),
             ),
           ),
