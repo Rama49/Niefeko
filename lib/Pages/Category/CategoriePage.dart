@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:niefeko/Components/Category/MesProduits.dart';
+import 'package:niefeko/Pages/Category/categorieTest.dart';
 import 'package:niefeko/Pages/Category/detail.dart';
 import 'package:niefeko/Pages/Recherche/recherche.dart';
 import 'package:niefeko/Pages/CartPanier/CartPanier.dart';
@@ -43,6 +44,12 @@ class _CategoryPageState extends State<CategoryPage> {
   int cartItemCount = 0;
   List<Product> cartItems = [];
 
+  void decrementSearchIcon() {
+    setState(() {
+      cartItemCount--;
+    });
+  }
+
   @override
   void initState() {
     super.initState();
@@ -50,79 +57,75 @@ class _CategoryPageState extends State<CategoryPage> {
   }
 
   void searchProduct(String query) {
-  setState(() {
-    filteredImagePaths = []; // Réinitialiser les chemins d'image filtrés
-
-    // Filtrer les produits en fonction de la requête de recherche
-    List<Product> filteredProducts = MesProduits.allProducts
-        .where((product) =>
-            product.name.toLowerCase().contains(query.toLowerCase()))
-        .toList();
-
-    // Mettre à jour les produits affichés dans les cartes
-    cartItems.clear();
-    cartItems.addAll(filteredProducts);
-
-    // Mettre à jour les chemins d'image filtrés pour les cartes
-    filteredImagePaths.addAll(cartItems.map((product) => product.imagePath));
-  });
-}
-
-
-
-  void addToCart(Product product) async {
-  String imageUrl = product.imagePath;
-  String productName = product.name;
-  double price = product.price;
-  DateTime timestamp = DateTime.now(); // Timestamp de la commande
-
-  // Vérifier si le produit existe déjà dans le panier
-  int existingIndex =
-      cartItems.indexWhere((product) => product.name == productName);
-  if (existingIndex != -1) {
-    // Le produit existe déjà dans le panier, augmentez simplement la quantité
     setState(() {
-      cartItems[existingIndex].quantity++; // Augmenter la quantité du produit
-      cartItemCount++; // Augmenter le nombre total d'articles dans le panier
-    });
-  } else {
-    // Le produit n'existe pas encore dans le panier, l'ajouter
-    setState(() {
-      cartItems.add(Product(
-        imagePath: imageUrl,
-        name: productName,
-        description: 'description',
-        price: price,
-        quantity: 1, // Initialiser la quantité à 1
-      ));
-      cartItemCount++; // Augmenter le nombre total d'articles dans le panier
+      filteredImagePaths = []; // Réinitialiser les chemins d'image filtrés
+
+      // Filtrer les produits en fonction de la requête de recherche
+      List<Product> filteredProducts = MesProduits.allProducts
+          .where((product) =>
+              product.name.toLowerCase().contains(query.toLowerCase()))
+          .toList();
+
+      // Mettre à jour les produits affichés dans les cartes
+      cartItems.clear();
+      cartItems.addAll(filteredProducts);
+
+      // Mettre à jour les chemins d'image filtrés pour les cartes
+      filteredImagePaths.addAll(cartItems.map((product) => product.imagePath));
     });
   }
 
-  // Show an alert dialog after adding the product to the cart
-  showAddToCartDialog(context, productName);
-}
+  void addToCart(Product product) async {
+    String imageUrl = product.imagePath;
+    String productName = product.name;
+    double price = product.price;
+    DateTime timestamp = DateTime.now(); // Timestamp de la commande
 
-void showAddToCartDialog(BuildContext context, String productName) {
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return AlertDialog(
-        title: Text('Produit ajouté'),
-        content: Text('$productName a été ajouté à votre panier.'),
-        actions: [
-          TextButton(
-            child: Text('OK'),
-            onPressed: () {
-              Navigator.of(context).pop(); // Close the dialog
-            },
-          ),
-        ],
-      );
-    },
-  );
-}
+    // Vérifier si le produit existe déjà dans le panier
+    int existingIndex =
+        cartItems.indexWhere((product) => product.name == productName);
+    if (existingIndex != -1) {
+      // Le produit existe déjà dans le panier, augmentez simplement la quantité
+      setState(() {
+        cartItems[existingIndex].quantity++; // Augmenter la quantité du produit
+        cartItemCount++; // Augmenter le nombre total d'articles dans le panier
+      });
+    } else {
+      // Le produit n'existe pas encore dans le panier, l'ajouter
+      setState(() {
+        cartItems.add(Product(
+          imagePath: imageUrl,
+          name: productName,
+          description: 'description',
+          price: price,
+          quantity: 1, // Initialiser la quantité à 1
+        ));
+        cartItemCount++; // Augmenter le nombre total d'articles dans le panier
+      });
+    }
 
+    // Show an alert dialog after adding the product to the cart
+    showAddToCartDialog(context, productName);
+  }
+
+  void showAddToCartDialog(BuildContext context, String productName) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          // title: Text('Produit ajouté'),
+          // actions: [
+          //   TextButton(
+          //     child: Text('OK'),
+          //     onPressed: () {
+          //       Navigator.of(context).pop(); // Close the dialog
+          //     },
+          //   ),
+          // ],
+        );
+      },
+    );
+  }
 
   void removeFromCart(int index) {
     setState(() {
@@ -153,16 +156,14 @@ void showAddToCartDialog(BuildContext context, String productName) {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => CartPanier(
-          cartItems: cartItems,
-          removeFromCart: removeFromCart,
-          idClient: userID,
-          prenom: prenom,
-          nom: nom, // Passer la valeur de nom
-          email: email,
-          validateCart: validateCart,
-        ),
-      ),
+          builder: (context) => CartPanier(
+              cartItems: cartItems,
+              removeFromCart: removeFromCart,
+              idClient: userID,
+              prenom: prenom,
+              nom: nom,
+              email: email,
+              validateCart: validateCart)),
     );
   }
 
@@ -223,7 +224,7 @@ void showAddToCartDialog(BuildContext context, String productName) {
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('Panier validé'),
-        content: const Text('Votre panier a été validé avec succès.'),
+        // content: const Text('Votre panier a été validé avec succès.'),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
@@ -280,9 +281,7 @@ void showAddToCartDialog(BuildContext context, String productName) {
                   ),
                 ),
               ),
-              
             ],
-            
           ),
         ],
       ),
@@ -307,29 +306,29 @@ void showAddToCartDialog(BuildContext context, String productName) {
                 ),
               ),
             ),
-            
+
             SizedBox(height: 10),
 
             // SingleChildScrollView(
-              // scrollDirection: Axis.horizontal,
-              // child: Container(
-              //   padding: EdgeInsets.all(8.0),
-              //   child: Row(
-              //     children: List.generate(
-              //       filteredImagePaths.length,
-              //       (index) => Padding(
-              //         padding: const EdgeInsets.all(8.0),
-              //         child: CircleAvatar(
-              //           radius: 50,
-                    //     backgroundImage:
-                    //         AssetImage(filteredImagePaths[index]),
-                    //   ),
-                    // ),
+            // scrollDirection: Axis.horizontal,
+            // child: Container(
+            //   padding: EdgeInsets.all(8.0),
+            //   child: Row(
+            //     children: List.generate(
+            //       filteredImagePaths.length,
+            //       (index) => Padding(
+            //         padding: const EdgeInsets.all(8.0),
+            //         child: CircleAvatar(
+            //           radius: 50,
+            //     backgroundImage:
+            //         AssetImage(filteredImagePaths[index]),
+            //   ),
+            // ),
             //       ),
             //     ),
             //   ),
             // ),
-          
+
             SizedBox(height: 10),
 
             filteredImagePaths.isEmpty
@@ -356,25 +355,23 @@ void showAddToCartDialog(BuildContext context, String productName) {
                     itemBuilder: (context, index) {
                       final allproducts = MesProduits.allProducts[index];
                       return GestureDetector(
-                        onTap: () => //{
-
-                            Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => Detail(
-                              product: allproducts,
+                        onTap: () => {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => Detail(
+                                product: allproducts,
+                              ),
                             ),
                           ),
-                        ),
-                        //},
-                        child: buildCard(index,
-                          Product(
-                            imagePath: allproducts.imagePath,
-                            name: allproducts.name,
-                            description: allproducts.description,
-                            price: allproducts.price
-                          )
-                        ),
+                        },
+                        child: buildCard(
+                            index,
+                            Product(
+                                imagePath: allproducts.imagePath,
+                                name: allproducts.name,
+                                description: allproducts.description,
+                                price: allproducts.price)),
                       );
                     }),
           ],
@@ -388,14 +385,14 @@ void showAddToCartDialog(BuildContext context, String productName) {
       child: Stack(
         children: [
           Column(
-            crossAxisAlignment: CrossAxisAlignment.center, 
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Image.asset(
                 product.imagePath,
                 width: 50,
                 height: 50,
                 fit: BoxFit.cover,
-              ), 
+              ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Column(
@@ -416,29 +413,32 @@ void showAddToCartDialog(BuildContext context, String productName) {
                 ),
               ),
               SizedBox(height: 8),
-              Center(
-                child: ElevatedButton(
-                  onPressed: () => addToCart(product),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        'Ajouter au',
-                        style: TextStyle(fontSize: 16, color: Colors.white),
-                      ),
-                      Icon(Icons.shopping_cart, color: Colors.white),
-                    ],
-                  ),
-                  style: ElevatedButton.styleFrom(
-                    padding:
-                      EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                    backgroundColor: Color(0xFF612C7D),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(7),
-                    ),
-                  ),
-                ),
+              Test(
+                addToCart: addToCart,
+                onDecrementSearchIcon: decrementSearchIcon,
               ),
+              // Center(
+              //   child: ElevatedButton(
+              //     onPressed: () => addToCart(product),
+              //     child: Row(
+              //       mainAxisSize: MainAxisSize.min,
+              //       children: [
+              //         Text(
+              //           'Ajouter au',
+              //           style: TextStyle(fontSize: 16, color: Colors.white),
+              //         ),
+              //         Icon(Icons.shopping_cart, color: Colors.white),
+              //       ],
+              //     ),
+              //     style: ElevatedButton.styleFrom(
+              //       padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              //       backgroundColor: Color(0xFF612C7D),
+              //       shape: RoundedRectangleBorder(
+              //         borderRadius: BorderRadius.circular(7),
+              //       ),
+              //     ),
+              //   ),
+              // ),
             ],
           ),
           Align(
@@ -524,7 +524,6 @@ void showAddToCartDialog(BuildContext context, String productName) {
       },
     );
   }
-
 }
 
 class Order {
