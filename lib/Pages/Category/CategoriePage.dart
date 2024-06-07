@@ -44,30 +44,30 @@ class _CategoryPageState extends State<CategoryPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Produits', style: TextStyle(color: Colors.white)),
-        centerTitle: true, // Centrer le titre au milieu de l'AppBar
         backgroundColor: const Color(0xFF612C7D), // Couleur personnalisée pour l'AppBar
         iconTheme: IconThemeData(color: Colors.white), // Couleur blanche pour l'icône de retour
         actions: [
+          IconButton(
+            icon: Icon(Icons.arrow_back), // Ajouter l'icône de retour
+            onPressed: () {
+              // Ajoutez ici la logique pour revenir en arrière
+            },
+          ),
           Expanded(
-            child: Row(
-              children: [
-                IconButton(
-                  icon: Icon(Icons.search), // Ajouter l'icône de recherche
-                  onPressed: () {
-                    // Ajoutez ici la logique pour la recherche
-                  },
+            child: Container(
+              margin: EdgeInsets.symmetric(horizontal: 8),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(7),
+                color: Colors.white,
+              ),
+              child: TextField(
+                decoration: InputDecoration(
+                  hintText: 'Rechercher...',
+                  prefixIcon: Icon(Icons.search, color: Colors.grey),
+                  border: InputBorder.none,
                 ),
-                Expanded(
-                  child: TextField(
-                    decoration: InputDecoration(
-                      hintText: 'Rechercher...',
-                      hintStyle: TextStyle(color: Colors.white),
-                    ),
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
-              ],
+                style: TextStyle(color: Colors.black),
+              ),
             ),
           ),
           IconButton(
