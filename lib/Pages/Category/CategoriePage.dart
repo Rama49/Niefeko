@@ -13,6 +13,8 @@ class CategoryPage extends StatefulWidget {
 class _CategoryPageState extends State<CategoryPage> {
   late Map<int, Product> products;
   List<Product> filteredProducts = [];
+  bool isLoading = true;
+  int cartItemCount = 0;
 
   @override
   void initState() {
@@ -37,6 +39,7 @@ class _CategoryPageState extends State<CategoryPage> {
           products[json['id']] = product;
         }
         filteredProducts = products.values.toList();
+        isLoading = false;
       });
     } else {
       throw Exception('Failed to load products');
@@ -50,6 +53,12 @@ class _CategoryPageState extends State<CategoryPage> {
         .toList();
     setState(() {
       filteredProducts = results;
+    });
+  }
+
+  void addToCart() {
+    setState(() {
+      cartItemCount++;
     });
   }
 
@@ -68,11 +77,32 @@ class _CategoryPageState extends State<CategoryPage> {
           },
         ),
         actions: [
-          IconButton(
-            icon: Icon(Icons.shopping_cart, color: Colors.white),
-            onPressed: () {
-              // Ajoutez ici la logique pour naviguer vers le panier
-            },
+          Stack(
+            children: [
+              IconButton(
+                icon: Icon(Icons.shopping_cart, color: Colors.white),
+                onPressed: () {
+                  // Ajoutez ici la logique pour naviguer vers le panier
+                },
+              ),
+              Positioned(
+                right: 0,
+                child: Container(
+                  padding: EdgeInsets.all(4),
+                  decoration: BoxDecoration(
+                    color: Colors.red,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Text(
+                    cartItemCount.toString(),
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
         ],
         bottom: PreferredSize(
@@ -95,91 +125,94 @@ class _CategoryPageState extends State<CategoryPage> {
           ),
         ),
       ),
-      body: filteredProducts.isEmpty
+      body: isLoading
           ? Center(
-              child: Text(
-                'Produit non trouvé',
-                style: TextStyle(color: Colors.red, fontSize: 18),
-              ),
+              child: CircularProgressIndicator(),
             )
-          : ListView.builder(
-              itemCount: filteredProducts.length,
-              itemBuilder: (context, index) {
-                final product = filteredProducts[index];
-                return Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Card(
-                    elevation: 5,
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Center(
-                            child: Image.network(
-                              product.imagePath,
-                              height: 130,
-                              width: 130,
-                            ),
-                          ),
-                          SizedBox(height: 8),
-                          Center(
-                            child: Text(
-                              product.name,
-                              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                          SizedBox(height: 8),
-                          Html(
-                            data: product.description,
-                          ),
-                          SizedBox(height: 8),
-                          Center(
-                            child: Text(
-                              '${product.price} FCFA',
-                              style: TextStyle(fontSize: 18, color: Colors.green, fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                          SizedBox(height: 8),
-                          Padding(
-                            padding: const EdgeInsets.only(bottom: 5),
-                            child: SizedBox(
-                              width: double.infinity,
-                              child: ElevatedButton(
-                                onPressed: () {
-                                  // Ajouter la logique pour ajouter au panier
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: const Color(0xFF612C7D),
-                                  padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 10),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(5),
-                                    side: const BorderSide(color: Color(0xFF612C7D)),
-                                  ),
-                                ),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    const Text(
-                                      "Ajouter au panier",
-                                      style: TextStyle(
-                                        fontSize: 16.0,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                    Icon(Icons.shopping_cart, color: Colors.white), // Icône de panier
-                                  ],
+          : filteredProducts.isEmpty
+              ? Center(
+                  child: Text(
+                    'Produit non trouvé',
+                    style: TextStyle(color: Colors.red, fontSize: 18),
+                  ),
+                )
+              : ListView.builder(
+                  itemCount: filteredProducts.length,
+                  itemBuilder: (context, index) {
+                    final product = filteredProducts[index];
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Card(
+                        elevation: 5,
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Center(
+                                child: Image.network(
+                                  product.imagePath,
+                                  height: 130,
+                                  width: 130,
                                 ),
                               ),
-                            ),
+                              SizedBox(height: 8),
+                              Center(
+                                child: Text(
+                                  product.name,
+                                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                              SizedBox(height: 8),
+                              Html(
+                                data: product.description,
+                              ),
+                              SizedBox(height: 8),
+                              Center(
+                                child: Text(
+                                  '${product.price} FCFA',
+                                  style: TextStyle(fontSize: 18, color: Colors.green, fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                              SizedBox(height: 8),
+                              Padding(
+                                padding: const EdgeInsets.only(bottom: 5),
+                                child: SizedBox(
+                                  width: double.infinity,
+                                  child: ElevatedButton(
+                                    onPressed: () {
+                                      addToCart();
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                      padding: EdgeInsets.symmetric(horizontal: 40, vertical: 10),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(5),
+                                      ),
+                                      backgroundColor: const Color(0xFF612C7D), // Couleur de fond du bouton
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        const Text(
+                                          "Ajouter au panier",
+                                          style: TextStyle(
+                                            fontSize: 16.0,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                        Icon(Icons.shopping_cart, color: Colors.white),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
-                        ],
+                        ),
                       ),
-                    ),
-                  ),
-                );
-              },
-            ),
+                    );
+                  },
+                ),
     );
   }
 }

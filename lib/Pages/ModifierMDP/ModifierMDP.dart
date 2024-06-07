@@ -1,24 +1,72 @@
-import 'dart:convert';
-import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+// ignore: duplicate_ignore
+// ignore_for_file: file_names, duplicate_ignore
 
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+// ignore: use_key_in_widget_constructors
 class ModifierMDP extends StatefulWidget {
   @override
+  // ignore: library_private_types_in_public_api
   _ModifierMDPState createState() => _ModifierMDPState();
 }
 
 class _ModifierMDPState extends State<ModifierMDP> {
   final _formKey = GlobalKey<FormState>();
-  String _newPassword = '';
-  String _confirmNewPassword = '';
+  String _password = '';
+  late String _newPassword;
+  // ignore: unused_field
+  late String _confirmNewPassword;
+  String?
+      _oldPassword; // Ajout de la variable pour stocker l'ancien mot de passe
+
+  bool _passwordVisible = false;
   bool _newPasswordVisible = false;
   bool _confirmNewPasswordVisible = false;
+
+  @override
+  void initState() {
+    super.initState();
+    // Chargez le mot de passe actuel lors de l'initialisation de l'état
+    _loadCurrentPassword();
+  }
+
+  Future<void> _loadCurrentPassword() async {
+    try {
+      // Récupérer l'utilisateur actuel
+      User? user = FirebaseAuth.instance.currentUser;
+      // Vérifier si l'utilisateur est connecté
+      if (user != null) {
+        // Récupérer les données de l'utilisateur depuis Firestore
+        DocumentSnapshot userData = await FirebaseFirestore.instance
+            .collection('Inscription')
+            .doc(user.uid)
+            .get();
+        if (userData.exists) {
+          String? currentPassword = userData['password'];
+          setState(() {
+            _password = currentPassword ?? '';
+            _oldPassword = currentPassword; // Stockez l'ancien mot de passe
+          });
+        }
+      }
+    } catch (error) {
+      // ignore: avoid_print
+      print('Erreur lors du chargement du mot de passe actuel: $error');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Modifier le mot de passe'),
+        backgroundColor: const Color(0xFF612C7D),
+        title: const Text(
+          'Modifier le mot de passe',
+          style: TextStyle(color: Colors.white),
+        ),
+        iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: Center(
         child: Padding(
@@ -28,76 +76,59 @@ class _ModifierMDPState extends State<ModifierMDP> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                TextFormField(
-                  obscureText: !_newPasswordVisible,
-                  decoration: InputDecoration(
-                    labelText: 'Nouveau mot de passe',
-                    suffixIcon: IconButton(
-                      icon: Icon(
-                        _newPasswordVisible
-                            ? Icons.visibility
-                            : Icons.visibility_off,
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          _newPasswordVisible = !_newPasswordVisible;
-                        });
-                      },
-                    ),
-                  ),
-                  onChanged: (value) {
+                _buildPasswordTextField(
+                  labelText: 'Mot de passe actuel',
+                  initialValue: _password,
+                  onChanged: (value) => _password = value,
+                  isVisible: _passwordVisible,
+                  onVisibilityToggle: () {
                     setState(() {
-                      _newPassword = value;
+                      _passwordVisible = !_passwordVisible;
                     });
                   },
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Veuillez entrer votre nouveau mot de passe';
-                    }
-                    return null;
-                  },
                 ),
-                SizedBox(height: 20),
-                TextFormField(
-                  obscureText: !_confirmNewPasswordVisible,
-                  decoration: InputDecoration(
-                    labelText: 'Confirmer le nouveau mot de passe',
-                    suffixIcon: IconButton(
-                      icon: Icon(
-                        _confirmNewPasswordVisible
-                            ? Icons.visibility
-                            : Icons.visibility_off,
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          _confirmNewPasswordVisible =
-                              !_confirmNewPasswordVisible;
-                        });
-                      },
-                    ),
-                  ),
-                  onChanged: (value) {
+                _buildPasswordTextField(
+                  labelText: 'Nouveau mot de passe',
+                  initialValue: '',
+                  onChanged: (value) => _newPassword = value,
+                  isVisible: _newPasswordVisible,
+                  onVisibilityToggle: () {
                     setState(() {
-                      _confirmNewPassword = value;
+                      _newPasswordVisible = !_newPasswordVisible;
                     });
                   },
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Veuillez confirmer votre nouveau mot de passe';
-                    } else if (value != _newPassword) {
-                      return 'Les mots de passe ne correspondent pas';
-                    }
-                    return null;
+                ),
+                _buildPasswordTextField(
+                  labelText: 'Confirmer le nouveau mot de passe',
+                  initialValue: '',
+                  onChanged: (value) => _confirmNewPassword = value,
+                  isVisible: _confirmNewPasswordVisible,
+                  onVisibilityToggle: () {
+                    setState(() {
+                      _confirmNewPasswordVisible = !_confirmNewPasswordVisible;
+                    });
                   },
                 ),
-                SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
-                      _changePassword();
+                      _changePassword(context);
                     }
                   },
-                  child: Text('Modifier le mot de passe'),
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 10), backgroundColor: const Color(0xFF612C7D),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(7),
+                    ),
+                  ),
+                  child: const Text(
+                    'Modifier',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                    ),
+                  ),
                 ),
               ],
             ),
@@ -107,47 +138,79 @@ class _ModifierMDPState extends State<ModifierMDP> {
     );
   }
 
-  void _changePassword() async {
+  Widget _buildPasswordTextField({
+    required String labelText,
+    required String initialValue,
+    required ValueChanged<String> onChanged,
+    required bool isVisible,
+    required VoidCallback onVisibilityToggle,
+  }) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 10.0),
+      child: SizedBox(
+        width: double.infinity,
+        child: TextFormField(
+          decoration: InputDecoration(
+            labelText: labelText,
+            suffixIcon: IconButton(
+              icon: Icon(isVisible ? Icons.visibility : Icons.visibility_off),
+              onPressed: onVisibilityToggle,
+            ),
+            border: const OutlineInputBorder(),
+          ),
+          initialValue: initialValue,
+          obscureText: !isVisible,
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Veuillez entrer $labelText';
+            }
+            return null;
+          },
+          onChanged: onChanged,
+        ),
+      ),
+    );
+  }
+
+  void _changePassword(BuildContext context) async {
     try {
-      // Remplacez 'username' par le nom d'utilisateur de l'utilisateur actuel
-      String username = 'username';
-      // Remplacez 'new password' par le nouveau mot de passe
-      String newPassword = 'new password';
+      User? user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        AuthCredential credential = EmailAuthProvider.credential(
+            email: user.email!, password: _password);
+        await user.reauthenticateWithCredential(credential);
 
-      final response = await http.post(
-        Uri.parse('https://niefeko.com/wp-json/custom-/v1/password/new'),
-        headers: {'Content-Type': 'application/json'},
-        body: jsonEncode({
-          'username': username,
-          'password': newPassword,
-        }),
-      );
+        await FirebaseFirestore.instance
+            .collection('Inscription')
+            .doc(user.uid)
+            .update({
+          'oldMotDePasse':
+              _oldPassword, // Utilisez l'ancien mot de passe stocké
+          'newMotDePasse': _newPassword,
+          'motDePasse':
+              _newPassword, // Mettez à jour le mot de passe avec le nouveau mot de passe
+        });
 
-      if (response.statusCode == 200) {
-        // Mot de passe modifié avec succès
+        await user.updatePassword(_newPassword);
+
+        // ignore: use_build_context_synchronously
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
+          const SnackBar(
             content: Text('Mot de passe modifié avec succès'),
             duration: Duration(seconds: 2),
           ),
         );
-        // Rediriger vers une autre page ou faire une autre action après la modification du mot de passe
-      } else {
-        // Erreur lors de la modification du mot de passe
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Erreur lors de la modification du mot de passe'),
-            duration: Duration(seconds: 2),
-          ),
-        );
+
+        // ignore: use_build_context_synchronously
+        Navigator.pop(context);
       }
     } catch (error) {
-      // Gestion des erreurs
-      print('Erreur lors de la modification du mot de passe: $error');
+      // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Erreur lors de la modification du mot de passe'),
-          duration: Duration(seconds: 2),
+          content:
+              Text('Erreur lors de la modification du mot de passe: $error'),
+          duration: const Duration(seconds: 2),
         ),
       );
     }
