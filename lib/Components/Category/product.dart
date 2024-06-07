@@ -1,34 +1,24 @@
-//import 'package:flutter/material.dart';
-
 class Product {
-  //final int id; 
-  final String imagePath, name, description;
+  final String imagePath;
+  final String name;
+  final String description;
   final double price;
   int quantity;
 
-  Object? get category => null;
+  Product({
+    required this.imagePath,
+    required this.name,
+    required this.description,
+    required this.price,
+    this.quantity = 1,
+  });
 
-  // Product( {
-  //   //  required this.id,
-  //     required this.imagePath,
-  //     required this.name,
-  //     required this.description,
-  //     required this.price,
-  //     });
-       Map<String, dynamic> toMap() {
+  Map<String, dynamic> toMap() {
     return {
       'imagePath': imagePath,
       'name': name,
-      'desciption': description,
+      'description': description,
       'price': price,
     };
-    }
-
-  Product({
-      required this.imagePath,
-      required this.name,
-      required this.price,
-      required this.description,
-      this.quantity = 1,
-    });
+  }
 }
