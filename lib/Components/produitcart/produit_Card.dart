@@ -28,9 +28,9 @@ class product extends StatelessWidget {
         child: Card(
           color: const Color.fromARGB(255, 215, 194, 233),
           child: InkWell(
-            onTap: () {
-              _launchURL();
-            },
+            // onTap: () {
+            //   _launchURL();
+            // },
             child: Stack(
               children: [
                 Column(
@@ -107,9 +107,9 @@ class product extends StatelessWidget {
         child: Card(
           color: const Color.fromARGB(255, 215, 194, 233),
           child: InkWell(
-             onTap: () {
-              _launchURL();
-            },
+            //  onTap: () {
+            //   _launchURL();
+            // },
             child: Stack(
               children: [
                 Column(
@@ -186,9 +186,9 @@ class product extends StatelessWidget {
         child: Card(
           color: const Color.fromARGB(255, 215, 194, 233),
           child: InkWell(
-            onTap: () {
-              _launchURL();
-            },
+            // onTap: () {
+            //   _launchURL();
+            // },
             child: Stack(
               children: [
                 Column(
@@ -265,9 +265,9 @@ class product extends StatelessWidget {
         child: Card(
           color: const Color.fromARGB(255, 215, 194, 233),
           child: InkWell(
-             onTap: () {
-              _launchURL();
-            },
+            //  onTap: () {
+            //   _launchURL();
+            // },
             child: Stack(
               children: [
                 Column(
@@ -344,9 +344,9 @@ class product extends StatelessWidget {
         child: Card(
           color: const Color.fromARGB(255, 215, 194, 233),
           child: InkWell(
-             onTap: () {
-              _launchURL();
-            },
+            //  onTap: () {
+            //   _launchURL();
+            // },
             child: Stack(
               children: [
                 Column(
@@ -423,9 +423,9 @@ class product extends StatelessWidget {
         child: Card(
           color: const Color.fromARGB(255, 215, 194, 233),
           child: InkWell(
-             onTap: () {
-              _launchURL();
-            },
+            //  onTap: () {
+            //   _launchURL();
+            // },
             child: Stack(
               children: [
                 Column(
@@ -502,9 +502,9 @@ class product extends StatelessWidget {
         child: Card(
           color: const Color.fromARGB(255, 215, 194, 233),
           child: InkWell(
-             onTap: () {
-              _launchURL();
-            },
+            //  onTap: () {
+            //   _launchURL();
+            // },
             child: Stack(
               children: [
                 Column(
@@ -581,9 +581,9 @@ class product extends StatelessWidget {
         child: Card(
           color: const Color.fromARGB(255, 215, 194, 233),
           child: InkWell(
-            onTap: () {
-              _launchURL();
-            },
+            // onTap: () {
+            //   _launchURL();
+            // },
             child: Stack(
               children: [
                 Column(
@@ -660,9 +660,9 @@ class product extends StatelessWidget {
         child: Card(
           color: const Color.fromARGB(255, 215, 194, 233),
           child: InkWell(
-             onTap: () {
-              _launchURL();
-            },
+            //  onTap: () {
+            //   _launchURL();
+            // },
             child: Stack(
               children: [
                 Column(
@@ -739,9 +739,9 @@ class product extends StatelessWidget {
         child: Card(
           color: const Color.fromARGB(255, 215, 194, 233),
           child: InkWell(
-             onTap: () {
-              _launchURL();
-            },
+            //  onTap: () {
+            //   _launchURL();
+            // },
             child: Stack(
               children: [
                 Column(
@@ -818,9 +818,9 @@ class product extends StatelessWidget {
         child: Card(
           color: const Color.fromARGB(255, 215, 194, 233),
           child: InkWell(
-            onTap: () {
-              _launchURL();
-            },
+            // onTap: () {
+            //   _launchURL();
+            // },
             child: Stack(
               children: [
                 Column(
