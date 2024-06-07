@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:flutter_html/flutter_html.dart'; // Importez flutter_html
+import 'package:flutter_html/flutter_html.dart';
 import 'package:niefeko/Components/Category/product.dart';
+import 'package:niefeko/Pages/Recherche/recherche.dart';
 
 class CategoryPage extends StatefulWidget {
   @override
@@ -11,11 +12,12 @@ class CategoryPage extends StatefulWidget {
 
 class _CategoryPageState extends State<CategoryPage> {
   late Map<int, Product> products;
+  List<Product> filteredProducts = [];
 
   @override
   void initState() {
     super.initState();
-    products = {}; // Initialiser la map des produits
+    products = {};
     fetchData();
   }
 
@@ -32,70 +34,149 @@ class _CategoryPageState extends State<CategoryPage> {
             description: json['description'] ?? '',
             price: double.parse(json['price'] ?? '0.0'),
           );
-          products[json['id']] = product; // Utiliser l'ID comme clé
+          products[json['id']] = product;
         }
+        filteredProducts = products.values.toList();
       });
     } else {
       throw Exception('Failed to load products');
     }
   }
 
+  void searchProduct(String query) {
+    final results = products.values
+        .where((product) =>
+            product.name.toLowerCase().contains(query.toLowerCase()))
+        .toList();
+    setState(() {
+      filteredProducts = results;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color(0xFF612C7D), // Couleur personnalisée pour l'AppBar
-        iconTheme: IconThemeData(color: Colors.white), // Couleur blanche pour l'icône de retour
+        backgroundColor: const Color(0xFF612C7D),
+        iconTheme: IconThemeData(color: Colors.white),
+        title: const Text('Produits', style: TextStyle(color: Colors.white)),
+        centerTitle: true,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
         actions: [
           IconButton(
-            icon: Icon(Icons.arrow_back), // Ajouter l'icône de retour
-            onPressed: () {
-              // Ajoutez ici la logique pour revenir en arrière
-            },
-          ),
-          Expanded(
-            child: Container(
-              margin: EdgeInsets.symmetric(horizontal: 8),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(7),
-                color: Colors.white,
-              ),
-              child: TextField(
-                decoration: InputDecoration(
-                  hintText: 'Rechercher...',
-                  prefixIcon: Icon(Icons.search, color: Colors.grey),
-                  border: InputBorder.none,
-                ),
-                style: TextStyle(color: Colors.black),
-              ),
-            ),
-          ),
-          IconButton(
-            icon: Icon(Icons.shopping_cart), // Ajouter l'icône du panier
+            icon: Icon(Icons.shopping_cart, color: Colors.white),
             onPressed: () {
               // Ajoutez ici la logique pour naviguer vers le panier
             },
           ),
         ],
+        bottom: PreferredSize(
+          preferredSize: Size.fromHeight(48.0),
+          child: Container(
+            margin: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(7),
+              color: Colors.white,
+            ),
+            child: TextField(
+              decoration: InputDecoration(
+                hintText: 'Rechercher...',
+                prefixIcon: Icon(Icons.search, color: Colors.grey),
+                border: InputBorder.none,
+              ),
+              style: TextStyle(color: Colors.black),
+              onChanged: searchProduct,
+            ),
+          ),
+        ),
       ),
-      body: products.isEmpty // Vérifier si la liste des produits est vide
-          ? Center(child: CircularProgressIndicator())
+      body: filteredProducts.isEmpty
+          ? Center(
+              child: Text(
+                'Produit non trouvé',
+                style: TextStyle(color: Colors.red, fontSize: 18),
+              ),
+            )
           : ListView.builder(
-              itemCount: products.length,
+              itemCount: filteredProducts.length,
               itemBuilder: (context, index) {
-                final product = products.values.toList()[index];
-                return ListTile(
-                  title: Text(product.name),
-                  subtitle: Html(
-                    data: product.description,
+                final product = filteredProducts[index];
+                return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Card(
+                    elevation: 5,
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Center(
+                            child: Image.network(
+                              product.imagePath,
+                              height: 100,
+                              width: 150,
+                            ),
+                          ),
+                          SizedBox(height: 8),
+                          Center(
+                            child: Text(
+                              product.name,
+                              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                          SizedBox(height: 8),
+                          Html(
+                            data: product.description,
+                          ),
+                          SizedBox(height: 8),
+                          Center(
+                            child: Text(
+                              '${product.price} FCFA',
+                              style: TextStyle(fontSize: 18, color: Colors.green, fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                          SizedBox(height: 8),
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 5),
+                            child: SizedBox(
+                              width: double.infinity,
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  // Ajouter la logique pour ajouter au panier
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: const Color(0xFF612C7D),
+                                  padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 10),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(5),
+                                    side: const BorderSide(color: Color(0xFF612C7D)),
+                                  ),
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    const Text(
+                                      "Ajouter au panier",
+                                      style: TextStyle(
+                                        fontSize: 16.0,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                    Icon(Icons.shopping_cart, color: Colors.white), // Icône de panier
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
-                  leading: CircleAvatar(
-                    backgroundImage: NetworkImage(product.imagePath),
-                  ),
-                  trailing: Text('${product.price} €'),
-                  onTap: () {
-                    // TODO: Add navigation to product details
-                  },
                 );
               },
             ),
