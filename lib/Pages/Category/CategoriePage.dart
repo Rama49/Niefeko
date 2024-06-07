@@ -118,8 +118,8 @@ class _CategoryPageState extends State<CategoryPage> {
                           Center(
                             child: Image.network(
                               product.imagePath,
-                              height: 100,
-                              width: 150,
+                              height: 130,
+                              width: 130,
                             ),
                           ),
                           SizedBox(height: 8),
