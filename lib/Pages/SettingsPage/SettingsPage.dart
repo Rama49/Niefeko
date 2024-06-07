@@ -103,16 +103,14 @@ class _SettingsPageState extends State<SettingsPage> {
             ),
           ),
           Padding(
-            padding:
-                const EdgeInsets.only(top: 20, bottom: 20, right: 16, left: 16),
+            padding: const EdgeInsets.only(top: 20, bottom: 20, right: 16, left: 16),
             child: Container(
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(7),
               ),
               child: ListTile(
-                title: const Text('Modifier le mot de passe',
-                    style: TextStyle(color: Color(0xFF612C7D))),
+                title: const Text('Modifier le mot de passe', style: TextStyle(color: Color(0xFF612C7D))),
                 onTap: () {
                   Navigator.push(
                     context,
@@ -123,8 +121,7 @@ class _SettingsPageState extends State<SettingsPage> {
             ),
           ),
           Padding(
-            padding:
-                const EdgeInsets.only(top: 20, bottom: 20, right: 16, left: 16),
+            padding: const EdgeInsets.only(top: 20, bottom: 20, right: 16, left: 16),
             child: Container(
               decoration: BoxDecoration(
                 color: const Color(0xFF612C7D),
@@ -132,17 +129,15 @@ class _SettingsPageState extends State<SettingsPage> {
                 border: Border.all(color: Colors.white),
               ),
               child: ListTile(
-                title: const Text('Déconnexion',
-                    style: TextStyle(color: Colors.white)),
+                title: const Text('Déconnexion', style: TextStyle(color: Colors.white)),
                 onTap: () async {
                   try {
                     final prefs = await SharedPreferences.getInstance();
                     prefs.remove('token');
-
+                        content: Text('Déconnexion reussie');
                     Navigator.pushReplacement(
                       context,
-                      MaterialPageRoute(
-                          builder: (context) => const connexion()),
+                      MaterialPageRoute(builder: (context) => const connexion()),
                     );
                   } catch (error) {
                     print('Error during logout: $error');
