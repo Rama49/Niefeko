@@ -17,15 +17,15 @@ class _SettingsPageState extends State<SettingsPage> {
 
   Future<void> _getUserData() async {
     try {
-      final prefs = await SharedPreferences.getInstance();
-      final token = prefs.getString('token');
+      final pref = await SharedPreferences.getInstance();
+      final token = pref.getString('token');
 
       if (token == null) {
         throw Exception('Token not found');
       }
 
       final response = await http.get(
-        Uri.parse('https://niefeko.com/wp-json/api/user'),
+        Uri.parse('https://niefeko.com/wp-json/custom-routes/v1/customer'),
         headers: {
           'Authorization': 'Bearer $token',
         },
@@ -34,12 +34,11 @@ class _SettingsPageState extends State<SettingsPage> {
       if (response.statusCode == 200) {
         final userData = json.decode(response.body);
         setState(() {
-          firstName = userData['firstname'];
-          lastName = userData['lastname'];
-          email = userData['email'];
+          firstName = userData['first_name'];
+          lastName = userData['last_name'];
         });
       } else {
-        throw Exception('Failed to load user data');
+        throw Exception('desole mais aucun donnee n est trouve ici');
       }
     } catch (error) {
       print('Error fetching user data: $error');
@@ -103,14 +102,16 @@ class _SettingsPageState extends State<SettingsPage> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 20, bottom: 20, right: 16, left: 16),
+            padding:
+                const EdgeInsets.only(top: 20, bottom: 20, right: 16, left: 16),
             child: Container(
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(7),
               ),
               child: ListTile(
-                title: const Text('Modifier le mot de passe', style: TextStyle(color: Color(0xFF612C7D))),
+                title: const Text('Modifier le mot de passe',
+                    style: TextStyle(color: Color(0xFF612C7D))),
                 onTap: () {
                   Navigator.push(
                     context,
@@ -121,7 +122,8 @@ class _SettingsPageState extends State<SettingsPage> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 20, bottom: 20, right: 16, left: 16),
+            padding:
+                const EdgeInsets.only(top: 20, bottom: 20, right: 16, left: 16),
             child: Container(
               decoration: BoxDecoration(
                 color: const Color(0xFF612C7D),
@@ -129,15 +131,17 @@ class _SettingsPageState extends State<SettingsPage> {
                 border: Border.all(color: Colors.white),
               ),
               child: ListTile(
-                title: const Text('Déconnexion', style: TextStyle(color: Colors.white)),
+                title: const Text('Déconnexion',
+                    style: TextStyle(color: Colors.white)),
                 onTap: () async {
                   try {
                     final prefs = await SharedPreferences.getInstance();
                     prefs.remove('token');
-                        content: Text('Déconnexion reussie');
+
                     Navigator.pushReplacement(
                       context,
-                      MaterialPageRoute(builder: (context) => const connexion()),
+                      MaterialPageRoute(
+                          builder: (context) => const connexion()),
                     );
                   } catch (error) {
                     print('Error during logout: $error');
