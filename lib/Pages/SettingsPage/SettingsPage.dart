@@ -17,12 +17,14 @@ class _SettingsPageState extends State<SettingsPage> {
 
   Future<void> _getUserData() async {
     try {
-      final pref = await SharedPreferences.getInstance();
-      final token = pref.getString('token');
+      final prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString('token');
 
       if (token == null) {
         throw Exception('Token not found');
       }
+
+      print('Token retrieved: $token'); // Debug print
 
       final response = await http.get(
         Uri.parse('https://niefeko.com/wp-json/custom-routes/v1/customer'),
@@ -34,11 +36,14 @@ class _SettingsPageState extends State<SettingsPage> {
       if (response.statusCode == 200) {
         final userData = json.decode(response.body);
         setState(() {
-          firstName = userData['first_name'];
-          lastName = userData['last_name'];
+          firstName = userData['user_firstname'];
+          lastName = userData['user_lastname'];
+          email = userData['user_email'];
         });
       } else {
-        throw Exception('desole mais aucun donnee n est trouve ici');
+        print(
+            'Failed to load user data, status code: ${response.statusCode}'); // Debug print
+        throw Exception('Desole mais aucun donnee n est trouve ici');
       }
     } catch (error) {
       print('Error fetching user data: $error');
@@ -87,11 +92,11 @@ class _SettingsPageState extends State<SettingsPage> {
               children: [
                 // Informations sur l'utilisateur (prénom, nom, email)
                 Text(
-                  'Prénom: $firstName',
+                  'Prénom: $lastName',
                   style: const TextStyle(color: Colors.white, fontSize: 20),
                 ),
                 Text(
-                  'Nom: $lastName',
+                  'Nom: $firstName',
                   style: const TextStyle(color: Colors.white, fontSize: 20),
                 ),
                 Text(

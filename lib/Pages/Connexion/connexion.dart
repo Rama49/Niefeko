@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'package:niefeko/Pages/Recherche/recherche.dart';
 import 'package:niefeko/Pages/Inscription/inscription.dart';
 import 'package:niefeko/Pages/resetpassword/ResetPassword.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class connexion extends StatefulWidget {
   const connexion({Key? key}) : super(key: key);
@@ -18,6 +19,12 @@ class _connexionState extends State<connexion> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   bool _isObscure = true;
+
+  Future<void> saveToken(String token) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('token', token);
+    print('jeton saved: $token'); 
+  }
 
   Future<void> _signInWithEmailAndPassword() async {
     try {
@@ -34,30 +41,38 @@ class _connexionState extends State<connexion> {
       );
 
       if (response.statusCode == 200) {
-        // Si la connexion réussit
-        // Analyse de la réponse JSON pour obtenir le jeton d'accès
         final responseData = jsonDecode(response.body);
         final token = responseData['token'];
 
-        // Enregistrement du token dans les préférences ou utilisation ultérieure
+        if (token != null) {
+          await saveToken(token);
 
-        print('Connexion réussie avec succès.'); // Affichage du message sur le terminal
+          Fluttertoast.showToast(
+            msg: "Connexion réussie avec succès",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.TOP,
+            timeInSecForIosWeb: 3,
+            backgroundColor: Colors.white,
+            textColor: const Color.fromARGB(255, 68, 8, 219),
+            fontSize: 16.0,
+          );
 
-        Fluttertoast.showToast(
-          msg: "Connexion réussie avec succès",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.TOP,
-          timeInSecForIosWeb: 3,
-          backgroundColor: Colors.white,
-          textColor: const Color.fromARGB(255, 68, 8, 219),
-          fontSize: 16.0,
-        );
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => search()),
-        );
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => search()),
+          );
+        } else {
+          Fluttertoast.showToast(
+            msg: "Erreur de connexion: Token non trouvé",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.TOP,
+            timeInSecForIosWeb: 3,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16.0,
+          );
+        }
       } else {
-        // Si la connexion échoue
         Fluttertoast.showToast(
           msg: "Erreur de connexion: ${response.body}",
           toastLength: Toast.LENGTH_SHORT,
@@ -95,7 +110,6 @@ class _connexionState extends State<connexion> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                // SizedBox(height: 20),
                 Image.asset(
                   "assets/logoNiefeko.png",
                   width: 80,
@@ -244,7 +258,6 @@ class _connexionState extends State<connexion> {
                           ),
                         ),
                       ),
-                      // const SizedBox(height: 20),
                       Padding(
                         padding: const EdgeInsets.only(top: 2, bottom: 20),
                         child: SizedBox(
