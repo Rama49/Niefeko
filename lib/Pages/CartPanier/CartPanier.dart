@@ -35,7 +35,8 @@ class CartPanier extends StatelessWidget {
 
     try {
       final response = await http.post(
-        Uri.parse('https://niefeko.com/wp-json/custom-routes/v1/customer/orders'),
+        Uri.parse(
+            'https://niefeko.com/wp-json/custom-routes/v1/customer/orders'),
         headers: {'Content-Type': 'application/json'},
         body: json.encode(orderData),
       );
@@ -49,7 +50,8 @@ class CartPanier extends StatelessWidget {
         );
       } else {
         // En cas d'erreur de l'API
-        throw Exception('Erreur lors de la validation du panier : ${response.reasonPhrase}');
+        throw Exception(
+            'Erreur lors de la validation du panier : ${response.reasonPhrase}');
       }
     } catch (error) {
       // En cas d'erreur réseau ou autre
@@ -86,12 +88,12 @@ class CartPanier extends StatelessWidget {
                       return Card(
                         child: ListTile(
                           leading: Image.network(
-                            product.imagePath, // Utilisation de Image.network
+                            product.imagePath,
                             width: 50,
                             height: 50,
                             fit: BoxFit.cover,
                             errorBuilder: (context, error, stackTrace) {
-                              return Icon(Icons.error); // Affichage d'une icône d'erreur si l'image ne se charge pas
+                              return Icon(Icons.error);
                             },
                           ),
                           title: Text(product.name),
@@ -99,13 +101,14 @@ class CartPanier extends StatelessWidget {
                           trailing: IconButton(
                             icon: const Icon(Icons.delete),
                             onPressed: () {
-                              // Afficher la boîte de dialogue de confirmation
                               showDialog(
                                 context: context,
                                 builder: (BuildContext context) {
                                   return AlertDialog(
-                                    title: const Text('Confirmer la suppression'),
-                                    content: const Text('Voulez-vous vraiment supprimer ce produit ?'),
+                                    title:
+                                        const Text('Confirmer la suppression'),
+                                    content: const Text(
+                                        'Voulez-vous vraiment supprimer ce produit ?'),
                                     actions: <Widget>[
                                       TextButton(
                                         child: const Text('Annuler'),
@@ -118,9 +121,11 @@ class CartPanier extends StatelessWidget {
                                         onPressed: () {
                                           // Supprimer le produit du panier
                                           Navigator.of(context).pop();
-                                          ScaffoldMessenger.of(context).showSnackBar(
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(
                                             const SnackBar(
-                                              content: Text('Produit supprimé du panier'),
+                                              content: Text(
+                                                  'Produit supprimé du panier'),
                                             ),
                                           );
                                         },

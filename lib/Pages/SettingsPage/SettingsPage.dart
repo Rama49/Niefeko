@@ -24,7 +24,7 @@ class _SettingsPageState extends State<SettingsPage> {
         throw Exception('Token not found');
       }
 
-      print('Token retrieved: $token'); // Debug print
+      print('Token retrieved: $token');
 
       final response = await http.get(
         Uri.parse('https://niefeko.com/wp-json/custom-routes/v1/customer'),

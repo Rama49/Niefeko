@@ -4,7 +4,6 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_html/flutter_html.dart';
 import 'package:niefeko/Components/Category/product.dart';
 import 'package:niefeko/Pages/CartPanier/CartPanier.dart';
-import 'package:niefeko/Pages/Recherche/recherche.dart';
 
 class CategoryPage extends StatefulWidget {
   @override
@@ -14,7 +13,8 @@ class CategoryPage extends StatefulWidget {
 class _CategoryPageState extends State<CategoryPage> {
   late Map<int, Product> products;
   List<Product> filteredProducts = [];
-  List<Product> cartItems = []; // Liste pour stocker les produits ajoutés au panier
+  List<Product> cartItems =
+      []; // Liste pour stocker les produits ajoutés au panier
   bool isLoading = true;
   int cartItemCount = 0;
 
@@ -45,7 +45,7 @@ class _CategoryPageState extends State<CategoryPage> {
         isLoading = false;
       });
     } else {
-      throw Exception('Failed to load products');
+      throw Exception('Échec du chargement des produits');
     }
   }
 
@@ -61,8 +61,10 @@ class _CategoryPageState extends State<CategoryPage> {
 
   void addToCart(Product product) {
     setState(() {
-      cartItems.add(product); // Ajouter le produit à la liste des produits ajoutés au panier
-      cartItemCount = cartItems.length; // Mettre à jour le nombre d'articles dans le panier
+      cartItems.add(
+          product); // Ajouter le produit à la liste des produits ajoutés au panier
+      cartItemCount = cartItems
+          .length; // M>ettre à jour le nombre d'articles dans le panier
     });
   }
 
@@ -94,7 +96,8 @@ class _CategoryPageState extends State<CategoryPage> {
             children: [
               IconButton(
                 icon: Icon(Icons.shopping_cart, color: Colors.white),
-                onPressed: openCart, // Ouvrir le panier avec les produits ajoutés
+                onPressed:
+                    openCart, // Ouvrir le panier avec les produits ajoutés
               ),
               Positioned(
                 right: 0,
@@ -105,7 +108,8 @@ class _CategoryPageState extends State<CategoryPage> {
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Text(
-                    cartItemCount.toString(), // Afficher le nombre de produits dans le panier
+                    cartItemCount
+                        .toString(), // Afficher le nombre de produits dans le panier
                     style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
