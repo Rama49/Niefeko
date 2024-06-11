@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:niefeko/Pages/Recherche/recherche.dart';
 import 'package:niefeko/Pages/Inscription/inscription.dart';
 import 'package:niefeko/Pages/resetpassword/ResetPassword.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class connexion extends StatefulWidget {
   const connexion({Key? key}) : super(key: key);
@@ -19,12 +20,20 @@ class _connexionState extends State<connexion> {
   bool _isObscure = true;
 
   Future<void> _signInWithEmailAndPassword() async {
+     // Payload JSON contenant le nom d'utilisateur et le mot de passe
+  Map<String, String> payload = {
+    'username': _emailController.text,//'user_email',
+    'password': _passwordController.text,//'pwd',
+  };
     try {
-      UserCredential userCredential =
-          await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: _emailController.text,
-        password: _passwordController.text,
-      );
+     final response = await http.post(
+      Uri.parse('https://niefeko.com/wp-json/jwt-auth/v1/token'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(payload), // Convertit le payload en JSON
+    );
+     if (response.statusCode == 200) {
       Fluttertoast.showToast(
         msg: "Connexion réussie avec succès",
         toastLength: Toast.LENGTH_SHORT,
@@ -38,7 +47,25 @@ class _connexionState extends State<connexion> {
         context,
         MaterialPageRoute(builder: (context) => search()),
       );
-    } catch (e) {
+    } 
+    else {
+      // Gérer les erreurs de statut HTTP ici
+      showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+          title: Text('Erreur de connexion'),
+          content: Text('Nom d\'utilisateur ou mot de passe incorrect.'),
+          actions: [
+          TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: Text('OK'),
+          ),
+          ],
+          ),
+          );
+    }
+  }
+    catch (e) {
       print("Erreur de connexion: $e");
       Fluttertoast.showToast(
         msg: "Erreur de connexion: $e",

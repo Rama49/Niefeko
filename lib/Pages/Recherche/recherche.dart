@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:niefeko/Components/Categories/categorie.dart';
 import 'package:niefeko/Components/Deals/deal.dart';
+import 'package:niefeko/Components/produitcart/produitTest.dart';
 import 'package:niefeko/Components/produitcart/produit_Card.dart';
 import 'package:niefeko/Pages/Connexion/connexion.dart';
 import 'package:niefeko/Pages/Favoris/pagefavoris.dart';
@@ -23,14 +24,14 @@ class search extends StatefulWidget {
 
 // ignore: camel_case_types
 class _searchState extends State<search> {
-  List<Product> cartItems = [
-    Product(name: '', price: 0, description: '', imagePath: ''),
-  ];
+  // List<Product> cartItems = [
+  //   Product(name: '', price: 0, description: '', imagePath: ''),
+  // ];
 
   // Fonction removeFromCart pour illustrer
   void removeFromCart(int index) {
     setState(() {
-      cartItems.removeAt(index);
+      //cartItems.removeAt(index);
     });
   }
 
@@ -202,7 +203,7 @@ class _searchState extends State<search> {
             ),
 
             // Votre Container contenant la catégorie
-            const Column(
+             Column(
               children: [
                 SizedBox(height: 120),
                 Categorie(),

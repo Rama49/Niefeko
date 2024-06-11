@@ -1,12 +1,11 @@
 // Pages/Inscription/inscription.dart
 import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:niefeko/Pages/Connexion/connexion.dart';
 // ignore: unused_import
 import 'package:niefeko/Reutilisable/buttonreu.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class Inscription extends StatefulWidget {
   const Inscription({super.key});
@@ -22,21 +21,12 @@ class InscriptionState extends State<Inscription> {
   final TextEditingController _prenomController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController =
-      TextEditingController();
+  final TextEditingController _confirmerController = TextEditingController();
 
   bool _passwordObscureText = true;
   bool _confirmPasswordObscureText = true;
 
-  @override
-  void initState() {
-    super.initState();
-    Firebase.initializeApp().then((_) {
-      print("Firebase initialisé avec succès !");
-    }).catchError((error) {
-      print("Erreur lors de l'initialisation de Firebase : $error");
-    });
-  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -113,7 +103,7 @@ class InscriptionState extends State<Inscription> {
                     ),
                     _buildPasswordField(
                       label: 'Confirmer mot de passe',
-                      controller: _confirmPasswordController,
+                      controller: _confirmerController,
                       obscureText: _confirmPasswordObscureText,
                       validator: (value) {
                         if (value != _passwordController.text) {
@@ -263,27 +253,45 @@ class InscriptionState extends State<Inscription> {
   }
 
   Future<void> registerUser() async {
+    Map<String, String> payload = {
+    'email': _emailController.text,//'email',
+    'lastname': _prenomController.text,//'prenom',
+    'firstname': _nomController.text,//'nom',
+    'password': _passwordController.text,//'pwd',
+    'confirmepwd': _confirmerController.text,
+  };
+
     if (_formKey.currentState!.validate()) {
       try {
-        UserCredential userCredential =
-            await FirebaseAuth.instance.createUserWithEmailAndPassword(
-          email: _emailController.text,
-          password: _passwordController.text,
-        );
+       final response = await http.post(
+      Uri.parse('https://niefeko.com/wp-json/jwt-auth/v1/register'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(payload), // Convertit le payload en JSON
+    );
 
-        String userID = userCredential.user!.uid;
-
-        await FirebaseFirestore.instance
-            .collection('Inscription')
-            .doc(userID)
-            .set({
-          'nom': _nomController.text,
-          'prenom': _prenomController.text,
-          'email': _emailController.text,
-          'password': _passwordController.text,
-          'confirmPassword': _confirmPasswordController.text,
-        });
-
+    if (response.statusCode == 200) {
+      print('Inscription réussie');
+      // Inscription réussie
+      
+       Navigator.pop(context);
+    } else {
+      // Géstion des erreurs de statut HTTP ici
+       showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+      title: Text('Erreur d\'inscription'),
+      content: Text('Une erreur s\'est produite lors de l\'inscription.'),
+      actions: [
+      TextButton(
+      onPressed: () => Navigator.pop(context),
+      child: Text('OK'),
+      ),
+      ],
+      ),
+      );
+    }
         Fluttertoast.showToast(
           msg: "Inscription réussie avec succès",
           toastLength: Toast.LENGTH_SHORT,
@@ -304,7 +312,7 @@ class InscriptionState extends State<Inscription> {
         _prenomController.clear();
         _emailController.clear();
         _passwordController.clear();
-        _confirmPasswordController.clear();
+        _confirmerController.clear();
       } catch (e) {
         // ignore: avoid_print
         print('Erreur lors de l\'Inscription : $e');
@@ -318,7 +326,7 @@ class InscriptionState extends State<Inscription> {
     _prenomController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
-    _confirmPasswordController.dispose();
+    _confirmerController.dispose();
     super.dispose();
   }
 }
