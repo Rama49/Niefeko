@@ -21,7 +21,6 @@ class CartPanier extends StatelessWidget {
     required this.validateCart,
   }) : super(key: key);
 
-  // Méthode pour calculer le prix total
   double getTotalPrice() {
     double total = 0.0;
     for (var product in cartItems) {
@@ -54,7 +53,7 @@ class CartPanier extends StatelessWidget {
                       final product = cartItems[index];
                       return Card(
                         child: ListTile(
-                          leading: Image.asset(
+                          leading: Image.network(
                             product.imagePath,
                             width: 50,
                             height: 50,
@@ -65,7 +64,6 @@ class CartPanier extends StatelessWidget {
                           trailing: IconButton(
                             icon: const Icon(Icons.delete),
                             onPressed: () {
-                              // Afficher la boîte de dialogue de confirmation
                               showDialog(
                                 context: context,
                                 builder: (BuildContext context) {
@@ -82,11 +80,8 @@ class CartPanier extends StatelessWidget {
                                       TextButton(
                                         child: const Text('Supprimer'),
                                         onPressed: () {
-                                          // Supprimer le produit du panier
                                           removeFromCart(index);
-                                          // Fermer la boîte de dialogue
                                           Navigator.of(context).pop();
-                                          // Afficher un message de confirmation
                                           ScaffoldMessenger.of(context).showSnackBar(
                                             const SnackBar(
                                               content: Text('Produit supprimé du panier'),
@@ -105,7 +100,6 @@ class CartPanier extends StatelessWidget {
                     },
                   ),
                 ),
-                // Afficher le prix total
                 Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Text(
