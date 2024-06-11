@@ -13,6 +13,8 @@ class Product {
     this.quantity = 1,
   });
 
+  get id => null;
+
   Map<String, dynamic> toMap() {
     return {
       'imagePath': imagePath,

@@ -1,24 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 import 'package:niefeko/Components/Category/product.dart';
 
 class CartPanier extends StatelessWidget {
   final List<Product> cartItems;
-  final Function(int) removeFromCart;
-  final String idClient;
-  final String prenom;
-  final String nom;
-  final String email;
-  final Function(BuildContext context, String, String, String) validateCart;
 
   const CartPanier({
     Key? key,
     required this.cartItems,
-    required this.removeFromCart,
-    required this.idClient,
-    required this.prenom,
-    required this.nom,
-    required this.email,
-    required this.validateCart,
   }) : super(key: key);
 
   double getTotalPrice() {
@@ -27,6 +17,47 @@ class CartPanier extends StatelessWidget {
       total += product.price;
     }
     return total;
+  }
+
+  // Méthode pour envoyer la commande à l'API
+  Future<void> sendOrder(BuildContext context) async {
+    // Préparez les données de la commande
+    final orderData = {
+      'products': cartItems
+          .map((product) => {
+                'id': product.id,
+                'quantity': 1, // Vous pouvez ajuster la quantité si nécessaire
+              })
+          .toList(),
+      // Ajoutez d'autres informations nécessaires pour la commande
+    };
+
+    try {
+      final response = await http.post(
+        Uri.parse('https://niefeko.com/wp-json/custom-routes/v1/customer/orders'),
+        headers: {'Content-Type': 'application/json'},
+        body: json.encode(orderData),
+      );
+
+      if (response.statusCode == 200) {
+        // Si la commande a été envoyée avec succès
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Commande passée avec succès!'),
+          ),
+        );
+      } else {
+        // En cas d'erreur de l'API
+        throw Exception('Erreur lors de la validation du panier : ${response.reasonPhrase}');
+      }
+    } catch (error) {
+      // En cas d'erreur réseau ou autre
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Erreur lors de la validation du panier : $error'),
+        ),
+      );
+    }
   }
 
   @override
@@ -54,13 +85,16 @@ class CartPanier extends StatelessWidget {
                       return Card(
                         child: ListTile(
                           leading: Image.network(
-                            product.imagePath,
+                            product.imagePath, // Utilisation de Image.network
                             width: 50,
                             height: 50,
                             fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) {
+                              return Icon(Icons.error); // Affichage d'une icône d'erreur si l'image ne se charge pas
+                            },
                           ),
                           title: Text(product.name),
-                          subtitle: Text('${product.price} cfa'),
+                          subtitle: Text('${product.price} FCFA'),
                           trailing: IconButton(
                             icon: const Icon(Icons.delete),
                             onPressed: () {
@@ -80,7 +114,7 @@ class CartPanier extends StatelessWidget {
                                       TextButton(
                                         child: const Text('Supprimer'),
                                         onPressed: () {
-                                          removeFromCart(index);
+                                          // Supprimer le produit du panier
                                           Navigator.of(context).pop();
                                           ScaffoldMessenger.of(context).showSnackBar(
                                             const SnackBar(
@@ -103,7 +137,7 @@ class CartPanier extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Text(
-                    'Prix total: ${getTotalPrice()} cfa',
+                    'Prix total: ${getTotalPrice()} FCFA',
                     style: const TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
@@ -115,12 +149,7 @@ class CartPanier extends StatelessWidget {
                     margin: const EdgeInsets.symmetric(vertical: 16.0),
                     child: ElevatedButton(
                       onPressed: () {
-                        validateCart(context, idClient, prenom, nom);
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('Panier validé'),
-                          ),
-                        );
+                        sendOrder(context);
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFF612C7D),

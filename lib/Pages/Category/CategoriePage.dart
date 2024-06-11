@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter_html/flutter_html.dart';
 import 'package:niefeko/Components/Category/product.dart';
+import 'package:niefeko/Pages/CartPanier/CartPanier.dart';
 import 'package:niefeko/Pages/Recherche/recherche.dart';
 
 class CategoryPage extends StatefulWidget {
@@ -13,6 +14,7 @@ class CategoryPage extends StatefulWidget {
 class _CategoryPageState extends State<CategoryPage> {
   late Map<int, Product> products;
   List<Product> filteredProducts = [];
+  List<Product> cartItems = []; // Liste pour stocker les produits ajoutés au panier
   bool isLoading = true;
   int cartItemCount = 0;
 
@@ -24,7 +26,8 @@ class _CategoryPageState extends State<CategoryPage> {
   }
 
   Future<void> fetchData() async {
-    final response = await http.get(Uri.parse('https://niefeko.com/wp-json/dokan/v1/stores/16/products'));
+    final response = await http.get(
+        Uri.parse('https://niefeko.com/wp-json/dokan/v1/stores/16/products'));
 
     if (response.statusCode == 200) {
       final List<dynamic> responseData = json.decode(response.body);
@@ -56,10 +59,20 @@ class _CategoryPageState extends State<CategoryPage> {
     });
   }
 
-  void addToCart() {
+  void addToCart(Product product) {
     setState(() {
-      cartItemCount++;
+      cartItems.add(product); // Ajouter le produit à la liste des produits ajoutés au panier
+      cartItemCount = cartItems.length; // Mettre à jour le nombre d'articles dans le panier
     });
+  }
+
+  void openCart() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => CartPanier(cartItems: cartItems),
+      ),
+    );
   }
 
   @override
@@ -81,9 +94,7 @@ class _CategoryPageState extends State<CategoryPage> {
             children: [
               IconButton(
                 icon: Icon(Icons.shopping_cart, color: Colors.white),
-                onPressed: () {
-                  // Ajoutez ici la logique pour naviguer vers le panier
-                },
+                onPressed: openCart, // Ouvrir le panier avec les produits ajoutés
               ),
               Positioned(
                 right: 0,
@@ -94,7 +105,7 @@ class _CategoryPageState extends State<CategoryPage> {
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Text(
-                    cartItemCount.toString(),
+                    cartItemCount.toString(), // Afficher le nombre de produits dans le panier
                     style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
@@ -160,7 +171,9 @@ class _CategoryPageState extends State<CategoryPage> {
                               Center(
                                 child: Text(
                                   product.name,
-                                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold),
                                 ),
                               ),
                               SizedBox(height: 8),
@@ -171,7 +184,10 @@ class _CategoryPageState extends State<CategoryPage> {
                               Center(
                                 child: Text(
                                   '${product.price} FCFA',
-                                  style: TextStyle(fontSize: 18, color: Colors.green, fontWeight: FontWeight.bold),
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      color: Colors.green,
+                                      fontWeight: FontWeight.bold),
                                 ),
                               ),
                               SizedBox(height: 8),
@@ -181,17 +197,20 @@ class _CategoryPageState extends State<CategoryPage> {
                                   width: double.infinity,
                                   child: ElevatedButton(
                                     onPressed: () {
-                                      addToCart();
+                                      addToCart(product);
                                     },
                                     style: ElevatedButton.styleFrom(
-                                      padding: EdgeInsets.symmetric(horizontal: 40, vertical: 10),
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 40, vertical: 10),
                                       shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(5),
                                       ),
-                                      backgroundColor: const Color(0xFF612C7D), // Couleur de fond du bouton
+                                      backgroundColor: const Color(
+                                          0xFF612C7D), // Couleur de fond du bouton
                                     ),
                                     child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: [
                                         const Text(
                                           "Ajouter au panier",
@@ -200,7 +219,8 @@ class _CategoryPageState extends State<CategoryPage> {
                                             color: Colors.white,
                                           ),
                                         ),
-                                        Icon(Icons.shopping_cart, color: Colors.white),
+                                        Icon(Icons.shopping_cart,
+                                            color: Colors.white),
                                       ],
                                     ),
                                   ),

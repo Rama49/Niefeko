@@ -13,12 +13,13 @@ class _ResetpasswordState extends State<Resetpassword> {
   Future<void> _resetPassword() async {
     if (_formKey.currentState!.validate()) {
       final String email = _emailController.text;
-      final String apiUrl = 'https://niefeko.com/wp-json/jwt-auth/v1/forget-password ';
-      
+      const String apiUrl =
+          'https://niefeko.com/wp-json/jwt-auth/v1/forget-password';
+
       try {
         final response = await http.post(
           Uri.parse(apiUrl),
-          body: {'email': email},
+          body: {'user_email': email},
         );
 
         if (response.statusCode == 200) {
@@ -92,7 +93,8 @@ class _ResetpasswordState extends State<Resetpassword> {
                 ElevatedButton(
                   onPressed: _resetPassword,
                   style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10), 
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 10),
                     backgroundColor: const Color(0xFF612C7D),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(7),

@@ -11,15 +11,9 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-  String? firstName;
-  String? lastName;
-  String? email;
-
-  @override
-  void initState() {
-    super.initState();
-    _getUserData();
-  }
+  String? firstName = '';
+  String? lastName = '';
+  String? email = '';
 
   Future<void> _getUserData() async {
     try {
@@ -30,72 +24,42 @@ class _SettingsPageState extends State<SettingsPage> {
         throw Exception('Token not found');
       }
 
+      print('Token retrieved: $token'); // Debug print
+
       final response = await http.get(
-        Uri.parse('https://niefeko.com/wp-json/api/user'),
-        headers: {'Authorization': 'Bearer $token'},
+        Uri.parse('https://niefeko.com/wp-json/custom-routes/v1/customer'),
+        headers: {
+          'Authorization': 'Bearer $token',
+        },
       );
 
       if (response.statusCode == 200) {
         final userData = json.decode(response.body);
         setState(() {
-          firstName = userData['firstname'];
-          lastName = userData['lastname'];
-          email = userData['email'];
+          firstName = userData['user_firstname'];
+          lastName = userData['user_lastname'];
+          email = userData['user_email'];
         });
       } else {
-        throw Exception('Failed to load user data');
+        print(
+            'Failed to load user data, status code: ${response.statusCode}'); // Debug print
+        throw Exception('Desole mais aucun donnee n est trouve ici');
       }
     } catch (error) {
       print('Error fetching user data: $error');
-      // Gérer l'erreur ici
-    }
-  }
-
-  Future<void> _logout() async {
-    try {
-      final prefs = await SharedPreferences.getInstance();
-      prefs.remove('token');
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const connexion()),
-      );
-      print('Déconnexion réussie');
-    } catch (error) {
-      print('Error during logout: $error');
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Erreur lors de la déconnexion'),
+        SnackBar(
+          content: Text('Failed to load user data'),
           duration: Duration(seconds: 2),
         ),
       );
     }
   }
 
-  Future<void> _confirmLogout() async {
-    return showDialog<void>(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Confirmation'),
-          content: const Text('Êtes-vous sûr de vouloir vous déconnecter ?'),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text('Annuler'),
-            ),
-            TextButton(
-              onPressed: () {
-                _logout();
-                Navigator.of(context).pop();
-              },
-              child: const Text('Déconnexion'),
-            ),
-          ],
-        );
-      },
-    );
+  @override
+  void initState() {
+    super.initState();
+    _getUserData();
   }
 
   @override
@@ -104,7 +68,10 @@ class _SettingsPageState extends State<SettingsPage> {
       backgroundColor: const Color(0xFF612C7D),
       appBar: AppBar(
         backgroundColor: const Color(0xFF612C7D),
-        title: const Text('Paramètres', style: TextStyle(color: Colors.white)),
+        title: const Text(
+          'Paramètres',
+          style: TextStyle(color: Colors.white),
+        ),
         iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: Column(
@@ -124,21 +91,18 @@ class _SettingsPageState extends State<SettingsPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // Informations sur l'utilisateur (prénom, nom, email)
-                if (firstName != null)
-                  Text(
-                    'Prénom: $firstName',
-                    style: const TextStyle(color: Colors.white, fontSize: 20),
-                  ),
-                if (lastName != null)
-                  Text(
-                    'Nom: $lastName',
-                    style: const TextStyle(color: Colors.white, fontSize: 20),
-                  ),
-                if (email != null)
-                  Text(
-                    'Email: $email',
-                    style: const TextStyle(color: Colors.white, fontSize: 20),
-                  ),
+                Text(
+                  'Prénom: $lastName',
+                  style: const TextStyle(color: Colors.white, fontSize: 20),
+                ),
+                Text(
+                  'Nom: $firstName',
+                  style: const TextStyle(color: Colors.white, fontSize: 20),
+                ),
+                Text(
+                  'Email: $email',
+                  style: const TextStyle(color: Colors.white, fontSize: 20),
+                ),
               ],
             ),
           ),
