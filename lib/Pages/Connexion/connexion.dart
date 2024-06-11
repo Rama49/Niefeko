@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 import 'package:niefeko/Pages/Recherche/recherche.dart';
 import 'package:niefeko/Pages/Inscription/inscription.dart';
 import 'package:niefeko/Pages/resetpassword/ResetPassword.dart';
@@ -18,6 +20,12 @@ class _connexionState extends State<connexion> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   bool _isObscure = true;
+
+  Future<void> saveToken(String token) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('token', token);
+    print('jeton saved: $token'); 
+  }
 
   Future<void> _signInWithEmailAndPassword() async {
      // Payload JSON contenant le nom d'utilisateur et le mot de passe
@@ -92,7 +100,6 @@ class _connexionState extends State<connexion> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                // SizedBox(height: 20),
                 Image.asset(
                   "assets/logoNiefeko.png",
                   width: 80,
@@ -188,7 +195,7 @@ class _connexionState extends State<connexion> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => Resetpassword()),
+                                builder: (context) => Resetpassword()),
                             );
                           },
                           style: TextButton.styleFrom(
@@ -241,7 +248,6 @@ class _connexionState extends State<connexion> {
                           ),
                         ),
                       ),
-                      // const SizedBox(height: 20),
                       Padding(
                         padding: const EdgeInsets.only(top: 2, bottom: 20),
                         child: SizedBox(
@@ -266,7 +272,7 @@ class _connexionState extends State<connexion> {
                             child: const Text(
                               "S'inscrire",
                               style:
-                                  TextStyle(fontSize: 16, color: Colors.white),
+                                TextStyle(fontSize: 16, color: Colors.white),
                             ),
                           ),
                         ),

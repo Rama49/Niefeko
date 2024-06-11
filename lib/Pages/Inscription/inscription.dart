@@ -1,6 +1,7 @@
-// Pages/Inscription/inscription.dart
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 import 'package:niefeko/Pages/Connexion/connexion.dart';
 // ignore: unused_import
 import 'package:niefeko/Reutilisable/buttonreu.dart';
@@ -113,12 +114,11 @@ class InscriptionState extends State<Inscription> {
                       },
                       onPressed: () {
                         setState(() {
-                          _confirmPasswordObscureText =
-                              !_confirmPasswordObscureText;
+                          _confirmPasswordObscureText = !_confirmPasswordObscureText;
                         });
                       },
                     ),
-                    SizedBox(height: 15),
+                    const SizedBox(height: 15),
                     Padding(
                       padding: const EdgeInsets.only(top: 20, bottom: 5),
                       child: SizedBox(
@@ -128,8 +128,7 @@ class InscriptionState extends State<Inscription> {
                             await registerUser();
                           },
                           style: ElevatedButton.styleFrom(
-                            backgroundColor:
-                                const Color.fromARGB(255, 255, 255, 255),
+                            backgroundColor: const Color.fromARGB(255, 255, 255, 255),
                             padding: const EdgeInsets.symmetric(vertical: 15),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(7),
@@ -138,13 +137,12 @@ class InscriptionState extends State<Inscription> {
                           ),
                           child: const Text(
                             "S'inscrire",
-                            style: TextStyle(
-                                fontSize: 16, color: Color(0xFF593070)),
+                            style: TextStyle(fontSize: 16, color: Color(0xFF593070)),
                           ),
                         ),
                       ),
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     ElevatedButton(
                       onPressed: () {
                         Navigator.push(
@@ -156,13 +154,10 @@ class InscriptionState extends State<Inscription> {
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFF612C7D),
-                        padding: const EdgeInsets.symmetric(
-                            vertical:
-                                15), // Ajuster le padding vertical si nécessaire
+                        padding: const EdgeInsets.symmetric(vertical: 15),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(7),
-                          side: const BorderSide(
-                              color: Colors.white), // Bordure blanche
+                          side: const BorderSide(color: Colors.white),
                         ),
                       ),
                       child: const SizedBox(
@@ -175,7 +170,7 @@ class InscriptionState extends State<Inscription> {
                         ),
                       ),
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                   ]),
                 ),
               ],
@@ -205,7 +200,7 @@ class InscriptionState extends State<Inscription> {
           enabledBorder: const OutlineInputBorder(
             borderSide: BorderSide(color: Colors.white),
           ),
-          contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
+          contentPadding: const EdgeInsets.symmetric(vertical: 0, horizontal: 10),
           focusedBorder: const OutlineInputBorder(
             borderSide: BorderSide(color: Colors.white),
           ),
@@ -236,7 +231,7 @@ class InscriptionState extends State<Inscription> {
           enabledBorder: const OutlineInputBorder(
             borderSide: BorderSide(color: Colors.white),
           ),
-          contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
+          contentPadding: const EdgeInsets.symmetric(vertical: 0, horizontal: 10),
           focusedBorder: const OutlineInputBorder(
             borderSide: BorderSide(color: Colors.white),
           ),
@@ -302,11 +297,10 @@ class InscriptionState extends State<Inscription> {
           fontSize: 16.0,
         );
 
-        Navigator.push(
-          // ignore: use_build_context_synchronously
-          context,
-          MaterialPageRoute(builder: (context) => const connexion()),
-        );
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const connexion()),
+          );
 
         _nomController.clear();
         _prenomController.clear();
@@ -314,8 +308,16 @@ class InscriptionState extends State<Inscription> {
         _passwordController.clear();
         _confirmerController.clear();
       } catch (e) {
-        // ignore: avoid_print
-        print('Erreur lors de l\'Inscription : $e');
+        print('Erreur lors de l\'inscription : $e');
+        Fluttertoast.showToast(
+          msg: "Erreur lors de l'inscription",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.TOP,
+          timeInSecForIosWeb: 3,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0,
+        );
       }
     }
   }

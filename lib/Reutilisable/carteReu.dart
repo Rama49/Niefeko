@@ -1,43 +1,12 @@
-// ignore: duplicate_ignore
-// ignore: duplicate_ignore
-// ignore: file_names
-// ignore: file_names
-// ignore: file_names
-// ignore_for_file: file_names, duplicate_ignore
-
-import 'package:flutter/material.dart'
-    show
-        Axis,
-        BorderRadius,
-        BoxDecoration,
-        BuildContext,
-        Color,
-        Colors,
-        Column,
-        Container,
-        EdgeInsets,
-        Flexible,
-        FontWeight,
-        Image,
-        MaterialPageRoute,
-        Navigator,
-        Row,
-        SingleChildScrollView,
-        SizedBox,
-        StatelessWidget,
-        Text,
-        TextStyle,
-        Widget;
-import 'package:niefeko/Pages/PanierHistorique/PanierPage.dart';
+import 'package:flutter/material.dart';
 import 'package:niefeko/Reutilisable/buttonReu.dart';
 
-// ignore: camel_case_types
 class carteReu extends StatelessWidget {
   final Image image;
   final String title;
   final String paragraph;
   final String texte;
-  final double borderRadius;
+   final double borderRadius;
 
   const carteReu(
       {super.key,
@@ -50,56 +19,58 @@ class carteReu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      scrollDirection: Axis.vertical,
+       scrollDirection: Axis.vertical,
       child: Container(
-        // width: 300,
+        width: 300,
         decoration: BoxDecoration(
-          color: const Color.fromARGB(255, 85, 58, 112),
-          borderRadius: BorderRadius.circular(borderRadius),
+      color: Color.fromARGB(255, 85, 58, 112),
+      borderRadius: BorderRadius.circular(borderRadius),
+          border: Border.all(
+            color: Colors.grey, // Couleur de la bordure
+            width: 2.0, // Épaisseur de la bordure
+          ),
         ),
-
+      
         child: Row(
           // crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Container(child: image, color: Colors.white,),
             Column(
               children: [
-                // ignore: avoid_unnecessary_containers
                 Container(
                   child: Text(title,
-                      style: const TextStyle(
+                      style: TextStyle(
                           fontWeight: FontWeight.w700,
                           color: Colors.white,
                           fontSize: 30)),
                 ),
                 Container(
-                  padding: const EdgeInsets.only(left: 5),
-                  // ignore: sort_child_properties_last
+                  padding: EdgeInsets.only(left: 5),
                   child: Text(paragraph,
-                      style: const TextStyle(
+                      style: TextStyle(
                           fontWeight: FontWeight.w700,
                           color: Colors.white,
                           fontSize: 25)),
                   width: 100,
                 ),
                 Container(
-                    padding: const EdgeInsets.only(left: 2, bottom: 2, top: 5),
-                    // ignore: sort_child_properties_last
+                    padding: EdgeInsets.only(left: 25, bottom: 20, top: 5),
                     child: Text(texte,
-                        style: const TextStyle(
+                        style: TextStyle(
                             fontWeight: FontWeight.w700, color: Colors.white)),
                     width: 180),
                 BoutonR(
                   titre: "Ajouter au panier",
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => PanierPage()),
-                    );
+                    // Navigator.push(
+                    //   contextr
+                    //   // MaterialPageRoute(builder: (context) => carteReu()),
+                    // );
+      
                   },
                 ),
-                const SizedBox(
-                  height: 10,
+                SizedBox(
+                  height: 20,
                 )
               ],
             ),

@@ -1,53 +1,49 @@
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:intl/intl.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
-// ignore: use_key_in_widget_constructors
 class PanierPage extends StatefulWidget {
   @override
-  // ignore: library_private_types_in_public_api
   _PanierPageState createState() => _PanierPageState();
 }
 
 class _PanierPageState extends State<PanierPage> {
-  late Stream<QuerySnapshot> _ordersStream;
-  late String _currentUserUid; // ID de l'utilisateur actuellement connecté
+  List<dynamic> _userOrders =
+      []; // Liste pour stocker les commandes de l'utilisateur
+  bool _isLoading = false;
 
   @override
   void initState() {
     super.initState();
-    // Récupérer l'ID de l'utilisateur actuellement connecté
-    _currentUserUid = FirebaseAuth.instance.currentUser!.uid;
-    // Filtrer les commandes par ID d'utilisateur
-    _ordersStream = FirebaseFirestore.instance
-        .collection('Panier')
-        .where('idClient', isEqualTo: _currentUserUid) // Filtrer par ID utilisateur
-        .orderBy('timestamp', descending: true)
-        .snapshots();
+    _fetchUserOrders(); // Appeler la méthode pour récupérer les commandes de l'utilisateur
   }
 
-  void _deleteOrder(String orderId) async {
+  Future<void> _fetchUserOrders() async {
+    setState(() {
+      _isLoading = true;
+    });
+
     try {
-      await FirebaseFirestore.instance
-          .collection('Panier')
-          .doc(orderId)
-          .delete();
-      // ignore: use_build_context_synchronously
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Commande supprimée avec succès'),
-          duration: Duration(seconds: 2),
-        ),
+      final response = await http.get(
+        Uri.parse(
+            'https://niefeko.com/wp-json/custom-routes/v1/customer/orders'),
+        // Ajoutez ici les en-têtes ou les paramètres nécessaires pour authentifier l'utilisateur, si nécessaire
       );
-    } catch (e) {
-      // ignore: use_build_context_synchronously
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Erreur lors de la suppression de la commande'),
-          duration: Duration(seconds: 2),
-        ),
-      );
+
+      if (response.statusCode == 200) {
+        setState(() {
+          _userOrders = jsonDecode(response.body);
+          _isLoading = false;
+        });
+      } else {
+        print('Échec du chargement des commandes: ${response.statusCode}');
+        throw Exception('Échec du chargement des commandes de l\'utilisateur');
+      }
+    } catch (error) {
+      print('Error fetching user orders: $error');
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 
@@ -55,97 +51,27 @@ class _PanierPageState extends State<PanierPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color(0xFF612C7D),
-        title: const Text(
-          'Historique des commandes',
-          style: TextStyle(color: Colors.white),
-        ),
-        iconTheme: const IconThemeData(color: Colors.white),
+      backgroundColor: const Color(0xFF612C7D),
+        title: Text('Panier', style: TextStyle(color: Colors.white),),
       ),
-      body: StreamBuilder<QuerySnapshot>(
-        stream: _ordersStream,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
+      body: _isLoading
+          ? Center(
               child: CircularProgressIndicator(),
-            );
-          }
-          if (snapshot.hasError) {
-            // ignore: avoid_print
-            print("Error: ${snapshot.error}");
-            return const Center(
-              child: Text('Une erreur est survenue'),
-            );
-          }
-          if (snapshot.data!.docs.isEmpty) {
-            return const Center(
-              child: Text('Votre historique de panier est vide'),
-            );
-          }
-          return ListView(
-            children: snapshot.data!.docs.map((doc) {
-              Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-              Timestamp timestamp = data['timestamp'] as Timestamp;
-              DateTime date = timestamp.toDate();
-              return Dismissible(
-                key: UniqueKey(),
-                direction: DismissDirection.endToStart,
-                background: Container(
-                  alignment: Alignment.centerRight,
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                  color: Colors.red,
-                  child: const Icon(Icons.delete, color: Colors.white),
+            )
+          : _userOrders.isEmpty
+              ? Center(
+                  child: Text('Aucune commande trouvée pour cet utilisateur'),
+                )
+              : ListView.builder(
+                  itemCount: _userOrders.length,
+                  itemBuilder: (context, index) {
+                    var order = _userOrders[index];
+                    return ListTile(
+                      title: Text('Commande #${order['id']}'),
+                      // Ajoutez ici d'autres détails de la commande que vous souhaitez afficher
+                    );
+                  },
                 ),
-                onDismissed: (direction) {
-                  _deleteOrder(doc.id);
-                },
-                confirmDismiss: (direction) async {
-                  return await showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        title: const Text("Confirmation"),
-                        content: const Text(
-                            "Êtes-vous sûr de vouloir supprimer cette commande ?"),
-                        actions: <Widget>[
-                          TextButton(
-                            onPressed: () => Navigator.of(context).pop(true),
-                            child: const Text("Supprimer"),
-                          ),
-                          TextButton(
-                            onPressed: () => Navigator.of(context).pop(false),
-                            child: const Text("Annuler"),
-                          ),
-                        ],
-                      );
-                    },
-                  );
-                },
-                child: ListTile(
-                  leading: Image.asset(data['imageUrl']),
-                  title: Text(data['nomProduit']),
-                  subtitle: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('Quantité: ${data['nbrProduit']}'),
-                      Text('Prix: ${data['totalAmount']} \$'),
-                      Text(
-                        'Date et heure: ${DateFormat('dd/MM/yyyy HH:mm').format(date)}',
-                      ),
-                    ],
-                  ),
-                  trailing: IconButton(
-                    icon: const Icon(Icons.delete, color: Colors.red,),
-                    onPressed: () {
-                      _deleteOrder(doc.id);
-                    },
-                  ),
-                ),
-              );
-            }).toList(),
-          );
-        },
-      ),
     );
   }
 }

@@ -154,12 +154,7 @@ class _MemeCategoryPageState extends State<MemeCategorie> {
       MaterialPageRoute(
         builder: (context) => CartPanier(
           cartItems: cartItems,
-          removeFromCart: removeFromCart,
-          idClient: userID,
-          prenom: prenom,
-          nom: nom, // Passer la valeur de nom
-          email: email,
-          validateCart: validateCart,
+         
         ),
       ),
     );

@@ -2,7 +2,15 @@ import 'dart:convert';
 
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+<<<<<<< HEAD
 import 'package:http/http.dart' as http;
+=======
+import 'package:niefeko/Pages/Category/categorieTest.dart';
+import 'package:niefeko/Pages/memeCategorie/MemeCategorie.dart';
+import 'package:niefeko/Pages/memeCategorie/memeCategorie0.dart';
+import 'package:niefeko/Pages/memeCategorie/memeCategorie10.dart';
+import 'package:niefeko/Pages/memeCategorie/memeCategorie11.dart';
+>>>>>>> b4f7b8ba9545267a3c88c60d93549a84b0713695
 
 class Categorie extends StatefulWidget {
   const Categorie({Key? key}) : super(key: key);
