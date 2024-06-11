@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:niefeko/Components/Category/product.dart';
 
-class CartPanier extends StatelessWidget {
+class CartPanier extends StatefulWidget {
   final List<Product> cartItems;
 
   const CartPanier({
@@ -11,9 +11,14 @@ class CartPanier extends StatelessWidget {
     required this.cartItems,
   }) : super(key: key);
 
+  @override
+  _CartPanierState createState() => _CartPanierState();
+}
+
+class _CartPanierState extends State<CartPanier> {
   double getTotalPrice() {
     double total = 0.0;
-    for (var product in cartItems) {
+    for (var product in widget.cartItems) {
       total += product.price;
     }
     return total;
@@ -21,21 +26,18 @@ class CartPanier extends StatelessWidget {
 
   // Méthode pour envoyer la commande à l'API
   Future<void> sendOrder(BuildContext context) async {
-    // Préparez les données de la commande
     final orderData = {
-      'products': cartItems
+      'products': widget.cartItems
           .map((product) => {
                 'id': product.id,
-                'quantity': 1, // Vous pouvez ajuster la quantité si nécessaire
+                'quantity': 1,
               })
           .toList(),
-      // Ajoutez d'autres informations nécessaires pour la commande
     };
 
     try {
       final response = await http.post(
-        Uri.parse(
-            'https://niefeko.com/wp-json/custom-routes/v1/customer/orders'),
+        Uri.parse('https://niefeko.com/wp-json/custom-routes/v1/customer/orders'),
         headers: {'Content-Type': 'application/json'},
         body: json.encode(orderData),
       );
@@ -47,6 +49,11 @@ class CartPanier extends StatelessWidget {
             content: Text('Commande passée avec succès!'),
           ),
         );
+        // Vider le panier
+        await clearCart(context);
+        setState(() {
+          widget.cartItems.clear();
+        });
       } else {
         // En cas d'erreur de l'API
         throw Exception(
@@ -57,6 +64,66 @@ class CartPanier extends StatelessWidget {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Erreur lors de la validation du panier : $error'),
+        ),
+      );
+    }
+  }
+
+  // Méthode pour vider le panier sur l'API
+  Future<void> clearCart(BuildContext context) async {
+    try {
+      final response = await http.delete(
+        Uri.parse('https://niefeko.com/wp-json/custom-routes/v1/customer/cart'),
+        headers: {'Content-Type': 'application/json'},
+      );
+
+      if (response.statusCode == 200) {
+        // Si le panier a été vidé avec succès
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Panier vidé avec succès!'),
+          ),
+        );
+      } else {
+        // En cas d'erreur de l'API
+        throw Exception(
+            'Erreur lors de la vidange du panier : ${response.reasonPhrase}');
+      }
+    } catch (error) {
+      // En cas d'erreur réseau ou autre
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Erreur lors de la vidange du panier : $error'),
+        ),
+      );
+    }
+  }
+
+  // Méthode pour supprimer un produit du panier sur l'API
+  Future<void> deleteProductFromCart(BuildContext context, Product product) async {
+    try {
+      final response = await http.delete(
+        Uri.parse('https://niefeko.com/wp-json/custom-routes/v1/customer/cart/${product.id}'),
+        headers: {'Content-Type': 'application/json'},
+      );
+
+      if (response.statusCode == 200) {
+        // Si le produit a été supprimé avec succès
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Produit supprimé du panier avec succès!'),
+          ),
+        );
+      } else {
+        // En cas d'erreur de l'API
+        throw Exception(
+            'Erreur lors de la suppression du produit : ${response.reasonPhrase}');
+      }
+    } catch (error) {
+      // En cas d'erreur réseau ou autre
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Erreur lors de la suppression du produit : $error'),
         ),
       );
     }
@@ -73,7 +140,7 @@ class CartPanier extends StatelessWidget {
         ),
         iconTheme: const IconThemeData(color: Colors.white),
       ),
-      body: cartItems.isEmpty
+      body: widget.cartItems.isEmpty
           ? const Center(
               child: Text('Votre panier est vide.'),
             )
@@ -81,9 +148,9 @@ class CartPanier extends StatelessWidget {
               children: [
                 Expanded(
                   child: ListView.builder(
-                    itemCount: cartItems.length,
+                    itemCount: widget.cartItems.length,
                     itemBuilder: (context, index) {
-                      final product = cartItems[index];
+                      final product = widget.cartItems[index];
                       return Card(
                         child: ListTile(
                           leading: Image.network(
@@ -104,10 +171,8 @@ class CartPanier extends StatelessWidget {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return AlertDialog(
-                                    title:
-                                        const Text('Confirmer la suppression'),
-                                    content: const Text(
-                                        'Voulez-vous vraiment supprimer ce produit ?'),
+                                    title: const Text('Confirmer la suppression'),
+                                    content: const Text('Voulez-vous vraiment supprimer ce produit ?'),
                                     actions: <Widget>[
                                       TextButton(
                                         child: const Text('Annuler'),
@@ -117,16 +182,13 @@ class CartPanier extends StatelessWidget {
                                       ),
                                       TextButton(
                                         child: const Text('Supprimer'),
-                                        onPressed: () {
+                                        onPressed: () async {
                                           // Supprimer le produit du panier
+                                          await deleteProductFromCart(context, product);
                                           Navigator.of(context).pop();
-                                          ScaffoldMessenger.of(context)
-                                              .showSnackBar(
-                                            const SnackBar(
-                                              content: Text(
-                                                  'Produit supprimé du panier'),
-                                            ),
-                                          );
+                                          setState(() {
+                                            widget.cartItems.remove(product);
+                                          });
                                         },
                                       ),
                                     ],
