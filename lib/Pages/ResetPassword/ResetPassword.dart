@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class Resetpassword extends StatefulWidget {
   @override
@@ -12,23 +13,21 @@ class _ResetpasswordState extends State<Resetpassword> {
 
   Future<void> _resetPassword() async {
     if (_formKey.currentState!.validate()) {
-      final String email = _emailController.text;
-      if (email.isEmpty) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text("Veuillez entrer une adresse e-mail"),
-          ),
-        );
-        return; // Arrête l'exécution de la fonction si l'e-mail est vide
-      }
-
-      const String apiUrl =
-          'https://niefeko.com/wp-json/jwt-auth/v1/forget-password';
+      final String email = _emailController.text.trim();
 
       try {
+        const String apiUrl = 'https://niefeko.com/wp-json/jwt-auth/v1/forget-password';
+        
+        final Map<String, dynamic> data = {'username': email};
+        final String jsonData = jsonEncode(data);
+
+        print('Email à envoyer: $email');
+        print('Corps de la requête: $jsonData');
+
         final response = await http.post(
           Uri.parse(apiUrl),
-          body: {'email': email},
+          headers: {'Content-Type': 'application/json'},
+          body: jsonData,
         );
 
         print('Response status: ${response.statusCode}');
@@ -37,17 +36,13 @@ class _ResetpasswordState extends State<Resetpassword> {
         if (response.statusCode == 200) {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
-              content: Text(
-                "Un e-mail de réinitialisation de mot de passe a été envoyé. Veuillez vérifier votre boîte de réception.",
-              ),
+              content: Text("Un e-mail de réinitialisation de mot de passe a été envoyé. Veuillez vérifier votre boîte de réception."),
             ),
           );
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text(
-                "Erreur lors de la réinitialisation du mot de passe. Veuillez réessayer plus tard.",
-              ),
+            SnackBar(
+              content: Text("Erreur lors de la réinitialisation du mot de passe. Veuillez réessayer plus tard. Code: ${response.statusCode}, Message: ${response.body}"),
             ),
           );
         }
@@ -55,9 +50,7 @@ class _ResetpasswordState extends State<Resetpassword> {
         print('Error: $e');
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text(
-              "Erreur lors de la réinitialisation du mot de passe. Veuillez réessayer plus tard.",
-            ),
+            content: Text("Erreur lors de la réinitialisation du mot de passe. Veuillez réessayer plus tard."),
           ),
         );
       }
@@ -70,7 +63,7 @@ class _ResetpasswordState extends State<Resetpassword> {
       appBar: AppBar(
         backgroundColor: const Color(0xFF612C7D),
         title: const Text(
-          'Réinitialisation de mot de passe',
+          'Mot de passe oublié',
           style: TextStyle(color: Colors.white),
         ),
         iconTheme: const IconThemeData(color: Colors.white),
@@ -104,7 +97,9 @@ class _ResetpasswordState extends State<Resetpassword> {
                   onPressed: _resetPassword,
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 20, vertical: 10),
+                      horizontal: 20,
+                      vertical: 10,
+                    ),
                     backgroundColor: const Color(0xFF612C7D),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(7),
