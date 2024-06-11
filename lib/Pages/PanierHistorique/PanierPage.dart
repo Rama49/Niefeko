@@ -8,44 +8,41 @@ class PanierPage extends StatefulWidget {
 }
 
 class _PanierPageState extends State<PanierPage> {
-  List<dynamic> _orders = []; // Liste pour stocker les commandes récupérées
-  bool _isLoading =
-      false; // Indicateur pour afficher une barre de progression lors du chargement
+  List<dynamic> _userOrders =
+      []; // Liste pour stocker les commandes de l'utilisateur
+  bool _isLoading = false;
 
   @override
   void initState() {
     super.initState();
-    _fetchOrders(); // Appel de la fonction pour récupérer les commandes au démarrage de la page
+    _fetchUserOrders(); // Appeler la méthode pour récupérer les commandes de l'utilisateur
   }
 
-  Future<void> _fetchOrders() async {
+  Future<void> _fetchUserOrders() async {
     setState(() {
-      _isLoading =
-          true; // Mettre à jour l'indicateur de chargement pour afficher la barre de progression
+      _isLoading = true;
     });
 
     try {
       final response = await http.get(
         Uri.parse(
             'https://niefeko.com/wp-json/custom-routes/v1/customer/orders'),
+        // Ajoutez ici les en-têtes ou les paramètres nécessaires pour authentifier l'utilisateur, si nécessaire
       );
 
       if (response.statusCode == 200) {
         setState(() {
-          _orders = jsonDecode(response
-              .body); // Mettre à jour la liste des commandes avec les données récupérées
-          _isLoading =
-              false; // Mettre à jour l'indicateur de chargement une fois les données chargées
+          _userOrders = jsonDecode(response.body);
+          _isLoading = false;
         });
       } else {
-        print('Failed to load orders: ${response.statusCode}');
-        throw Exception('Échec du chargement des commandes');
+        print('Échec du chargement des commandes: ${response.statusCode}');
+        throw Exception('Échec du chargement des commandes de l\'utilisateur');
       }
     } catch (error) {
-      print('Error fetching orders: $error');
+      print('Error fetching user orders: $error');
       setState(() {
-        _isLoading =
-            false; // Mettre à jour l'indicateur de chargement en cas d'erreur
+        _isLoading = false;
       });
     }
   }
@@ -54,28 +51,24 @@ class _PanierPageState extends State<PanierPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color(0xFF612C7D),
-        title: const Text('Historique des commandes',
-            style: TextStyle(color: Colors.white)),
-        iconTheme: const IconThemeData(color: Colors.white),
+      backgroundColor: const Color(0xFF612C7D),
+        title: Text('Panier', style: TextStyle(color: Colors.white),),
       ),
-      body: _isLoading // Vérifier si les données sont en cours de chargement
+      body: _isLoading
           ? Center(
-              child:
-                  CircularProgressIndicator()) // Afficher la barre de progression si les données sont en cours de chargement
-          : _orders.isEmpty // Vérifier si aucune commande n'a été récupérée
+              child: CircularProgressIndicator(),
+            )
+          : _userOrders.isEmpty
               ? Center(
-                  child: Text(
-                      'Aucune commande trouvée')) // Afficher un message si aucune commande n'a été trouvée
+                  child: Text('Aucune commande trouvée pour cet utilisateur'),
+                )
               : ListView.builder(
-                  // Afficher la liste des commandes
-                  itemCount: _orders.length,
+                  itemCount: _userOrders.length,
                   itemBuilder: (context, index) {
-                    var order = _orders[index];
+                    var order = _userOrders[index];
                     return ListTile(
-                      title: Text(order['nomProduit']),
-                      subtitle: Text('Quantité: ${order['nbrProduit']}'),
-                      trailing: Text('Prix: ${order['totalAmount']} FCFA'),
+                      title: Text('Commande #${order['id']}'),
+                      // Ajoutez ici d'autres détails de la commande que vous souhaitez afficher
                     );
                   },
                 ),

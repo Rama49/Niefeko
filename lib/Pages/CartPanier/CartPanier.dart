@@ -25,21 +25,50 @@ class _CartPanierState extends State<CartPanier> {
   }
 
   // Méthode pour envoyer la commande à l'API
+ // Méthode pour envoyer la commande à l'API
   Future<void> sendOrder(BuildContext context) async {
-    final orderData = {
-      'products': widget.cartItems
-          .map((product) => {
-                'id': product.id,
-                'quantity': 1,
-              })
-          .toList(),
-    };
-
     try {
       final response = await http.post(
-        Uri.parse('https://niefeko.com/wp-json/custom-routes/v1/customer/orders'),
+        Uri.parse(
+            'https://niefeko.com/wp-json/custom-routes/v1/customer/orders'),
         headers: {'Content-Type': 'application/json'},
-        body: json.encode(orderData),
+        body: json.encode({
+          'billing': {
+            'first_name': '',
+            'last_name': '',
+            'address_1': '',
+            'address_2': '',
+            'city': '',
+            'state': '',
+            'postcode': '',
+            'country': '',
+            'email': '',
+            'phone': ''
+          },
+          'shipping': {
+            'first_name': '',
+            'last_name': '',
+            'address_1': 't',
+            'address_2': '',
+            'city': '',
+            'state': '',
+            'postcode': '',
+            'country': ''
+          },
+          'line_items': widget.cartItems
+              .map((product) => {
+                    'user_id': product.id,
+                    'quantity': 1, // Vous pouvez ajuster la quantité si nécessaire
+                  })
+              .toList(),
+          'shipping_lines': [
+            {
+              'method_id': '',
+              'method_title': '',
+              'total': ''
+            }
+          ]
+        }),
       );
 
       if (response.statusCode == 200) {
@@ -49,11 +78,6 @@ class _CartPanierState extends State<CartPanier> {
             content: Text('Commande passée avec succès!'),
           ),
         );
-        // Vider le panier
-        await clearCart(context);
-        setState(() {
-          widget.cartItems.clear();
-        });
       } else {
         // En cas d'erreur de l'API
         throw Exception(
