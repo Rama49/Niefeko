@@ -11,7 +11,6 @@ class CartPanier extends StatelessWidget {
     required this.cartItems,
   }) : super(key: key);
 
-  // Méthode pour calculer le prix total
   double getTotalPrice() {
     double total = 0.0;
     for (var product in cartItems) {
@@ -141,7 +140,6 @@ class CartPanier extends StatelessWidget {
                     },
                   ),
                 ),
-                // Afficher le prix total
                 Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Text(

@@ -66,6 +66,23 @@ class _CategoryPageState extends State<CategoryPage> {
       cartItemCount = cartItems
           .length; // M>ettre à jour le nombre d'articles dans le panier
     });
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Produit ajouté au panier'),
+          content: Text('${product.name} a été ajouté à votre panier.'),
+          actions: <Widget>[
+            TextButton(
+              child: Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   void openCart() {

@@ -13,17 +13,28 @@ class _ResetpasswordState extends State<Resetpassword> {
   Future<void> _resetPassword() async {
     if (_formKey.currentState!.validate()) {
       final String email = _emailController.text;
+      if (email.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text("Veuillez entrer une adresse e-mail"),
+          ),
+        );
+        return; // Arrête l'exécution de la fonction si l'e-mail est vide
+      }
+
       const String apiUrl =
           'https://niefeko.com/wp-json/jwt-auth/v1/forget-password';
 
       try {
         final response = await http.post(
           Uri.parse(apiUrl),
-          body: {'user_email': email},
+          body: {'email': email},
         );
 
+        print('Response status: ${response.statusCode}');
+        print('Response body: ${response.body}');
+
         if (response.statusCode == 200) {
-          // Succès, affichez un message à l'utilisateur
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
               content: Text(
@@ -32,7 +43,6 @@ class _ResetpasswordState extends State<Resetpassword> {
             ),
           );
         } else {
-          // Erreur lors de l'envoi de la demande
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
               content: Text(
@@ -42,7 +52,7 @@ class _ResetpasswordState extends State<Resetpassword> {
           );
         }
       } catch (e) {
-        // Erreur lors de l'envoi de la demande
+        print('Error: $e');
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text(

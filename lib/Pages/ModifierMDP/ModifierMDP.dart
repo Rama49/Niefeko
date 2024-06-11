@@ -10,10 +10,8 @@ class ModifierMDP extends StatefulWidget {
 class _ModifierMDPState extends State<ModifierMDP> {
   final _formKey = GlobalKey<FormState>();
   late String _email;
-  late String _oldPassword;
   late String _newPassword;
   late String _confirmNewPassword;
-  bool _oldPasswordVisible = false;
   bool _newPasswordVisible = false;
   bool _confirmNewPasswordVisible = false;
 
@@ -39,16 +37,6 @@ class _ModifierMDPState extends State<ModifierMDP> {
                 _buildTextField(
                   labelText: 'Adresse e-mail',
                   onChanged: (value) => _email = value,
-                ),
-                _buildPasswordTextField(
-                  labelText: 'Ancien mot de passe',
-                  onChanged: (value) => _oldPassword = value,
-                  isVisible: _oldPasswordVisible,
-                  onVisibilityToggle: () {
-                    setState(() {
-                      _oldPasswordVisible = !_oldPasswordVisible;
-                    });
-                  },
                 ),
                 _buildPasswordTextField(
                   labelText: 'Nouveau mot de passe',
@@ -180,14 +168,13 @@ class _ModifierMDPState extends State<ModifierMDP> {
 
     try {
       final response = await http.post(
-        Uri.parse('https://niefeko.com/wp-json/custom-/v1/password/new'),
+        Uri.parse('https://niefeko.com/wp-json/custom-routes/v1/password/new'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
         body: jsonEncode(<String, String>{
-          'user_email': _email,
-          'old_password': _oldPassword,
-          'new_password': _newPassword,
+          'username': _email,
+          'password': _newPassword,
         }),
       );
 
