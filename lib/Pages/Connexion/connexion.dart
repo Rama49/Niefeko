@@ -5,8 +5,7 @@ import 'dart:convert';
 import 'package:niefeko/Pages/Recherche/recherche.dart';
 import 'package:niefeko/Pages/Inscription/inscription.dart';
 import 'package:niefeko/Pages/resetpassword/ResetPassword.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class connexion extends StatefulWidget {
   const connexion({Key? key}) : super(key: key);
