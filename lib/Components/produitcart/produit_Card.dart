@@ -52,12 +52,11 @@ class _productState extends State<product> {
             final supplier = suppliers[index];
             final storeName = supplier['store_name'] ?? 'Nom inconnu';
             final imageUrl = supplier['gravatar'] ?? 'inconu';
+            final payment = supplier['payment'] ?? 'inconu';
             return Card(
               color: const Color.fromARGB(255, 215, 194, 233),
               child: InkWell(
-                onTap: () {
-                  //_launchURL(supplier['shop_url'] ?? '');
-                },
+                onTap: () {},
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Column(
@@ -68,7 +67,9 @@ class _productState extends State<product> {
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                       SizedBox(height: 4),
-                      // Autres détails du fournisseur...
+                      Text(payment,
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
                       if (imageUrl.isNotEmpty)
                         Image.network(
                           imageUrl,
