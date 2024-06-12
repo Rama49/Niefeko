@@ -110,10 +110,10 @@ flutter:
       - assets/logo.png
       - assets/collection-femme.jpg
       - assets/collection-homme.jpg
-      - assets/cuissine-&-maison.jpg
+      - assets/cuisine-&amp;-maison.jpg
       - assets/electroniques.jpg
       - assets/habillement.jpg
-      - assets/soin-&-bienetre.jpg
+      - assets/soins-&amp;-bien-être.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

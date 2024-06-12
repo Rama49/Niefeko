@@ -16,12 +16,12 @@ class _CategorieState extends State<Categorie> {
 
   // Tableau des noms de catégories et de leurs images correspondantes
   final Map<String, String> categoryImages = {
-    'collection-femme': 'assets/collection-femme.jpg',
-    'collection-homme': 'assets/collection-homme.jpg',
-    'cuissine-&-maison': 'assets/cuissine-&-maison.jpg',
-    'electronique': 'assets/electroniques.jpg',
+    'collection femme': 'assets/collection-femme.jpg',
+    'collection homme': 'assets/collection-homme.jpg',
+    'cuisine & maison': 'assets/cuisine-&amp;-maison.jpg',
+    'electroniques': 'assets/electroniques.jpg',
     'habillement': 'assets/habillement.jpg',
-    'soin-&-bienetre': 'assets/soin-&-bienetre.jpg',
+    'soins & bien être': 'assets/soins-&amp;-bien-être.jpg',
   };
 
   @override
@@ -42,7 +42,7 @@ class _CategorieState extends State<Categorie> {
           categories = List<Map<String, dynamic>>.from(data);
           // Afficher les noms de catégories sur le terminal
           categories.forEach((category) {
-            print(category['name']);
+            print(_decodeHtmlEntity(category['name']));
           });
         });
       } else {
@@ -75,7 +75,7 @@ class _CategorieState extends State<Categorie> {
           CarouselSlider(
             options: CarouselOptions(
               enlargeCenterPage: false,
-              autoPlay: true,
+              autoPlay: false, // Désactiver le défilement automatique
               aspectRatio: 23 / 9,
               autoPlayCurve: Curves.fastOutSlowIn,
               enableInfiniteScroll: true,
@@ -131,12 +131,18 @@ class _CategorieState extends State<Categorie> {
     }
   }
 
+  // Méthode pour nettoyer et normaliser les noms de catégories
+  String _normalizeCategoryName(String categoryName) {
+    return categoryName.toLowerCase()
+      .replaceAll('&amp;', '&'); // Remplacer les entités HTML par des caractères normaux
+  }
+
   // Méthode pour construire l'image de la catégorie en fonction du nom de la catégorie
   Widget _buildCategoryImage(String categoryName) {
-    final cleanedCategoryName = categoryName.toLowerCase().replaceAll(' ', '-');
+    final cleanedCategoryName = _normalizeCategoryName(_decodeHtmlEntity(categoryName));
     final imagePath = categoryImages[cleanedCategoryName];
     return imagePath != null
         ? Image.asset(imagePath, fit: BoxFit.cover)
-        : Image.asset('assets/jordan.png', fit: BoxFit.cover);
+        : Image.asset('assets/tshirt1.jpg', fit: BoxFit.cover);
   }
 }
