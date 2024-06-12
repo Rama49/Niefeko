@@ -54,7 +54,10 @@ class _productState extends State<product> {
             final storeName = supplier['store_name'] ?? 'Nom inconnu';
             final imageUrl = supplier['gravatar'] ?? 'inconu';
             final payment = supplier['payment'] ?? 'inconu';
-            return Card(
+            return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 25),
+        child:
+            Card(
               color: const Color.fromARGB(255, 215, 194, 233),
               child: InkWell(
                 onTap: () {
@@ -75,11 +78,7 @@ class _productState extends State<product> {
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
                         SizedBox(height: 4),
-                        Text(payment,
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                        // Utiliser un widget de placeholder si l'URL de l'image n'est pas valide
-                        imageUrl.isNotEmpty
+                         imageUrl.isNotEmpty
                             ? Image.network(
                                 imageUrl,
                                 width: 100,
@@ -96,11 +95,16 @@ class _productState extends State<product> {
                                 fallbackHeight: 100,
                                 fallbackWidth: 100,
                               ),
+                        Text(payment,
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                        // Utiliser un widget de placeholder si l'URL de l'image n'est pas valide
+                       
                       ],
                     ),
                   ),
               ),
-            );
+            ));
           },
         ),
         const SizedBox(height: 20),
