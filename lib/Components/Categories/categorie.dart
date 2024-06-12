@@ -60,11 +60,14 @@ class _CategorieState extends State<Categorie> {
           ),
           const SizedBox(height: 20),
           CarouselSlider(
-            options: CarouselOptions(
+           options: CarouselOptions(
+              enlargeCenterPage: false,
               autoPlay: true,
-              enlargeCenterPage: true,
-              aspectRatio: 2.0,
-              autoPlayInterval: Duration(seconds: 10),  // Augmenter la durée de l'intervalle
+              aspectRatio: 23 / 9,
+              autoPlayCurve: Curves.fastOutSlowIn,
+              enableInfiniteScroll: true,
+              autoPlayAnimationDuration: const Duration(milliseconds: 500),
+              viewportFraction: 0.25, // Une image à la fois
             ),
             items: categories.map((category) {
               return Builder(
@@ -95,7 +98,8 @@ class _CategorieState extends State<Categorie> {
                         Text(
                           _decodeHtmlEntity(category['name'] ?? 'No Name'),
                           style: TextStyle(
-                            fontSize: 20, // Ajuste la taille de la police
+                            fontSize: 10, // Ajuste la taille de la police
+                            fontWeight: FontWeight.bold, // Texte en gras
                             color: Color(0xFF612C7D),
                           ),
                           textAlign: TextAlign.center,
