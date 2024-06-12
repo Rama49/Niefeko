@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:niefeko/Components/produitcart/produit_Card.dart';
 import 'package:niefeko/Pages/Category/CategoriePage.dart';
 
 // ignore: camel_case_types

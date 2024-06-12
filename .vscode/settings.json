@@ -1,19 +1,14 @@
 {
     "cSpell.words": [
-<<<<<<< HEAD
         "aimez",
         "allproducts",
         "Categorie",
         "texte",
         "Trouvez"
-=======
-        "allproducts",
-        "fluttertoast",
-        "niefeko"
->>>>>>> master
     ],
     "cSpell.enableFiletypes": [
         "bat"
     ],
-    "commentTranslate.multiLineMerge": true
+    "java.compile.nullAnalysis.mode": "automatic",
+    "java.configuration.updateBuildConfiguration": "interactive"
 }

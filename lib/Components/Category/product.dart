@@ -3,7 +3,7 @@ class Product {
   final String name;
   final String description;
   final double price;
-  int quantity;
+  int quantity ;
 
   Product({
     required this.imagePath,

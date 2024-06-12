@@ -1,25 +1,48 @@
-// Components/Categories/Categorie.dart
-// ignore_for_file: camel_case_types// ignore_for_file: camel_case_types
+import 'dart:convert';
 
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:niefeko/Pages/Category/categorieTest.dart';
-import 'package:niefeko/Pages/memeCategorie/MemeCategorie.dart';
-import 'package:niefeko/Pages/memeCategorie/memeCategorie0.dart';
-import 'package:niefeko/Pages/memeCategorie/memeCategorie10.dart';
-import 'package:niefeko/Pages/memeCategorie/memeCategorie11.dart';
+import 'package:http/http.dart' as http;
 
 class Categorie extends StatefulWidget {
-  // ignore: use_key_in_widget_constructors
-  const Categorie({Key? key});
+  const Categorie({Key? key}) : super(key: key);
 
   @override
   State<Categorie> createState() => _CategorieState();
 }
 
 class _CategorieState extends State<Categorie> {
+  List<Map<String, dynamic>> categories = [];
+
+  @override
+  void initState() {
+    super.initState();
+    fetchCategories();
+  }
+
+  // Méthode pour récupérer les catégories depuis l'API
+  Future<void> fetchCategories() async {
+    final url = Uri.parse('https://niefeko.com/wp-json/custom-routes/v1/products/categories');
+    
+    try {
+      final response = await http.get(url);
+      if (response.statusCode == 200) {
+        final List<dynamic> data = json.decode(response.body);
+        setState(() {
+          categories = List<Map<String, dynamic>>.from(data);
+        });
+      } else {
+        throw Exception('Failed to load categories');
+      }
+    } catch (e) {
+      print('Error fetching categories: $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    final int halfLength = (categories.length / 2).ceil(); // Diviser la liste en deux parties
+
     return SingleChildScrollView(
       padding: const EdgeInsets.only(bottom: 20),
       child: Column(
@@ -37,89 +60,48 @@ class _CategorieState extends State<Categorie> {
             ],
           ),
           const SizedBox(height: 20),
-          CarouselSlider(
-            items: [
-              InkWell(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => MemeCategorie()),
-                  );
-                },
-                child: buildCarouselItem("assets/gourde.png", "Gourde"),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: categories
+                      .sublist(0, halfLength) // Prendre la première moitié des catégories
+                      .map((category) {
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8.0), // Ajout d'un espacement vertical
+                      child: Text(
+                        category['name'],
+                        style: TextStyle(
+                          fontSize: 20, // Taille de la police
+                          color: Color(0xFF612C7D), // Couleur du texte
+                        ),
+                      ),
+                    );
+                  }).toList(),
+                ),
               ),
-
-              InkWell(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => MemeCategorie0()),
-                  );
-                },
-                child: buildCarouselItem("assets/pantalon.png", "Pantalon"),
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: categories
+                      .sublist(halfLength) // Prendre la deuxième moitié des catégories
+                      .map((category) {
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8.0), // Ajout d'un espacement vertical
+                      child: Text(
+                        category['name'],
+                        style: TextStyle(
+                          fontSize: 20, // Taille de la police
+                          color: Color(0xFF612C7D), // Couleur du texte
+                        ),
+                      ),
+                    );
+                  }).toList(),
+                ),
               ),
-              InkWell(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => MemeCategorie11()),
-                  );
-                },
-                child: buildCarouselItem("assets/lunnete1.png", "Lunettes"),
-              ),
-              //4th Image of Slider
-              InkWell(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => MemeCategorie10()),
-                  );
-                },
-                child: buildCarouselItem("assets/torche.png", "Torche"),
-              ),
-              // buildCarouselItem("assets/maronshoes.png", "Maronshoes"),
             ],
-            //Slider Container properties
-            options: CarouselOptions(
-              enlargeCenterPage: false,
-              autoPlay: true,
-              aspectRatio: 23 / 9,
-              autoPlayCurve: Curves.fastOutSlowIn,
-              enableInfiniteScroll: true,
-              autoPlayAnimationDuration: const Duration(milliseconds: 500),
-              viewportFraction: 0.25, // Une image à la fois
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget buildCarouselItem(String imagePath, String text) {
-    // ignore: avoid_unnecessary_containers
-    return Container(
-      // padding: EdgeInsets.symmetric(vertical: 0),
-      // color: Colors.amber,
-      child: Column(
-        children: [
-          Container(
-            height: 80, // Hauteur du background mauve
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(40.0),
-              color: const Color.fromARGB(255, 215, 194, 233),
-            ),
-            child: Image.asset(
-              imagePath,
-              // width: 120,
-              height: 100,
-            ),
-          ),
-          const SizedBox(height: 8), // Espacement entre l'image et le texte
-          Text(
-            text,
-            style: const TextStyle(
-              fontSize: 16,
-            ),
           ),
         ],
       ),

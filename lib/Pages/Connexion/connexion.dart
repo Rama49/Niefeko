@@ -27,6 +27,11 @@ class _connexionState extends State<connexion> {
   }
 
   Future<void> _signInWithEmailAndPassword() async {
+     // Payload JSON contenant le nom d'utilisateur et le mot de passe
+  Map<String, String> payload = {
+    'username': _emailController.text,//'user_email',
+    'password': _passwordController.text,//'pwd',
+  };
     try {
       final url = Uri.parse('https://niefeko.com/wp-json/jwt-auth/v1/token');
       final response = await http.post(
