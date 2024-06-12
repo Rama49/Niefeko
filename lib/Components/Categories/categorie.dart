@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:html/parser.dart' as htmlParser;
 
 class Categorie extends StatefulWidget {
   const Categorie({Key? key}) : super(key: key);
@@ -41,8 +42,6 @@ class _CategorieState extends State<Categorie> {
 
   @override
   Widget build(BuildContext context) {
-    final int halfLength = (categories.length / 2).ceil(); // Diviser la liste en deux parties
-
     return SingleChildScrollView(
       padding: const EdgeInsets.only(bottom: 20),
       child: Column(
@@ -60,51 +59,70 @@ class _CategorieState extends State<Categorie> {
             ],
           ),
           const SizedBox(height: 20),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: categories
-                      .sublist(0, halfLength) // Prendre la première moitié des catégories
-                      .map((category) {
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 8.0), // Ajout d'un espacement vertical
-                      child: Text(
-                        category['name'],
-                        style: TextStyle(
-                          fontSize: 20, // Taille de la police
-                          color: Color(0xFF612C7D), // Couleur du texte
+          CarouselSlider(
+           options: CarouselOptions(
+              enlargeCenterPage: false,
+              autoPlay: true,
+              aspectRatio: 23 / 9,
+              autoPlayCurve: Curves.fastOutSlowIn,
+              enableInfiniteScroll: true,
+              autoPlayAnimationDuration: const Duration(milliseconds: 500),
+              viewportFraction: 0.25, // Une image à la fois
+            ),
+            items: categories.map((category) {
+              return Builder(
+                builder: (BuildContext context) {
+                  return Container(
+                    margin: EdgeInsets.only(left: 5.0, right: 5.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          width: 100,
+                          height: 100,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Color.fromARGB(255, 215, 194, 233),
+                          ),
+                          child: category['image_url'] != null
+                              ? Image.network(
+                                  category['image_url'],
+                                  fit: BoxFit.cover,
+                                )
+                              : Image.asset(
+                                  'assets/jordan.png',
+                                  fit: BoxFit.cover,
+                                ),
                         ),
-                      ),
-                    );
-                  }).toList(),
-                ),
-              ),
-              Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: categories
-                      .sublist(halfLength) // Prendre la deuxième moitié des catégories
-                      .map((category) {
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 8.0), // Ajout d'un espacement vertical
-                      child: Text(
-                        category['name'],
-                        style: TextStyle(
-                          fontSize: 20, // Taille de la police
-                          color: Color(0xFF612C7D), // Couleur du texte
+                        const SizedBox(height: 10),
+                        Text(
+                          _decodeHtmlEntity(category['name'] ?? 'No Name'),
+                          style: TextStyle(
+                            fontSize: 10, // Ajuste la taille de la police
+                            fontWeight: FontWeight.bold, // Texte en gras
+                            color: Color(0xFF612C7D),
+                          ),
+                          textAlign: TextAlign.center,
                         ),
-                      ),
-                    );
-                  }).toList(),
-                ),
-              ),
-            ],
+                      ],
+                    ),
+                  );
+                },
+              );
+            }).toList(),
           ),
         ],
       ),
     );
+  }
+
+  // Méthode pour décoder les entités HTML dans les noms de catégories
+  String _decodeHtmlEntity(String htmlString) {
+    final document = htmlParser.parse(htmlString);
+    if (document != null) {
+      return document.body?.text ?? htmlString;
+    } else {
+      return htmlString;
+    }
   }
 }
