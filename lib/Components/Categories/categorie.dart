@@ -62,7 +62,7 @@ class _CategorieState extends State<Categorie> {
           CarouselSlider(
             options: CarouselOptions(
               autoPlay: true,
-              enlargeCenterPage: false,
+              enlargeCenterPage: true,
               aspectRatio: 2.0,
               autoPlayInterval: Duration(seconds: 10),  // Augmenter la durée de l'intervalle
             ),
@@ -70,7 +70,7 @@ class _CategorieState extends State<Categorie> {
               return Builder(
                 builder: (BuildContext context) {
                   return Container(
-                    margin: EdgeInsets.only(left: 5.0, right: 5.0), // Ajuste la marge horizontale
+                    margin: EdgeInsets.only(left: 5.0, right: 5.0),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -95,7 +95,7 @@ class _CategorieState extends State<Categorie> {
                         Text(
                           _decodeHtmlEntity(category['name'] ?? 'No Name'),
                           style: TextStyle(
-                            fontSize: 20,
+                            fontSize: 20, // Ajuste la taille de la police
                             color: Color(0xFF612C7D),
                           ),
                           textAlign: TextAlign.center,
