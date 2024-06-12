@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -14,6 +13,16 @@ class Categorie extends StatefulWidget {
 
 class _CategorieState extends State<Categorie> {
   List<Map<String, dynamic>> categories = [];
+
+  // Tableau des noms de catégories et de leurs images correspondantes
+  final Map<String, String> categoryImages = {
+    'collection-femme': 'assets/collection-femme.jpg',
+    'collection-homme': 'assets/collection-homme.jpg',
+    'cuissine-&-maison': 'assets/cuissine-&-maison.jpg',
+    'electronique': 'assets/electroniques.jpg',
+    'habillement': 'assets/habillement.jpg',
+    'soin-&-bienetre': 'assets/soin-&-bienetre.jpg',
+  };
 
   @override
   void initState() {
@@ -31,6 +40,10 @@ class _CategorieState extends State<Categorie> {
         final List<dynamic> data = json.decode(response.body);
         setState(() {
           categories = List<Map<String, dynamic>>.from(data);
+          // Afficher les noms de catégories sur le terminal
+          categories.forEach((category) {
+            print(category['name']);
+          });
         });
       } else {
         throw Exception('Failed to load categories');
@@ -60,7 +73,7 @@ class _CategorieState extends State<Categorie> {
           ),
           const SizedBox(height: 20),
           CarouselSlider(
-           options: CarouselOptions(
+            options: CarouselOptions(
               enlargeCenterPage: false,
               autoPlay: true,
               aspectRatio: 23 / 9,
@@ -84,15 +97,7 @@ class _CategorieState extends State<Categorie> {
                             shape: BoxShape.circle,
                             color: Color.fromARGB(255, 215, 194, 233),
                           ),
-                          child: category['image_url'] != null
-                              ? Image.network(
-                                  category['image_url'],
-                                  fit: BoxFit.cover,
-                                )
-                              : Image.asset(
-                                  'assets/jordan.png',
-                                  fit: BoxFit.cover,
-                                ),
+                          child: _buildCategoryImage(category['name']),
                         ),
                         const SizedBox(height: 10),
                         Text(
@@ -124,5 +129,14 @@ class _CategorieState extends State<Categorie> {
     } else {
       return htmlString;
     }
+  }
+
+  // Méthode pour construire l'image de la catégorie en fonction du nom de la catégorie
+  Widget _buildCategoryImage(String categoryName) {
+    final cleanedCategoryName = categoryName.toLowerCase().replaceAll(' ', '-');
+    final imagePath = categoryImages[cleanedCategoryName];
+    return imagePath != null
+        ? Image.asset(imagePath, fit: BoxFit.cover)
+        : Image.asset('assets/jordan.png', fit: BoxFit.cover);
   }
 }
