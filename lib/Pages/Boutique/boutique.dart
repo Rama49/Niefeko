@@ -119,10 +119,11 @@ class _CategoryPageState extends State<boutique> {
       // ignore: use_build_context_synchronously
       context,
       MaterialPageRoute(
-        builder: (context) => CartPanier(
-          cartItems: cartItems,
-        ),
-      ),
+          builder: (context) => CartPanier(
+              cartItems: cartItems,
+              user_firstname: "",
+              user_lastname: "",
+              user_email: "")),
     );
   }
 
@@ -226,8 +227,8 @@ class _CategoryPageState extends State<boutique> {
             Stack(
               children: [
                 IconButton(
-                  icon:
-                      const Icon(Icons.shopping_cart, color: Colors.white, size: 30),
+                  icon: const Icon(Icons.shopping_cart,
+                      color: Colors.white, size: 30),
                   onPressed: navigateToCartPage,
                 ),
                 Positioned(
@@ -248,14 +249,20 @@ class _CategoryPageState extends State<boutique> {
         ),
         body: SingleChildScrollView(
           child: Column(children: [
-             const SizedBox(height: 20,),
-            const Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
-              Text(
-                "Fournisseur1",
-                style: TextStyle(fontSize: 25),
-              ),
-            ]),
-            const SizedBox(height: 20,),
+            const SizedBox(
+              height: 20,
+            ),
+            const Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    "Fournisseur1",
+                    style: TextStyle(fontSize: 25),
+                  ),
+                ]),
+            const SizedBox(
+              height: 20,
+            ),
             const Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
@@ -282,7 +289,8 @@ class _CategoryPageState extends State<boutique> {
                 : GridView.builder(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
                       crossAxisSpacing: 8,
                       mainAxisSpacing: 8,
@@ -358,7 +366,8 @@ class _CategoryPageState extends State<boutique> {
                     ],
                   ),
                   style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 10),
                     backgroundColor: const Color(0xFF612C7D),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(7),

@@ -24,6 +24,8 @@ class search extends StatefulWidget {
 
 // ignore: camel_case_types
 class _searchState extends State<search> {
+  get userId => "36";
+
   // List<Product> cartItems = [
   //   Product(name: '', price: 0, description: '', imagePath: ''),
   // ];
@@ -97,10 +99,9 @@ class _searchState extends State<search> {
               ),
               height: MediaQuery.of(context).size.height / 3,
               child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  
                   const SizedBox(height: 60),
                   const Text(
                     "Bienvenue à Niefeko",
@@ -206,7 +207,7 @@ class _searchState extends State<search> {
             ),
 
             // Votre Container contenant la catégorie
-             Column(
+            Column(
               children: [
                 SizedBox(height: 120),
                 Categorie(),
@@ -248,7 +249,8 @@ class _searchState extends State<search> {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => PanierPage()),
+                      MaterialPageRoute(
+                          builder: (context) => PanierPage()),
                     );
                   },
                   icon: const Icon(Icons.shopping_cart, color: Colors.white),

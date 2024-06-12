@@ -152,11 +152,11 @@ class _MemeCategoryPageState extends State<MemeCategorie> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => CartPanier(
-          cartItems: cartItems,
-         
-        ),
-      ),
+          builder: (context) => CartPanier(
+              cartItems: cartItems,
+              user_firstname: "",
+              user_lastname: "",
+              user_email: "")),
     );
   }
 
@@ -326,14 +326,14 @@ class _MemeCategoryPageState extends State<MemeCategorie> {
                       final allproducts = MesProduits.allProducts[index];
                       return GestureDetector(
                         onTap: () => {
-                            // Navigator.push(
+                          // Navigator.push(
                           // context,
                           // MaterialPageRoute(
                           //   builder: (context) => Detail(
                           //     product: allproducts,
                           //   ),
                           // ),
-                        // ),
+                          // ),
                         },
                         child: buildCard(
                             index,
@@ -363,8 +363,7 @@ class _MemeCategoryPageState extends State<MemeCategorie> {
                 height: 100,
                 fit: BoxFit.cover,
               ),
-                            SizedBox(height: 20),
-
+              SizedBox(height: 20),
               Text("ma petie description du produit"),
               SizedBox(height: 20),
               Center(

@@ -5,13 +5,10 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:niefeko/Components/Category/product.dart';
 import 'package:niefeko/Pages/CartPanier/CartPanier.dart';
 
-
 class CategoryPage extends StatefulWidget {
   @override
   _CategoryPageState createState() => _CategoryPageState();
-
 }
-
 
 class _CategoryPageState extends State<CategoryPage> {
   late Map<int, Product> products;
@@ -22,7 +19,6 @@ class _CategoryPageState extends State<CategoryPage> {
   int cartItemCount = 0;
 
   @override
-
   void initState() {
     super.initState();
     products = {};
@@ -93,7 +89,11 @@ class _CategoryPageState extends State<CategoryPage> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => CartPanier(cartItems: cartItems),
+        builder: (context) => CartPanier(
+            cartItems: cartItems,
+            user_firstname: "",
+            user_lastname: "",
+            user_email: ""),
       ),
     );
   }

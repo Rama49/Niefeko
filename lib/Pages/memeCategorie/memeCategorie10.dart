@@ -152,10 +152,11 @@ class _MemeCategoryPageState extends State<MemeCategorie10> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => CartPanier(
-          cartItems: cartItems,
-        ),
-      ),
+          builder: (context) => CartPanier(
+              cartItems: cartItems,
+              user_firstname: "",
+              user_lastname: "",
+              user_email: "")),
     );
   }
 

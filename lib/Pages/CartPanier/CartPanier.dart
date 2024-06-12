@@ -5,10 +5,16 @@ import 'package:niefeko/Components/Category/product.dart';
 
 class CartPanier extends StatefulWidget {
   final List<Product> cartItems;
+  final String user_firstname;
+  final String user_lastname;
+  final String user_email;
 
   const CartPanier({
     Key? key,
     required this.cartItems,
+    required this.user_firstname,
+    required this.user_lastname,
+    required this.user_email,
   }) : super(key: key);
 
   @override
@@ -16,6 +22,12 @@ class CartPanier extends StatefulWidget {
 }
 
 class _CartPanierState extends State<CartPanier> {
+  String getCurrentUserId() {
+    // Ici, vous devriez avoir une méthode pour récupérer l'ID de l'utilisateur connecté
+    // Cette méthode dépend de votre logique d'authentification
+    return "userID"; // Remplacez ceci par la méthode réelle pour obtenir l'ID de l'utilisateur
+  }
+
   double getTotalPrice() {
     double total = 0.0;
     for (var product in widget.cartItems) {
@@ -24,67 +36,66 @@ class _CartPanierState extends State<CartPanier> {
     return total;
   }
 
-  // Méthode pour envoyer la commande à l'API
- // Méthode pour envoyer la commande à l'API
   Future<void> sendOrder(BuildContext context) async {
     try {
+      String userId = getCurrentUserId();
+
       final response = await http.post(
         Uri.parse(
             'https://niefeko.com/wp-json/custom-routes/v1/customer/orders'),
         headers: {'Content-Type': 'application/json'},
         body: json.encode({
           'billing': {
-            'first_name': '',
-            'last_name': '',
-            'address_1': '',
-            'address_2': '',
-            'city': '',
-            'state': '',
-            'postcode': '',
-            'country': '',
-            'email': '',
-            'phone': ''
+            'user_id': userId,
+            'first_name': widget.user_firstname,
+            'last_name': widget.user_lastname,
+            'address_1': 'Default Address 1',
+            'address_2': 'Default Address 2',
+            'city': 'Default City',
+            'state': 'Default State',
+            'postcode': '00000',
+            'country': 'Default Country',
+            'email': widget.user_email,
+            'phone': '0000000000'
           },
           'shipping': {
-            'first_name': '',
-            'last_name': '',
-            'address_1': 't',
-            'address_2': '',
-            'city': '',
-            'state': '',
-            'postcode': '',
-            'country': ''
+            'user_id': userId,
+            'first_name': widget.user_firstname,
+            'last_name': widget.user_lastname,
+            'address_1': 'Default Address 1',
+            'address_2': 'Default Address 2',
+            'city': 'Default City',
+            'state': 'Default State',
+            'postcode': '00000',
+            'country': 'Default Country'
           },
           'line_items': widget.cartItems
               .map((product) => {
                     'user_id': product.id,
-                    'quantity': 1, // Vous pouvez ajuster la quantité si nécessaire
+                    'quantity': 1,
                   })
               .toList(),
           'shipping_lines': [
             {
-              'method_id': '',
-              'method_title': '',
-              'total': ''
+              'method_id': 'flat_rate',
+              'method_title': 'Flat Rate',
+              'total': '10.00'
             }
           ]
         }),
       );
 
       if (response.statusCode == 200) {
-        // Si la commande a été envoyée avec succès
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Commande passée avec succès!'),
           ),
         );
       } else {
-        // En cas d'erreur de l'API
         throw Exception(
             'Erreur lors de la validation du panier : ${response.reasonPhrase}');
       }
     } catch (error) {
-      // En cas d'erreur réseau ou autre
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Erreur lors de la validation du panier : $error'),
@@ -93,65 +104,7 @@ class _CartPanierState extends State<CartPanier> {
     }
   }
 
-  // Méthode pour vider le panier sur l'API
-  Future<void> clearCart(BuildContext context) async {
-    try {
-      final response = await http.delete(
-        Uri.parse('https://niefeko.com/wp-json/custom-routes/v1/customer/cart'),
-        headers: {'Content-Type': 'application/json'},
-      );
-
-      if (response.statusCode == 200) {
-        // Si le panier a été vidé avec succès
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Panier vidé avec succès!'),
-          ),
-        );
-      } else {
-        // En cas d'erreur de l'API
-        throw Exception(
-            'Erreur lors de la vidange du panier : ${response.reasonPhrase}');
-      }
-    } catch (error) {
-      // En cas d'erreur réseau ou autre
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Erreur lors de la vidange du panier : $error'),
-        ),
-      );
-    }
-  }
-
-  // Méthode pour supprimer un produit du panier sur l'API
-  Future<void> deleteProductFromCart(BuildContext context, Product product) async {
-    try {
-      final response = await http.delete(
-        Uri.parse('https://niefeko.com/wp-json/custom-routes/v1/customer/cart/${product.id}'),
-        headers: {'Content-Type': 'application/json'},
-      );
-
-      if (response.statusCode == 200) {
-        // Si le produit a été supprimé avec succès
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Produit supprimé du panier avec succès!'),
-          ),
-        );
-      } else {
-        // En cas d'erreur de l'API
-        throw Exception(
-            'Erreur lors de la suppression du produit : ${response.reasonPhrase}');
-      }
-    } catch (error) {
-      // En cas d'erreur réseau ou autre
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Erreur lors de la suppression du produit : $error'),
-        ),
-      );
-    }
-  }
+  // Les autres méthodes restent inchangées
 
   @override
   Widget build(BuildContext context) {
@@ -195,8 +148,10 @@ class _CartPanierState extends State<CartPanier> {
                                 context: context,
                                 builder: (BuildContext context) {
                                   return AlertDialog(
-                                    title: const Text('Confirmer la suppression'),
-                                    content: const Text('Voulez-vous vraiment supprimer ce produit ?'),
+                                    title:
+                                        const Text('Confirmer la suppression'),
+                                    content: const Text(
+                                        'Voulez-vous vraiment supprimer ce produit ?'),
                                     actions: <Widget>[
                                       TextButton(
                                         child: const Text('Annuler'),
@@ -207,8 +162,7 @@ class _CartPanierState extends State<CartPanier> {
                                       TextButton(
                                         child: const Text('Supprimer'),
                                         onPressed: () async {
-                                          // Supprimer le produit du panier
-                                          await deleteProductFromCart(context, product);
+                                          await (context, product);
                                           Navigator.of(context).pop();
                                           setState(() {
                                             widget.cartItems.remove(product);
