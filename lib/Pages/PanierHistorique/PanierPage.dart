@@ -3,67 +3,49 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class PanierPage extends StatefulWidget {
+  final String userId;
+
+  PanierPage({required this.userId});
+
   @override
   _PanierPageState createState() => _PanierPageState();
 }
 
 class _PanierPageState extends State<PanierPage> {
-  List<Order> orders = []; // Liste des commandes de l'utilisateur
-  bool isLoading = false; // Variable pour suivre l'état du chargement
+  List<dynamic> _userOrders = [];
+  bool _isLoading = false;
 
   @override
   void initState() {
     super.initState();
-    fetchOrders(); // Récupérer les commandes de l'utilisateur lors du chargement de la page
+    _fetchUserOrders();
   }
 
-  Future<void> fetchOrders() async {
-    try {
-      // Indiquer le début du chargement
-      setState(() {
-        isLoading = true;
-      });
+  Future<void> _fetchUserOrders() async {
+    setState(() {
+      _isLoading = true;
+    });
 
-      // Récupérer les commandes de l'utilisateur via une API
-      // Vous devrez remplacer 'user_email' par l'email de l'utilisateur connecté
-      const user_email = "mloum137@gmail.com"; // Email de l'utilisateur connecté
+    try {
       final response = await http.get(
-        Uri.parse('https://niefeko.com/wp-json/custom-routes/v1/customer/orders?user_email=$user_email'),
+        Uri.parse(
+            'https://niefeko.com/wp-json/custom-routes/v1/customer/orders?user_id=${widget.userId}'),
+        // Vous pouvez ajouter ici les en-têtes ou les paramètres nécessaires pour authentifier l'utilisateur, si nécessaire
       );
 
       if (response.statusCode == 200) {
-        // Si la requête réussit, mettre à jour la liste des commandes
-        List<dynamic> responseData = json.decode(response.body);
         setState(() {
-          orders = responseData.map((data) => Order.fromJson(data)).toList();
+          _userOrders = jsonDecode(response.body);
+          _isLoading = false;
         });
       } else {
-        throw Exception('Failed to load orders');
+        print('Failed to load user orders: ${response.statusCode}');
+        throw Exception('Failed to load user orders');
       }
     } catch (error) {
-      print('Error fetching orders: $error');
-      // Affichage d'un message d'erreur à l'utilisateur en cas d'échec de la récupération des commandes
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text('Erreur'),
-            content: Text('Impossible de charger les commandes. Veuillez réessayer plus tard.'),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: Text('OK'),
-              ),
-            ],
-          );
-        },
-      );
-    } finally {
-      // Indiquer la fin du chargement, quel que soit le résultat
+      print('Error fetching user orders: $error');
       setState(() {
-        isLoading = false;
+        _isLoading = false;
       });
     }
   }
@@ -72,44 +54,32 @@ class _PanierPageState extends State<PanierPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Mes Commandes'),
+        backgroundColor: const Color(0xFF612C7D),
+        title: Text(
+          'Panier',
+          style: TextStyle(color: Colors.white),
+        ),
       ),
-      body: isLoading
+      body: _isLoading
           ? Center(
-              child: CircularProgressIndicator(), // Afficher un indicateur de chargement
+              child: CircularProgressIndicator(),
             )
-          : orders.isEmpty
+          : _userOrders.isEmpty
               ? Center(
-                  child: Text('Aucune commande trouvée'),
+                  child: Text(
+                    'Aucune commande trouvée pour cet utilisateur',
+                  ),
                 )
               : ListView.builder(
-                  itemCount: orders.length,
+                  itemCount: _userOrders.length,
                   itemBuilder: (context, index) {
-                    final order = orders[index];
+                    var order = _userOrders[index];
                     return ListTile(
-                      title: Text('Commande #${order.id}'),
-                      subtitle: Text('Total: ${order.total} FCFA'),
-                      // Vous pouvez ajouter plus de détails sur la commande ici
+                      title: Text('Commande #${order['id']}'),
+                      // Ajoutez ici d'autres détails de la commande que vous souhaitez afficher
                     );
                   },
                 ),
-    );
-  }
-}
-
-class Order {
-  final int id;
-  final double total;
-
-  Order({
-    required this.id,
-    required this.total,
-  });
-
-  factory Order.fromJson(Map<String, dynamic> json) {
-    return Order(
-      id: json['id'],
-      total: double.parse(json['total'].toString()),
     );
   }
 }
