@@ -23,4 +23,12 @@ class Product {
       'price': price,
     };
   }
+  factory Product.fromJson(Map<String, dynamic> json) {
+    return Product(
+     imagePath: json['images'][0]['src'] ?? '',
+     name: json['name'] ?? '',
+     description: json['description'] ?? '',
+     price: double.parse(json['price'] ?? '0.0'),
+    );
+  }
 }
