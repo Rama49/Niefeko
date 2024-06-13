@@ -19,6 +19,7 @@ class _connexionState extends State<connexion> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   bool _isObscure = true;
+  bool _isLoading = false; // Nouvelle variable pour gérer l'état du chargement
 
   Future<void> saveToken(String token) async {
     final prefs = await SharedPreferences.getInstance();
@@ -27,11 +28,10 @@ class _connexionState extends State<connexion> {
   }
 
   Future<void> _signInWithEmailAndPassword() async {
-     // Payload JSON contenant le nom d'utilisateur et le mot de passe
-  Map<String, String> payload = {
-    'username': _emailController.text,//'user_email',
-    'password': _passwordController.text,//'pwd',
-  };
+    setState(() {
+      _isLoading = true; // Activer le chargement lors de la soumission du formulaire
+    });
+
     try {
       final url = Uri.parse('https://niefeko.com/wp-json/jwt-auth/v1/token');
       final response = await http.post(
@@ -99,6 +99,10 @@ class _connexionState extends State<connexion> {
         textColor: Colors.white,
         fontSize: 16.0,
       );
+    } finally {
+      setState(() {
+        _isLoading = false; // Désactiver le chargement à la fin du traitement
+      });
     }
   }
 
@@ -237,7 +241,7 @@ class _connexionState extends State<connexion> {
                         child: SizedBox(
                           width: double.infinity,
                           child: ElevatedButton(
-                            onPressed: () {
+                            onPressed: _isLoading ? null : () {
                               if (_formKey.currentState!.validate()) {
                                 _signInWithEmailAndPassword();
                               }
@@ -253,13 +257,22 @@ class _connexionState extends State<connexion> {
                                     const BorderSide(color: Color(0xFF593070)),
                               ),
                             ),
-                            child: const Text(
-                              "Se connecter",
-                              style: TextStyle(
-                                fontSize: 16.0,
-                                color: Color(0xFF593070),
-                              ),
-                            ),
+                            child: _isLoading
+                                ? SizedBox(
+                                    width: 20,
+                                    height: 20,
+                                    child: CircularProgressIndicator(
+                                      valueColor: AlwaysStoppedAnimation<Color>(
+                                          Colors.black),
+                                    ),
+                                  )
+                                : const Text(
+                                    "Se connecter",
+                                    style: TextStyle(
+                                      fontSize: 16.0,
+                                      color: Color(0xFF593070),
+                                    ),
+                                  ),
                           ),
                         ),
                       ),
@@ -287,7 +300,7 @@ class _connexionState extends State<connexion> {
                             child: const Text(
                               "S'inscrire",
                               style:
-                                TextStyle(fontSize: 16, color: Colors.white),
+                                  TextStyle(fontSize: 16, color: Colors.white),
                             ),
                           ),
                         ),
