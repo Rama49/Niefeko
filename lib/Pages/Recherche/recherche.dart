@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:niefeko/Components/Categories/categorie.dart';
 import 'package:niefeko/Components/Deals/deal.dart';
-import 'package:niefeko/Components/produitcart/produitTest.dart';
+//import 'package:niefeko/Components/produitcart/produitTest.dart';
 import 'package:niefeko/Components/produitcart/produit_Card.dart';
 import 'package:niefeko/Pages/Connexion/connexion.dart';
 import 'package:niefeko/Pages/Favoris/pagefavoris.dart';
@@ -11,7 +11,7 @@ import 'package:niefeko/Pages/PanierHistorique/PanierPage.dart';
 import 'package:niefeko/Pages/SettingsPage/SettingsPage.dart';
 import 'package:niefeko/Reutilisable/carteReu.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:niefeko/Components/Category/product.dart';
+//import 'package:niefeko/Components/Category/product.dart';
 
 // ignore: camel_case_types
 class search extends StatefulWidget {
@@ -24,6 +24,8 @@ class search extends StatefulWidget {
 
 // ignore: camel_case_types
 class _searchState extends State<search> {
+  get userId => "36";
+
   // List<Product> cartItems = [
   //   Product(name: '', price: 0, description: '', imagePath: ''),
   // ];
@@ -97,10 +99,9 @@ class _searchState extends State<search> {
               ),
               height: MediaQuery.of(context).size.height / 3,
               child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  
                   const SizedBox(height: 60),
                   const Text(
                     "Bienvenue à Niefeko",
@@ -140,7 +141,7 @@ class _searchState extends State<search> {
                     items: [
                       //1st Image of Slider
                       carteReu(
-                        image: Image.asset(
+                        image: Image .asset(
                           "assets/sac1.png",
                           fit: BoxFit.cover,
                         ),
@@ -206,7 +207,7 @@ class _searchState extends State<search> {
             ),
 
             // Votre Container contenant la catégorie
-             Column(
+            Column(
               children: [
                 SizedBox(height: 120),
                 Categorie(),
@@ -248,7 +249,8 @@ class _searchState extends State<search> {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => PanierPage()),
+                      MaterialPageRoute(
+                          builder: (context) => PanierPage(userId: "userId")),
                     );
                   },
                   icon: const Icon(Icons.shopping_cart, color: Colors.white),

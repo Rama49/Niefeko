@@ -3,10 +3,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:niefeko/Pages/Connexion/connexion.dart';
-// ignore: unused_import
-import 'package:niefeko/Reutilisable/buttonreu.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 
 class Inscription extends StatefulWidget {
   const Inscription({super.key});
@@ -22,12 +18,10 @@ class InscriptionState extends State<Inscription> {
   final TextEditingController _prenomController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmerController = TextEditingController();
+  final TextEditingController _confirmPasswordController = TextEditingController();
 
   bool _passwordObscureText = true;
   bool _confirmPasswordObscureText = true;
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -104,7 +98,7 @@ class InscriptionState extends State<Inscription> {
                     ),
                     _buildPasswordField(
                       label: 'Confirmer mot de passe',
-                      controller: _confirmerController,
+                      controller: _confirmPasswordController,
                       obscureText: _confirmPasswordObscureText,
                       validator: (value) {
                         if (value != _passwordController.text) {
@@ -248,65 +242,57 @@ class InscriptionState extends State<Inscription> {
   }
 
   Future<void> registerUser() async {
-    Map<String, String> payload = {
-    'email': _emailController.text,//'email',
-    'lastname': _prenomController.text,//'prenom',
-    'firstname': _nomController.text,//'nom',
-    'password': _passwordController.text,//'pwd',
-    'confirmepwd': _confirmerController.text,
-  };
-
     if (_formKey.currentState!.validate()) {
       try {
-       final response = await http.post(
-      Uri.parse('https://niefeko.com/wp-json/jwt-auth/v1/register'),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode(payload), // Convertit le payload en JSON
-    );
-
-    if (response.statusCode == 200) {
-      print('Inscription réussie');
-      // Inscription réussie
-      
-       Navigator.pop(context);
-    } else {
-      // Géstion des erreurs de statut HTTP ici
-       showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-      title: Text('Erreur d\'inscription'),
-      content: Text('Une erreur s\'est produite lors de l\'inscription.'),
-      actions: [
-      TextButton(
-      onPressed: () => Navigator.pop(context),
-      child: Text('OK'),
-      ),
-      ],
-      ),
-      );
-    }
-        Fluttertoast.showToast(
-          msg: "Inscription réussie avec succès",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.TOP,
-          timeInSecForIosWeb: 3,
-          backgroundColor: Colors.white,
-          textColor: Colors.purple,
-          fontSize: 16.0,
+        final url = Uri.parse('https://niefeko.com/wp-json/jwt-auth/v1/register');
+        final response = await http.post(
+          url,
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+          },
+          body: jsonEncode(<String, String>{
+            'email': _emailController.text,
+            'lastname': _prenomController.text,
+            'firstname': _nomController.text,
+            'password': _passwordController.text,
+          }),
         );
+
+        if (response.statusCode == 200) {
+          print("Inscription réussie avec succès");
+
+          Fluttertoast.showToast(
+            msg: "Inscription réussie avec succès",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.TOP,
+            timeInSecForIosWeb: 3,
+            backgroundColor: Colors.white,
+            textColor: Colors.purple,
+            fontSize: 16.0,
+          );
 
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => const connexion()),
           );
 
-        _nomController.clear();
-        _prenomController.clear();
-        _emailController.clear();
-        _passwordController.clear();
-        _confirmerController.clear();
+          _nomController.clear();
+          _prenomController.clear();
+          _emailController.clear();
+          _passwordController.clear();
+          _confirmPasswordController.clear();
+        } else {
+          print('Erreur lors de l\'inscription : ${response.statusCode}');
+          Fluttertoast.showToast(
+            msg: "Erreur lors de l'inscription",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.TOP,
+            timeInSecForIosWeb: 3,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16.0,
+          );
+        }
       } catch (e) {
         print('Erreur lors de l\'inscription : $e');
         Fluttertoast.showToast(
@@ -328,7 +314,7 @@ class InscriptionState extends State<Inscription> {
     _prenomController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
-    _confirmerController.dispose();
+    _confirmPasswordController.dispose();
     super.dispose();
   }
 }

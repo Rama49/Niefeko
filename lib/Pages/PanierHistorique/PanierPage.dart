@@ -3,19 +3,22 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class PanierPage extends StatefulWidget {
+  final String userId;
+
+  PanierPage({required this.userId});
+
   @override
   _PanierPageState createState() => _PanierPageState();
 }
 
 class _PanierPageState extends State<PanierPage> {
-  List<dynamic> _userOrders =
-      []; // Liste pour stocker les commandes de l'utilisateur
+  List<dynamic> _userOrders = [];
   bool _isLoading = false;
 
   @override
   void initState() {
     super.initState();
-    _fetchUserOrders(); // Appeler la méthode pour récupérer les commandes de l'utilisateur
+    _fetchUserOrders();
   }
 
   Future<void> _fetchUserOrders() async {
@@ -26,8 +29,8 @@ class _PanierPageState extends State<PanierPage> {
     try {
       final response = await http.get(
         Uri.parse(
-            'https://niefeko.com/wp-json/custom-routes/v1/customer/orders'),
-        // Ajoutez ici les en-têtes ou les paramètres nécessaires pour authentifier l'utilisateur, si nécessaire
+            'https://niefeko.com/wp-json/custom-routes/v1/customer/orders?user_id=${widget.userId}'),
+        // Vous pouvez ajouter ici les en-têtes ou les paramètres nécessaires pour authentifier l'utilisateur, si nécessaire
       );
 
       if (response.statusCode == 200) {
@@ -36,8 +39,8 @@ class _PanierPageState extends State<PanierPage> {
           _isLoading = false;
         });
       } else {
-        print('Échec du chargement des commandes: ${response.statusCode}');
-        throw Exception('Échec du chargement des commandes de l\'utilisateur');
+        print('Failed to load user orders: ${response.statusCode}');
+        throw Exception('Failed to load user orders');
       }
     } catch (error) {
       print('Error fetching user orders: $error');
@@ -51,8 +54,11 @@ class _PanierPageState extends State<PanierPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-      backgroundColor: const Color(0xFF612C7D),
-        title: Text('Panier', style: TextStyle(color: Colors.white),),
+        backgroundColor: const Color(0xFF612C7D),
+        title: Text(
+          'Panier',
+          style: TextStyle(color: Colors.white),
+        ),
       ),
       body: _isLoading
           ? Center(
@@ -60,7 +66,9 @@ class _PanierPageState extends State<PanierPage> {
             )
           : _userOrders.isEmpty
               ? Center(
-                  child: Text('Aucune commande trouvée pour cet utilisateur'),
+                  child: Text(
+                    'Aucune commande trouvée pour cet utilisateur',
+                  ),
                 )
               : ListView.builder(
                   itemCount: _userOrders.length,
