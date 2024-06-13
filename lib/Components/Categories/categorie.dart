@@ -97,7 +97,9 @@ class _CategorieState extends State<Categorie> {
                             shape: BoxShape.circle,
                             color: Color.fromARGB(255, 215, 194, 233),
                           ),
-                          child: _buildCategoryImage(category['name']),
+                          child: ClipOval(
+                            child: _buildCategoryImage(category['name']),
+                          ),
                         ),
                         const SizedBox(height: 10),
                         Text(

@@ -141,7 +141,7 @@ class _searchState extends State<search> {
                     items: [
                       //1st Image of Slider
                       carteReu(
-                        image: Image.asset(
+                        image: Image .asset(
                           "assets/sac1.png",
                           fit: BoxFit.cover,
                         ),
