@@ -8,14 +8,6 @@ import 'dart:convert';
 
 class Couleur {
   final Color bleu, rouge, vert, jaune, noir;
-<<<<<<< HEAD
-  Couleur(
-      {required this.bleu,
-      required this.rouge,
-      required this.vert,
-      required this.jaune,
-      required this.noir});
-=======
   Couleur({
     required this.bleu,
     required this.rouge,
@@ -23,7 +15,6 @@ class Couleur {
     required this.jaune,
     required this.noir,
   });
->>>>>>> bf1b06f3a61e124ea3c81672be49e4fb935862ad
 }
 
 class Detail extends StatefulWidget {
@@ -51,8 +42,6 @@ class _DetailState extends State<Detail> {
     fetchProductDetails();
   }
 
-<<<<<<< HEAD
-=======
   Future<void> fetchProductDetails() async {
     final response = await http.post(
       Uri.parse('https://niefeko.com/wp-json/custom-routes/v1/products'),
@@ -78,7 +67,6 @@ class _DetailState extends State<Detail> {
     }
   }
 
->>>>>>> bf1b06f3a61e124ea3c81672be49e4fb935862ad
   void removeToCart(Product product) {
     int existingIndex = 0;
     setState(() {
@@ -87,156 +75,6 @@ class _DetailState extends State<Detail> {
     });
   }
 
-<<<<<<< HEAD
-  void addToCart(Product product) async {
-    String imageUrl = product.imagePath;
-    String productName = product.name;
-    double price = product.price;
-    //String description = product.description;
-
-    // Vérifier si le produit existe déjà dans le panier
-    int existingIndex =
-        cartItems.indexWhere((product) => product.name == productName);
-    if (existingIndex != -1) {
-      // Le produit existe déjà dans le panier, augmentez simplement la quantité
-      setState(() {
-        cartItems[existingIndex].quantity++; // Augmenter la quantité du produit
-        cartItemCount++; // Augmenter le nombre total d'articles dans le panier
-      });
-    } else {
-      // Le produit n'existe pas encore dans le panier, l'ajouter
-      setState(() {
-        cartItems.add(Product(
-          imagePath: imageUrl,
-          name: productName,
-          description: product.description,
-          price: price,
-          quantity: 1, // Initialiser la quantité à 1
-        ));
-        cartItemCount++; // Augmenter le nombre total d'articles dans le panier
-      });
-    }
-  }
-
-  void removeFromCart(int index) {
-    setState(() {
-      cartItems.removeAt(index);
-      cartItemCount--;
-    });
-  }
-
-  Future<void> navigateToCartPage() async {
-    User? user = FirebaseAuth.instance.currentUser;
-    if (user == null) {
-      // Redirection vers la page de connexion si l'utilisateur n'est pas connecté
-      // Vous pouvez implémenter cela selon vos besoins
-      return;
-    }
-
-    String userID = user.uid;
-    String email = user.email!;
-
-    DocumentSnapshot userSnapshot = await FirebaseFirestore.instance
-        .collection('Inscription')
-        .doc(userID)
-        .get();
-
-    String prenom = userSnapshot['prenom'];
-    String nom = userSnapshot['nom'];
-
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-          builder: (context) => CartPanier(
-              cartItems: cartItems,
-              user_firstname: "",
-              user_lastname: "",
-              user_email: "")),
-    );
-  }
-
-  void validateCart(
-      BuildContext context, String idClient, String prenom, String nom) async {
-    User? user = FirebaseAuth.instance.currentUser;
-    if (user == null) {
-      // Redirection vers la page de connexion si l'utilisateur n'est pas connecté
-      // Vous pouvez implémenter cela selon vos besoins
-      return;
-    }
-
-    String userID = user.uid;
-
-    DocumentSnapshot userSnapshot = await FirebaseFirestore.instance
-        .collection('Inscription')
-        .doc(userID)
-        .get();
-
-    String prenom = userSnapshot['prenom'];
-    String nom = userSnapshot['nom'];
-    String email = userSnapshot[
-        'email']; // Si l'email est stocké dans la collection "Inscription"
-
-    // ignore: avoid_function_literals_in_foreach_calls
-    cartItems.forEach((product) {
-      String imageUrl = product.imagePath;
-      String productName = product.name;
-      double price = product.price;
-      //String description = product.description;
-      DateTime timestamp = DateTime.now();
-
-      double totalAmount = price *
-          product
-              .quantity; // Calculer le montant total en multipliant le prix par la quantité
-
-      Order order = Order(
-        imageUrl: imageUrl,
-        idClient: userID,
-        prenom: prenom,
-        nom: nom,
-        email: email,
-        nomProduit: productName,
-        description: product.description,
-        nomFournisseur: 'nom du fournisseur',
-        //couleur: couleur,
-        nbrProduit: product.quantity, // Utiliser la quantité du produit
-        prix: price,
-        totalAmount: totalAmount,
-        timestamp: timestamp,
-      );
-
-      addOrderToFirestore(order);
-    });
-
-    setState(() {
-      cartItems.clear();
-      cartItemCount = 0;
-    });
-
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Panier validé'),
-        content: const Text('Votre panier a été validé avec succès.'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('OK'),
-          ),
-        ],
-      ),
-    );
-  }
-
-  void addOrderToFirestore(Order order) {
-    CollectionReference orders =
-        FirebaseFirestore.instance.collection('Panier');
-
-    orders
-        .add(order.toMap())
-        .then((value) => print("Commande ajoutée avec l'ID: ${value.id}"))
-        .catchError(
-            (error) => print("Erreur lors de l'ajout de la commande: $error"));
-=======
   void addToCart(Product product) {
     String imageUrl = product.imagePath;
     String productName = product.name;
@@ -276,35 +114,14 @@ class _DetailState extends State<Detail> {
       context,
       MaterialPageRoute(
         builder: (context) => CartPanier(
-          cartItems: cartItems,
+          cartItems: cartItems, user_firstname: '', user_lastname: '',
         ),
       ),
     );
->>>>>>> bf1b06f3a61e124ea3c81672be49e4fb935862ad
   }
 
   @override
   Widget build(BuildContext context) {
-<<<<<<< HEAD
-    return buildCard(
-        index,
-        Product(
-            imagePath: widget.product.imagePath,
-            name: widget.product.name,
-            description: widget.product.description,
-            price: widget.product.price));
-  }
-
-  // @override
-  Widget buildCard(index, Product product) {
-    List<Color> colors = [
-      Colors.red,
-      Colors.blue,
-      Colors.green,
-      Colors.yellow,
-      Colors.black
-    ];
-=======
     return buildCard(index, Product(
       id: widget.product.id,
       imagePath: widget.product.imagePath,
@@ -316,7 +133,6 @@ class _DetailState extends State<Detail> {
 
   Widget buildCard(index, Product product) {
     List<Color> colors = [Colors.red, Colors.blue, Colors.green, Colors.yellow, Colors.black];
->>>>>>> bf1b06f3a61e124ea3c81672be49e4fb935862ad
     return Scaffold(
       backgroundColor: Color(0xFF593070),
       body: Column(
@@ -334,27 +150,12 @@ class _DetailState extends State<Detail> {
                     ),
                   );
                 },
-<<<<<<< HEAD
-                //style: IconButton.styleFrom(
-                //backgroundColor: Colors.white,
-                //fixedSize: const Size(55, 55),
-                // shape: RoundedRectangleBorder(
-                //     borderRadius: BorderRadius.circular(15))
-                //  ),
-=======
->>>>>>> bf1b06f3a61e124ea3c81672be49e4fb935862ad
                 icon: const Icon(Icons.arrow_back),
                 color: Colors.white,
               ),
               IconButton(
                 icon: Icon(
-<<<<<<< HEAD
-                  isFavoritedList[index]
-                      ? Icons.favorite
-                      : Icons.favorite_border,
-=======
                   isFavoritedList[index] ? Icons.favorite : Icons.favorite_border,
->>>>>>> bf1b06f3a61e124ea3c81672be49e4fb935862ad
                   color: isFavoritedList[index] ? Colors.red : Colors.white,
                 ),
                 onPressed: () {
@@ -362,28 +163,6 @@ class _DetailState extends State<Detail> {
                     isFavoritedList[index] = !isFavoritedList[index];
                   });
 
-<<<<<<< HEAD
-                  // Vérifiez si le produit est ajouté aux favoris
-                  if (isFavoritedList[index]) {
-                    // Créez une instance de produit
-                    Product favoriteProduct = Product(
-                      imagePath: product.imagePath, //'assets/gourde.png',
-                      name: product.name, //imageName,//'Gourde',
-                      description: product.description,
-                      price: product.price, //price,
-                    );
-
-                    // Ajouter le produit aux favoris dans Firestore
-                    addFavoriteToFirestore(favoriteProduct);
-                  }
-                },
-                style: IconButton.styleFrom(
-                    //backgroundColor: Colors.white,
-                    fixedSize: const Size(55, 55),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15))),
-              )
-=======
                   if (isFavoritedList[index]) {
                     Product favoriteProduct = Product(
                       id: product.id,
@@ -397,7 +176,6 @@ class _DetailState extends State<Detail> {
                   }
                 },
               ),
->>>>>>> bf1b06f3a61e124ea3c81672be49e4fb935862ad
             ],
           ),
           Container(
@@ -463,20 +241,6 @@ class _DetailState extends State<Detail> {
                                   ),
                                 );
                               },
-<<<<<<< HEAD
-                              child: Row(children: const [
-                                Text(
-                                  'fournisseur',
-                                  style: TextStyle(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.w600,
-                                    color: Color(0xFF593070),
-                                  ),
-                                ),
-                                Icon(Icons.storage_rounded),
-                              ]),
-                            )
-=======
                               child: Row(
                                 children: const [
                                   Text(
@@ -491,7 +255,6 @@ class _DetailState extends State<Detail> {
                                 ],
                               ),
                             ),
->>>>>>> bf1b06f3a61e124ea3c81672be49e4fb935862ad
                           ],
                         ),
                         Text(
@@ -516,40 +279,6 @@ class _DetailState extends State<Detail> {
                             scrollDirection: Axis.horizontal,
                             itemCount: 5,
                             itemBuilder: (context, Color) => Container(
-<<<<<<< HEAD
-                                margin: const EdgeInsets.only(right: 6),
-                                width: 200,
-                                //height: 10,
-                                decoration: BoxDecoration(
-                                  color: Colors.grey.shade100,
-                                  borderRadius: BorderRadius.circular(40),
-                                ),
-                                child: ElevatedButton(
-                                  onPressed: () {
-                                    setState(
-                                      () {
-                                        addToCart(product);
-                                      },
-                                    );
-                                  },
-                                  child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        //ColorFiltered(colorFilter: ColorFilter.mode(Colors.black, BlendMode.colorBurn)),
-                                        Image(
-                                            height: 70,
-                                            image:
-                                                AssetImage(product.imagePath),
-                                            color: colors[Color]),
-                                        Text(
-                                          product.name,
-                                          //textAlign: TextAlign.center,
-                                          style: TextStyle(fontSize: 15),
-                                        )
-                                      ]),
-                                )),
-=======
                               margin: const EdgeInsets.only(right: 6),
                               width: 200,
                               decoration: BoxDecoration(
@@ -578,7 +307,6 @@ class _DetailState extends State<Detail> {
                                 ),
                               ),
                             ),
->>>>>>> bf1b06f3a61e124ea3c81672be49e4fb935862ad
                           ),
                         ),
                         const SizedBox(height: 20),
@@ -596,13 +324,6 @@ class _DetailState extends State<Detail> {
         padding: EdgeInsets.symmetric(horizontal: 20),
         alignment: Alignment.center,
         width: double.infinity,
-<<<<<<< HEAD
-        //height: MediaQuery.of(context).size.height,
-        decoration: BoxDecoration(
-            color: Color(0xFF593070),
-            borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(10), topRight: Radius.circular(10))),
-=======
         decoration: BoxDecoration(
           color: Color(0xFF593070),
           borderRadius: BorderRadius.only(
@@ -610,7 +331,6 @@ class _DetailState extends State<Detail> {
             topRight: Radius.circular(10),
           ),
         ),
->>>>>>> bf1b06f3a61e124ea3c81672be49e4fb935862ad
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -625,27 +345,7 @@ class _DetailState extends State<Detail> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-<<<<<<< HEAD
-                  IconButton(
-                      onPressed: () {
-                        if (cartItemCount > 1) {
-                          setState(() {
-                            //cartItemCount --;
-                            removeToCart(product);
-                          });
-                        }
-                      },
-                      icon: Icon(
-                        Icons.remove_circle,
-                        color: Color(0xFF593070),
-                        size: 25,
-                      )),
-                  const SizedBox(
-                    width: 4,
-                  ),
-=======
                   Icon(Icons.shopping_cart),
->>>>>>> bf1b06f3a61e124ea3c81672be49e4fb935862ad
                   Text(
                     cartItemCount.toString(),
                     style: TextStyle(
@@ -653,28 +353,6 @@ class _DetailState extends State<Detail> {
                       fontWeight: FontWeight.w500,
                     ),
                   ),
-<<<<<<< HEAD
-                  const SizedBox(
-                    width: 4,
-                  ),
-                  IconButton(
-                      onPressed: () {
-                        setState(() {
-                          //cartItemCount ++ ;
-                          addToCart(product);
-                        });
-                      },
-                      icon: Icon(
-                        Icons.add_circle,
-                        color: Color(0xFF593070),
-                        size: 25,
-                      ))
-                ],
-              ),
-            ),
-            const SizedBox(width: 15),
-            Expanded(
-=======
                 ],
               ),
             ),
@@ -684,7 +362,6 @@ class _DetailState extends State<Detail> {
                 borderRadius: BorderRadius.circular(10),
                 color: Colors.deepPurple.shade200,
               ),
->>>>>>> bf1b06f3a61e124ea3c81672be49e4fb935862ad
               child: ElevatedButton(
                 onPressed: () {
                   navigateToCartPage();
@@ -701,77 +378,8 @@ class _DetailState extends State<Detail> {
     );
   }
 
-<<<<<<< HEAD
-  // Méthode pour ajouter un produit aux favoris dans Firestore
-  void addFavoriteToFirestore(Product favoriteProduct) {
-    // Référence à la collection "favorites" dans Firestore
-    CollectionReference favorites =
-        FirebaseFirestore.instance.collection('favoris');
-
-    // Ajouter le produit aux favoris dans Firestore
-    favorites
-        .add(favoriteProduct.toMap())
-        .then((value) =>
-            print("Produit ajouté aux favoris avec l'ID: ${value.id}"))
-        .catchError(
-            (error) => print("Erreur lors de l'ajout aux favoris: $error"));
-  }
-}
-
-class Order {
-  final String imageUrl;
-  final String idClient;
-  final String prenom;
-  final String nom;
-  final String email;
-  final String nomProduit;
-  final String nomFournisseur;
-  final int nbrProduit;
-  final String description;
-  //final String couleur;
-  final double prix;
-  final double totalAmount;
-  final DateTime timestamp;
-
-  Order({
-    required this.imageUrl,
-    required this.idClient,
-    required this.prenom,
-    required this.nom,
-    required this.email,
-    required this.nomProduit,
-    required this.description,
-    required this.nomFournisseur,
-    required this.nbrProduit,
-    //required this.couleur,
-    required this.prix,
-    required this.totalAmount,
-    required this.timestamp,
-  });
-
-  // Convertir la commande en un map pour Firestore
-  Map<String, dynamic> toMap() {
-    return {
-      'imageUrl': imageUrl,
-      'idClient': idClient,
-      'prenom': prenom,
-      'nom': nom,
-      'email': email,
-      'description': description,
-      'nomProduit': nomProduit,
-      'nomFournisseur': nomFournisseur,
-      'nbrProduit': nbrProduit,
-      //'couelur': couleur,
-      'prix': prix,
-      'totalAmount': totalAmount,
-      'timestamp': timestamp,
-    };
-  }
-}
-=======
   void addFavoriteToLocal(Product product) {
     // Logic to add the product to local favorites (e.g., local storage, shared preferences)
     // This function can be implemented as per your requirements.
   }
 }
->>>>>>> bf1b06f3a61e124ea3c81672be49e4fb935862ad

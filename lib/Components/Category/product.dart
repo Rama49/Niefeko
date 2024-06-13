@@ -1,8 +1,8 @@
 class Product {
-  final String imagePath;
-  final String name;
-  final String description;
-  final double price;
+  late final String imagePath;
+  late final String name;
+  late final String description;
+  late final double price;
   int quantity ;
 
   Product({
@@ -10,7 +10,7 @@ class Product {
     required this.name,
     required this.description,
     required this.price,
-    this.quantity = 1,
+    this.quantity = 1, required id,
   });
 
   get id => null;
