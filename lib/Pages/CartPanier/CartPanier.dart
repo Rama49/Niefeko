@@ -8,7 +8,7 @@ class CartPanier extends StatefulWidget {
 
   const CartPanier({
     Key? key,
-    required this.cartItems, required void Function(int index) removeFromCart, required String idClient, required String prenom, required String nom, required void Function(BuildContext context, String idClient, String prenom, String nom) validateCart, required String email,
+    required this.cartItems,
   }) : super(key: key);
 
   @override
