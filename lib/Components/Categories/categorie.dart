@@ -141,8 +141,21 @@ class _CategorieState extends State<Categorie> {
   Widget _buildCategoryImage(String categoryName) {
     final cleanedCategoryName = _normalizeCategoryName(_decodeHtmlEntity(categoryName));
     final imagePath = categoryImages[cleanedCategoryName];
-    return imagePath != null
-        ? Image.asset(imagePath, fit: BoxFit.cover)
-        : Image.asset('assets/tshirt1.jpg', fit: BoxFit.cover);
+    return Container(
+      width: 100,
+      height: 100,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        border: Border.all(
+          color: Colors.white, // Couleur de la bordure
+          width: 4.0, // Épaisseur de la bordure
+        ),
+      ),
+      child: ClipOval(
+        child: imagePath != null
+            ? Image.asset(imagePath, fit: BoxFit.cover)
+            : Image.asset('assets/tshirt1.jpg', fit: BoxFit.cover),
+      ),
+    );
   }
 }
