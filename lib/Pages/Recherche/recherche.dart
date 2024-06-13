@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:niefeko/Components/Categories/categorie.dart';
 import 'package:niefeko/Components/Deals/deal.dart';
-import 'package:niefeko/Components/produitcart/produitTest.dart';
+//import 'package:niefeko/Components/produitcart/produitTest.dart';
 import 'package:niefeko/Components/produitcart/produit_Card.dart';
 import 'package:niefeko/Pages/Connexion/connexion.dart';
 import 'package:niefeko/Pages/Favoris/pagefavoris.dart';
@@ -11,7 +11,7 @@ import 'package:niefeko/Pages/PanierHistorique/PanierPage.dart';
 import 'package:niefeko/Pages/SettingsPage/SettingsPage.dart';
 import 'package:niefeko/Reutilisable/carteReu.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:niefeko/Components/Category/product.dart';
+//import 'package:niefeko/Components/Category/product.dart';
 
 // ignore: camel_case_types
 class search extends StatefulWidget {
