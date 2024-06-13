@@ -108,6 +108,12 @@ flutter:
       - assets/logoDjolo.png
       - assets/logoPacao.png
       - assets/logo.png
+      - assets/collection-femme.jpg
+      - assets/collection-homme.jpg
+      - assets/cuisine-&amp;-maison.jpg
+      - assets/electroniques.jpg
+      - assets/habillement.jpg
+      - assets/soins-&amp;-bien-être.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
