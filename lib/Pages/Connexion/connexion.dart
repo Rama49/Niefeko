@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 import 'package:niefeko/Pages/Recherche/recherche.dart';
 import 'package:niefeko/Pages/Inscription/inscription.dart';
 import 'package:niefeko/Pages/resetpassword/ResetPassword.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class connexion extends StatefulWidget {
   const connexion({Key? key}) : super(key: key);
@@ -17,27 +19,75 @@ class _connexionState extends State<connexion> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   bool _isObscure = true;
+  bool _isLoading = false; // Nouvelle variable pour gérer l'état du chargement
+
+  Future<void> saveToken(String token) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('token', token);
+    print('jeton saved: $token'); 
+  }
 
   Future<void> _signInWithEmailAndPassword() async {
+    setState(() {
+      _isLoading = true; // Activer le chargement lors de la soumission du formulaire
+    });
+
     try {
-      UserCredential userCredential =
-          await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: _emailController.text,
-        password: _passwordController.text,
+      final url = Uri.parse('https://niefeko.com/wp-json/jwt-auth/v1/token');
+      final response = await http.post(
+        url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, String>{
+          'username': _emailController.text,
+          'password': _passwordController.text,
+        }),
       );
-      Fluttertoast.showToast(
-        msg: "Connexion réussie avec succès",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.TOP,
-        timeInSecForIosWeb: 3,
-        backgroundColor: Colors.white,
-        textColor: const Color.fromARGB(255, 68, 8, 219),
-        fontSize: 16.0,
-      );
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => search()),
-      );
+
+      if (response.statusCode == 200) {
+        final responseData = jsonDecode(response.body);
+        final token = responseData['token'];
+
+        if (token != null) {
+          await saveToken(token);
+
+          Fluttertoast.showToast(
+            msg: "Connexion réussie avec succès",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.TOP,
+            timeInSecForIosWeb: 3,
+            backgroundColor: Colors.white,
+            textColor: const Color.fromARGB(255, 68, 8, 219),
+            fontSize: 16.0,
+          );
+
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => search()),
+          );
+        } else {
+          Fluttertoast.showToast(
+            msg: "Erreur de connexion: Token non trouvé",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.TOP,
+            timeInSecForIosWeb: 3,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16.0,
+          );
+        }
+      } else {
+        Fluttertoast.showToast(
+          msg: "Erreur de connexion: ${response.body}",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.TOP,
+          timeInSecForIosWeb: 3,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0,
+        );
+      }
     } catch (e) {
       print("Erreur de connexion: $e");
       Fluttertoast.showToast(
@@ -49,6 +99,10 @@ class _connexionState extends State<connexion> {
         textColor: Colors.white,
         fontSize: 16.0,
       );
+    } finally {
+      setState(() {
+        _isLoading = false; // Désactiver le chargement à la fin du traitement
+      });
     }
   }
 
@@ -65,7 +119,6 @@ class _connexionState extends State<connexion> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                // SizedBox(height: 20),
                 Image.asset(
                   "assets/logoNiefeko.png",
                   width: 80,
@@ -161,7 +214,7 @@ class _connexionState extends State<connexion> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => Resetpassword()),
+                                builder: (context) => Resetpassword()),
                             );
                           },
                           style: TextButton.styleFrom(
@@ -188,7 +241,7 @@ class _connexionState extends State<connexion> {
                         child: SizedBox(
                           width: double.infinity,
                           child: ElevatedButton(
-                            onPressed: () {
+                            onPressed: _isLoading ? null : () {
                               if (_formKey.currentState!.validate()) {
                                 _signInWithEmailAndPassword();
                               }
@@ -204,17 +257,25 @@ class _connexionState extends State<connexion> {
                                     const BorderSide(color: Color(0xFF593070)),
                               ),
                             ),
-                            child: const Text(
-                              "Se connecter",
-                              style: TextStyle(
-                                fontSize: 16.0,
-                                color: Color(0xFF593070),
-                              ),
-                            ),
+                            child: _isLoading
+                                ? SizedBox(
+                                    width: 20,
+                                    height: 20,
+                                    child: CircularProgressIndicator(
+                                      valueColor: AlwaysStoppedAnimation<Color>(
+                                          Colors.black),
+                                    ),
+                                  )
+                                : const Text(
+                                    "Se connecter",
+                                    style: TextStyle(
+                                      fontSize: 16.0,
+                                      color: Color(0xFF593070),
+                                    ),
+                                  ),
                           ),
                         ),
                       ),
-                      // const SizedBox(height: 20),
                       Padding(
                         padding: const EdgeInsets.only(top: 2, bottom: 20),
                         child: SizedBox(

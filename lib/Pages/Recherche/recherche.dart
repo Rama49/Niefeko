@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:niefeko/Components/Categories/categorie.dart';
 import 'package:niefeko/Components/Deals/deal.dart';
+//import 'package:niefeko/Components/produitcart/produitTest.dart';
 import 'package:niefeko/Components/produitcart/produit_Card.dart';
 import 'package:niefeko/Pages/Connexion/connexion.dart';
 import 'package:niefeko/Pages/Favoris/pagefavoris.dart';
@@ -10,7 +11,7 @@ import 'package:niefeko/Pages/PanierHistorique/PanierPage.dart';
 import 'package:niefeko/Pages/SettingsPage/SettingsPage.dart';
 import 'package:niefeko/Reutilisable/carteReu.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:niefeko/Components/Category/product.dart';
+//import 'package:niefeko/Components/Category/product.dart';
 
 // ignore: camel_case_types
 class search extends StatefulWidget {
@@ -23,14 +24,16 @@ class search extends StatefulWidget {
 
 // ignore: camel_case_types
 class _searchState extends State<search> {
-  List<Product> cartItems = [
-    Product(name: '', price: 0, description: '', imagePath: ''),
-  ];
+  get userId => "36";
+
+  // List<Product> cartItems = [
+  //   Product(name: '', price: 0, description: '', imagePath: ''),
+  // ];
 
   // Fonction removeFromCart pour illustrer
   void removeFromCart(int index) {
     setState(() {
-      cartItems.removeAt(index);
+      //cartItems.removeAt(index);
     });
   }
 
@@ -96,10 +99,9 @@ class _searchState extends State<search> {
               ),
               height: MediaQuery.of(context).size.height / 3,
               child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  
                   const SizedBox(height: 60),
                   const Text(
                     "Bienvenue à Niefeko",
@@ -139,8 +141,8 @@ class _searchState extends State<search> {
                     items: [
                       //1st Image of Slider
                       carteReu(
-                        image: Image.asset(
-                          "assets/sac1.png",
+                        image: Image .asset(
+                          "assets/Gommage-Makeda-removebg-preview.png",
                           fit: BoxFit.cover,
                         ),
                         title: "Nouveau",
@@ -150,7 +152,7 @@ class _searchState extends State<search> {
                       //2nd Image of Slider
                       carteReu(
                         image: Image.asset(
-                          "assets/lunette.png",
+                          "assets/Gommage-Makeda-100g-removebg-preview.png",
                           fit: BoxFit.cover,
                         ),
                         title: "Nouveau",
@@ -160,7 +162,7 @@ class _searchState extends State<search> {
                       //3rd Image of Slider
                       carteReu(
                         image: Image.asset(
-                          "assets/shoes.png",
+                          "assets/Detox-Intime-removebg-preview.png",
                           fit: BoxFit.cover,
                         ),
                         title: "Nouveau",
@@ -170,7 +172,7 @@ class _searchState extends State<search> {
                       //4th Image of Slider
                       carteReu(
                         image: Image.asset(
-                          "assets/t-shirt.png",
+                          "assets/Gomme-Matify-Me-removebg-preview.png",
                           fit: BoxFit.cover,
                         ),
                         title: "Nouveau",
@@ -180,7 +182,7 @@ class _searchState extends State<search> {
                       //5th Image of Slider
                       carteReu(
                         image: Image.asset(
-                          "assets/sac1.png",
+                          "assets/Lait-Valouté-Cacao-removebg-preview.png",
                           fit: BoxFit.cover,
                         ),
                         title: "Nouveau",
@@ -205,7 +207,7 @@ class _searchState extends State<search> {
             ),
 
             // Votre Container contenant la catégorie
-            const Column(
+            Column(
               children: [
                 SizedBox(height: 120),
                 Categorie(),
@@ -247,7 +249,8 @@ class _searchState extends State<search> {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => PanierPage()),
+                      MaterialPageRoute(
+                          builder: (context) => PanierPage(userId: "userId")),
                     );
                   },
                   icon: const Icon(Icons.shopping_cart, color: Colors.white),

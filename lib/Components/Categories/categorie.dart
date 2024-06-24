@@ -1,22 +1,61 @@
-// Components/Categories/Categorie.dart
-// ignore_for_file: camel_case_types// ignore_for_file: camel_case_types
-
+import 'dart:convert';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:niefeko/Pages/memeCategorie/MemeCategorie.dart';
-import 'package:niefeko/Pages/memeCategorie/memeCategorie0.dart';
-import 'package:niefeko/Pages/memeCategorie/memeCategorie10.dart';
-import 'package:niefeko/Pages/memeCategorie/memeCategorie11.dart';
+import 'package:http/http.dart' as http;
+import 'package:html/parser.dart' as htmlParser;
+import 'package:niefeko/Pages/Collection/Collectionhabi.dart';
+import 'package:niefeko/Pages/SettingsPage/SettingsPage.dart';
 
 class Categorie extends StatefulWidget {
-  // ignore: use_key_in_widget_constructors
-  const Categorie({Key? key});
+  const Categorie({Key? key}) : super(key: key);
 
   @override
   State<Categorie> createState() => _CategorieState();
 }
 
 class _CategorieState extends State<Categorie> {
+  List<Map<String, dynamic>> categories = [];
+
+  // Tableau des noms de catégories et de leurs images correspondantes
+  final Map<String, String> categoryImages = {
+    'collection femme': 'assets/collection-femme.jpg',
+    'collection homme': 'assets/collection-homme.jpg',
+    'cuisine & maison': 'assets/cuisine-&amp;-maison.jpg',
+    'electroniques': 'assets/electroniques.jpg',
+    'habillement': 'assets/habillement.jpg',
+    'soins & bien être': 'assets/soins-&amp;-bien-être.jpg',
+  };
+
+  @override
+  void initState() {
+    super.initState();
+    fetchCategories();
+  }
+
+  // Méthode pour récupérer les catégories depuis l'API
+  Future<void> fetchCategories() async {
+    final url = Uri.parse(
+        'https://niefeko.com/wp-json/custom-routes/v1/products/categories');
+
+    try {
+      final response = await http.get(url);
+      if (response.statusCode == 200) {
+        final List<dynamic> data = json.decode(response.body);
+        setState(() {
+          categories = List<Map<String, dynamic>>.from(data);
+          // Afficher les noms de catégories sur le terminal
+          categories.forEach((category) {
+            print(_decodeHtmlEntity(category['name']));
+          });
+        });
+      } else {
+        throw Exception('Failed to load categories');
+      }
+    } catch (e) {
+      print('Error fetching categories: $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -36,57 +75,56 @@ class _CategorieState extends State<Categorie> {
             ],
           ),
           const SizedBox(height: 20),
-          CarouselSlider(
-            items: [
-              InkWell(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => MemeCategorie()),
-                  );
-                },
-                child: buildCarouselItem("assets/gourde.png", "Gourde"),
+          GestureDetector(
+      //        onTap: () {
+      //   Navigator.push(
+      //     context,
+      //     MaterialPageRoute(builder: (context) => CollectionHabit()),
+      //   );
+      // },
+            child: CarouselSlider(
+              options: CarouselOptions(
+                enlargeCenterPage: false,
+                autoPlay: false, // Désactiver le défilement automatique
+                aspectRatio: 23 / 9,
+                autoPlayCurve: Curves.fastOutSlowIn,
+                enableInfiniteScroll: true,
+                autoPlayAnimationDuration: const Duration(milliseconds: 500),
+                viewportFraction: 0.25, // Une image à la fois
               ),
-
-              InkWell(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => MemeCategorie0()),
-                  );
-                },
-                child: buildCarouselItem("assets/pantalon.png", "Pantalon"),
-              ),
-              InkWell(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => MemeCategorie11()),
-                  );
-                },
-                child: buildCarouselItem("assets/lunnete1.png", "Lunettes"),
-              ),
-              //4th Image of Slider
-              InkWell(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => MemeCategorie10()),
-                  );
-                },
-                child: buildCarouselItem("assets/torche.png", "Torche"),
-              ),
-              // buildCarouselItem("assets/maronshoes.png", "Maronshoes"),
-            ],
-            //Slider Container properties
-            options: CarouselOptions(
-              enlargeCenterPage: false,
-              autoPlay: true,
-              aspectRatio: 23 / 9,
-              autoPlayCurve: Curves.fastOutSlowIn,
-              enableInfiniteScroll: true,
-              autoPlayAnimationDuration: const Duration(milliseconds: 500),
-              viewportFraction: 0.25, // Une image à la fois
+              items: categories.map((category) {
+                return Builder(
+                  builder: (BuildContext context) {
+                    return Container(
+                      margin: EdgeInsets.only(left: 5.0, right: 5.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            width: 100,
+                            height: 100,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Color.fromARGB(255, 215, 194, 233),
+                            ),
+                            child: ClipOval(
+                              child: _buildCategoryImage(category['name']),
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          Text(
+                            _decodeHtmlEntity(category['name'] ?? 'No Name'),
+                            style: TextStyle(
+                              fontSize: 12.5,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                );
+              }).toList(),
             ),
           ),
         ],
@@ -94,34 +132,33 @@ class _CategorieState extends State<Categorie> {
     );
   }
 
-  Widget buildCarouselItem(String imagePath, String text) {
-    // ignore: avoid_unnecessary_containers
-    return Container(
-      // padding: EdgeInsets.symmetric(vertical: 0),
-      // color: Colors.amber,
-      child: Column(
-        children: [
-          Container(
-            height: 80, // Hauteur du background mauve
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(40.0),
-              color: const Color.fromARGB(255, 215, 194, 233),
-            ),
-            child: Image.asset(
-              imagePath,
-              // width: 120,
-              height: 100,
-            ),
-          ),
-          const SizedBox(height: 8), // Espacement entre l'image et le texte
-          Text(
-            text,
-            style: const TextStyle(
-              fontSize: 16,
-            ),
-          ),
-        ],
-      ),
-    );
+  // Méthode pour décoder les entités HTML dans les noms de catégories
+  String _decodeHtmlEntity(String htmlString) {
+    final document = htmlParser.parse(htmlString);
+    if (document != null) {
+      return document.body?.text ?? htmlString;
+    } else {
+      return htmlString;
+    }
+  }
+
+  // Méthode pour nettoyer et normaliser les noms de catégories
+  String _normalizeCategoryName(String categoryName) {
+    return categoryName.toLowerCase().replaceAll(
+        '&amp;', '&'); // Remplacer les entités HTML par des caractères normaux
+  }
+
+  // Méthode pour construire l'image de la catégorie en fonction du nom de la catégorie
+  Widget _buildCategoryImage(String categoryName) {
+    final cleanedCategoryName =
+        _normalizeCategoryName(_decodeHtmlEntity(categoryName));
+    final imagePath = categoryImages[cleanedCategoryName];
+    return imagePath != null
+        ? Image.asset(imagePath, fit: BoxFit.cover)
+        : Image.asset(
+            'assets/casque.png',
+            width: 200,
+            height: 200,
+          );
   }
 }

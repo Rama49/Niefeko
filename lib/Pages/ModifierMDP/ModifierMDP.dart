@@ -1,61 +1,19 @@
-// ignore: duplicate_ignore
-// ignore_for_file: file_names, duplicate_ignore
-
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
-// ignore: use_key_in_widget_constructors
 class ModifierMDP extends StatefulWidget {
   @override
-  // ignore: library_private_types_in_public_api
   _ModifierMDPState createState() => _ModifierMDPState();
 }
 
 class _ModifierMDPState extends State<ModifierMDP> {
   final _formKey = GlobalKey<FormState>();
-  String _password = '';
+  late String _email;
   late String _newPassword;
-  // ignore: unused_field
   late String _confirmNewPassword;
-  String?
-      _oldPassword; // Ajout de la variable pour stocker l'ancien mot de passe
-
-  bool _passwordVisible = false;
   bool _newPasswordVisible = false;
   bool _confirmNewPasswordVisible = false;
-
-  @override
-  void initState() {
-    super.initState();
-    // Chargez le mot de passe actuel lors de l'initialisation de l'état
-    _loadCurrentPassword();
-  }
-
-  Future<void> _loadCurrentPassword() async {
-    try {
-      // Récupérer l'utilisateur actuel
-      User? user = FirebaseAuth.instance.currentUser;
-      // Vérifier si l'utilisateur est connecté
-      if (user != null) {
-        // Récupérer les données de l'utilisateur depuis Firestore
-        DocumentSnapshot userData = await FirebaseFirestore.instance
-            .collection('Inscription')
-            .doc(user.uid)
-            .get();
-        if (userData.exists) {
-          String? currentPassword = userData['password'];
-          setState(() {
-            _password = currentPassword ?? '';
-            _oldPassword = currentPassword; // Stockez l'ancien mot de passe
-          });
-        }
-      }
-    } catch (error) {
-      // ignore: avoid_print
-      print('Erreur lors du chargement du mot de passe actuel: $error');
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -76,20 +34,12 @@ class _ModifierMDPState extends State<ModifierMDP> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                _buildPasswordTextField(
-                  labelText: 'Mot de passe actuel',
-                  initialValue: _password,
-                  onChanged: (value) => _password = value,
-                  isVisible: _passwordVisible,
-                  onVisibilityToggle: () {
-                    setState(() {
-                      _passwordVisible = !_passwordVisible;
-                    });
-                  },
+                _buildTextField(
+                  labelText: 'Adresse e-mail',
+                  onChanged: (value) => _email = value,
                 ),
                 _buildPasswordTextField(
                   labelText: 'Nouveau mot de passe',
-                  initialValue: '',
                   onChanged: (value) => _newPassword = value,
                   isVisible: _newPasswordVisible,
                   onVisibilityToggle: () {
@@ -100,7 +50,6 @@ class _ModifierMDPState extends State<ModifierMDP> {
                 ),
                 _buildPasswordTextField(
                   labelText: 'Confirmer le nouveau mot de passe',
-                  initialValue: '',
                   onChanged: (value) => _confirmNewPassword = value,
                   isVisible: _confirmNewPasswordVisible,
                   onVisibilityToggle: () {
@@ -112,12 +61,23 @@ class _ModifierMDPState extends State<ModifierMDP> {
                 ElevatedButton(
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
-                      _changePassword(context);
+                      if (_newPassword != _confirmNewPassword) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content:
+                                Text('Les mots de passe ne correspondent pas'),
+                            duration: Duration(seconds: 2),
+                          ),
+                        );
+                      } else {
+                        _changePassword(context);
+                      }
                     }
                   },
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 20, vertical: 10), backgroundColor: const Color(0xFF612C7D),
+                        horizontal: 20, vertical: 10),
+                    backgroundColor: const Color(0xFF612C7D),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(7),
                     ),
@@ -138,9 +98,33 @@ class _ModifierMDPState extends State<ModifierMDP> {
     );
   }
 
+  Widget _buildTextField({
+    required String labelText,
+    required ValueChanged<String> onChanged,
+  }) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 10.0),
+      child: SizedBox(
+        width: double.infinity,
+        child: TextFormField(
+          decoration: InputDecoration(
+            labelText: labelText,
+            border: const OutlineInputBorder(),
+          ),
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Veuillez entrer $labelText';
+            }
+            return null;
+          },
+          onChanged: onChanged,
+        ),
+      ),
+    );
+  }
+
   Widget _buildPasswordTextField({
     required String labelText,
-    required String initialValue,
     required ValueChanged<String> onChanged,
     required bool isVisible,
     required VoidCallback onVisibilityToggle,
@@ -158,7 +142,6 @@ class _ModifierMDPState extends State<ModifierMDP> {
             ),
             border: const OutlineInputBorder(),
           ),
-          initialValue: initialValue,
           obscureText: !isVisible,
           validator: (value) {
             if (value == null || value.isEmpty) {
@@ -173,27 +156,32 @@ class _ModifierMDPState extends State<ModifierMDP> {
   }
 
   void _changePassword(BuildContext context) async {
+    if (_email.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Veuillez entrer une adresse e-mail'),
+          duration: Duration(seconds: 2),
+        ),
+      );
+      return;
+    }
+
     try {
-      User? user = FirebaseAuth.instance.currentUser;
-      if (user != null) {
-        AuthCredential credential = EmailAuthProvider.credential(
-            email: user.email!, password: _password);
-        await user.reauthenticateWithCredential(credential);
+      final response = await http.post(
+        Uri.parse('https://niefeko.com/wp-json/custom-routes/v1/password/new'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, String>{
+          'username': _email,
+          'password': _newPassword,
+        }),
+      );
 
-        await FirebaseFirestore.instance
-            .collection('Inscription')
-            .doc(user.uid)
-            .update({
-          'oldMotDePasse':
-              _oldPassword, // Utilisez l'ancien mot de passe stocké
-          'newMotDePasse': _newPassword,
-          'motDePasse':
-              _newPassword, // Mettez à jour le mot de passe avec le nouveau mot de passe
-        });
+      print('Response status: ${response.statusCode}');
+      print('Response body: ${response.body}');
 
-        await user.updatePassword(_newPassword);
-
-        // ignore: use_build_context_synchronously
+      if (response.statusCode == 200) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Mot de passe modifié avec succès'),
@@ -201,11 +189,18 @@ class _ModifierMDPState extends State<ModifierMDP> {
           ),
         );
 
-        // ignore: use_build_context_synchronously
         Navigator.pop(context);
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+                'Erreur lors de la modification du mot de passe: ${response.body}'),
+            duration: const Duration(seconds: 2),
+          ),
+        );
       }
     } catch (error) {
-      // ignore: use_build_context_synchronously
+      print('Error: $error');
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content:

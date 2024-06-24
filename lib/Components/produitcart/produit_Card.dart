@@ -1,910 +1,119 @@
-// ignore: unnecessary_import
-import 'package:flutter/cupertino.dart';
+import 'dart:convert';
 import 'package:flutter/material.dart';
-// ignore: unnecessary_import
-import 'package:flutter/widgets.dart';
-// ignore: unused_import
-import 'package:niefeko/Components/Deals/deal.dart';
-import 'package:niefeko/Pages/Boutique/boutique.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:http/http.dart' as http;
+import 'FournisseurProduct.dart';
 
-// ignore: camel_case_types
-class product extends StatelessWidget {
-  const product({super.key});
+class product extends StatefulWidget {
+  @override
+  _productState createState() => _productState();
+}
+
+class _productState extends State<product> {
+  List<dynamic> suppliers = [];
+
+  @override
+  void initState() {
+    super.initState();
+    fetchSuppliers();
+  }
+
+  Future<void> fetchSuppliers() async {
+    const url = 'https://niefeko.com/wp-json/dokan/v1/stores'; 
+    try {
+      final response = await http.get(Uri.parse(url));
+      if (response.statusCode == 200) {
+        setState(() {
+          suppliers = json.decode(response.body);
+        });
+      } else {
+        throw 'Erreur de chargement des fournisseurs';
+      }
+    } catch (e) {
+      print('Erreur lors de la récupération des fournisseurs: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      const Text(
-        "Nos Boutiques",
-        style: TextStyle(
-          fontWeight: FontWeight.bold,
-          fontSize: 20,
-        ),
-      ),
-      const SizedBox(height: 20),
-      Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 25),
-        child: Card(
-          color: const Color.fromARGB(255, 215, 194, 233),
-          child: InkWell(
-            // onTap: () {
-            //   _launchURL();
-            // },
-            child: Stack(
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Image.asset(
-                      "assets/logoAfricavivre.png",
-                      width: 100,
-                      height: 100,
-                      fit: BoxFit.cover,
-                    ),
-                    const Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Column(
-                        children: [
-                          Text(
-                            "Fournisseur1",
-                            style: TextStyle(fontWeight: FontWeight.bold),
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              "Nos Boutiques",
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 20,
+              ),
+            ),
+            const SizedBox(height: 20),
+            ListView.builder(
+              physics: NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              itemCount: suppliers.length,
+              itemBuilder: (BuildContext context, int index) {
+                final supplier = suppliers[index];
+                final storeName = supplier['store_name'] ?? 'Nom inconnu';
+                final imageUrl = supplier['gravatar'] ?? 'inconnu';
+                final payment = supplier['payment'] ?? 'inconnu';
+                return Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  child: Card(
+                    color: const Color.fromARGB(255, 215, 194, 233),
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => FournisseurProduct(supplierId: supplier['id']),
                           ),
-                          SizedBox(height: 4),
-                          Text(
-                            "Mode",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.green),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(left: 105),
-                            child: Row(
-                              children: [
-                                Icon(
-                                  Icons.star,
-                                  color: Colors.purple,
-                                ),
-                                Icon(
-                                  Icons.star,
-                                  color: Colors.purple,
-                                ),
-                                Icon(
-                                  Icons.star,
-                                  color: Colors.purple,
-                                ),
-                                Icon(
-                                  Icons.star,
-                                  color: Colors.grey,
-                                ),
-                                Icon(
-                                  Icons.star,
-                                  color: Colors.grey,
-                                ),
-                              ],
+                        );
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(
+                              storeName,
+                              style: TextStyle(fontWeight: FontWeight.bold),
                             ),
-                          ),
-                          Text(
-                            "membre depuis 1 ans",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.grey),
-                          ),
-                        ],
+                            SizedBox(height: 4),
+                            imageUrl.isNotEmpty
+                                ? Image.network(
+                                    imageUrl,
+                                    width: 100,
+                                    height: 100,
+                                    fit: BoxFit.cover,
+                                    errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                                      return Placeholder(
+                                        fallbackHeight: 100,
+                                        fallbackWidth: 100,
+                                      );
+                                    },
+                                  )
+                                : Placeholder(
+                                    fallbackHeight: 100,
+                                    fallbackWidth: 100,
+                                  ),
+                            Text(
+                              payment,
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                    const SizedBox(height: 8),
-                  ],
-                ),
-              ],
+                  ),
+                );
+              },
             ),
-          ),
+            const SizedBox(height: 20),
+          ],
         ),
       ),
-      const SizedBox(height: 20),
-      Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 25),
-        child: Card(
-          color: const Color.fromARGB(255, 215, 194, 233),
-          child: InkWell(
-            //  onTap: () {
-            //   _launchURL();
-            // },
-            child: Stack(
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Image.asset(
-                      "assets/logoafriquevert.png",
-                      width: 100,
-                      height: 100,
-                      fit: BoxFit.cover,
-                    ),
-                    const Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Column(
-                        children: [
-                          Text(
-                            "Fournisseur2",
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                          SizedBox(height: 4),
-                          Text(
-                            "Mode",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.green),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(left: 105),
-                            child: Row(
-                              children: [
-                                Icon(
-                                  Icons.star,
-                                  color: Colors.purple,
-                                ),
-                                Icon(
-                                  Icons.star,
-                                  color: Colors.purple,
-                                ),
-                                Icon(
-                                  Icons.star,
-                                  color: Colors.grey,
-                                ),
-                                Icon(
-                                  Icons.star,
-                                  color: Colors.grey,
-                                ),
-                                Icon(
-                                  Icons.star,
-                                  color: Colors.grey,
-                                ),
-                              ],
-                            ),
-                          ),
-                          Text(
-                            "membre depuis 6 mois",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.grey),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-      const SizedBox(height: 20),
-      Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 25),
-        child: Card(
-          color: const Color.fromARGB(255, 215, 194, 233),
-          child: InkWell(
-            // onTap: () {
-            //   _launchURL();
-            // },
-            child: Stack(
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Image.asset(
-                      "assets/logoanka.png",
-                      width: 100,
-                      height: 100,
-                      fit: BoxFit.cover,
-                    ),
-                    const Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Column(
-                        children: [
-                          Text(
-                            "Fournisseur3",
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                          SizedBox(height: 4),
-                          Text(
-                            "Mode",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.green),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(left: 105),
-                            child: Row(
-                              children: [
-                                Icon(
-                                  Icons.star,
-                                  color: Colors.purple,
-                                ),
-                                Icon(
-                                  Icons.star,
-                                  color: Colors.grey,
-                                ),
-                                Icon(
-                                  Icons.star,
-                                  color: Colors.grey,
-                                ),
-                                Icon(
-                                  Icons.star,
-                                  color: Colors.grey,
-                                ),
-                                Icon(
-                                  Icons.star,
-                                  color: Colors.grey,
-                                ),
-                              ],
-                            ),
-                          ),
-                          Text(
-                            "membre depuis 1 mois",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.grey),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-      const SizedBox(height: 20),
-      Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 25),
-        child: Card(
-          color: const Color.fromARGB(255, 215, 194, 233),
-          child: InkWell(
-            //  onTap: () {
-            //   _launchURL();
-            // },
-            child: Stack(
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Image.asset(
-                      "assets/logoApi.png",
-                      width: 100,
-                      height: 100,
-                      fit: BoxFit.cover,
-                    ),
-                    const Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Column(
-                        children: [
-                          Text(
-                            "Fournisseur4",
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                          SizedBox(height: 4),
-                          Text(
-                            "Mode",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.green),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(left: 105),
-                            child: Row(
-                              children: [
-                                Icon(
-                                  Icons.star,
-                                  color: Colors.purple,
-                                ),
-                                Icon(
-                                  Icons.star,
-                                  color: Colors.purple,
-                                ),
-                                Icon(
-                                  Icons.star,
-                                  color: Colors.purple,
-                                ),
-                                Icon(
-                                  Icons.star,
-                                  color: Colors.grey,
-                                ),
-                                Icon(
-                                  Icons.star,
-                                  color: Colors.grey,
-                                ),
-                              ],
-                            ),
-                          ),
-                          Text(
-                            "membre depuis 2 ans",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.grey),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-      const SizedBox(height: 20),
-      Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 25),
-        child: Card(
-          color: const Color.fromARGB(255, 215, 194, 233),
-          child: InkWell(
-            //  onTap: () {
-            //   _launchURL();
-            // },
-            child: Stack(
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Image.asset(
-                      "assets/logoAramet.png",
-                      width: 100,
-                      height: 100,
-                      fit: BoxFit.cover,
-                    ),
-                    const Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Column(
-                        children: [
-                          Text(
-                            "Fournisseur5",
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                          SizedBox(height: 4),
-                          Text(
-                            "Mode",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.green),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(left: 105),
-                            child: Row(
-                              children: [
-                                Icon(
-                                  Icons.star,
-                                  color: Colors.purple,
-                                ),
-                                Icon(
-                                  Icons.star,
-                                  color: Colors.purple,
-                                ),
-                                Icon(
-                                  Icons.star,
-                                  color: Colors.grey,
-                                ),
-                                Icon(
-                                  Icons.star,
-                                  color: Colors.grey,
-                                ),
-                                Icon(
-                                  Icons.star,
-                                  color: Colors.grey,
-                                ),
-                              ],
-                            ),
-                          ),
-                          Text(
-                            "membre depuis 3 mois",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.grey),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-      const SizedBox(height: 20),
-      Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 25),
-        child: Card(
-          color: const Color.fromARGB(255, 215, 194, 233),
-          child: InkWell(
-            //  onTap: () {
-            //   _launchURL();
-            // },
-            child: Stack(
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Image.asset(
-                      "assets/logoBakeli.png",
-                      width: 100,
-                      height: 100,
-                      fit: BoxFit.cover,
-                    ),
-                    const Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Column(
-                        children: [
-                          Text(
-                            "Fournisseur6",
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                          SizedBox(height: 4),
-                          Text(
-                            "Mode",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.green),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(left: 105),
-                            child: Row(
-                              children: [
-                                Icon(
-                                  Icons.star,
-                                  color: Colors.purple,
-                                ),
-                                Icon(
-                                  Icons.star,
-                                  color: Colors.purple,
-                                ),
-                                Icon(
-                                  Icons.star,
-                                  color: Colors.purple,
-                                ),
-                                Icon(
-                                  Icons.star,
-                                  color: Colors.purple,
-                                ),
-                                Icon(
-                                  Icons.star,
-                                  color: Colors.purple,
-                                ),
-                              ],
-                            ),
-                          ),
-                          Text(
-                            "membre depuis 3 ans",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.grey),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-      const SizedBox(height: 20),
-      Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 25),
-        child: Card(
-          color: const Color.fromARGB(255, 215, 194, 233),
-          child: InkWell(
-            //  onTap: () {
-            //   _launchURL();
-            // },
-            child: Stack(
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Image.asset(
-                      "assets/logoCap.png",
-                      width: 100,
-                      height: 100,
-                      fit: BoxFit.cover,
-                    ),
-                    const Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Column(
-                        children: [
-                          Text(
-                            "Fournisseur7",
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                          SizedBox(height: 4),
-                          Text(
-                            "Mode",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.green),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(left: 105),
-                            child: Row(
-                              children: [
-                                Icon(
-                                  Icons.star,
-                                  color: Colors.purple,
-                                ),
-                                Icon(
-                                  Icons.star,
-                                  color: Colors.purple,
-                                ),
-                                Icon(
-                                  Icons.star,
-                                  color: Colors.purple,
-                                ),
-                                Icon(
-                                  Icons.star,
-                                  color: Colors.purple,
-                                ),
-                                Icon(
-                                  Icons.star,
-                                  color: Colors.purple,
-                                ),
-                              ],
-                            ),
-                          ),
-                          Text(
-                            "membre depuis 3 ans",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.grey),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-      const SizedBox(height: 20),
-      Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 25),
-        child: Card(
-          color: const Color.fromARGB(255, 215, 194, 233),
-          child: InkWell(
-            // onTap: () {
-            //   _launchURL();
-            // },
-            child: Stack(
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Image.asset(
-                      "assets/logoDjolo.png",
-                      width: 100,
-                      height: 100,
-                      fit: BoxFit.cover,
-                    ),
-                    const Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Column(
-                        children: [
-                          Text(
-                            "Fournisseur8",
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                          SizedBox(height: 4),
-                          Text(
-                            "Mode",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.green),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(left: 105),
-                            child: Row(
-                              children: [
-                                Icon(
-                                  Icons.star,
-                                  color: Colors.purple,
-                                ),
-                                Icon(
-                                  Icons.star,
-                                  color: Colors.grey,
-                                ),
-                                Icon(
-                                  Icons.star,
-                                  color: Colors.purple,
-                                ),
-                                Icon(
-                                  Icons.star,
-                                  color: Colors.grey,
-                                ),
-                                Icon(
-                                  Icons.star,
-                                  color: Colors.grey,
-                                ),
-                              ],
-                            ),
-                          ),
-                          Text(
-                            "membre depuis 7 mois",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.grey),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-      const SizedBox(height: 20),
-      Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 25),
-        child: Card(
-          color: const Color.fromARGB(255, 215, 194, 233),
-          child: InkWell(
-            //  onTap: () {
-            //   _launchURL();
-            // },
-            child: Stack(
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Image.asset(
-                      "assets/logoPacao.png",
-                      width: 100,
-                      height: 100,
-                      fit: BoxFit.cover,
-                    ),
-                    const Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Column(
-                        children: [
-                          Text(
-                            "Fournisseur9",
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                          SizedBox(height: 4),
-                          Text(
-                            "Mode",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.green),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(left: 105),
-                            child: Row(
-                              children: [
-                                Icon(
-                                  Icons.star,
-                                  color: Colors.purple,
-                                ),
-                                Icon(
-                                  Icons.star,
-                                  color: Colors.purple,
-                                ),
-                                Icon(
-                                  Icons.star,
-                                  color: Colors.purple,
-                                ),
-                                Icon(
-                                  Icons.star,
-                                  color: Colors.purple,
-                                ),
-                                Icon(
-                                  Icons.star,
-                                  color: Colors.grey,
-                                ),
-                              ],
-                            ),
-                          ),
-                          Text(
-                            "membre depuis 3 ans",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.grey),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-      const SizedBox(height: 20),
-      Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 25),
-        child: Card(
-          color: const Color.fromARGB(255, 215, 194, 233),
-          child: InkWell(
-            //  onTap: () {
-            //   _launchURL();
-            // },
-            child: Stack(
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Image.asset(
-                      "assets/logoafriquevert.png",
-                      width: 100,
-                      height: 100,
-                      fit: BoxFit.cover,
-                    ),
-                    const Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Column(
-                        children: [
-                          Text(
-                            "Fournisseur10",
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                          SizedBox(height: 4),
-                          Text(
-                            "Mode",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.green),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(left: 105),
-                            child: Row(
-                              children: [
-                                Icon(
-                                  Icons.star,
-                                  color: Colors.purple,
-                                ),
-                                Icon(
-                                  Icons.star,
-                                  color: Colors.purple,
-                                ),
-                                Icon(
-                                  Icons.star,
-                                  color: Colors.grey,
-                                ),
-                                Icon(
-                                  Icons.star,
-                                  color: Colors.grey,
-                                ),
-                                Icon(
-                                  Icons.star,
-                                  color: Colors.grey,
-                                ),
-                              ],
-                            ),
-                          ),
-                          Text(
-                            "membre depuis 1 ans",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.grey),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-      const SizedBox(height: 20),
-      Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 25),
-        child: Card(
-          color: const Color.fromARGB(255, 215, 194, 233),
-          child: InkWell(
-            // onTap: () {
-            //   _launchURL();
-            // },
-            child: Stack(
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Image.asset(
-                      "assets/logoApi.png",
-                      width: 100,
-                      height: 100,
-                      fit: BoxFit.cover,
-                    ),
-                    const Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Column(
-                        children: [
-                          Text(
-                            "Fournisseur11",
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                          SizedBox(height: 4),
-                          Text(
-                            "Mode",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.green),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(left: 105),
-                            child: Row(
-                              children: [
-                                Icon(
-                                  Icons.star,
-                                  color: Colors.purple,
-                                ),
-                                Icon(
-                                  Icons.star,
-                                  color: Colors.purple,
-                                ),
-                                Icon(
-                                  Icons.star,
-                                  color: Colors.grey,
-                                ),
-                                Icon(
-                                  Icons.star,
-                                  color: Colors.grey,
-                                ),
-                                Icon(
-                                  Icons.star,
-                                  color: Colors.grey,
-                                ),
-                              ],
-                            ),
-                          ),
-                          Text(
-                            "membre depuis  9 mois",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.grey),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-      const SizedBox(height: 20),
-    ]);
-  }
-
-  void _launchURL() async {
-    const url = 'https://bitazimut.com/niefeko/';
-    try {
-      if (await canLaunch(url)) {
-        await launch(url);
-      } else {
-        throw 'Could not launch $url';
-      }
-    } catch (e) {
-      print('Error launching URL: $e');
-    }
+    );
   }
 }

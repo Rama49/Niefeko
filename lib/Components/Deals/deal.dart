@@ -62,82 +62,15 @@ class _dealState extends State<deal> {
           const SizedBox(height: 20),
           CarouselSlider(
             items: [
-              Container(
-                decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(20.0),
-                      topRight: Radius.circular(20.0),
-                      bottomLeft: Radius.circular(20.0),
-                      bottomRight: Radius.circular(20.0),
-                    ),
-                  color: Color.fromARGB(255, 215, 194, 233),
-                ),
-                child: Image.asset("assets/casque.png", fit: BoxFit.contain),
-              ),
-              Container(
-                decoration: const BoxDecoration(
-                   borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(20.0),
-                      topRight: Radius.circular(20.0),
-                      bottomLeft: Radius.circular(20.0),
-                      bottomRight: Radius.circular(20.0),
-                    ),
-                  color: Color.fromARGB(255, 215, 194, 233),
-                ),
-                child: Image.asset(
-                  "assets/tshirtRouge.png",
-                  width: 120,
-                  height: 60,
-                ),
-              ),
-              Container(
-                decoration: const BoxDecoration(
-                   borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(20.0),
-                      topRight: Radius.circular(20.0),
-                      bottomLeft: Radius.circular(20.0),
-                      bottomRight: Radius.circular(20.0),
-                    ),
-                  color: Color.fromARGB(255, 215, 194, 233),
-                ),
-                child: Image.asset(
-                  "assets/montre.png",
-                  width: 120,
-                  height: 60,
-                ),
-              ),
-              Container(
-                decoration: const BoxDecoration(
-                   borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(20.0),
-                      topRight: Radius.circular(20.0),
-                      bottomLeft: Radius.circular(20.0),
-                      bottomRight: Radius.circular(20.0),
-                    ),
-                  color: Color.fromARGB(255, 215, 194, 233),
-                ),
-                child: Image.asset(
-                  "assets/sacoche.png",
-                  width: 120,
-                  height: 60,
-                ),
-              ),
-              Container(
-                decoration: const BoxDecoration(
-                   borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(20.0),
-                      topRight: Radius.circular(20.0),
-                      bottomLeft: Radius.circular(20.0),
-                      bottomRight: Radius.circular(20.0),
-                    ),
-                  color: Color.fromARGB(255, 215, 194, 233),
-                ),
-                child: Image.asset(
-                  "assets/pot.png",
-                  width: 120,
-                  height: 60,
-                ),
-              ),
+              _buildImageContainer("assets/tissu-rayure.jpg"),
+              _buildImageContainer("assets/wax-taille.jpg"),
+              _buildImageContainer("assets/tailleur-vert-turquoise-foncé.jpg"),
+              _buildImageContainer("assets/tailleur-beige.jpg"),
+              _buildImageContainer("assets/samouraï-soie.jpg"),
+              _buildImageContainer("assets/pantalon-soie.jpg"),
+              _buildImageContainer("assets/Chemise-Corset.jpg"),
+              _buildImageContainer("assets/chemise-ceinture-détachable-soie.jpg"),
+              _buildImageContainer("assets/Bleu-pantalon.jpg"),
             ],
             options: CarouselOptions(
               enlargeCenterPage: true,
@@ -150,6 +83,27 @@ class _dealState extends State<deal> {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildImageContainer(String assetPath) {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20.0),
+        border: Border.all(
+          width: 2.0,
+          color: Colors.transparent, // Ajout de la couleur de bordure transparente
+        ),
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(20.0),
+        child: Image.asset(
+          assetPath,
+          width: 120,
+          height: 120,
+          fit: BoxFit.cover,
+        ),
       ),
     );
   }

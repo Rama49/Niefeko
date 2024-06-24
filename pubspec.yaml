@@ -34,7 +34,9 @@ dependencies:
   intl: ^0.17.0
   url_launcher: ^6.0.20
   provider: ^6.0.0
-  
+  shared_preferences: ^2.0.8
+  html: ^0.15.0
+  characters: ^1.1.0
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: <=1.0.2
@@ -44,6 +46,7 @@ dependencies:
   firebase_storage: <=11.7.4  
   fluttertoast: <=8.2.5
   webview_flutter: ^4.8.0
+  flutter_html: ^3.0.0-beta.2
   
 
 dev_dependencies:
@@ -75,24 +78,21 @@ flutter:
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.png
       - assets/logoNiefeko.png
-      - assets/chaussure.png
-      - assets/casque.png
-      - assets/chaussure.png
-      - assets/coquillage.png
-      - assets/gourde.png
-      - assets/jordan.png 
-      - assets/lunnete1.png
-      - assets/lunette.png
-      - assets/montre.png
-      - assets/pantalon.png
-      - assets/pot.png
-      - assets/sac.jpg
-      - assets/sac1.png
-      - assets/sacoche.png
-      - assets/shoes.png
-      - assets/t-shirt.png
-      - assets/torche.png
-      - assets/tshirt-polo.jpg
+      - assets/wax-taille.jpg
+      - assets/tissu-rayure.jpg
+      - assets/tailleur-vert-turquoise-foncé.jpg
+      - assets/tailleur-beige.jpg
+      - assets/samouraï-soie.jpg
+      - assets/Robe-plissée-ceinture .jpg
+      - assets/pantalon-soie.jpg
+      - assets/Lait-Valouté-Cacao-removebg-preview.png
+      - assets/Gomme-Matify-Me-removebg-preview.png
+      - assets/Gommage-Makeda-removebg-preview.png
+      - assets/Gommage-Makeda-100g-removebg-preview.png
+      - assets/Detox-Intime-removebg-preview.png
+      - assets/Chemise-Corset.jpg
+      - assets/chemise-ceinture-détachable-soie.jpg
+      - assets/Bleu-pantalon.jpg
       - assets/tshirt1.jpg
       - assets/tshirtRouge.png
       - assets/logoAfricavivre.png
@@ -105,6 +105,12 @@ flutter:
       - assets/logoDjolo.png
       - assets/logoPacao.png
       - assets/logo.png
+      - assets/collection-femme.jpg
+      - assets/collection-homme.jpg
+      - assets/cuisine-&amp;-maison.jpg
+      - assets/electroniques.jpg
+      - assets/habillement.jpg
+      - assets/soins-&amp;-bien-être.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
