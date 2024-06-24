@@ -31,7 +31,7 @@ class _CartPanierState extends State<CartPanier> {
   double getTotalPrice() {
     double total = 0.0;
     for (var product in widget.cartItems) {
-      total += product.price;
+      total += product.price * product.quantity;
     }
     return total;
   }
@@ -71,8 +71,8 @@ class _CartPanierState extends State<CartPanier> {
           },
           'line_items': widget.cartItems
               .map((product) => {
-                    'user_id': product.id,
-                    'quantity': 1,
+                    'product_id': product.id,
+                    'quantity': product.quantity,
                   })
               .toList(),
           'shipping_lines': [
@@ -104,7 +104,19 @@ class _CartPanierState extends State<CartPanier> {
     }
   }
 
-  // Les autres méthodes restent inchangées
+  void increaseQuantity(Product product) {
+    setState(() {
+      product.quantity++;
+    });
+  }
+
+  void decreaseQuantity(Product product) {
+    setState(() {
+      if (product.quantity > 1) {
+        product.quantity--;
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -141,39 +153,54 @@ class _CartPanierState extends State<CartPanier> {
                           ),
                           title: Text(product.name),
                           subtitle: Text('${product.price} FCFA'),
-                          trailing: IconButton(
-                            icon: const Icon(Icons.delete),
-                            onPressed: () {
-                              showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return AlertDialog(
-                                    title:
-                                        const Text('Confirmer la suppression'),
-                                    content: const Text(
-                                        'Voulez-vous vraiment supprimer ce produit ?'),
-                                    actions: <Widget>[
-                                      TextButton(
-                                        child: const Text('Annuler'),
-                                        onPressed: () {
-                                          Navigator.of(context).pop();
-                                        },
-                                      ),
-                                      TextButton(
-                                        child: const Text('Supprimer'),
-                                        onPressed: () async {
-                                          await (context, product);
-                                          Navigator.of(context).pop();
-                                          setState(() {
-                                            widget.cartItems.remove(product);
-                                          });
-                                        },
-                                      ),
-                                    ],
+                          trailing: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              IconButton(
+                                icon: Icon(Icons.remove),
+                                onPressed: () {
+                                  decreaseQuantity(product);
+                                },
+                              ),
+                              Text(product.quantity.toString()),
+                              IconButton(
+                                icon: Icon(Icons.add),
+                                onPressed: () {
+                                  increaseQuantity(product);
+                                },
+                              ),
+                              IconButton(
+                                icon: Icon(Icons.delete),
+                                onPressed: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: Text('Confirmer la suppression'),
+                                        content: Text('Voulez-vous vraiment supprimer ce produit ?'),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            child: Text('Annuler'),
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                          ),
+                                          TextButton(
+                                            child: Text('Supprimer'),
+                                            onPressed: () {
+                                              setState(() {
+                                                widget.cartItems.remove(product);
+                                              });
+                                              Navigator.of(context).pop();
+                                            },
+                                          ),
+                                        ],
+                                      );
+                                    },
                                   );
                                 },
-                              );
-                            },
+                              ),
+                            ],
                           ),
                         ),
                       );
