@@ -96,7 +96,7 @@ class _FournisseurProductState extends State<FournisseurProduct> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => CartPanier(cartItems: cartItems)
+        builder: (context) => CartPanier(cartItems: cartItems, user_firstname: "user_firstname", user_lastname: "user_lastname", user_email: "user_email")
     ));
   }
 

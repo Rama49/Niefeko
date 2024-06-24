@@ -142,7 +142,7 @@ class _searchState extends State<search> {
                       //1st Image of Slider
                       carteReu(
                         image: Image .asset(
-                          "assets/sac1.png",
+                          "assets/Gommage-Makeda-removebg-preview.png",
                           fit: BoxFit.cover,
                         ),
                         title: "Nouveau",
@@ -152,7 +152,7 @@ class _searchState extends State<search> {
                       //2nd Image of Slider
                       carteReu(
                         image: Image.asset(
-                          "assets/lunette.png",
+                          "assets/Gommage-Makeda-100g-removebg-preview.png",
                           fit: BoxFit.cover,
                         ),
                         title: "Nouveau",
@@ -162,7 +162,7 @@ class _searchState extends State<search> {
                       //3rd Image of Slider
                       carteReu(
                         image: Image.asset(
-                          "assets/shoes.png",
+                          "assets/Detox-Intime-removebg-preview.png",
                           fit: BoxFit.cover,
                         ),
                         title: "Nouveau",
@@ -172,7 +172,7 @@ class _searchState extends State<search> {
                       //4th Image of Slider
                       carteReu(
                         image: Image.asset(
-                          "assets/t-shirt.png",
+                          "assets/Gomme-Matify-Me-removebg-preview.png",
                           fit: BoxFit.cover,
                         ),
                         title: "Nouveau",
@@ -182,7 +182,7 @@ class _searchState extends State<search> {
                       //5th Image of Slider
                       carteReu(
                         image: Image.asset(
-                          "assets/sac1.png",
+                          "assets/Lait-Valouté-Cacao-removebg-preview.png",
                           fit: BoxFit.cover,
                         ),
                         title: "Nouveau",

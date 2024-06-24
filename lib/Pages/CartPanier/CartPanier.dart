@@ -5,10 +5,16 @@ import 'package:niefeko/Components/Category/product.dart';
 
 class CartPanier extends StatefulWidget {
   final List<Product> cartItems;
+  final String user_firstname;
+  final String user_lastname;
+  final String user_email;
 
   const CartPanier({
     Key? key,
     required this.cartItems,
+    required this.user_firstname,
+    required this.user_lastname,
+    required this.user_email,
   }) : super(key: key);
 
   @override
@@ -16,52 +22,57 @@ class CartPanier extends StatefulWidget {
 }
 
 class _CartPanierState extends State<CartPanier> {
+  String getCurrentUserId() {
+    // Ici, vous devriez avoir une méthode pour récupérer l'ID de l'utilisateur connecté
+    // Cette méthode dépend de votre logique d'authentification
+    return "userID"; // Remplacez ceci par la méthode réelle pour obtenir l'ID de l'utilisateur
+  }
+
   double getTotalPrice() {
     double total = 0.0;
     for (var product in widget.cartItems) {
-      print(product.id);
-      total += product.price;
+      total += product.price * product.quantity;
     }
     return total;
   }
 
   Future<void> sendOrder(BuildContext context) async {
     try {
-   
-      print("les donnees sont vides");
+      String userId = getCurrentUserId();
+
       final response = await http.post(
         Uri.parse(
             'https://niefeko.com/wp-json/custom-routes/v1/customer/orders'),
         headers: {'Content-Type': 'application/json'},
         body: json.encode({
           'billing': {
-            'first_name': 'John',
-            'last_name': 'Doe',
-            'address_1': '123 Street',
-            'address_2': '',
-            'city': 'City',
-            'state': 'State',
+            'user_id': userId,
+            'first_name': widget.user_firstname,
+            'last_name': widget.user_lastname,
+            'address_1': 'Default Address 1',
+            'address_2': 'Default Address 2',
+            'city': 'Default City',
+            'state': 'Default State',
             'postcode': '00000',
-            'country': 'Country',
-            'email': 'john.doe@example.com',
-            'phone': '1234567890'
+            'country': 'Default Country',
+            'email': widget.user_email,
+            'phone': '0000000000'
           },
           'shipping': {
-            'first_name': 'John',
-            'last_name': 'Doe',
-            'address_1': '123 Street',
-            'address_2': '',
-            'city': 'City',
-            'state': 'State',
+            'user_id': userId,
+            'first_name': widget.user_firstname,
+            'last_name': widget.user_lastname,
+            'address_1': 'Default Address 1',
+            'address_2': 'Default Address 2',
+            'city': 'Default City',
+            'state': 'Default State',
             'postcode': '00000',
-            'country': 'Country'
+            'country': 'Default Country'
           },
           'line_items': widget.cartItems
               .map((product) => {
-                    'product_id': product
-                        .id, // Utilisez 'product_id' au lieu de 'user_id'
-                    'quantity':
-                        1, // Vous pouvez ajuster la quantité si nécessaire
+                    'product_id': product.id,
+                    'quantity': product.quantity,
                   })
               .toList(),
           'shipping_lines': [
@@ -80,8 +91,6 @@ class _CartPanierState extends State<CartPanier> {
             content: Text('Commande passée avec succès!'),
           ),
         );
-        // Une fois la commande passée, vous pouvez vider le panier
-        await clearCart(context);
       } else {
         throw Exception(
             'Erreur lors de la validation du panier : ${response.reasonPhrase}');
@@ -95,64 +104,18 @@ class _CartPanierState extends State<CartPanier> {
     }
   }
 
-  Future<void> clearCart(BuildContext context) async {
-    try {
-      final response = await http.delete(
-        Uri.parse('https://niefeko.com/wp-json/custom-routes/v1/customer/cart'),
-        headers: {'Content-Type': 'application/json'},
-      );
-
-      if (response.statusCode == 200) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Panier vidé avec succès!'),
-          ),
-        );
-        setState(() {
-          widget.cartItems.clear();
-        });
-      } else {
-        throw Exception(
-            'Erreur lors de la vidange du panier : ${response.reasonPhrase}');
-      }
-    } catch (error) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Erreur lors de la vidange du panier : $error'),
-        ),
-      );
-    }
+  void increaseQuantity(Product product) {
+    setState(() {
+      product.quantity++;
+    });
   }
 
-  Future<void> deleteProductFromCart(
-      BuildContext context, Product product) async {
-    try {
-      final response = await http.delete(
-        Uri.parse(
-            'https://niefeko.com/wp-json/custom-routes/v1/customer/cart/${product.id}'),
-        headers: {'Content-Type': 'application/json'},
-      );
-
-      if (response.statusCode == 200) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Produit supprimé du panier avec succès!'),
-          ),
-        );
-        setState(() {
-          widget.cartItems.remove(product);
-        });
-      } else {
-        throw Exception(
-            'Erreur lors de la suppression du produit : ${response.reasonPhrase}');
+  void decreaseQuantity(Product product) {
+    setState(() {
+      if (product.quantity > 1) {
+        product.quantity--;
       }
-    } catch (error) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Erreur lors de la suppression du produit : $error'),
-        ),
-      );
-    }
+    });
   }
 
   @override
@@ -190,40 +153,54 @@ class _CartPanierState extends State<CartPanier> {
                           ),
                           title: Text(product.name),
                           subtitle: Text('${product.price} FCFA'),
-                          trailing: IconButton(
-                            icon: const Icon(
-                              Icons.delete,
-                              color: Colors.red,
-                            ),
-                            onPressed: () {
-                              showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return AlertDialog(
-                                    title:
-                                        const Text('Confirmer la suppression'),
-                                    content: const Text(
-                                        'Voulez-vous vraiment supprimer ce produit ?'),
-                                    actions: <Widget>[
-                                      TextButton(
-                                        child: const Text('Annuler'),
-                                        onPressed: () {
-                                          Navigator.of(context).pop();
-                                        },
-                                      ),
-                                      TextButton(
-                                        child: const Text('Supprimer'),
-                                        onPressed: () async {
-                                          await deleteProductFromCart(
-                                              context, product);
-                                          Navigator.of(context).pop();
-                                        },
-                                      ),
-                                    ],
+                          trailing: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              IconButton(
+                                icon: Icon(Icons.remove),
+                                onPressed: () {
+                                  decreaseQuantity(product);
+                                },
+                              ),
+                              Text(product.quantity.toString()),
+                              IconButton(
+                                icon: Icon(Icons.add),
+                                onPressed: () {
+                                  increaseQuantity(product);
+                                },
+                              ),
+                              IconButton(
+                                icon: Icon(Icons.delete),
+                                onPressed: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: Text('Confirmer la suppression'),
+                                        content: Text('Voulez-vous vraiment supprimer ce produit ?'),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            child: Text('Annuler'),
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                          ),
+                                          TextButton(
+                                            child: Text('Supprimer'),
+                                            onPressed: () {
+                                              setState(() {
+                                                widget.cartItems.remove(product);
+                                              });
+                                              Navigator.of(context).pop();
+                                            },
+                                          ),
+                                        ],
+                                      );
+                                    },
                                   );
                                 },
-                              );
-                            },
+                              ),
+                            ],
                           ),
                         ),
                       );

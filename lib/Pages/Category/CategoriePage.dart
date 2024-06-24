@@ -13,12 +13,10 @@ class CategoryPage extends StatefulWidget {
 class _CategoryPageState extends State<CategoryPage> {
   late Map<int, Product> products;
   List<Product> filteredProducts = [];
-  List<Product> cartItems =
-      []; // Liste pour stocker les produits ajoutés au panier
+  List<Product> cartItems = []; // Liste pour stocker les produits ajoutés au panier
+  List<int> favoriteItems = []; // Liste pour stocker les produits favoris
   bool isLoading = true;
   int cartItemCount = 0;
-
-  get userId => "";
 
   @override
   void initState() {
@@ -28,9 +26,8 @@ class _CategoryPageState extends State<CategoryPage> {
   }
 
   Future<void> fetchData() async {
-    final response = await http.get(
-        Uri.parse('https://niefeko.com/wp-json/dokan/v1/stores/16/products'));
-    print(json.decode(response.body));
+    final response = await http.get(Uri.parse('https://niefeko.com/wp-json/dokan/v1/stores/16/products'));
+
     if (response.statusCode == 200) {
       final List<dynamic> responseData = json.decode(response.body);
       setState(() {
@@ -63,11 +60,8 @@ class _CategoryPageState extends State<CategoryPage> {
 
   void addToCart(Product product) {
     setState(() {
-      print(product.id);
-      cartItems.add(
-          product); // Ajouter le produit à la liste des produits ajoutés au panier
-      cartItemCount = cartItems
-          .length; // M>ettre à jour le nombre d'articles dans le panier
+      cartItems.add(product); // Ajouter le produit à la liste des produits ajoutés au panier
+      cartItemCount = cartItems.length; // Mettre à jour le nombre d'articles dans le panier
     });
     showDialog(
       context: context,
@@ -92,9 +86,57 @@ class _CategoryPageState extends State<CategoryPage> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => CartPanier(cartItems: cartItems),
+        builder: (context) => CartPanier(
+            cartItems: cartItems,
+            user_firstname: "",
+            user_lastname: "",
+            user_email: ""),
       ),
     );
+  }
+
+  void toggleFavorite(Product product) {
+    setState(() {
+      if (favoriteItems.contains(product.hashCode)) {
+        favoriteItems.remove(product.hashCode);
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text("Vous n'aimez plus ce produit"),
+              content: Text('${product.name} a été retiré de vos favoris.'),
+              actions: <Widget>[
+                TextButton(
+                  child: Text('OK'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      } else {
+        favoriteItems.add(product.hashCode);
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Vous avez aimé ce produit'),
+              content: Text('${product.name} a été ajouté à vos favoris.'),
+              actions: <Widget>[
+                TextButton(
+                  child: Text('OK'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      }
+    });
   }
 
   @override
@@ -116,8 +158,7 @@ class _CategoryPageState extends State<CategoryPage> {
             children: [
               IconButton(
                 icon: Icon(Icons.shopping_cart, color: Colors.white),
-                onPressed:
-                    openCart, // Ouvrir le panier avec les produits ajoutés
+                onPressed: openCart, // Ouvrir le panier avec les produits ajoutés
               ),
               Positioned(
                 right: 0,
@@ -128,8 +169,7 @@ class _CategoryPageState extends State<CategoryPage> {
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Text(
-                    cartItemCount
-                        .toString(), // Afficher le nombre de produits dans le panier
+                    cartItemCount.toString(), // Afficher le nombre de produits dans le panier
                     style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
@@ -175,84 +215,99 @@ class _CategoryPageState extends State<CategoryPage> {
                   itemCount: filteredProducts.length,
                   itemBuilder: (context, index) {
                     final product = filteredProducts[index];
+                    final isFavorite = favoriteItems.contains(product.hashCode);
                     return Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Card(
-                        elevation: 5,
-                        child: Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Center(
-                                child: Image.network(
-                                  product.imagePath,
-                                  height: 130,
-                                  width: 130,
-                                ),
-                              ),
-                              SizedBox(height: 8),
-                              Center(
-                                child: Text(
-                                  product.name,
-                                  style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              ),
-                              SizedBox(height: 8),
-                              Html(
-                                data: product.description,
-                              ),
-                              SizedBox(height: 8),
-                              Center(
-                                child: Text(
-                                  '${product.price} FCFA',
-                                  style: TextStyle(
-                                      fontSize: 18,
-                                      color: Colors.green,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              ),
-                              SizedBox(height: 8),
-                              Padding(
-                                padding: const EdgeInsets.only(bottom: 5),
-                                child: SizedBox(
-                                  width: double.infinity,
-                                  child: ElevatedButton(
-                                    onPressed: () {
-                                      addToCart(product);
-                                    },
-                                    style: ElevatedButton.styleFrom(
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: 40, vertical: 10),
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(5),
-                                      ),
-                                      backgroundColor: const Color(
-                                          0xFF612C7D), // Couleur de fond du bouton
-                                    ),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        const Text(
-                                          "Ajouter au panier",
-                                          style: TextStyle(
-                                            fontSize: 16.0,
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                        Icon(Icons.shopping_cart,
-                                            color: Colors.white),
-                                      ],
+                      child: Stack(
+                        children: [
+                          Card(
+                            elevation: 5,
+                            child: Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Center(
+                                    child: Image.network(
+                                      product.imagePath,
+                                      height: 130,
+                                      width: 130,
                                     ),
                                   ),
-                                ),
+                                  SizedBox(height: 8),
+                                  Center(
+                                    child: Text(
+                                      product.name,
+                                      style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                  SizedBox(height: 8),
+                                  Html(
+                                    data: product.description,
+                                  ),
+                                  SizedBox(height: 8),
+                                  Center(
+                                    child: Text(
+                                      '${product.price} FCFA',
+                                      style: TextStyle(
+                                          fontSize: 18,
+                                          color: Colors.green,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                  SizedBox(height: 8),
+                                  Padding(
+                                    padding: const EdgeInsets.only(bottom: 5),
+                                    child: SizedBox(
+                                      width: double.infinity,
+                                      child: ElevatedButton(
+                                        onPressed: () {
+                                          addToCart(product);
+                                        },
+                                        style: ElevatedButton.styleFrom(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 40, vertical: 10),
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(5),
+                                          ),
+                                          backgroundColor: const Color(0xFF612C7D), // Couleur de fond du bouton
+                                        ),
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          children: [
+                                            const Text(
+                                              "Ajouter au panier",
+                                              style: TextStyle(
+                                                fontSize: 16.0,
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                            Icon(Icons.shopping_cart, color: Colors.white),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ],
+                            ),
                           ),
-                        ),
+                          Positioned(
+                            top: 8,
+                            right: 8,
+                            child: GestureDetector(
+                              onTap: () {
+                                toggleFavorite(product);
+                              },
+                              child: Icon(
+                                isFavorite ? Icons.favorite : Icons.favorite_border,
+                                color: isFavorite ? Colors.red : Colors.grey,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     );
                   },
