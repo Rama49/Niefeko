@@ -25,28 +25,23 @@ class _CategoryPageState extends State<CategoryPage> {
     fetchData();
   }
 
-  Future<void> fetchData() async {
-    final response = await http.get(Uri.parse('https://niefeko.com/wp-json/dokan/v1/stores/16/products'));
+Future<void> fetchData() async {
+  final response = await http.get(Uri.parse('https://niefeko.com/wp-json/dokan/v1/stores/16/products'));
 
-    if (response.statusCode == 200) {
-      final List<dynamic> responseData = json.decode(response.body);
-      setState(() {
-        for (var json in responseData) {
-          final product = Product(
-            imagePath: json['images'][0]['src'] ?? '',
-            name: json['name'] ?? '',
-            description: json['description'] ?? '',
-            price: double.parse(json['price'] ?? '0.0'),
-          );
-          products[json['id']] = product;
-        }
-        filteredProducts = products.values.toList();
-        isLoading = false;
-      });
-    } else {
-      throw Exception('Échec du chargement des produits');
-    }
+  if (response.statusCode == 200) {
+    final List<dynamic> responseData = json.decode(response.body);
+    setState(() {
+      for (var json in responseData) {
+        final product = Product.fromJson(json); // Utilisation de fromJson
+        products[product.id] = product; // Utilisation de l'ID pour stocker le produit
+      }
+      filteredProducts = products.values.toList();
+      isLoading = false;
+    });
+  } else {
+    throw Exception('Échec du chargement des produits');
   }
+}
 
   void searchProduct(String query) {
     final results = products.values
@@ -58,29 +53,30 @@ class _CategoryPageState extends State<CategoryPage> {
     });
   }
 
-  void addToCart(Product product) {
-    setState(() {
-      cartItems.add(product); // Ajouter le produit à la liste des produits ajoutés au panier
-      cartItemCount = cartItems.length; // Mettre à jour le nombre d'articles dans le panier
-    });
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Produit ajouté au panier'),
-          content: Text('${product.name} a été ajouté à votre panier.'),
-          actions: <Widget>[
-            TextButton(
-              child: Text('OK'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
+  // void addToCart(Product product) {
+  //     print(product.id);
+  //   setState(() {
+  //     cartItems.add(product); // Ajouter le produit à la liste des produits ajoutés au panier
+  //     cartItemCount = cartItems.length; // Mettre à jour le nombre d'articles dans le panier
+  //   });
+  //   showDialog(
+  //     context: context,
+  //     builder: (BuildContext context) {
+  //       return AlertDialog(
+  //         title: Text('Produit ajouté au panier'),
+  //         content: Text('${product.name} a été ajouté à votre panier.'),
+  //         actions: <Widget>[
+  //           TextButton(
+  //             child: Text('OK'),
+  //             onPressed: () {
+  //               Navigator.of(context).pop();
+  //             },
+  //           ),
+  //         ],
+  //       );
+  //     },
+  //   );
+  // }
 
   void openCart() {
     Navigator.push(
@@ -95,49 +91,74 @@ class _CategoryPageState extends State<CategoryPage> {
     );
   }
 
-  void toggleFavorite(Product product) {
-    setState(() {
-      if (favoriteItems.contains(product.hashCode)) {
-        favoriteItems.remove(product.hashCode);
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: Text("Vous n'aimez plus ce produit"),
-              content: Text('${product.name} a été retiré de vos favoris.'),
-              actions: <Widget>[
-                TextButton(
-                  child: Text('OK'),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                ),
-              ],
-            );
-          },
-        );
-      } else {
-        favoriteItems.add(product.hashCode);
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: Text('Vous avez aimé ce produit'),
-              content: Text('${product.name} a été ajouté à vos favoris.'),
-              actions: <Widget>[
-                TextButton(
-                  child: Text('OK'),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                ),
-              ],
-            );
-          },
-        );
-      }
-    });
-  }
+ void toggleFavorite(Product product) {
+  setState(() {
+    if (favoriteItems.contains(product.id)) {
+      favoriteItems.remove(product.id);
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text("Vous n'aimez plus ce produit"),
+            content: Text('${product.name} a été retiré de vos favoris.'),
+            actions: <Widget>[
+              TextButton(
+                child: Text('OK'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
+    } else {
+      favoriteItems.add(product.id);
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Vous avez aimé ce produit'),
+            content: Text('${product.name} a été ajouté à vos favoris.'),
+            actions: <Widget>[
+              TextButton(
+                child: Text('OK'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
+  });
+}
+
+void addToCart(Product product) {
+  print(product.id);
+  setState(() {
+    cartItems.add(product); // Ajouter le produit à la liste des produits ajoutés au panier
+    cartItemCount = cartItems.length; // Mettre à jour le nombre d'articles dans le panier
+  });
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text('Produit ajouté au panier'),
+        content: Text('${product.name} a été ajouté à votre panier.'),
+        actions: <Widget>[
+          TextButton(
+            child: Text('OK'),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+      );
+    },
+  );
+}
 
   @override
   Widget build(BuildContext context) {

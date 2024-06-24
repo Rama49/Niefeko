@@ -41,6 +41,7 @@ class _FournisseurProductState extends State<FournisseurProduct> {
       setState(() {
         for (var json in responseData) {
           final product = Product(
+            id: 0,
             imagePath: json['images'][0]['src'] ?? '',
             name: json['name'] ?? '',
             description: json['description'] ?? '',

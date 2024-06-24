@@ -23,15 +23,15 @@ class _PanierPageState extends State<PanierPage> {
 
   Future<List<Order>> fetchPanierPage() async {
     final response = await http.get(
-      Uri.parse('https://niefeko.com/wp-json/custom-routes/v1/customer/orders/${widget.userId}'),
+      Uri.parse('https://niefeko.com/wp-json/custom-routes/v1/customer/products/${widget.userId}'),
       headers: {'Content-Type': 'application/json'},
     );
 
     if (response.statusCode == 200) {
-      List<dynamic> ordersJson = json.decode(response.body);
-      return ordersJson.map((json) => Order.fromJson(json)).toList();
+      List<dynamic> productsJson = json.decode(response.body);
+      return productsJson.map((json) => Order.fromJson(json)).toList();
     } else {
-      throw Exception('Failed to load orders');
+      throw Exception('Failed to load products');
     }
   }
 
@@ -56,15 +56,15 @@ class _PanierPageState extends State<PanierPage> {
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
             return const Center(child: Text('Aucune commande trouvée.'));
           } else {
-            List<Order> orders = snapshot.data!;
+            List<Order> products = snapshot.data!;
             return ListView.builder(
-              itemCount: orders.length,
+              itemCount: products.length,
               itemBuilder: (context, index) {
-                Order order = orders[index];
+                Order product = products[index];
                 return Card(
                   child: ListTile(
-                    title: Text('Commande ${order.id}'),
-                    subtitle: Text('Total: ${order.total} FCFA\nStatut: ${order.status}'),
+                    title: Text('Commande ${product.id}'),
+                    subtitle: Text('Total: ${product.total} FCFA\nStatut: ${product.status}'),
                     onTap: () {
                       // Afficher les détails de la commande
                     },

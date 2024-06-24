@@ -29,6 +29,7 @@ class _pagefavorisState extends State<pagefavoris> {
       setState(() {
         for (var json in responseData) {
           final product = Product(
+            id: 0,
             imagePath: json['imagePath'] ?? 'assets/sac1.png',
             name: json['name'] ?? 'sac',
             price: double.parse(json['price'] ?? '10000'),
