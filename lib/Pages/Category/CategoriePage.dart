@@ -18,6 +18,8 @@ class _CategoryPageState extends State<CategoryPage> {
   bool isLoading = true;
   int cartItemCount = 0;
 
+  get userId => "";
+
   @override
   void initState() {
     super.initState();
@@ -28,7 +30,7 @@ class _CategoryPageState extends State<CategoryPage> {
   Future<void> fetchData() async {
     final response = await http.get(
         Uri.parse('https://niefeko.com/wp-json/dokan/v1/stores/16/products'));
-
+    print(json.decode(response.body));
     if (response.statusCode == 200) {
       final List<dynamic> responseData = json.decode(response.body);
       setState(() {
@@ -61,6 +63,7 @@ class _CategoryPageState extends State<CategoryPage> {
 
   void addToCart(Product product) {
     setState(() {
+      print(product.id);
       cartItems.add(
           product); // Ajouter le produit à la liste des produits ajoutés au panier
       cartItemCount = cartItems
@@ -89,11 +92,7 @@ class _CategoryPageState extends State<CategoryPage> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => CartPanier(
-            cartItems: cartItems,
-            user_firstname: "",
-            user_lastname: "",
-            user_email: ""),
+        builder: (context) => CartPanier(cartItems: cartItems),
       ),
     );
   }

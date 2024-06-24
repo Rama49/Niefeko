@@ -22,6 +22,8 @@ class _FournisseurProductState extends State<FournisseurProduct> {
       []; // Liste pour stocker les produits ajoutés au panier
   bool isLoading = true;
   int cartItemCount = 0;
+  
+  get userId => "";
 
   @override
   void initState() {
@@ -94,13 +96,8 @@ class _FournisseurProductState extends State<FournisseurProduct> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => CartPanier(
-            cartItems: cartItems,
-            user_firstname: "user_firstname",
-            user_lastname: "user_lastname",
-            user_email: "user_email"),
-      ),
-    );
+        builder: (context) => CartPanier(cartItems: cartItems)
+    ));
   }
 
   @override

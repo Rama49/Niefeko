@@ -5,16 +5,10 @@ import 'package:niefeko/Components/Category/product.dart';
 
 class CartPanier extends StatefulWidget {
   final List<Product> cartItems;
-  final String user_firstname;
-  final String user_lastname;
-  final String user_email;
 
   const CartPanier({
     Key? key,
     required this.cartItems,
-    required this.user_firstname,
-    required this.user_lastname,
-    required this.user_email,
   }) : super(key: key);
 
   @override
@@ -22,15 +16,10 @@ class CartPanier extends StatefulWidget {
 }
 
 class _CartPanierState extends State<CartPanier> {
-  String getCurrentUserId() {
-    // Ici, vous devriez avoir une méthode pour récupérer l'ID de l'utilisateur connecté
-    // Cette méthode dépend de votre logique d'authentification
-    return "userID"; // Remplacez ceci par la méthode réelle pour obtenir l'ID de l'utilisateur
-  }
-
   double getTotalPrice() {
     double total = 0.0;
     for (var product in widget.cartItems) {
+      print(product.id);
       total += product.price;
     }
     return total;
@@ -38,41 +27,41 @@ class _CartPanierState extends State<CartPanier> {
 
   Future<void> sendOrder(BuildContext context) async {
     try {
-      String userId = getCurrentUserId();
-
+   
+      print("les donnees sont vides");
       final response = await http.post(
         Uri.parse(
             'https://niefeko.com/wp-json/custom-routes/v1/customer/orders'),
         headers: {'Content-Type': 'application/json'},
         body: json.encode({
           'billing': {
-            'user_id': userId,
-            'first_name': widget.user_firstname,
-            'last_name': widget.user_lastname,
-            'address_1': 'Default Address 1',
-            'address_2': 'Default Address 2',
-            'city': 'Default City',
-            'state': 'Default State',
+            'first_name': 'John',
+            'last_name': 'Doe',
+            'address_1': '123 Street',
+            'address_2': '',
+            'city': 'City',
+            'state': 'State',
             'postcode': '00000',
-            'country': 'Default Country',
-            'email': widget.user_email,
-            'phone': '0000000000'
+            'country': 'Country',
+            'email': 'john.doe@example.com',
+            'phone': '1234567890'
           },
           'shipping': {
-            'user_id': userId,
-            'first_name': widget.user_firstname,
-            'last_name': widget.user_lastname,
-            'address_1': 'Default Address 1',
-            'address_2': 'Default Address 2',
-            'city': 'Default City',
-            'state': 'Default State',
+            'first_name': 'John',
+            'last_name': 'Doe',
+            'address_1': '123 Street',
+            'address_2': '',
+            'city': 'City',
+            'state': 'State',
             'postcode': '00000',
-            'country': 'Default Country'
+            'country': 'Country'
           },
           'line_items': widget.cartItems
               .map((product) => {
-                    'user_id': product.id,
-                    'quantity': 1,
+                    'product_id': product
+                        .id, // Utilisez 'product_id' au lieu de 'user_id'
+                    'quantity':
+                        1, // Vous pouvez ajuster la quantité si nécessaire
                   })
               .toList(),
           'shipping_lines': [
@@ -91,6 +80,8 @@ class _CartPanierState extends State<CartPanier> {
             content: Text('Commande passée avec succès!'),
           ),
         );
+        // Une fois la commande passée, vous pouvez vider le panier
+        await clearCart(context);
       } else {
         throw Exception(
             'Erreur lors de la validation du panier : ${response.reasonPhrase}');
@@ -104,7 +95,65 @@ class _CartPanierState extends State<CartPanier> {
     }
   }
 
-  // Les autres méthodes restent inchangées
+  Future<void> clearCart(BuildContext context) async {
+    try {
+      final response = await http.delete(
+        Uri.parse('https://niefeko.com/wp-json/custom-routes/v1/customer/cart'),
+        headers: {'Content-Type': 'application/json'},
+      );
+
+      if (response.statusCode == 200) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Panier vidé avec succès!'),
+          ),
+        );
+        setState(() {
+          widget.cartItems.clear();
+        });
+      } else {
+        throw Exception(
+            'Erreur lors de la vidange du panier : ${response.reasonPhrase}');
+      }
+    } catch (error) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Erreur lors de la vidange du panier : $error'),
+        ),
+      );
+    }
+  }
+
+  Future<void> deleteProductFromCart(
+      BuildContext context, Product product) async {
+    try {
+      final response = await http.delete(
+        Uri.parse(
+            'https://niefeko.com/wp-json/custom-routes/v1/customer/cart/${product.id}'),
+        headers: {'Content-Type': 'application/json'},
+      );
+
+      if (response.statusCode == 200) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Produit supprimé du panier avec succès!'),
+          ),
+        );
+        setState(() {
+          widget.cartItems.remove(product);
+        });
+      } else {
+        throw Exception(
+            'Erreur lors de la suppression du produit : ${response.reasonPhrase}');
+      }
+    } catch (error) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Erreur lors de la suppression du produit : $error'),
+        ),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -142,7 +191,10 @@ class _CartPanierState extends State<CartPanier> {
                           title: Text(product.name),
                           subtitle: Text('${product.price} FCFA'),
                           trailing: IconButton(
-                            icon: const Icon(Icons.delete),
+                            icon: const Icon(
+                              Icons.delete,
+                              color: Colors.red,
+                            ),
                             onPressed: () {
                               showDialog(
                                 context: context,
@@ -162,11 +214,9 @@ class _CartPanierState extends State<CartPanier> {
                                       TextButton(
                                         child: const Text('Supprimer'),
                                         onPressed: () async {
-                                          await (context, product);
+                                          await deleteProductFromCart(
+                                              context, product);
                                           Navigator.of(context).pop();
-                                          setState(() {
-                                            widget.cartItems.remove(product);
-                                          });
                                         },
                                       ),
                                     ],
