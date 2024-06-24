@@ -14,6 +14,8 @@ class PanierPage extends StatefulWidget {
 
 class _PanierPageState extends State<PanierPage> {
   late Future<List<Order>> _futureOrders;
+  
+  get userId => 1;
 
   @override
   void initState() {
@@ -22,16 +24,17 @@ class _PanierPageState extends State<PanierPage> {
   }
 
   Future<List<Order>> fetchPanierPage() async {
+    print("rama est lay");
     final response = await http.get(
-      Uri.parse('https://niefeko.com/wp-json/custom-routes/v1/customer/products/${widget.userId}'),
+      Uri.parse('https://niefeko.com/wp-json/custom-routes/customer/orders?user_id=$userId'),
       headers: {'Content-Type': 'application/json'},
     );
 
     if (response.statusCode == 200) {
-      List<dynamic> productsJson = json.decode(response.body);
-      return productsJson.map((json) => Order.fromJson(json)).toList();
+      List<dynamic> ordersJson = json.decode(response.body);
+      return ordersJson.map((json) => Order.fromJson(json)).toList();
     } else {
-      throw Exception('Failed to load products');
+      throw Exception('Failed to load orders');
     }
   }
 
@@ -56,15 +59,15 @@ class _PanierPageState extends State<PanierPage> {
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
             return const Center(child: Text('Aucune commande trouvée.'));
           } else {
-            List<Order> products = snapshot.data!;
+            List<Order> orders = snapshot.data!;
             return ListView.builder(
-              itemCount: products.length,
+              itemCount: orders.length,
               itemBuilder: (context, index) {
-                Order product = products[index];
+                Order order = orders[index];
                 return Card(
                   child: ListTile(
-                    title: Text('Commande ${product.id}'),
-                    subtitle: Text('Total: ${product.total} FCFA\nStatut: ${product.status}'),
+                    title: Text('Commande ${order.id}'),
+                    subtitle: Text('Total: ${order.total} FCFA\nStatut: ${order.status}'),
                     onTap: () {
                       // Afficher les détails de la commande
                     },
