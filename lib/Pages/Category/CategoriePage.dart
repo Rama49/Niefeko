@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter_html/flutter_html.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:niefeko/Components/Category/product.dart';
 import 'package:niefeko/Pages/CartPanier/CartPanier.dart';
 
@@ -13,8 +14,8 @@ class CategoryPage extends StatefulWidget {
 class _CategoryPageState extends State<CategoryPage> {
   late Map<int, Product> products;
   List<Product> filteredProducts = [];
-  List<Product> cartItems = []; // Liste pour stocker les produits ajoutés au panier
-  List<int> favoriteItems = []; // Liste pour stocker les produits favoris
+  List<Product> cartItems = [];
+  List<int> favoriteItems = [];
   bool isLoading = true;
   int cartItemCount = 0;
 
@@ -23,29 +24,47 @@ class _CategoryPageState extends State<CategoryPage> {
     super.initState();
     products = {};
     fetchData();
+    loadCartItems();
   }
 
   Future<void> fetchData() async {
-    final response = await http.get(Uri.parse('https://niefeko.com/wp-json/dokan/v1/stores/16/products'));
+  final response = await http.get(Uri.parse('https://niefeko.com/wp-json/dokan/v1/stores/16/products'));
 
-    if (response.statusCode == 200) {
-      final List<dynamic> responseData = json.decode(response.body);
-      setState(() {
-        for (var json in responseData) {
-          final product = Product(
-            imagePath: json['images'][0]['src'] ?? '',
-            name: json['name'] ?? '',
-            description: json['description'] ?? '',
-            price: double.parse(json['price'] ?? '0.0'),
-          );
-          products[json['id']] = product;
+  if (response.statusCode == 200) {
+    final List<dynamic> responseData = json.decode(response.body);
+    setState(() {
+      products.clear(); // Clear existing products map
+      filteredProducts.clear(); // Clear filtered products list
+      for (var json in responseData) {
+        try {
+          final product = Product.fromJson(json);
+          products[product.id] = product;
+        } catch (e) {
+          print('Error parsing product: $e');
         }
-        filteredProducts = products.values.toList();
-        isLoading = false;
-      });
-    } else {
-      throw Exception('Échec du chargement des produits');
-    }
+      }
+      filteredProducts.addAll(products.values);
+      isLoading = false;
+    });
+  } else {
+    throw Exception('Échec du chargement des produits');
+  }
+}
+
+
+  Future<void> saveCartItems() async {
+    final prefs = await SharedPreferences.getInstance();
+    final cartItemsJson = cartItems.map((product) => json.encode(product.toMap())).toList();
+    await prefs.setStringList('cartItems', cartItemsJson);
+  }
+
+  Future<void> loadCartItems() async {
+    final prefs = await SharedPreferences.getInstance();
+    final cartItemsJson = prefs.getStringList('cartItems') ?? [];
+    setState(() {
+      cartItems = cartItemsJson.map((item) => Product.fromJson(json.decode(item))).toList();
+      cartItemCount = cartItems.fold(0, (sum, item) => sum + item.quantity);
+    });
   }
 
   void searchProduct(String query) {
@@ -60,8 +79,14 @@ class _CategoryPageState extends State<CategoryPage> {
 
   void addToCart(Product product) {
     setState(() {
-      cartItems.add(product); // Ajouter le produit à la liste des produits ajoutés au panier
-      cartItemCount = cartItems.length; // Mettre à jour le nombre d'articles dans le panier
+      final existingProductIndex = cartItems.indexWhere((item) => item.id == product.id);
+      if (existingProductIndex >= 0) {
+        cartItems[existingProductIndex].quantity += 1;
+      } else {
+        cartItems.add(product);
+      }
+      cartItemCount = cartItems.fold(0, (sum, item) => sum + item.quantity);
+      saveCartItems();
     });
     showDialog(
       context: context,
@@ -97,8 +122,8 @@ class _CategoryPageState extends State<CategoryPage> {
 
   void toggleFavorite(Product product) {
     setState(() {
-      if (favoriteItems.contains(product.hashCode)) {
-        favoriteItems.remove(product.hashCode);
+      if (favoriteItems.contains(product.id)) {
+        favoriteItems.remove(product.id);
         showDialog(
           context: context,
           builder: (BuildContext context) {
@@ -117,7 +142,7 @@ class _CategoryPageState extends State<CategoryPage> {
           },
         );
       } else {
-        favoriteItems.add(product.hashCode);
+        favoriteItems.add(product.id);
         showDialog(
           context: context,
           builder: (BuildContext context) {
@@ -158,7 +183,7 @@ class _CategoryPageState extends State<CategoryPage> {
             children: [
               IconButton(
                 icon: Icon(Icons.shopping_cart, color: Colors.white),
-                onPressed: openCart, // Ouvrir le panier avec les produits ajoutés
+                onPressed: openCart,
               ),
               Positioned(
                 right: 0,
@@ -169,7 +194,7 @@ class _CategoryPageState extends State<CategoryPage> {
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Text(
-                    cartItemCount.toString(), // Afficher le nombre de produits dans le panier
+                    cartItemCount.toString(),
                     style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
@@ -215,7 +240,7 @@ class _CategoryPageState extends State<CategoryPage> {
                   itemCount: filteredProducts.length,
                   itemBuilder: (context, index) {
                     final product = filteredProducts[index];
-                    final isFavorite = favoriteItems.contains(product.hashCode);
+                    final isFavorite = favoriteItems.contains(product.id);
                     return Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Stack(
@@ -272,7 +297,7 @@ class _CategoryPageState extends State<CategoryPage> {
                                           shape: RoundedRectangleBorder(
                                             borderRadius: BorderRadius.circular(5),
                                           ),
-                                          backgroundColor: const Color(0xFF612C7D), // Couleur de fond du bouton
+                                          backgroundColor: const Color(0xFF612C7D),
                                         ),
                                         child: Row(
                                           mainAxisAlignment: MainAxisAlignment.center,
