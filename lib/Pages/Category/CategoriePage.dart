@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter_html/flutter_html.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:niefeko/Components/Category/product.dart';
 import 'package:niefeko/Pages/CartPanier/CartPanier.dart';
 
@@ -13,9 +14,14 @@ class CategoryPage extends StatefulWidget {
 class _CategoryPageState extends State<CategoryPage> {
   late Map<int, Product> products;
   List<Product> filteredProducts = [];
+<<<<<<< HEAD
   List<Product> cartItems =
       []; // Liste pour stocker les produits ajoutés au panier
   List<int> favoriteItems = []; // Liste pour stocker les produits favoris
+=======
+  List<Product> cartItems = [];
+  List<int> favoriteItems = [];
+>>>>>>> ApiModifier
   bool isLoading = true;
   int cartItemCount = 0;
 
@@ -24,6 +30,7 @@ class _CategoryPageState extends State<CategoryPage> {
     super.initState();
     products = {};
     fetchData();
+    loadCartItems();
   }
 
   Future<void> fetchData() async {
@@ -34,6 +41,7 @@ class _CategoryPageState extends State<CategoryPage> {
       final List<dynamic> responseData = json.decode(response.body);
       setState(() {
         for (var json in responseData) {
+<<<<<<< HEAD
           final product = Product(
             imagePath: json['images'][0]['src'] ?? '',
             name: json['name'] ?? '',
@@ -41,6 +49,11 @@ class _CategoryPageState extends State<CategoryPage> {
             price: double.parse(json['price'] ?? '0.0'),
           );
           products[json['product.id']] = product;
+=======
+          final product = Product.fromJson(json); // Utilisation de fromJson
+          products[product.id] =
+              product; // Utilisation de l'ID pour stocker le produit
+>>>>>>> ApiModifier
         }
         filteredProducts = products.values.toList();
         isLoading = false;
@@ -60,8 +73,22 @@ class _CategoryPageState extends State<CategoryPage> {
     });
   }
 
+ Future<void> loadCartItems() async {
+    final prefs = await SharedPreferences.getInstance();
+    final cartItemsJson = prefs.getStringList('cartItems') ?? [];
+    setState(() {
+      cartItems = cartItemsJson.map((item) => Product.fromJson(json.decode(item))).toList();
+      cartItemCount = cartItems.fold(0, (sum, item) => sum + item.quantity);
+    });
+  }
+
+
   void addToCart(Product product) {
+<<<<<<< HEAD
     print(product.id);
+=======
+      print(product.id);
+>>>>>>> ApiModifier
     setState(() {
       cartItems.add(product);
       cartItemCount = cartItems.length;
@@ -100,8 +127,8 @@ class _CategoryPageState extends State<CategoryPage> {
 
   void toggleFavorite(Product product) {
     setState(() {
-      if (favoriteItems.contains(product.hashCode)) {
-        favoriteItems.remove(product.hashCode);
+      if (favoriteItems.contains(product.id)) {
+        favoriteItems.remove(product.id);
         showDialog(
           context: context,
           builder: (BuildContext context) {
@@ -120,7 +147,7 @@ class _CategoryPageState extends State<CategoryPage> {
           },
         );
       } else {
-        favoriteItems.add(product.hashCode);
+        favoriteItems.add(product.id);
         showDialog(
           context: context,
           builder: (BuildContext context) {
@@ -161,8 +188,12 @@ class _CategoryPageState extends State<CategoryPage> {
             children: [
               IconButton(
                 icon: Icon(Icons.shopping_cart, color: Colors.white),
+<<<<<<< HEAD
                 onPressed:
                     openCart, // Ouvrir le panier avec les produits ajoutés
+=======
+                onPressed: openCart,
+>>>>>>> ApiModifier
               ),
               Positioned(
                 right: 0,
@@ -173,8 +204,12 @@ class _CategoryPageState extends State<CategoryPage> {
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Text(
+<<<<<<< HEAD
                     cartItemCount
                         .toString(), // Afficher le nombre de produits dans le panier
+=======
+                    cartItemCount.toString(),
+>>>>>>> ApiModifier
                     style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
@@ -220,7 +255,7 @@ class _CategoryPageState extends State<CategoryPage> {
                   itemCount: filteredProducts.length,
                   itemBuilder: (context, index) {
                     final product = filteredProducts[index];
-                    final isFavorite = favoriteItems.contains(product.hashCode);
+                    final isFavorite = favoriteItems.contains(product.id);
                     return Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Stack(
@@ -278,8 +313,13 @@ class _CategoryPageState extends State<CategoryPage> {
                                             borderRadius:
                                                 BorderRadius.circular(5),
                                           ),
+<<<<<<< HEAD
                                           backgroundColor: const Color(
                                               0xFF612C7D), // Couleur de fond du bouton
+=======
+                                          backgroundColor:
+                                              const Color(0xFF612C7D),
+>>>>>>> ApiModifier
                                         ),
                                         child: Row(
                                           mainAxisAlignment:

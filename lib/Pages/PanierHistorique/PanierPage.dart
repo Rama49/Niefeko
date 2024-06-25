@@ -14,6 +14,8 @@ class PanierPage extends StatefulWidget {
 
 class _PanierPageState extends State<PanierPage> {
   late Future<List<Order>> _futureOrders;
+  
+  get userId => 1;
 
   @override
   void initState() {
@@ -22,8 +24,9 @@ class _PanierPageState extends State<PanierPage> {
   }
 
   Future<List<Order>> fetchPanierPage() async {
+    print("rama est lay");
     final response = await http.get(
-      Uri.parse('https://niefeko.com/wp-json/custom-routes/v1/customer/orders/${widget.userId}'),
+      Uri.parse('https://niefeko.com/wp-json/custom-routes/customer/orders?user_id=$userId'),
       headers: {'Content-Type': 'application/json'},
     );
 
