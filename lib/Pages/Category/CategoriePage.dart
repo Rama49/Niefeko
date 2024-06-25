@@ -70,7 +70,7 @@ class _CategoryPageState extends State<CategoryPage> {
   void searchProduct(String query) {
     final results = products.values
         .where((product) =>
-            product.name.toLowerCase().contains(query.toLowerCase()))
+          product.name.toLowerCase().contains(query.toLowerCase()))
         .toList();
     setState(() {
       filteredProducts = results;
