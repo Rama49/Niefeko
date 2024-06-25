@@ -27,11 +27,14 @@ class Product {
 
   factory Product.fromJson(Map<String, dynamic> json) {
     return Product(
-      id: json["id"],
-      imagePath: json['featured_image']['url'] ?? 'assets/images/default_image.png', // Utilisation d'une image de secours si l'image n'est pas présente.
+      id: json['id'] ?? 0,
       name: json['name'] ?? '',
       description: json['description'] ?? '',
-      price: double.parse(json['price'].toString() ?? '0.0'),
+      price: json['price'] != null ? double.parse(json['price'].toString()) : 0.0,
+      // Vérifiez si 'image' existe et contient 'url'
+      imagePath: json['images'] != null && json['images'].isNotEmpty && json['images'][0]['src'] != null
+          ? json['images'][0]['src']
+          : 'https://via.placeholder.com/150', // URL d'une image placeholder par défaut
     );
   }
 }

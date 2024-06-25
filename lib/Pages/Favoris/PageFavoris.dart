@@ -49,16 +49,16 @@ class _pagefavorisState extends State<pagefavoris> {
         print('API response body: ${response.body}');
         print('Response data: $responseData');
       } else {
-        throw Exception('Failed to load favorite products');
+        throw Exception('Échec du chargement des produits favoris');
       }
     } catch (e) {
-      print('Error fetching favorites: $e');
+      print('Erreur lors de la récupération des favoris: $e');
       showDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text('Error'),
-            content: Text('Failed to load favorite products.'),
+            title: Text('Erreur'),
+            content: Text('Échec du chargement des produits favoris.'),
             actions: <Widget>[
               TextButton(
                 child: Text('OK'),
@@ -97,8 +97,8 @@ class _pagefavorisState extends State<pagefavoris> {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              title: Text('Removed from Favorites'),
-              content: Text('${product.name} has been removed from your favorites.'),
+              title: Text('Retiré des favoris'),
+              content: Text('${product.name} a été retiré de vos favoris.'),
               actions: <Widget>[
                 TextButton(
                   child: Text('OK'),
@@ -111,16 +111,16 @@ class _pagefavorisState extends State<pagefavoris> {
           },
         );
       } else {
-        throw Exception('Failed to remove favorite product');
+        throw Exception('Échec de la suppression du produit favori');
       }
     } catch (e) {
-      print('Error removing favorite product: $e');
+      print('Erreur lors de la suppression du produit favori: $e');
       showDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text('Error'),
-            content: Text('Failed to remove favorite product.'),
+            title: Text('Erreur'),
+            content: Text('Échec de la suppression du produit favori.'),
             actions: <Widget>[
               TextButton(
                 child: Text('OK'),
@@ -141,7 +141,7 @@ class _pagefavorisState extends State<pagefavoris> {
       appBar: AppBar(
         backgroundColor: const Color(0xFF593070),
         title: const Text(
-          'Favorite Products',
+          'Produits favoris',
           style: TextStyle(color: Colors.white),
         ),
         iconTheme: const IconThemeData(color: Colors.white),
@@ -149,7 +149,7 @@ class _pagefavorisState extends State<pagefavoris> {
       body: isLoading
           ? Center(child: CircularProgressIndicator())
           : favoriteProducts.isEmpty
-              ? Center(child: Text('No products found in favorites.'))
+              ? Center(child: Text('Aucun produit trouvé dans les favoris.'))
               : ListView.builder(
                   itemCount: favoriteProducts.length,
                   itemBuilder: (context, index) {
@@ -165,7 +165,7 @@ class _pagefavorisState extends State<pagefavoris> {
                           ),
                         ),
                         title: Text(product.name),
-                        subtitle: Text('Price: ${product.price} FCFA'),
+                        subtitle: Text('Prix: ${product.price} FCFA'),
                         trailing: IconButton(
                           icon: const Icon(Icons.delete, color: Colors.red),
                           onPressed: () {
@@ -173,17 +173,17 @@ class _pagefavorisState extends State<pagefavoris> {
                               context: context,
                               builder: (BuildContext context) {
                                 return AlertDialog(
-                                  title: const Text('Confirm Removal'),
-                                  content: const Text('Are you sure you want to remove this product?'),
+                                  title: const Text('Confirmer la suppression'),
+                                  content: const Text('Êtes-vous sûr de vouloir supprimer ce produit?'),
                                   actions: <Widget>[
                                     TextButton(
-                                      child: const Text('Cancel'),
+                                      child: const Text('Annuler'),
                                       onPressed: () {
                                         Navigator.of(context).pop();
                                       },
                                     ),
                                     TextButton(
-                                      child: const Text('Remove'),
+                                      child: const Text('Supprimer'),
                                       onPressed: () {
                                         removeFavorite(product);
                                         Navigator.of(context).pop();
