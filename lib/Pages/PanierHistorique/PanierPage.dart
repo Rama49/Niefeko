@@ -1,40 +1,121 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:niefeko/Components/Category/product.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
+
+class Order {
+  final String id;
+  final String total;
+  final String status;
+  final List<OrderItem> items;
+
+  Order({
+    required this.id,
+    required this.total,
+    required this.status,
+    required this.items,
+  });
+
+  factory Order.fromJson(Map<String, dynamic> json) {
+    var itemsJson = json['items'] as List;
+    List<OrderItem> itemsList =
+        itemsJson.map((item) => OrderItem.fromJson(item)).toList();
+
+    return Order(
+      id: json['id'],
+      total: json['total'].toString(),
+      status: json['status'],
+      items: itemsList,
+    );
+  }
+}
+
+class OrderItem {
+  final String productId;
+  final String productName;
+  final double price;
+  final int quantity;
+
+  OrderItem({
+    required this.productId,
+    required this.productName,
+    required this.price,
+    required this.quantity,
+  });
+
+  factory OrderItem.fromJson(Map<String, dynamic> json) {
+    return OrderItem(
+      productId: json['product_id'],
+      productName: json['name'],
+      price: double.parse(json['price'].toString()),
+      quantity: int.parse(json['quantity'].toString()),
+    );
+  }
+}
 
 class PanierPage extends StatefulWidget {
-  final String userId;
-
-  const PanierPage({Key? key, required this.userId}) : super(key: key);
-
   @override
   _PanierPageState createState() => _PanierPageState();
 }
 
 class _PanierPageState extends State<PanierPage> {
-  late Future<List<Order>> _futureOrders;
-  
-  get userId => 1;
+  List<Order> orders = [];
+  bool isLoading = true;
 
   @override
   void initState() {
     super.initState();
-    _futureOrders = fetchPanierPage();
+    fetchOrders();
   }
 
-  Future<List<Order>> fetchPanierPage() async {
-    print("rama est lay");
-    final response = await http.get(
-      Uri.parse('https://niefeko.com/wp-json/custom-routes/customer/orders?user_id=$userId'),
-      headers: {'Content-Type': 'application/json'},
-    );
+  Future<void> fetchOrders() async {
+    final url = Uri.parse(
+        'https://niefeko.com/wp-json/custom-routes/v1/customer/orders');
 
-    if (response.statusCode == 200) {
-      List<dynamic> ordersJson = json.decode(response.body);
-      return ordersJson.map((json) => Order.fromJson(json)).toList();
-    } else {
-      throw Exception('Failed to load orders');
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString('token') ?? '';
+
+      final response = await http.get(
+        url,
+        headers: {'Authorization': 'Bearer $token'},
+      );
+
+      if (response.statusCode == 200) {
+        final List<dynamic> responseData = json.decode(response.body);
+        setState(() {
+          if (responseData.isEmpty) {
+            orders = [];
+          } else {
+            orders = responseData.map((json) => Order.fromJson(json)).toList();
+          }
+          isLoading = false;
+        });
+      } else {
+        throw Exception('Failed to load orders: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error fetching orders: $e');
+      setState(() {
+        isLoading = false;
+      });
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Error'),
+            content: Text('Failed to fetch orders: $e'),
+            actions: <Widget>[
+              TextButton(
+                child: Text('OK'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
     }
   }
 
@@ -42,62 +123,66 @@ class _PanierPageState extends State<PanierPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color(0xFF612C7D),
+        backgroundColor: const Color(0xFF593070),
         title: const Text(
           'Mes Commandes',
           style: TextStyle(color: Colors.white),
         ),
         iconTheme: const IconThemeData(color: Colors.white),
       ),
-      body: FutureBuilder<List<Order>>(
-        future: _futureOrders,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
-          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return const Center(child: Text('Aucune commande trouvée.'));
-          } else {
-            List<Order> orders = snapshot.data!;
-            return ListView.builder(
-              itemCount: orders.length,
-              itemBuilder: (context, index) {
-                Order order = orders[index];
-                return Card(
-                  child: ListTile(
-                    title: Text('Commande ${order.id}'),
-                    subtitle: Text('Total: ${order.total} FCFA\nStatut: ${order.status}'),
-                    onTap: () {
-                      // Afficher les détails de la commande
-                    },
-                  ),
-                );
-              },
-            );
-          }
-        },
-      ),
-    );
-  }
-}
-
-class Order {
-  final String id;
-  final String total;
-  final String status;
-
-  Order({
-    required this.id,
-    required this.total,
-    required this.status,
-  });
-
-  factory Order.fromJson(Map<String, dynamic> json) {
-    return Order(
-      id: json['id'].toString(),
-      total: json['total'].toString(),
-      status: json['status'],
+      body: isLoading
+          ? Center(child: CircularProgressIndicator())
+          : orders.isEmpty
+              ? Center(child: Text('Aucune commande trouvée.'))
+              : ListView.builder(
+                  itemCount: orders.length,
+                  itemBuilder: (context, index) {
+                    final order = orders[index];
+                    return Card(
+                      child: ListTile(
+                        title: Text('Commande ${order.id}'),
+                        subtitle: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text('Total: ${order.total} FCFA'),
+                            Text('Statut: ${order.status}'),
+                          ],
+                        ),
+                        onTap: () {
+                          // Afficher les détails de la commande
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: Text('Détails de la Commande'),
+                                content: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: order.items.map((item) {
+                                    return ListTile(
+                                      title: Text(item.productName),
+                                      subtitle: Text(
+                                        'Prix: ${item.price} FCFA\nQuantité: ${item.quantity}',
+                                      ),
+                                    );
+                                  }).toList(),
+                                ),
+                                actions: <Widget>[
+                                  TextButton(
+                                    child: Text('Fermer'),
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        },
+                      ),
+                    );
+                  },
+                ),
     );
   }
 }

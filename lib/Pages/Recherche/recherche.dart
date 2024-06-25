@@ -141,7 +141,7 @@ class _searchState extends State<search> {
                     items: [
                       //1st Image of Slider
                       carteReu(
-                        image: Image .asset(
+                        image: Image.asset(
                           "assets/Gommage-Makeda-removebg-preview.png",
                           fit: BoxFit.cover,
                         ),
@@ -249,8 +249,7 @@ class _searchState extends State<search> {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(
-                          builder: (context) => PanierPage(userId: userId)),
+                      MaterialPageRoute(builder: (context) => PanierPage()),
                     );
                   },
                   icon: const Icon(Icons.shopping_cart, color: Colors.white),
@@ -268,8 +267,7 @@ class _searchState extends State<search> {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(
-                          builder: (context) => pagefavoris()),
+                      MaterialPageRoute(builder: (context) => pagefavoris()),
                     );
                   },
                   icon: const Icon(Icons.favorite, color: Colors.white),

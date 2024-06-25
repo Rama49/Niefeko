@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:niefeko/Components/Category/product.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:niefeko/Components/Category/product.dart'; // Assurez-vous que le chemin est correct
 
 class CartPanier extends StatefulWidget {
   final List<Product> cartItems;
@@ -22,6 +23,21 @@ class CartPanier extends StatefulWidget {
 }
 
 class _CartPanierState extends State<CartPanier> {
+  String? token;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadToken();
+  }
+
+  Future<void> _loadToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      token = prefs.getString('token');
+    });
+  }
+
   String getCurrentUserId() {
     // Ici, vous devriez avoir une méthode pour récupérer l'ID de l'utilisateur connecté
     // Cette méthode dépend de votre logique d'authentification
@@ -37,13 +53,24 @@ class _CartPanierState extends State<CartPanier> {
   }
 
   Future<void> sendOrder(BuildContext context) async {
+    if (token == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Token non disponible'),
+        ),
+      );
+      return;
+    }
+
     try {
       String userId = getCurrentUserId();
 
       final response = await http.post(
-        Uri.parse(
-            'https://niefeko.com/wp-json/custom-routes/v1/customer/orders'),
-        headers: {'Content-Type': 'application/json'},
+        Uri.parse('https://niefeko.com/wp-json/custom-routes/v1/customer/orders'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token', // Ajouter le jeton aux en-têtes
+        },
         body: json.encode({
           'billing': {
             'user_id': userId,
@@ -92,8 +119,7 @@ class _CartPanierState extends State<CartPanier> {
           ),
         );
       } else {
-        throw Exception(
-            'Erreur lors de la validation du panier : ${response.reasonPhrase}');
+        throw Exception('Erreur lors de la validation du panier : ${response.reasonPhrase}');
       }
     } catch (error) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -148,7 +174,7 @@ class _CartPanierState extends State<CartPanier> {
                             height: 50,
                             fit: BoxFit.cover,
                             errorBuilder: (context, error, stackTrace) {
-                              return Icon(Icons.error);
+                              return const Icon(Icons.error);
                             },
                           ),
                           title: Text(product.name),
@@ -157,36 +183,36 @@ class _CartPanierState extends State<CartPanier> {
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               IconButton(
-                                icon: Icon(Icons.remove),
+                                icon: const Icon(Icons.remove),
                                 onPressed: () {
                                   decreaseQuantity(product);
                                 },
                               ),
                               Text(product.quantity.toString()),
                               IconButton(
-                                icon: Icon(Icons.add),
+                                icon: const Icon(Icons.add),
                                 onPressed: () {
                                   increaseQuantity(product);
                                 },
                               ),
                               IconButton(
-                                icon: Icon(Icons.delete),
+                                icon: const Icon(Icons.delete),
                                 onPressed: () {
                                   showDialog(
                                     context: context,
                                     builder: (BuildContext context) {
                                       return AlertDialog(
-                                        title: Text('Confirmer la suppression'),
-                                        content: Text('Voulez-vous vraiment supprimer ce produit ?'),
+                                        title: const Text('Confirmer la suppression'),
+                                        content: const Text('Voulez-vous vraiment supprimer ce produit ?'),
                                         actions: <Widget>[
                                           TextButton(
-                                            child: Text('Annuler'),
+                                            child: const Text('Annuler'),
                                             onPressed: () {
                                               Navigator.of(context).pop();
                                             },
                                           ),
                                           TextButton(
-                                            child: Text('Supprimer'),
+                                            child: const Text('Supprimer'),
                                             onPressed: () {
                                               setState(() {
                                                 widget.cartItems.remove(product);
@@ -245,4 +271,3 @@ class _CartPanierState extends State<CartPanier> {
     );
   }
 }
- 
