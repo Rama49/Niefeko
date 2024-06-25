@@ -28,43 +28,23 @@ class _CategoryPageState extends State<CategoryPage> {
   }
 
   Future<void> fetchData() async {
-  final response = await http.get(Uri.parse('https://niefeko.com/wp-json/dokan/v1/stores/16/products'));
+    final response = await http.get(
+        Uri.parse('https://niefeko.com/wp-json/dokan/v1/stores/16/products'));
 
-  if (response.statusCode == 200) {
-    final List<dynamic> responseData = json.decode(response.body);
-    setState(() {
-      products.clear(); // Clear existing products map
-      filteredProducts.clear(); // Clear filtered products list
-      for (var json in responseData) {
-        try {
-          final product = Product.fromJson(json);
-          products[product.id] = product;
-        } catch (e) {
-          print('Error parsing product: $e');
+    if (response.statusCode == 200) {
+      final List<dynamic> responseData = json.decode(response.body);
+      setState(() {
+        for (var json in responseData) {
+          final product = Product.fromJson(json); // Utilisation de fromJson
+          products[product.id] =
+              product; // Utilisation de l'ID pour stocker le produit
         }
-      }
-      filteredProducts.addAll(products.values);
-      isLoading = false;
-    });
-  } else {
-    throw Exception('Échec du chargement des produits');
-  }
-}
-
-
-  Future<void> saveCartItems() async {
-    final prefs = await SharedPreferences.getInstance();
-    final cartItemsJson = cartItems.map((product) => json.encode(product.toMap())).toList();
-    await prefs.setStringList('cartItems', cartItemsJson);
-  }
-
-  Future<void> loadCartItems() async {
-    final prefs = await SharedPreferences.getInstance();
-    final cartItemsJson = prefs.getStringList('cartItems') ?? [];
-    setState(() {
-      cartItems = cartItemsJson.map((item) => Product.fromJson(json.decode(item))).toList();
-      cartItemCount = cartItems.fold(0, (sum, item) => sum + item.quantity);
-    });
+        filteredProducts = products.values.toList();
+        isLoading = false;
+      });
+    } else {
+      throw Exception('Échec du chargement des produits');
+    }
   }
 
   void searchProduct(String query) {
@@ -77,16 +57,21 @@ class _CategoryPageState extends State<CategoryPage> {
     });
   }
 
-  void addToCart(Product product) {
+ Future<void> loadCartItems() async {
+    final prefs = await SharedPreferences.getInstance();
+    final cartItemsJson = prefs.getStringList('cartItems') ?? [];
     setState(() {
-      final existingProductIndex = cartItems.indexWhere((item) => item.id == product.id);
-      if (existingProductIndex >= 0) {
-        cartItems[existingProductIndex].quantity += 1;
-      } else {
-        cartItems.add(product);
-      }
+      cartItems = cartItemsJson.map((item) => Product.fromJson(json.decode(item))).toList();
       cartItemCount = cartItems.fold(0, (sum, item) => sum + item.quantity);
-      saveCartItems();
+    });
+  }
+
+
+  void addToCart(Product product) {
+      print(product.id);
+    setState(() {
+      cartItems.add(product); // Ajouter le produit à la liste des produits ajoutés au panier
+      cartItemCount = cartItems.length; // Mettre à jour le nombre d'articles dans le panier
     });
     showDialog(
       context: context,
@@ -295,12 +280,15 @@ class _CategoryPageState extends State<CategoryPage> {
                                           padding: EdgeInsets.symmetric(
                                               horizontal: 40, vertical: 10),
                                           shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(5),
+                                            borderRadius:
+                                                BorderRadius.circular(5),
                                           ),
-                                          backgroundColor: const Color(0xFF612C7D),
+                                          backgroundColor:
+                                              const Color(0xFF612C7D),
                                         ),
                                         child: Row(
-                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
                                           children: [
                                             const Text(
                                               "Ajouter au panier",
@@ -309,7 +297,8 @@ class _CategoryPageState extends State<CategoryPage> {
                                                 color: Colors.white,
                                               ),
                                             ),
-                                            Icon(Icons.shopping_cart, color: Colors.white),
+                                            Icon(Icons.shopping_cart,
+                                                color: Colors.white),
                                           ],
                                         ),
                                       ),
@@ -327,7 +316,9 @@ class _CategoryPageState extends State<CategoryPage> {
                                 toggleFavorite(product);
                               },
                               child: Icon(
-                                isFavorite ? Icons.favorite : Icons.favorite_border,
+                                isFavorite
+                                    ? Icons.favorite
+                                    : Icons.favorite_border,
                                 color: isFavorite ? Colors.red : Colors.grey,
                               ),
                             ),

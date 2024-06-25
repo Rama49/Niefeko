@@ -18,7 +18,8 @@ class InscriptionState extends State<Inscription> {
   final TextEditingController _prenomController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
 
   bool _passwordObscureText = true;
   bool _confirmPasswordObscureText = true;
@@ -108,7 +109,8 @@ class InscriptionState extends State<Inscription> {
                       },
                       onPressed: () {
                         setState(() {
-                          _confirmPasswordObscureText = !_confirmPasswordObscureText;
+                          _confirmPasswordObscureText =
+                              !_confirmPasswordObscureText;
                         });
                       },
                     ),
@@ -122,7 +124,8 @@ class InscriptionState extends State<Inscription> {
                             await registerUser();
                           },
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+                            backgroundColor:
+                                const Color.fromARGB(255, 255, 255, 255),
                             padding: const EdgeInsets.symmetric(vertical: 15),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(7),
@@ -131,7 +134,8 @@ class InscriptionState extends State<Inscription> {
                           ),
                           child: const Text(
                             "S'inscrire",
-                            style: TextStyle(fontSize: 16, color: Color(0xFF593070)),
+                            style: TextStyle(
+                                fontSize: 16, color: Color(0xFF593070)),
                           ),
                         ),
                       ),
@@ -194,7 +198,8 @@ class InscriptionState extends State<Inscription> {
           enabledBorder: const OutlineInputBorder(
             borderSide: BorderSide(color: Colors.white),
           ),
-          contentPadding: const EdgeInsets.symmetric(vertical: 0, horizontal: 10),
+          contentPadding:
+              const EdgeInsets.symmetric(vertical: 0, horizontal: 10),
           focusedBorder: const OutlineInputBorder(
             borderSide: BorderSide(color: Colors.white),
           ),
@@ -225,7 +230,8 @@ class InscriptionState extends State<Inscription> {
           enabledBorder: const OutlineInputBorder(
             borderSide: BorderSide(color: Colors.white),
           ),
-          contentPadding: const EdgeInsets.symmetric(vertical: 0, horizontal: 10),
+          contentPadding:
+              const EdgeInsets.symmetric(vertical: 0, horizontal: 10),
           focusedBorder: const OutlineInputBorder(
             borderSide: BorderSide(color: Colors.white),
           ),
@@ -244,7 +250,8 @@ class InscriptionState extends State<Inscription> {
   Future<void> registerUser() async {
     if (_formKey.currentState!.validate()) {
       try {
-        final url = Uri.parse('https://niefeko.com/wp-json/jwt-auth/v1/register');
+        final url =
+            Uri.parse('https://niefeko.com/wp-json/jwt-auth/v1/register');
         final response = await http.post(
           url,
           headers: <String, String>{

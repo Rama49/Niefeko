@@ -26,6 +26,7 @@ class _TextState extends State<Test> {
           if (!isExpanded) {
             // Créez un produit fictif pour tester
             Product product = Product(
+               id:0,
               imagePath: 'assets/votre_image.png',
               name: 'Nom du produit',
               description: 'Description du produit',

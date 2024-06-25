@@ -3,6 +3,8 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:html/parser.dart' as htmlParser;
+import 'package:niefeko/Pages/Collection/Collectionhabi.dart';
+import 'package:niefeko/Pages/SettingsPage/SettingsPage.dart';
 
 class Categorie extends StatefulWidget {
   const Categorie({Key? key}) : super(key: key);
@@ -32,8 +34,9 @@ class _CategorieState extends State<Categorie> {
 
   // Méthode pour récupérer les catégories depuis l'API
   Future<void> fetchCategories() async {
-    final url = Uri.parse('https://niefeko.com/wp-json/custom-routes/v1/products/categories');
-    
+    final url = Uri.parse(
+        'https://niefeko.com/wp-json/custom-routes/v1/products/categories');
+
     try {
       final response = await http.get(url);
       if (response.statusCode == 200) {
@@ -72,51 +75,57 @@ class _CategorieState extends State<Categorie> {
             ],
           ),
           const SizedBox(height: 20),
-          CarouselSlider(
-            options: CarouselOptions(
-              enlargeCenterPage: false,
-              autoPlay: false, // Désactiver le défilement automatique
-              aspectRatio: 23 / 9,
-              autoPlayCurve: Curves.fastOutSlowIn,
-              enableInfiniteScroll: true,
-              autoPlayAnimationDuration: const Duration(milliseconds: 500),
-              viewportFraction: 0.25, // Une image à la fois
+          GestureDetector(
+      //        onTap: () {
+      //   Navigator.push(
+      //     context,
+      //     MaterialPageRoute(builder: (context) => CollectionHabit()),
+      //   );
+      // },
+            child: CarouselSlider(
+              options: CarouselOptions(
+                enlargeCenterPage: false,
+                autoPlay: false, // Désactiver le défilement automatique
+                aspectRatio: 23 / 9,
+                autoPlayCurve: Curves.fastOutSlowIn,
+                enableInfiniteScroll: true,
+                autoPlayAnimationDuration: const Duration(milliseconds: 500),
+                viewportFraction: 0.25, // Une image à la fois
+              ),
+              items: categories.map((category) {
+                return Builder(
+                  builder: (BuildContext context) {
+                    return Container(
+                      margin: EdgeInsets.only(left: 5.0, right: 5.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            width: 100,
+                            height: 100,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Color.fromARGB(255, 215, 194, 233),
+                            ),
+                            child: ClipOval(
+                              child: _buildCategoryImage(category['name']),
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          Text(
+                            _decodeHtmlEntity(category['name'] ?? 'No Name'),
+                            style: TextStyle(
+                              fontSize: 12.5,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                );
+              }).toList(),
             ),
-            items: categories.map((category) {
-              return Builder(
-                builder: (BuildContext context) {
-                  return Container(
-                    margin: EdgeInsets.only(left: 5.0, right: 5.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(
-                          width: 100,
-                          height: 100,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Color.fromARGB(255, 215, 194, 233),
-                          ),
-                          child: ClipOval(
-                            child: _buildCategoryImage(category['name']),
-                          ),
-                        ),
-                        const SizedBox(height: 10),
-                        Text(
-                          _decodeHtmlEntity(category['name'] ?? 'No Name'),
-                          style: TextStyle(
-                            fontSize: 10, // Ajuste la taille de la police
-                            fontWeight: FontWeight.bold, // Texte en gras
-                            color: Color(0xFF612C7D),
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                      ],
-                    ),
-                  );
-                },
-              );
-            }).toList(),
           ),
         ],
       ),
@@ -135,16 +144,21 @@ class _CategorieState extends State<Categorie> {
 
   // Méthode pour nettoyer et normaliser les noms de catégories
   String _normalizeCategoryName(String categoryName) {
-    return categoryName.toLowerCase()
-      .replaceAll('&amp;', '&'); // Remplacer les entités HTML par des caractères normaux
+    return categoryName.toLowerCase().replaceAll(
+        '&amp;', '&'); // Remplacer les entités HTML par des caractères normaux
   }
 
   // Méthode pour construire l'image de la catégorie en fonction du nom de la catégorie
   Widget _buildCategoryImage(String categoryName) {
-    final cleanedCategoryName = _normalizeCategoryName(_decodeHtmlEntity(categoryName));
+    final cleanedCategoryName =
+        _normalizeCategoryName(_decodeHtmlEntity(categoryName));
     final imagePath = categoryImages[cleanedCategoryName];
     return imagePath != null
         ? Image.asset(imagePath, fit: BoxFit.cover)
-        : Image.asset('assets/tshirt1.jpg', fit: BoxFit.cover);
+        : Image.asset(
+            'assets/casque.png',
+            width: 200,
+            height: 200,
+          );
   }
 }

@@ -36,7 +36,8 @@ class _DetailState extends State<DetailFournisseur> {
   super.initState();
   fetchProductDetails(widget.productId);
   filteredImagePaths.addAll(imagePaths);
-  product = Product(imagePath: '', name: '', description: '', price: 0);
+  product = Product(id: 0,
+    imagePath: '', name: '', description: '', price: 0);
 }
 
   Future<void> fetchProductDetails(String productId) async {
@@ -100,6 +101,7 @@ void addToCart(Product product) async {
         // Le produit n'existe pas encore dans le panier, l'ajouter
         setState(() {
           cartItems.add(Product(
+            id:00,
             imagePath: imageUrl,
             name: productName,
             description: product.description,
@@ -235,7 +237,7 @@ void addToCart(Product product) async {
   @override
   Widget build(BuildContext context){
     return 
-    buildCard(index ,Product(imagePath: widget.product.imagePath, name: widget.product.name, description: widget.product.description, price: widget.product.price));
+    buildCard(index ,Product(id:0, imagePath: widget.product.imagePath, name: widget.product.name, description: widget.product.description, price: widget.product.price));
   }
 
 
@@ -293,6 +295,7 @@ void addToCart(Product product) async {
                 if (isFavoritedList[index]) {
                   // Créez une instance de produit
                   Product favoriteProduct = Product(
+                    id:0,
                     imagePath: product.imagePath,//'assets/gourde.png',
                     name: product.name,//imageName,//'Gourde',
                     description: product.description,

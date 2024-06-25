@@ -20,6 +20,8 @@ class _FournisseurProductState extends State<FournisseurProduct> {
   List<Product> cartItems = [];
   bool isLoading = true;
   int cartItemCount = 0;
+  
+  get userId => "";
 
   @override
   void initState() {
