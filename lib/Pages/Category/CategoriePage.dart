@@ -17,7 +17,10 @@ class _CategoryPageState extends State<CategoryPage> {
   List<Product> cartItems = [];
   List<int> favoriteItems = [];
   bool isLoading = true;
+  bool isLoadingMore = false;
   int cartItemCount = 0;
+  int currentPage = 1;
+  final int productsPerPage = 10;
 
   @override
   void initState() {
@@ -27,22 +30,38 @@ class _CategoryPageState extends State<CategoryPage> {
     loadCartItems();
   }
 
-  Future<void> fetchData() async {
+  Future<void> fetchData({bool loadMore = false}) async {
+    if (loadMore) {
+      setState(() {
+        isLoadingMore = true;
+      });
+    } else {
+      setState(() {
+        isLoading = true;
+      });
+    }
+
     final response = await http.get(
-        Uri.parse('https://niefeko.com/wp-json/dokan/v1/stores/16/products'));
+      Uri.parse(
+          'https://niefeko.com/wp-json/dokan/v1/stores/16/products?page=$currentPage&per_page=$productsPerPage'),
+    );
 
     if (response.statusCode == 200) {
       final List<dynamic> responseData = json.decode(response.body);
+      print('Response data: $responseData'); // Vérifier la structure des données reçues
+
       setState(() {
         for (var json in responseData) {
-          final product = Product.fromJson(json); // Utilisation de fromJson
-          products[product.id] =
-              product; // Utilisation de l'ID pour stocker le produit
+          final product = Product.fromJson(json);
+          products[product.id] = product;
         }
         filteredProducts = products.values.toList();
         isLoading = false;
+        isLoadingMore = false;
+        currentPage++;
       });
     } else {
+      print('Échec du chargement des produits: ${response.statusCode}');
       throw Exception('Échec du chargement des produits');
     }
   }
@@ -57,18 +76,18 @@ class _CategoryPageState extends State<CategoryPage> {
     });
   }
 
- Future<void> loadCartItems() async {
+  Future<void> loadCartItems() async {
     final prefs = await SharedPreferences.getInstance();
     final cartItemsJson = prefs.getStringList('cartItems') ?? [];
     setState(() {
-      cartItems = cartItemsJson.map((item) => Product.fromJson(json.decode(item))).toList();
+      cartItems = cartItemsJson
+          .map((item) => Product.fromJson(json.decode(item)))
+          .toList();
       cartItemCount = cartItems.fold(0, (sum, item) => sum + item.quantity);
     });
   }
 
-
   void addToCart(Product product) {
-      print(product.id);
     setState(() {
       cartItems.add(product);
       cartItemCount = cartItems.length;
@@ -97,56 +116,82 @@ class _CategoryPageState extends State<CategoryPage> {
       context,
       MaterialPageRoute(
         builder: (context) => CartPanier(
-            cartItems: cartItems,
-            user_firstname: "",
-            user_lastname: "",
-            user_email: ""),
+          cartItems: cartItems,
+          user_firstname: "",
+          user_lastname: "",
+          user_email: "",
+        ),
       ),
     );
   }
 
-  void toggleFavorite(Product product) {
-    setState(() {
-      if (favoriteItems.contains(product.id)) {
-        favoriteItems.remove(product.id);
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: Text("Vous n'aimez plus ce produit"),
-              content: Text('${product.name} a été retiré de vos favoris.'),
-              actions: <Widget>[
-                TextButton(
-                  child: Text('OK'),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                ),
-              ],
+  void toggleFavorite(Product product) async {
+    final url =
+        Uri.parse('https://niefeko.com/wp-json/custom-routes/v1/customer/favorits');
+
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('token') ?? ''; // Récupérez votre token d'une manière appropriée ici
+
+    try {
+      final response = await http.post(
+        url,
+        body: json.encode({"id": product.id}),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token', // Ajoutez votre token ici
+        },
+      );
+
+      if (response.statusCode == 200) {
+        setState(() {
+          if (favoriteItems.contains(product.id)) {
+            favoriteItems.remove(product.id);
+            print('Identifiant du produit ${product.id} supprimé aux favoris.'); // Afficher l'ID du produit retiré des favoris
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: Text("Vous n'aimez plus ce produit"),
+                  content: Text('${product.name} a été retiré de vos favoris.'),
+                  actions: <Widget>[
+                    TextButton(
+                      child: Text('OK'),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ],
+                );
+              },
             );
-          },
-        );
+          } else {
+            favoriteItems.add(product.id);
+            print('Identifiant du produit ${product.id} ajouté aux favoris.'); // Afficher l'ID du produit ajouté aux favoris
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: Text('Vous aimez ce produit'),
+                  content: Text('${product.name} a été ajouté à vos favoris.'),
+                  actions: <Widget>[
+                    TextButton(
+                      child: Text('OK'),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ],
+                );
+              },
+            );
+          }
+        });
       } else {
-        favoriteItems.add(product.id);
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: Text('Vous avez aimé ce produit'),
-              content: Text('${product.name} a été ajouté à vos favoris.'),
-              actions: <Widget>[
-                TextButton(
-                  child: Text('OK'),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                ),
-              ],
-            );
-          },
-        );
+        print('Échec de la mise à jour des favoris: ${response.statusCode}');
       }
-    });
+    } catch (e) {
+      print('Erreur lors de la mise à jour des favoris: $e');
+    }
   }
 
   @override
@@ -200,7 +245,7 @@ class _CategoryPageState extends State<CategoryPage> {
             ),
             child: TextField(
               decoration: InputDecoration(
-                hintText: 'Rechercher...',
+                hintText: 'Rechercher un produit...',
                 prefixIcon: Icon(Icons.search, color: Colors.grey),
                 border: InputBorder.none,
               ),
@@ -221,112 +266,144 @@ class _CategoryPageState extends State<CategoryPage> {
                     style: TextStyle(color: Colors.red, fontSize: 18),
                   ),
                 )
-              : ListView.builder(
-                  itemCount: filteredProducts.length,
-                  itemBuilder: (context, index) {
-                    final product = filteredProducts[index];
-                    final isFavorite = favoriteItems.contains(product.id);
-                    return Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Stack(
-                        children: [
-                          Card(
-                            elevation: 5,
-                            child: Padding(
-                              padding: const EdgeInsets.all(16.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Center(
-                                    child: Image.network(
-                                      product.imagePath,
-                                      height: 130,
-                                      width: 130,
-                                    ),
-                                  ),
-                                  SizedBox(height: 8),
-                                  Center(
-                                    child: Text(
-                                      product.name,
-                                      style: TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ),
-                                  SizedBox(height: 8),
-                                  Html(
-                                    data: product.description,
-                                  ),
-                                  SizedBox(height: 8),
-                                  Center(
-                                    child: Text(
-                                      '${product.price} FCFA',
-                                      style: TextStyle(
-                                          fontSize: 18,
-                                          color: Colors.green,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ),
-                                  SizedBox(height: 8),
-                                  Padding(
-                                    padding: const EdgeInsets.only(bottom: 5),
-                                    child: SizedBox(
-                                      width: double.infinity,
-                                      child: ElevatedButton(
-                                        onPressed: () {
-                                          addToCart(product);
+              : NotificationListener<ScrollNotification>(
+                  onNotification: (ScrollNotification scrollInfo) {
+                    if (!isLoadingMore &&
+                        scrollInfo.metrics.pixels ==
+                            scrollInfo.metrics.maxScrollExtent) {
+                      fetchData(loadMore: true);
+                      return true;
+                    }
+                    return false;
+                  },
+                  child: ListView.builder(
+                    itemCount: filteredProducts.length + 1,
+                    itemBuilder: (context, index) {
+                      if (index == filteredProducts.length) {
+                        return isLoadingMore
+                            ? Center(
+                                child: CircularProgressIndicator(),
+                              )
+                            : SizedBox();
+                      }
+                      final product = filteredProducts[index];
+                      final isFavorite = favoriteItems.contains(product.id);
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Stack(
+                          children: [
+                            Card(
+                              elevation: 5,
+                              child: Padding(
+                                padding: const EdgeInsets.all(16.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Center(
+                                      child: Image.network(
+                                        product.imagePath ?? '',
+                                        // Utilisation de l'URL d'image du produit, avec une vérification de nullabilité
+                                        height: 130,
+                                        width: 130,
+                                        errorBuilder: (context,
+                                        error, stackTrace) {
+                                          return Image.asset(
+                                            'assets/tshirt1.jpg',
+                                            height: 130,
+                                            width: 130,
+                                          );
                                         },
-                                        style: ElevatedButton.styleFrom(
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 40, vertical: 10),
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(5),
-                                          ),
-                                          backgroundColor:
-                                              const Color(0xFF612C7D),
-                                        ),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            const Text(
-                                              "Ajouter au panier",
-                                              style: TextStyle(
-                                                fontSize: 16.0,
-                                                color: Colors.white,
+                                      ),
+                                    ),
+                                    SizedBox(height: 8),
+                                    Center(
+                                      child: Text(
+                                        product.name,
+                                        style: TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                    SizedBox(height: 8),
+                                    Html(data: product.description),
+                                    SizedBox(height: 8),
+                                    Center(
+                                      child: Text(
+                                        '${product.price} FCFA',
+                                        style: TextStyle(
+                                            fontSize: 18,
+                                            color: Colors.green,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                    SizedBox(height: 8),
+                                    Padding(
+                                      padding: const EdgeInsets.only(bottom: 5),
+                                      child: SizedBox(
+                                        width: double.infinity,
+                                        child: ElevatedButton(
+                                          onPressed: () {
+                                            addToCart(product);
+                                          },
+                                          style: ButtonStyle(
+                                            backgroundColor:
+                                                MaterialStateProperty.all<Color>(
+                                                    const Color(0xFF612C7D)),
+                                            padding: MaterialStateProperty.all<
+                                                EdgeInsetsGeometry>(
+                                              EdgeInsets.symmetric(
+                                                  horizontal: 40, vertical: 10),
+                                            ),
+                                            shape: MaterialStateProperty.all<
+                                                OutlinedBorder>(
+                                              RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(5),
                                               ),
                                             ),
-                                            Icon(Icons.shopping_cart,
-                                                color: Colors.white),
-                                          ],
+                                          ),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              const Text(
+                                                "Ajouter au panier",
+                                                style: TextStyle(
+                                                  fontSize: 16.0,
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                              Icon(Icons.shopping_cart,
+                                                  color: Colors.white),
+                                            ],
+                                          ),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                             ),
-                          ),
-                          Positioned(
-                            top: 8,
-                            right: 8,
-                            child: GestureDetector(
-                              onTap: () {
-                                toggleFavorite(product);
-                              },
-                              child: Icon(
-                                isFavorite
-                                    ? Icons.favorite
-                                    : Icons.favorite_border,
-                                color: isFavorite ? Colors.red : Colors.grey,
+                            Positioned(
+                              top: 8,
+                              right: 8,
+                              child: GestureDetector(
+                                onTap: () {
+                                  toggleFavorite(product);
+                                },
+                                child: Icon(
+                                  isFavorite
+                                      ? Icons.favorite
+                                      : Icons.favorite_border,
+                                  color: isFavorite ? Colors.red : Colors.grey,
+                                ),
                               ),
                             ),
-                          ),
-                        ],
-                      ),
-                    );
-                  },
+                          ],
+                        ),
+                      );
+                    },
+                  ),
                 ),
     );
   }

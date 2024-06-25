@@ -37,11 +37,10 @@ class _CartPanierState extends State<CartPanier> {
       token = prefs.getString('token');
     });
   }
+  bool _isLoading = false;
 
   String getCurrentUserId() {
-    // Ici, vous devriez avoir une méthode pour récupérer l'ID de l'utilisateur connecté
-    // Cette méthode dépend de votre logique d'authentification
-    return "userID"; // Remplacez ceci par la méthode réelle pour obtenir l'ID de l'utilisateur
+    return "userID";
   }
 
   double getTotalPrice() {
@@ -61,6 +60,9 @@ class _CartPanierState extends State<CartPanier> {
       );
       return;
     }
+    setState(() {
+      _isLoading = true;
+    });
 
     try {
       String userId = getCurrentUserId();
@@ -127,6 +129,10 @@ class _CartPanierState extends State<CartPanier> {
           content: Text('Erreur lors de la validation du panier : $error'),
         ),
       );
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 
@@ -247,21 +253,36 @@ class _CartPanierState extends State<CartPanier> {
                   child: Container(
                     margin: const EdgeInsets.symmetric(vertical: 16.0),
                     child: ElevatedButton(
-                      onPressed: () {
-                        sendOrder(context);
-                      },
+                      onPressed: _isLoading
+                          ? null
+                          : () {
+                              sendOrder(context);
+                            },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF612C7D),
+                        backgroundColor: _isLoading
+                            ? Colors.grey
+                            : const Color(0xFF612C7D),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(7),
                         ),
                       ),
-                      child: const Padding(
-                        padding: EdgeInsets.all(10.0),
-                        child: Text(
-                          'Valider le panier',
-                          style: TextStyle(fontSize: 18, color: Colors.white),
-                        ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: _isLoading
+                            ? const SizedBox(
+                                width: 20,
+                                height: 20,
+                                child: CircularProgressIndicator(
+                                  valueColor: AlwaysStoppedAnimation<Color>(
+                                      Colors.black),
+                                  strokeWidth: 2,
+                                ),
+                              )
+                            : const Text(
+                                'Valider le panier',
+                                style: TextStyle(
+                                    fontSize: 18, color: Colors.white),
+                              ),
                       ),
                     ),
                   ),
