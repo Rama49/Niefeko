@@ -245,3 +245,4 @@ class _CartPanierState extends State<CartPanier> {
     );
   }
 }
+ 

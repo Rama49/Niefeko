@@ -5,7 +5,7 @@ import 'package:niefeko/Components/Category/product.dart';
 import 'package:niefeko/Pages/Category/CategoriePage.dart';
 
 class pagefavoris extends StatefulWidget {
-  const pagefavoris({super.key});
+  const pagefavoris({Key? key}) : super(key: key);
 
   @override
   _pagefavorisState createState() => _pagefavorisState();
@@ -27,16 +27,13 @@ class _pagefavorisState extends State<pagefavoris> {
     if (response.statusCode == 200) {
       final List<dynamic> responseData = json.decode(response.body);
       setState(() {
-        for (var json in responseData) {
-          final product = Product(
-            id: 0,
-            imagePath: json['imagePath'] ?? 'assets/sac1.png',
-            name: json['name'] ?? 'sac',
-            price: double.parse(json['price'] ?? '10000'),
-            description: json['description'] ?? '',
-          );
-          favoriteProducts.add(product);
-        }
+        favoriteProducts = responseData.map((json) => Product(
+          id: json['id'], // Ajout de l'id ici
+          imagePath: json['imagePath'] ?? 'assets/sac1.png',
+          name: json['name'] ?? 'sac',
+          price: double.parse(json['price'] ?? '10000'),
+          description: json['description'] ?? '',
+        )).toList();
         isLoading = false;
       });
     } else {
@@ -49,7 +46,7 @@ class _pagefavorisState extends State<pagefavoris> {
       final response = await http.post(
         Uri.parse('https://niefeko.com/wp-json/custom-routes/v1/customer/favorits'),
         headers: {'Content-Type': 'application/json'},
-        body: jsonEncode({'id': product.hashCode.toString()}),
+        body: jsonEncode({'id': product.id.toString()}), // Utilisation de l'id ici
       );
 
       if (response.statusCode == 200) {
