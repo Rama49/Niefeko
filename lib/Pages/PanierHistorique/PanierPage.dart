@@ -4,34 +4,41 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Order {
-  final String id;
-  final String total;
+  final int orderId;
+  final String orderKey;
   final String status;
-  final List<OrderItem> items;
+  final double total;
+  final String currency;
+  final List<OrderItem> lineItems;
 
   Order({
-    required this.id,
-    required this.total,
+    required this.orderId,
+    required this.orderKey,
     required this.status,
-    required this.items,
+    required this.total,
+    required this.currency,
+    required this.lineItems,
   });
 
   factory Order.fromJson(Map<String, dynamic> json) {
-    var itemsJson = json['items'] as List;
+    // Parsing the 'line_items' field from JSON
+    var itemsJson = json['line_items'] as List;
     List<OrderItem> itemsList =
         itemsJson.map((item) => OrderItem.fromJson(item)).toList();
 
     return Order(
-      id: json['id'],
-      total: json['total'].toString(),
+      orderId: json['order_id'],
+      orderKey: json['order_key'],
       status: json['status'],
-      items: itemsList,
+      total: double.parse(json['total'].toString()),
+      currency: json['currency'],
+      lineItems: itemsList,
     );
   }
 }
 
 class OrderItem {
-  final String productId;
+  final int productId;
   final String productName;
   final double price;
   final int quantity;
@@ -68,62 +75,57 @@ class _PanierPageState extends State<PanierPage> {
     fetchOrders();
   }
 
-Future<void> fetchOrders() async {
-  final url = Uri.parse(
-      'https://niefeko.com/wp-json/custom-routes/v1/customer/orders');
+  Future<void> fetchOrders() async {
+    final url =
+        Uri.parse('https://niefeko.com/wp-json/custom-routes/v1/customer/orders');
 
-  try {
-    final prefs = await SharedPreferences.getInstance();
-    final token = prefs.getString('token') ?? '';
-    print('Token: $token'); // Print the token for debugging
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString('token') ?? '';
+      print('Token: $token'); // Print the token for debugging
 
-    final response = await http.get(
-      url,
-      headers: {'Authorization': 'Bearer $token'},
-    );
-    print('Response status: ${response.statusCode}'); // Print status code
-    print('Response body: ${response.body}'); // Print raw response body
+      final response = await http.get(
+        url,
+        headers: {'Authorization': 'Bearer $token'},
+      );
+      print('Response status: ${response.statusCode}'); // Print status code
+      print('Response body: ${response.body}'); // Print raw response body
 
-    if (response.statusCode == 200) {
-      final responseData = json.decode(response.body);
-      print('Response data: $responseData'); // Print the response data
+      if (response.statusCode == 200) {
+        final List<dynamic> responseData = json.decode(response.body);
+        print('Response data: $responseData'); // Print the response data
 
-      if (responseData is List) {
         setState(() {
           orders = responseData.map((json) => Order.fromJson(json)).toList();
           isLoading = false;
         });
       } else {
-        throw Exception('Invalid data format: Expected a list');
+        throw Exception('Failed to load orders: ${response.statusCode}');
       }
-    } else {
-      throw Exception('Failed to load orders: ${response.statusCode}');
+    } catch (e) {
+      print('Error fetching orders: $e');
+      setState(() {
+        isLoading = false;
+      });
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Error'),
+            content: Text('Failed to fetch orders: $e'),
+            actions: <Widget>[
+              TextButton(
+                child: Text('OK'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
     }
-  } catch (e) {
-    print('Error fetching orders: $e');
-    setState(() {
-      isLoading = false;
-    });
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Error'),
-          content: Text('Failed to fetch orders: $e'),
-          actions: <Widget>[
-            TextButton(
-              child: Text('OK'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
   }
-}
-
 
   @override
   Widget build(BuildContext context) {
@@ -146,16 +148,16 @@ Future<void> fetchOrders() async {
                     final order = orders[index];
                     return Card(
                       child: ListTile(
-                        title: Text('Commande ${order.id}'),
+                        title: Text('Commande ${order.orderId}'),
                         subtitle: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('Total: ${order.total} FCFA'),
+                            Text('Total: ${order.total} ${order.currency}'),
                             Text('Statut: ${order.status}'),
                           ],
                         ),
                         onTap: () {
-                          // Afficher les détails de la commande
+                          // Show order details
                           showDialog(
                             context: context,
                             builder: (BuildContext context) {
@@ -164,11 +166,11 @@ Future<void> fetchOrders() async {
                                 content: Column(
                                   mainAxisSize: MainAxisSize.min,
                                   crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: order.items.map((item) {
+                                  children: order.lineItems.map((item) {
                                     return ListTile(
                                       title: Text(item.productName),
                                       subtitle: Text(
-                                        'Prix: ${item.price} FCFA\nQuantité: ${item.quantity}',
+                                        'Prix: ${item.price} ${order.currency}\nQuantité: ${item.quantity}',
                                       ),
                                     );
                                   }).toList(),
@@ -192,3 +194,4 @@ Future<void> fetchOrders() async {
     );
   }
 }
+
