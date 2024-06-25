@@ -68,62 +68,57 @@ class _PanierPageState extends State<PanierPage> {
     fetchOrders();
   }
 
-Future<void> fetchOrders() async {
-  final url = Uri.parse(
-      'https://niefeko.com/wp-json/custom-routes/v1/customer/orders');
+  Future<void> fetchOrders() async {
+    final url = Uri.parse(
+        'https://niefeko.com/wp-json/custom-routes/v1/customer/orders');
 
-  try {
-    final prefs = await SharedPreferences.getInstance();
-    final token = prefs.getString('token') ?? '';
-    print('Token: $token'); // Print the token for debugging
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString('token') ?? '';
+      print('Token: $token'); // Print the token for debugging
 
-    final response = await http.get(
-      url,
-      headers: {'Authorization': 'Bearer $token'},
-    );
-    print('Response status: ${response.statusCode}'); // Print status code
-    print('Response body: ${response.body}'); // Print raw response body
+      final response = await http.get(
+        url,
+        headers: {'Authorization': 'Bearer $token'},
+      );
+      print('Response status: ${response.statusCode}'); // Print status code
+      print('Response body: ${response.body}'); // Print raw response body
 
-    if (response.statusCode == 200) {
-      final responseData = json.decode(response.body);
-      print('Response data: $responseData'); // Print the response data
+      if (response.statusCode == 200) {
+        final List<dynamic> responseData = json.decode(response.body);
+        print('Response data: $responseData'); // Print the response data
 
-      if (responseData is List) {
         setState(() {
           orders = responseData.map((json) => Order.fromJson(json)).toList();
           isLoading = false;
         });
       } else {
-        throw Exception('Invalid data format: Expected a list');
+        throw Exception('Failed to load orders: ${response.statusCode}');
       }
-    } else {
-      throw Exception('Failed to load orders: ${response.statusCode}');
+    } catch (e) {
+      print('Error fetching orders: $e');
+      setState(() {
+        isLoading = false;
+      });
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Error'),
+            content: Text('Failed to fetch orders: $e'),
+            actions: <Widget>[
+              TextButton(
+                child: Text('OK'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
     }
-  } catch (e) {
-    print('Error fetching orders: $e');
-    setState(() {
-      isLoading = false;
-    });
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Error'),
-          content: Text('Failed to fetch orders: $e'),
-          actions: <Widget>[
-            TextButton(
-              child: Text('OK'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
   }
-}
-
 
   @override
   Widget build(BuildContext context) {
