@@ -4,7 +4,8 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_html/flutter_html.dart';
 import 'package:niefeko/Components/Category/product.dart';
 import 'package:niefeko/Pages/CartPanier/CartPanier.dart';
-//import 'package:niefeko/Pages/Category/DetailFournisseur.dart';
+import 'package:niefeko/Pages/Category/DetailFournisseur.dart';
+
 
 class FournisseurProduct extends StatefulWidget {
   final int supplierId;
@@ -16,10 +17,10 @@ class FournisseurProduct extends StatefulWidget {
 }
 
 class _FournisseurProductState extends State<FournisseurProduct> {
+  List<Product> supplier = [];
   late Map<int, Product> products;
   List<Product> filteredProducts = [];
-  List<Product> cartItems =
-      []; // Liste pour stocker les produits ajoutés au panier
+  List<Product> cartItems =  []; // Liste pour stocker les produits ajoutés au panier
   bool isLoading = true;
   int cartItemCount = 0;
 
@@ -146,25 +147,6 @@ class _FournisseurProductState extends State<FournisseurProduct> {
             ],
           ),
         ],
-        // bottom: PreferredSize(
-        //   preferredSize: Size.fromHeight(48.0),
-        //   child: Container(
-        //     margin: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-        //     decoration: BoxDecoration(
-        //       borderRadius: BorderRadius.circular(7),
-        //       color: Colors.white,
-        //     ),
-        //     child: TextField(
-        //       decoration: InputDecoration(
-        //         hintText: 'Rechercher...',
-        //         prefixIcon: Icon(Icons.search, color: Colors.grey),
-        //         border: InputBorder.none,
-        //       ),
-        //       style: TextStyle(color: Colors.black),
-        //       onChanged: searchProduct,
-        //     ),
-        //   ),
-        // ),
       ),
       body: isLoading
           ? Center(
@@ -186,12 +168,12 @@ class _FournisseurProductState extends State<FournisseurProduct> {
                       child: Card(
                         elevation: 5,
                         child: GestureDetector(
-                          // onTap: () => Navigator.push(
-                          //       context,
-                          //       MaterialPageRoute(
-                          //         builder: (context) => DetailFournisseur(product: product, productId: product.id),
-                          //       ),
-                          //     ),
+                          onTap: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => DetailFournisseur(product: product, productId: supplier.toString()),
+                                ),
+                              ),
                           child: Padding(
                             padding: const EdgeInsets.all(16.0),
                             child: Column(
@@ -275,75 +257,4 @@ class _FournisseurProductState extends State<FournisseurProduct> {
     );
   }
 }
-
-
-// import 'dart:convert';
-// import 'package:flutter/material.dart';
-// import 'package:http/http.dart' as http;
-
-// class FournisseurProduct extends StatefulWidget {
-//   final int supplierId;
-
-//   FournisseurProduct({required this.supplierId});
-
-//   @override
-//   _FournisseurProductState createState() => _FournisseurProductState();
-// }
-
-// class _FournisseurProductState extends State<FournisseurProduct> {
-//   List<dynamic> products = [];
-
-//   @override
-//   void initState() {
-//     super.initState();
-//     fetchProducts();
-//   }
-
-//   Future<void> fetchProducts() async {
-//     final url = 'https://niefeko.com/wp-json/dokan/v1/stores/${widget.supplierId}/products'; // Remplacez par l'URL de votre API pour récupérer les produits par fournisseur
-//     try {
-//       final response = await http.get(Uri.parse(url));
-//       if (response.statusCode == 200) {
-//         setState(() {
-//           products = json.decode(response.body);
-//         });
-//       } else {
-//         throw 'Erreur de chargement des produits';
-//       }
-//     } catch (e) {
-//       print('Erreur lors de la récupération des produits: $e');
-//     }
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text('Liste des Produits'),
-//       ),
-//       body: ListView.builder(
-//         itemCount: products.length,
-//         itemBuilder: (BuildContext context, int index) {
-//           final product = products[index];
-//           final productName = product['name'] ?? 'Nom inconnu';
-//           final productDescription = product['description'] ?? '';
-//           final productPrice = product['price'] ?? 'Prix inconnu';
-//           return Card(
-//             child: ListTile(
-//               title: Text(productName),
-//               subtitle: Column(
-//                 crossAxisAlignment: CrossAxisAlignment.start,
-//                 children: [
-//                   Text(productDescription),
-//                   SizedBox(height: 8),
-//                   Text('Prix: $productPrice'),
-//                 ],
-//               ),
-//             ),
-//           );
-//         },
-//       ),
-//     );
-//   }
-// }
 

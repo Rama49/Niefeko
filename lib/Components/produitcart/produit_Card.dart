@@ -68,41 +68,49 @@ class _productState extends State<product> {
                 ),
               );
                 },
-                child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text(
-                          storeName,
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        SizedBox(height: 4),
-                         imageUrl.isNotEmpty
-                            ? Image.network(
-                                imageUrl,
-                                width: 100,
-                                height: 100,
-                                fit: BoxFit.cover,
-                                errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-                                  return Placeholder(
-                                    fallbackHeight: 100,
-                                    fallbackWidth: 100,
-                                  );
-                                },
-                              )
-                            : Placeholder(
-                                fallbackHeight: 100,
-                                fallbackWidth: 100,
-                              ),
-                        Text(payment,
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                  
+child: Padding(
+              padding: EdgeInsets.all(16.0),
+              //alignment: Alignment.center,
+              child: 
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Center(
+                    child: Image.network(
+                     imageUrl,
+                      width: 100,
+                      height: 100,
+                      fit: BoxFit.cover,
+                    ),),
+                     Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                            storeName,
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 15),
+                          ),
+                          SizedBox(height: 4),
+                          Text(
+                            payment,
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 30,
+                                color: Colors.purple),
+                          ),
+                        ],
                       ),
-                        // Utiliser un widget de placeholder si l'URL de l'image n'est pas valide
-                       
-                      ],
                     ),
-                  ),
+                    const SizedBox(height: 8),
+                  ],
+                ),
+              //],
+            ),
+
               ),
             ));
           },

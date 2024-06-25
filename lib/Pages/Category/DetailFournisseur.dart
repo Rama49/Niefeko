@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:niefeko/Components/Category/product.dart';
 import 'package:niefeko/Components/produitcart/FournisseurProduct.dart';
-//import 'package:niefeko/Pages/Category/CategoriePage.dart';
-//import 'package:niefeko/Pages/CartPanier/CartPanier.dart';
-//import 'package:cloud_firestore/cloud_firestore.dart';
-//import 'package:firebase_auth/firebase_auth.dart';
 import 'package:niefeko/Pages/Recherche/recherche.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
@@ -241,7 +237,6 @@ void addToCart(Product product) async {
 
  // @override
   Widget buildCard(index, Product product){
-    //List<Color> colors = [Colors.red, Colors.blue, Colors.green, Colors.yellow, Colors.black];   
     return Scaffold(
       // appBar: AppBar(
       //   backgroundColor: const Color(0xFF612C7D),
@@ -266,7 +261,7 @@ void addToCart(Product product) async {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => FournisseurProduct(supplierId: suppliers[index],),
+                      builder: (context) => FournisseurProduct(supplierId: product.id,),
                     ),
                   );
                 },

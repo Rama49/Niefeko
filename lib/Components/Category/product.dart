@@ -10,7 +10,8 @@ class Product {
     required this.name,
     required this.description,
     required this.price,
-    this.quantity = 1, required id,
+    this.quantity = 1, 
+    //required id,
   });
 
   get id => null;

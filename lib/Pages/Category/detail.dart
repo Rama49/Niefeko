@@ -90,7 +90,7 @@ class _DetailState extends State<Detail> {
     } else {
       setState(() {
         cartItems.add(Product(
-          id: product.id,
+          //id: product.id,
           imagePath: imageUrl,
           name: productName,
           description: product.description,
@@ -114,7 +114,7 @@ class _DetailState extends State<Detail> {
       context,
       MaterialPageRoute(
         builder: (context) => CartPanier(
-          cartItems: cartItems, user_firstname: '', user_lastname: '',
+          cartItems: cartItems, user_firstname: '', user_lastname: '', user_email: '',
         ),
       ),
     );
@@ -123,7 +123,7 @@ class _DetailState extends State<Detail> {
   @override
   Widget build(BuildContext context) {
     return buildCard(index, Product(
-      id: widget.product.id,
+     // id: widget.product.id,
       imagePath: widget.product.imagePath,
       name: widget.product.name,
       description: widget.product.description,
@@ -165,7 +165,7 @@ class _DetailState extends State<Detail> {
 
                   if (isFavoritedList[index]) {
                     Product favoriteProduct = Product(
-                      id: product.id,
+                      //id: product.id,
                       imagePath: product.imagePath,
                       name: product.name,
                       description: product.description,
