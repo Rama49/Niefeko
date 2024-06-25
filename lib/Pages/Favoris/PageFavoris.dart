@@ -2,11 +2,9 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:niefeko/Components/Category/product.dart';
-import 'package:niefeko/Pages/Category/CategoriePage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class pagefavoris extends StatefulWidget {
-  const pagefavoris({Key? key}) : super(key: key);
-
   @override
   _pagefavorisState createState() => _pagefavorisState();
 }
@@ -22,31 +20,73 @@ class _pagefavorisState extends State<pagefavoris> {
   }
 
   Future<void> fetchFavoriteProducts() async {
-    final response = await http.get(Uri.parse('https://niefeko.com/wp-json/custom-routes/v1/customer/favorits'));
+    final url = Uri.parse('https://niefeko.com/wp-json/custom-routes/v1/customer/favorits');
 
-    if (response.statusCode == 200) {
-      final List<dynamic> responseData = json.decode(response.body);
-      setState(() {
-        favoriteProducts = responseData.map((json) => Product(
-          id: json['id'], // Ajout de l'id ici
-          imagePath: json['imagePath'] ?? 'assets/sac1.png',
-          name: json['name'] ?? 'sac',
-          price: double.parse(json['price'] ?? '10000'),
-          description: json['description'] ?? '',
-        )).toList();
-        isLoading = false;
-      });
-    } else {
-      throw Exception('Échec du chargement des produits favoris');
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString('token') ?? '';
+
+      final response = await http.get(
+        url,
+        headers: {'Authorization': 'Bearer $token'},
+      );
+
+      if (response.statusCode == 200) {
+        final List<dynamic> responseData = json.decode(response.body);
+
+        setState(() {
+          favoriteProducts = responseData.map((json) => Product(
+            id: json['id'],
+            imagePath: json['featured_image']['url'] ?? 'assets/images/default_image.png', // Image de secours
+            name: json['name'] ?? 'Unknown',
+            price: double.parse(json['price'].toString() ?? '0.0'),
+            description: json['description'] ?? '',
+          )).toList();
+          isLoading = false;
+        });
+
+        print('API response status code: ${response.statusCode}');
+        print('API response body: ${response.body}');
+        print('Response data: $responseData');
+      } else {
+        throw Exception('Failed to load favorite products');
+      }
+    } catch (e) {
+      print('Error fetching favorites: $e');
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Error'),
+            content: Text('Failed to load favorite products.'),
+            actions: <Widget>[
+              TextButton(
+                child: Text('OK'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
     }
   }
 
-  void removeFavorite(Product product) async {
+  Future<void> removeFavorite(Product product) async {
+    final url = Uri.parse('https://niefeko.com/wp-json/custom-routes/v1/customer/favorits');
+
     try {
+      final prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString('token') ?? '';
+
       final response = await http.post(
-        Uri.parse('https://niefeko.com/wp-json/custom-routes/v1/customer/favorits'),
-        headers: {'Content-Type': 'application/json'},
-        body: jsonEncode({'id': product.id.toString()}), // Utilisation de l'id ici
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+        body: jsonEncode({'id': product.id}),
       );
 
       if (response.statusCode == 200) {
@@ -57,8 +97,8 @@ class _pagefavorisState extends State<pagefavoris> {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              title: Text('Produit retiré des favoris'),
-              content: Text('${product.name} a été retiré de vos favoris.'),
+              title: Text('Removed from Favorites'),
+              content: Text('${product.name} has been removed from your favorites.'),
               actions: <Widget>[
                 TextButton(
                   child: Text('OK'),
@@ -71,15 +111,16 @@ class _pagefavorisState extends State<pagefavoris> {
           },
         );
       } else {
-        throw Exception('Échec de la suppression du produit favori');
+        throw Exception('Failed to remove favorite product');
       }
     } catch (e) {
+      print('Error removing favorite product: $e');
       showDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text('Erreur'),
-            content: Text('Échec de la suppression du produit favori.'),
+            title: Text('Error'),
+            content: Text('Failed to remove favorite product.'),
             actions: <Widget>[
               TextButton(
                 child: Text('OK'),
@@ -100,7 +141,7 @@ class _pagefavorisState extends State<pagefavoris> {
       appBar: AppBar(
         backgroundColor: const Color(0xFF593070),
         title: const Text(
-          'Produits favoris',
+          'Favorite Products',
           style: TextStyle(color: Colors.white),
         ),
         iconTheme: const IconThemeData(color: Colors.white),
@@ -108,16 +149,23 @@ class _pagefavorisState extends State<pagefavoris> {
       body: isLoading
           ? Center(child: CircularProgressIndicator())
           : favoriteProducts.isEmpty
-              ? Center(child: Text('Aucun produit trouvé dans les favoris.'))
+              ? Center(child: Text('No products found in favorites.'))
               : ListView.builder(
                   itemCount: favoriteProducts.length,
                   itemBuilder: (context, index) {
                     final product = favoriteProducts[index];
                     return Card(
                       child: ListTile(
-                        leading: Image.network(product.imagePath),
+                        leading: SizedBox(
+                          width: 100,
+                          height: 100,
+                          child: Image.network(
+                            product.imagePath,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
                         title: Text(product.name),
-                        subtitle: Text('Prix: ${product.price} FCFA'),
+                        subtitle: Text('Price: ${product.price} FCFA'),
                         trailing: IconButton(
                           icon: const Icon(Icons.delete, color: Colors.red),
                           onPressed: () {
@@ -125,17 +173,17 @@ class _pagefavorisState extends State<pagefavoris> {
                               context: context,
                               builder: (BuildContext context) {
                                 return AlertDialog(
-                                  title: const Text('Confirmer la suppression'),
-                                  content: const Text('Voulez-vous vraiment supprimer ce produit ?'),
+                                  title: const Text('Confirm Removal'),
+                                  content: const Text('Are you sure you want to remove this product?'),
                                   actions: <Widget>[
                                     TextButton(
-                                      child: const Text('Annuler'),
+                                      child: const Text('Cancel'),
                                       onPressed: () {
                                         Navigator.of(context).pop();
                                       },
                                     ),
                                     TextButton(
-                                      child: const Text('Supprimer'),
+                                      child: const Text('Remove'),
                                       onPressed: () {
                                         removeFavorite(product);
                                         Navigator.of(context).pop();

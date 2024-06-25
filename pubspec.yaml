@@ -93,7 +93,9 @@ flutter:
       - assets/chemise-ceinture-détachable-soie.jpg
       - assets/Bleu-pantalon.jpg
       - assets/tshirt1.jpg
+      - assets/casque.png
       - assets/tshirtRouge.png
+      - assets/images/default_image.png
       - assets/logoAfricavivre.png
       - assets/logoafriquevert.png
       - assets/logoanka.png

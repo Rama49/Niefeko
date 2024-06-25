@@ -35,50 +35,49 @@ class _CategoryPageState extends State<CategoryPage> {
       final List<dynamic> responseData = json.decode(response.body);
       setState(() {
         for (var json in responseData) {
-          final product = Product.fromJson(json); // Utilisation de fromJson
-          products[product.id] =
-              product; // Utilisation de l'ID pour stocker le produit
+          final product = Product.fromJson(json);
+          products[product.id] = product;
         }
         filteredProducts = products.values.toList();
         isLoading = false;
       });
     } else {
-      throw Exception('Échec du chargement des produits');
+      throw Exception('Failed to load products');
     }
   }
 
   void searchProduct(String query) {
     final results = products.values
         .where((product) =>
-          product.name.toLowerCase().contains(query.toLowerCase()))
+            product.name.toLowerCase().contains(query.toLowerCase()))
         .toList();
     setState(() {
       filteredProducts = results;
     });
   }
 
- Future<void> loadCartItems() async {
+  Future<void> loadCartItems() async {
     final prefs = await SharedPreferences.getInstance();
     final cartItemsJson = prefs.getStringList('cartItems') ?? [];
     setState(() {
-      cartItems = cartItemsJson.map((item) => Product.fromJson(json.decode(item))).toList();
+      cartItems = cartItemsJson
+          .map((item) => Product.fromJson(json.decode(item)))
+          .toList();
       cartItemCount = cartItems.fold(0, (sum, item) => sum + item.quantity);
     });
   }
 
-
   void addToCart(Product product) {
-      print(product.id);
     setState(() {
-      cartItems.add(product); // Ajouter le produit à la liste des produits ajoutés au panier
-      cartItemCount = cartItems.length; // Mettre à jour le nombre d'articles dans le panier
+      cartItems.add(product);
+      cartItemCount = cartItems.length;
     });
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Produit ajouté au panier'),
-          content: Text('${product.name} a été ajouté à votre panier.'),
+          title: Text('Product added to cart'),
+          content: Text('${product.name} has been added to your cart.'),
           actions: <Widget>[
             TextButton(
               child: Text('OK'),
@@ -97,57 +96,83 @@ class _CategoryPageState extends State<CategoryPage> {
       context,
       MaterialPageRoute(
         builder: (context) => CartPanier(
-            cartItems: cartItems,
-            user_firstname: "",
-            user_lastname: "",
-            user_email: ""),
+          cartItems: cartItems,
+          user_firstname: "",
+          user_lastname: "",
+          user_email: "",
+        ),
       ),
     );
   }
 
-  void toggleFavorite(Product product) {
-    setState(() {
-      if (favoriteItems.contains(product.id)) {
-        favoriteItems.remove(product.id);
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: Text("Vous n'aimez plus ce produit"),
-              content: Text('${product.name} a été retiré de vos favoris.'),
-              actions: <Widget>[
-                TextButton(
-                  child: Text('OK'),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                ),
-              ],
-            );
-          },
-        );
-      } else {
-        favoriteItems.add(product.id);
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: Text('Vous avez aimé ce produit'),
-              content: Text('${product.name} a été ajouté à vos favoris.'),
-              actions: <Widget>[
-                TextButton(
-                  child: Text('OK'),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                ),
-              ],
-            );
-          },
-        );
-      }
-    });
+  void toggleFavorite(Product product) async {
+  final url = Uri.parse('https://niefeko.com/wp-json/custom-routes/v1/customer/favorits');
+
+  final prefs = await SharedPreferences.getInstance();
+  final token = prefs.getString('token') ?? ''; // Récupérez votre token d'une manière appropriée ici
+
+  try {
+    final response = await http.post(
+      url,
+      body: json.encode({"id": product.id}),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token', // Ajoutez votre token ici
+      },
+    );
+
+    if (response.statusCode == 200) {
+      setState(() {
+        if (favoriteItems.contains(product.id)) {
+          favoriteItems.remove(product.id);
+          print('Product ID ${product.id} removed from favorites.'); // Afficher l'ID du produit retiré des favoris
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: Text("Vous n'aimez plus ce produit"),
+                content: Text('${product.name} a été retiré de vos favoris.'),
+                actions: <Widget>[
+                  TextButton(
+                    child: Text('OK'),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              );
+            },
+          );
+        } else {
+          favoriteItems.add(product.id);
+          print('Product ID ${product.id} added to favorites.'); // Afficher l'ID du produit ajouté aux favoris
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: Text('Vous aimez ce produit'),
+                content: Text('${product.name} a été ajouté à vos favoris.'),
+                actions: <Widget>[
+                  TextButton(
+                    child: Text('OK'),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              );
+            },
+          );
+        }
+      });
+    } else {
+      throw Exception('Échec de la mise à jour des favoris: ${response.statusCode}');
+    }
+  } catch (e) {
+    print('Erreur lors de la requête POST: $e');
+    throw Exception('Échec de la mise à jour des favoris');
   }
+}
 
   @override
   Widget build(BuildContext context) {
@@ -155,7 +180,7 @@ class _CategoryPageState extends State<CategoryPage> {
       appBar: AppBar(
         backgroundColor: const Color(0xFF612C7D),
         iconTheme: IconThemeData(color: Colors.white),
-        title: const Text('Produits', style: TextStyle(color: Colors.white)),
+        title: const Text('Products', style: TextStyle(color: Colors.white)),
         centerTitle: true,
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.white),
@@ -200,7 +225,7 @@ class _CategoryPageState extends State<CategoryPage> {
             ),
             child: TextField(
               decoration: InputDecoration(
-                hintText: 'Rechercher...',
+                hintText: 'Search...',
                 prefixIcon: Icon(Icons.search, color: Colors.grey),
                 border: InputBorder.none,
               ),
@@ -217,7 +242,7 @@ class _CategoryPageState extends State<CategoryPage> {
           : filteredProducts.isEmpty
               ? Center(
                   child: Text(
-                    'Produit non trouvé',
+                    'Product not found',
                     style: TextStyle(color: Colors.red, fontSize: 18),
                   ),
                 )
@@ -276,29 +301,28 @@ class _CategoryPageState extends State<CategoryPage> {
                                         onPressed: () {
                                           addToCart(product);
                                         },
-                                        style: ElevatedButton.styleFrom(
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 40, vertical: 10),
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(5),
+                                        style: ButtonStyle(
+                                          backgroundColor: MaterialStateProperty.all<Color>(const Color(0xFF612C7D)),
+                                          padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+                                            EdgeInsets.symmetric(horizontal: 40, vertical: 10),
                                           ),
-                                          backgroundColor:
-                                              const Color(0xFF612C7D),
+                                          shape: MaterialStateProperty.all<OutlinedBorder>(
+                                            RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(5),
+                                            ),
+                                          ),
                                         ),
                                         child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
+                                          mainAxisAlignment: MainAxisAlignment.center,
                                           children: [
                                             const Text(
-                                              "Ajouter au panier",
+                                              "Add to Cart",
                                               style: TextStyle(
                                                 fontSize: 16.0,
                                                 color: Colors.white,
                                               ),
                                             ),
-                                            Icon(Icons.shopping_cart,
-                                                color: Colors.white),
+                                            Icon(Icons.shopping_cart, color: Colors.white),
                                           ],
                                         ),
                                       ),
@@ -316,9 +340,7 @@ class _CategoryPageState extends State<CategoryPage> {
                                 toggleFavorite(product);
                               },
                               child: Icon(
-                                isFavorite
-                                    ? Icons.favorite
-                                    : Icons.favorite_border,
+                                isFavorite ? Icons.favorite : Icons.favorite_border,
                                 color: isFavorite ? Colors.red : Colors.grey,
                               ),
                             ),

@@ -4,7 +4,7 @@ class Product {
   final String description;
   final double price;
   final int id;
-  int quantity ;
+  int quantity; // Peut-être supprimé si non utilisé globalement.
 
   Product({
     required this.imagePath,
@@ -15,7 +15,6 @@ class Product {
     this.quantity = 1,
   });
 
-
   Map<String, dynamic> toMap() {
     return {
       "id": id,
@@ -25,13 +24,14 @@ class Product {
       'price': price,
     };
   }
+
   factory Product.fromJson(Map<String, dynamic> json) {
     return Product(
       id: json["id"],
-     imagePath: json['images'][0]['src'] ?? '',
-     name: json['name'] ?? '',
-     description: json['description'] ?? '',
-     price: double.parse(json['price'] ?? '0.0'),
+      imagePath: json['featured_image']['url'] ?? 'assets/images/default_image.png', // Utilisation d'une image de secours si l'image n'est pas présente.
+      name: json['name'] ?? '',
+      description: json['description'] ?? '',
+      price: double.parse(json['price'].toString() ?? '0.0'),
     );
   }
 }
