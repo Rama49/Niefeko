@@ -9,8 +9,9 @@ import 'package:niefeko/Pages/Category/DetailFournisseur.dart';
 
 class FournisseurProduct extends StatefulWidget {
   final int supplierId;
+  final String storeName;
 
-  FournisseurProduct({required this.supplierId});
+  FournisseurProduct({required this.supplierId, required this.storeName});
 
   @override
   _FournisseurProductState createState() => _FournisseurProductState();
@@ -110,7 +111,7 @@ class _FournisseurProductState extends State<FournisseurProduct> {
       appBar: AppBar(
         backgroundColor: const Color(0xFF612C7D),
         iconTheme: IconThemeData(color: Colors.white),
-        title: const Text('Produits', style: TextStyle(color: Colors.white)),
+        title:  Text('Produits de ${widget.storeName}', style: TextStyle(color: Colors.white)),
         centerTitle: true,
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.white),
@@ -171,7 +172,7 @@ class _FournisseurProductState extends State<FournisseurProduct> {
                           onTap: () => Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => DetailFournisseur(product: product, productId: supplier.toString()),
+                                  builder: (context) => DetailFournisseur(product: product, productId: supplier.toString(), storeName: widget.storeName,),
                                 ),
                               ),
                           child: Padding(

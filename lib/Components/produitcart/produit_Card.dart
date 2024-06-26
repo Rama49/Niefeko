@@ -64,7 +64,7 @@ class _productState extends State<product> {
                   Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => FournisseurProduct(supplierId: supplier['id']),
+                  builder: (context) => FournisseurProduct(supplierId: supplier['id'], storeName: supplier['store_name'],),
                 ),
               );
                 },
