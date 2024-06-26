@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_html/flutter_html.dart';
 import 'package:niefeko/Components/Category/product.dart';
 import 'package:niefeko/Pages/CartPanier/CartPanier.dart';
+import 'package:niefeko/Pages/Category/detail.dart';
 
 class CategoryPage extends StatefulWidget {
   @override
@@ -180,6 +181,11 @@ class _CategoryPageState extends State<CategoryPage> {
                       padding: const EdgeInsets.all(8.0),
                       child: Card(
                         elevation: 5,
+                        child: GestureDetector(
+                          onTap: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => Detail(product: product),)),
                         child: Padding(
                           padding: const EdgeInsets.all(16.0),
                           child: Column(
@@ -254,7 +260,7 @@ class _CategoryPageState extends State<CategoryPage> {
                             ],
                           ),
                         ),
-                      ),
+                      ),)
                     );
                   },
                 ),
