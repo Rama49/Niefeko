@@ -3,8 +3,6 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:html/parser.dart' as htmlParser;
-import 'package:niefeko/Pages/Collection/Collectionhabi.dart';
-import 'package:niefeko/Pages/SettingsPage/SettingsPage.dart';
 
 class Categorie extends StatefulWidget {
   const Categorie({Key? key}) : super(key: key);
@@ -41,8 +39,13 @@ class _CategorieState extends State<Categorie> {
         final List<dynamic> data = json.decode(response.body);
         setState(() {
           categories = List<Map<String, dynamic>>.from(data);
+          // Ajouter les images pour chaque catégorie si elles ne sont pas fournies par l'API
           categories.forEach((category) {
-            print(_decodeHtmlEntity(category['name']));
+            final cleanedCategoryName =
+                _normalizeCategoryName(_decodeHtmlEntity(category['name']));
+            if (!categoryImages.containsKey(cleanedCategoryName)) {
+              categoryImages[cleanedCategoryName] = 'assets/default_image.jpg';
+            }
           });
         });
       } else {
@@ -72,21 +75,34 @@ class _CategorieState extends State<Categorie> {
             ],
           ),
           const SizedBox(height: 20),
-          GestureDetector(
-            child: CarouselSlider(
-              options: CarouselOptions(
-                enlargeCenterPage: false,
-                autoPlay: false,
-                aspectRatio: 23 / 9,
-                autoPlayCurve: Curves.fastOutSlowIn,
-                enableInfiniteScroll: true,
-                autoPlayAnimationDuration: const Duration(milliseconds: 500),
-                viewportFraction: 0.25,
-              ),
-              items: categories.map((category) {
-                return Builder(
-                  builder: (BuildContext context) {
-                    return Container(
+          CarouselSlider(
+            options: CarouselOptions(
+              enlargeCenterPage: false,
+              autoPlay: false,
+              aspectRatio: 23 / 9,
+              autoPlayCurve: Curves.fastOutSlowIn,
+              enableInfiniteScroll: true,
+              autoPlayAnimationDuration: const Duration(milliseconds: 500),
+              viewportFraction: 0.25,
+            ),
+            items: categories.map((category) {
+              return Builder(
+                builder: (BuildContext context) {
+                  return GestureDetector(
+                    onTap: () {
+                      final categoryId = category['id'];
+                      final categoryName = _decodeHtmlEntity(category['name']);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => CategoryDetailPage(
+                            categoryId: categoryId.toString(),
+                            categoryName: categoryName,
+                          ),
+                        ),
+                      );
+                    },
+                    child: Container(
                       margin: EdgeInsets.symmetric(horizontal: 5.0),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -114,11 +130,11 @@ class _CategorieState extends State<Categorie> {
                           ),
                         ],
                       ),
-                    );
-                  },
-                );
-              }).toList(),
-            ),
+                    ),
+                  );
+                },
+              );
+            }).toList(),
           ),
         ],
       ),
@@ -127,11 +143,7 @@ class _CategorieState extends State<Categorie> {
 
   String _decodeHtmlEntity(String htmlString) {
     final document = htmlParser.parse(htmlString);
-    if (document != null) {
-      return document.body?.text ?? htmlString;
-    } else {
-      return htmlString;
-    }
+    return document.body?.text ?? htmlString;
   }
 
   String _normalizeCategoryName(String categoryName) {
@@ -150,9 +162,77 @@ class _CategorieState extends State<Categorie> {
             height: 70,
           )
         : Image.asset(
-            'assets/casque.png',
+            'assets/default_image.jpg',
             width: 70,
             height: 70,
           );
+  }
+}
+
+class CategoryDetailPage extends StatefulWidget {
+  final String categoryId;
+  final String categoryName;
+
+  const CategoryDetailPage({
+    Key? key,
+    required this.categoryId,
+    required this.categoryName,
+  }) : super(key: key);
+
+  @override
+  _CategoryDetailPageState createState() => _CategoryDetailPageState();
+}
+
+class _CategoryDetailPageState extends State<CategoryDetailPage> {
+  List<dynamic> products = [];
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchProducts();
+  }
+
+  Future<void> fetchProducts() async {
+    final url = Uri.parse(
+        'https://niefeko.com/wp-json/custom-routes/v1/products?category=${widget.categoryId}');
+
+    try {
+      final response = await http.get(url);
+      if (response.statusCode == 200) {
+        final List<dynamic> data = json.decode(response.body);
+        setState(() {
+          products = data;
+          isLoading = false;
+        });
+      } else {
+        throw Exception('Failed to load products');
+      }
+    } catch (e) {
+      print('Error fetching products: $e');
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.categoryName),
+      ),
+      body: isLoading
+          ? Center(child: CircularProgressIndicator())
+          : ListView.builder(
+              itemCount: products.length,
+              itemBuilder: (context, index) {
+                final product = products[index];
+                return ListTile(
+                  title: Text(product['name'] ?? 'No Name'),
+                  subtitle: Text(product['description'] ?? 'No Description'),
+                  // You can customize how each product is displayed
+                  // based on the API response structure
+                );
+              },
+            ),
+    );
   }
 }
