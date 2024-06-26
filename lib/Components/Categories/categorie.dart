@@ -44,7 +44,7 @@ class _CategorieState extends State<Categorie> {
             final cleanedCategoryName =
                 _normalizeCategoryName(_decodeHtmlEntity(category['name']));
             if (!categoryImages.containsKey(cleanedCategoryName)) {
-              categoryImages[cleanedCategoryName] = 'assets/default_image.jpg';
+              categoryImages[cleanedCategoryName] = 'https://niefeko.com/wp-content/uploads/2024/06/Ensemble-Haut-Bleu-et-pantalon-.jpg';
             }
           });
         });
@@ -169,6 +169,7 @@ class _CategorieState extends State<Categorie> {
   }
 }
 
+
 class CategoryDetailPage extends StatefulWidget {
   final String categoryId;
   final String categoryName;
@@ -225,11 +226,15 @@ class _CategoryDetailPageState extends State<CategoryDetailPage> {
               itemCount: products.length,
               itemBuilder: (context, index) {
                 final product = products[index];
-                return ListTile(
-                  title: Text(product['name'] ?? 'No Name'),
-                  subtitle: Text(product['description'] ?? 'No Description'),
-                  // You can customize how each product is displayed
-                  // based on the API response structure
+                return Card(
+                  margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                  elevation: 3,
+                  child: ListTile(
+                    title: Text(product['name'] ?? 'No Name'),
+                    subtitle: Text(product['description'] ?? 'No Description'),
+                    // Ajoutez d'autres détails de produit si nécessaire
+                    // en fonction de la structure de réponse de l'API
+                  ),
                 );
               },
             ),
