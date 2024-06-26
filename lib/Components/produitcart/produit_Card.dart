@@ -18,7 +18,7 @@ class _productState extends State<product> {
   }
 
   Future<void> fetchSuppliers() async {
-    const url = 'https://niefeko.com/wp-json/dokan/v1/stores'; 
+    const url = 'https://niefeko.com/wp-json/dokan/v1/stores';
     try {
       final response = await http.get(Uri.parse(url));
       if (response.statusCode == 200) {
@@ -67,7 +67,9 @@ class _productState extends State<product> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => FournisseurProduct(supplierId: supplier['id']),
+                            builder: (context) => FournisseurProduct(
+                          supplierId: suppliers.length,
+                          storeName: suppliers.toString()),
                           ),
                         );
                       },
@@ -87,7 +89,9 @@ class _productState extends State<product> {
                                     width: 100,
                                     height: 100,
                                     fit: BoxFit.cover,
-                                    errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                                    errorBuilder: (BuildContext context,
+                                        Object exception,
+                                        StackTrace? stackTrace) {
                                       return Placeholder(
                                         fallbackHeight: 100,
                                         fallbackWidth: 100,

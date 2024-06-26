@@ -325,7 +325,7 @@ class _CategoryPageState extends State<CategoryPage> {
                                               errorBuilder: (context
                                     , error, stackTrace) =>
                                               Image.asset(
-                                                'assets/tshirt1.jpg',
+                                                '',
                                                 height: 130,
                                                 width: 130,
                                               ),

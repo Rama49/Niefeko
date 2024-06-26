@@ -42,7 +42,7 @@ class OrderItem {
   final double price;
   final int quantity;
   final String productImage;
-  final String dateCreated; // Ajout de la date de création
+  final String Date; // Ajout de la date de création
 
   OrderItem({
     required this.productId,
@@ -50,7 +50,7 @@ class OrderItem {
     required this.price,
     required this.quantity,
     required this.productImage,
-    required this.dateCreated,
+    required this.Date,
   });
 
   factory OrderItem.fromJson(Map<String, dynamic> json) {
@@ -60,7 +60,7 @@ class OrderItem {
       price: double.parse(json['price'].toString()),
       quantity: int.parse(json['quantity'].toString()),
       productImage: json['imagePath'],
-      dateCreated: json[
+      Date: json[
           'date_created'], // Assurez-vous que 'date_created' correspond à la clé JSON
     );
   }
@@ -133,51 +133,143 @@ class _PanierPageState extends State<PanierPage> {
     }
   }
 
-Future<void> fetchOrderDetails(int orderId) async {
-  final url = Uri.parse(
-      'https://niefeko.com/wp-json/custom-routes/v1/customer/order/$orderId');
-  try {
-    final prefs = await SharedPreferences.getInstance();
-    final token = prefs.getString('token') ?? '';
+  Future<void> fetchOrderDetails(int orderId) async {
+    final url = Uri.parse(
+        'https://niefeko.com/wp-json/custom-routes/v1/customer/order/$orderId');
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString('token') ?? '';
 
-    final response = await http.get(
-      url,
-      headers: {'Authorization': 'Bearer $token'},
-    );
+      final response = await http.get(
+        url,
+        headers: {'Authorization': 'Bearer $token'},
+      );
 
-    if (response.statusCode == 200) {
-      final Map<String, dynamic> responseData = json.decode(response.body);
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> responseData = json.decode(response.body);
 
-      print('Response Data: $responseData'); // Ajout pour débogage
+        print('Response Data: $responseData'); // Ajout pour débogage
 
+        // Vérifiez si l'email existe dans les données renvoyées
+        String Email = responseData['billing_address'] != null
+            ? responseData['billing_address']['email'] ?? 'Non disponible'
+            : 'Non disponible';
+
+        // Vérifiez si la date existe dans les données renvoyées
+       // Vérifiez si la date existe dans les données renvoyées
+String Date = responseData['date_created'] != null
+    ? responseData['date_created']
+    : 'Non disponible';
+
+String dateModified = responseData['date_modified'] != null
+    ? responseData['date_modified']
+    : 'Non disponible';
+
+String dateCompleted = responseData['date_completed'] != null
+    ? responseData['date_completed']
+    : 'Non disponible';
+
+print('Date Created: $Date');
+print('Date Modified: $dateModified');
+print('Date Completed: $dateCompleted');
+
+
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Détails de la Commande ${responseData['order_id']}'),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('Statut: ${responseData['status']}'),
+                  Text('Email: $Email'),
+                  Text('Date: $Date'),
+                  Text(
+                      'Total: ${responseData['total']} ${responseData['currency']}'),
+                 Text(
+                          'Prix: ${responseData['price']} ${responseData['currency']}\nQuantité: ${responseData['quantity']}\nDate: ${responseData['date_created']}'),
+                  Divider(),
+                  Text('Articles:'),
+                  ...(responseData['line_items'] as List).map((item) {
+                    return ListTile(
+                      leading: Image.network(item['productImage']),
+                      title: Text(item['productName']),
+                      subtitle: Text(
+                          'Prix: ${item['price']} ${responseData['currency']}\nQuantité: ${item['quantity']}\nDate: ${item['date_created']}'),
+                    );
+                  }).toList(),
+                ],
+              ),
+              actions: <Widget>[
+                TextButton(
+                  child: Text('Fermer'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      } else {
+        throw Exception('Failed to load order details: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error fetching order details: $e');
       showDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text('Détails de la Commande ${responseData['order_id']}'),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text('Statut: ${responseData['status']}'),
-                Text('Email: ${responseData['email']}'), // Assurez-vous de la clé exacte
-                Text(
-                    'Total: ${responseData['total']} ${responseData['currency']}'),
-                Divider(),
-                Text('Articles:'),
-                ...(responseData['line_items'] as List).map((item) {
-                  return ListTile(
-                    leading: Image.network(item['productImage']),
-                    title: Text(item['productName']),
-                    subtitle: Text(
-                        'Prix: ${item['price']} ${responseData['currency']}\nQuantité: ${item['quantity']}\nDate: ${item['date_created']}'),
-                  );
-                }).toList(),
-              ],
-            ),
+            title: Text('Error'),
+            content: Text('Failed to fetch order details: $e'),
             actions: <Widget>[
               TextButton(
-                child: Text('Fermer'),
+                child: Text('OK'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
+  }
+
+ Future<void> deleteOrder(int orderId) async {
+  final url = Uri.parse('https://niefeko.com/wp-json/custom-routes/v1/customer/orders');
+
+  try {
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('token') ?? '';
+
+    final response = await http.post(
+      url,
+      headers: {
+        'Authorization': 'Bearer $token',
+        'Content-Type': 'application/json',
+      },
+      body: json.encode({'orderId': orderId}),
+    );
+
+    print('Delete response status: ${response.statusCode}');
+    print('Delete response body: ${response.body}');
+
+    if (response.statusCode == 200) {
+      setState(() {
+        orders.removeWhere((order) => order.orderId == orderId);
+      });
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Commande supprimée'),
+            content: Text('La commande $orderId a été supprimée avec succès.'),
+            actions: <Widget>[
+              TextButton(
+                child: Text('OK'),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
@@ -187,16 +279,16 @@ Future<void> fetchOrderDetails(int orderId) async {
         },
       );
     } else {
-      throw Exception('Failed to load order details: ${response.statusCode}');
+      throw Exception('Failed to delete order: ${response.statusCode}');
     }
   } catch (e) {
-    print('Error fetching order details: $e');
+    print('Error deleting order: $e');
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Error'),
-          content: Text('Failed to fetch order details: $e'),
+          title: Text('Erreur'),
+          content: Text('Erreur lors de la suppression de la commande: $e'),
           actions: <Widget>[
             TextButton(
               child: Text('OK'),
@@ -210,41 +302,6 @@ Future<void> fetchOrderDetails(int orderId) async {
     );
   }
 }
-
-  Future<void> deleteOrder(int orderId) async {
-    final url = Uri.parse(
-        'https://niefeko.com/wp-json/custom-routes/v1/customer/orders/$orderId');
-
-    try {
-      final prefs = await SharedPreferences.getInstance();
-      final token = prefs.getString('token') ?? '';
-
-      final response = await http.delete(
-        url,
-        headers: {'Authorization': 'Bearer $token'},
-      );
-
-      print('Delete response status: ${response.statusCode}');
-      print('Delete response body: ${response.body}');
-
-      if (response.statusCode == 200) {
-        setState(() {
-          orders.removeWhere((order) => order.orderId == orderId);
-        });
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Commande supprimée avec succès')),
-        );
-      } else {
-        throw Exception('Failed to delete order: ${response.statusCode}');
-      }
-    } catch (e) {
-      print('Error deleting order: $e');
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-            content: Text('Erreur lors de la suppression de la commande: $e')),
-      );
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
