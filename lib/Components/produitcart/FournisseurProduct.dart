@@ -5,6 +5,7 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:niefeko/Components/Category/product.dart';
 import 'package:niefeko/Pages/CartPanier/CartPanier.dart';
 import 'package:niefeko/Pages/Category/DetailFournisseur.dart';
+import 'package:niefeko/Pages/Recherche/recherche.dart';
 
 
 class FournisseurProduct extends StatefulWidget {
@@ -116,7 +117,10 @@ class _FournisseurProductState extends State<FournisseurProduct> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
-            Navigator.pop(context);
+            //Navigator.pop(context);
+            Navigator.push(
+              context, MaterialPageRoute(
+                builder: (context) => search(),));
           },
         ),
         actions: [

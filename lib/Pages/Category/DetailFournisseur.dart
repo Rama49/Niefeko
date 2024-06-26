@@ -4,6 +4,8 @@ import 'package:niefeko/Components/produitcart/FournisseurProduct.dart';
 import 'package:niefeko/Pages/Recherche/recherche.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:flutter_html/flutter_html.dart';
+
 
 
 class DetailFournisseur extends StatefulWidget{
@@ -220,7 +222,7 @@ void addToCart(Product product) async {
                 },
                                child: Row(
                                 children:  [
-                                Text(//'fournisseur',
+                                Text(
                                 widget.storeName,
                                   style: TextStyle(
                                     fontSize: 15,
@@ -242,51 +244,47 @@ void addToCart(Product product) async {
                           ),
                         ),
                         const SizedBox(height: 10),
-                        Text(
-                          product.description,
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w200,
-                          ),
+                          Html(
+                            data: product.description,
                         ),
                         const SizedBox(height: 10),
-                        SizedBox(
-                          height: 70,
-                          child: ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            itemCount: 5,
-                            itemBuilder: (context, Color) => 
-                            Container(
-                              margin: const EdgeInsets.only(right: 6),
-                              width: 200,
-                              //height: 10,
-                              decoration: BoxDecoration(
-                                color: Colors.grey.shade100,
-                                borderRadius: BorderRadius.circular(40),
-                              ),
+                        // SizedBox(
+                        //   height: 70,
+                        //   child: ListView.builder(
+                        //     scrollDirection: Axis.horizontal,
+                        //     itemCount: 5,
+                        //     itemBuilder: (context, Color) => 
+                        //     Container(
+                        //       margin: const EdgeInsets.only(right: 6),
+                        //       width: 200,
+                        //       //height: 10,
+                        //       decoration: BoxDecoration(
+                        //         color: Colors.grey.shade100,
+                        //         borderRadius: BorderRadius.circular(40),
+                        //       ),
 
-                              child: ElevatedButton(onPressed: (){
-                                          setState(() {
-                                          addToCart(product);
-                                                      },);},
-                              child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    //ColorFiltered(colorFilter: ColorFilter.mode(Colors.black, BlendMode.colorBurn)),
-                                     Image(
-                                        height: 70,
-                                        image: AssetImage(product.imagePath), //color: colors[Color]
-                                        ),
-                                    Text(
-                                      product.name, 
-                                      //textAlign: TextAlign.center,
-                                      style: TextStyle(fontSize: 15),
-                                    )
-                                  ]
-                                  ),)
-                            ),
-                          ),
-                        ),
+                        //       child: ElevatedButton(onPressed: (){
+                        //                   setState(() {
+                        //                   addToCart(product);
+                        //                               },);},
+                        //       child: Row(
+                        //           mainAxisAlignment: MainAxisAlignment.start,
+                        //           children: [
+                        //             //ColorFiltered(colorFilter: ColorFilter.mode(Colors.black, BlendMode.colorBurn)),
+                        //              Image(
+                        //                 height: 70,
+                        //                 image: AssetImage(product.imagePath), //color: colors[Color]
+                        //                 ),
+                        //             Text(
+                        //               product.name, 
+                        //               //textAlign: TextAlign.center,
+                        //               style: TextStyle(fontSize: 15),
+                        //             )
+                        //           ]
+                        //           ),)
+                        //     ),
+                        //   ),
+                        // ),
                         const SizedBox(height: 20),
                       ],
                     ),
