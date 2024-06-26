@@ -24,6 +24,7 @@ class CartPanier extends StatefulWidget {
 
 class _CartPanierState extends State<CartPanier> {
   String? token;
+  bool _isLoading = false;
 
   @override
   void initState() {
@@ -37,7 +38,6 @@ class _CartPanierState extends State<CartPanier> {
       token = prefs.getString('token');
     });
   }
-  bool _isLoading = false;
 
   String getCurrentUserId() {
     return "userID";
@@ -115,6 +115,9 @@ class _CartPanierState extends State<CartPanier> {
       );
 
       if (response.statusCode == 200) {
+        setState(() {
+          widget.cartItems.clear(); // Vider le panier
+        });
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Commande passée avec succès!'),
