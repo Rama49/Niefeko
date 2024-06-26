@@ -133,51 +133,128 @@ class _PanierPageState extends State<PanierPage> {
     }
   }
 
-Future<void> fetchOrderDetails(int orderId) async {
-  final url = Uri.parse(
-      'https://niefeko.com/wp-json/custom-routes/v1/customer/order/$orderId');
-  try {
-    final prefs = await SharedPreferences.getInstance();
-    final token = prefs.getString('token') ?? '';
+  Future<void> fetchOrderDetails(int orderId) async {
+    final url = Uri.parse(
+        'https://niefeko.com/wp-json/custom-routes/v1/customer/order/$orderId');
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString('token') ?? '';
 
-    final response = await http.get(
-      url,
-      headers: {'Authorization': 'Bearer $token'},
-    );
+      final response = await http.get(
+        url,
+        headers: {'Authorization': 'Bearer $token'},
+      );
 
-    if (response.statusCode == 200) {
-      final Map<String, dynamic> responseData = json.decode(response.body);
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> responseData = json.decode(response.body);
 
-      print('Response Data: $responseData'); // Ajout pour débogage
+        print('Response Data: $responseData'); // Ajout pour débogage
 
+        // Vérifiez si l'email existe dans les données renvoyées
+        String Email = responseData['billing_address'] != null
+            ? responseData['billing_address']['email'] ?? 'Non disponible'
+            : 'Non disponible';
+
+        // Vérifiez si la date existe dans les données renvoyées
+        String Date = responseData['billing_address'] != null
+            ? responseData['billing_address']['date_modified'] ??
+                'Non disponible'
+            : 'Non disponible';
+
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Détails de la Commande ${responseData['order_id']}'),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('Statut: ${responseData['status']}'),
+                  Text('Email: $Email'),
+                  Text('Date: $Date'),
+                  Text(
+                      'Total: ${responseData['total']} ${responseData['currency']}'),
+                  Divider(),
+                  Text('Articles:'),
+                  ...(responseData['line_items'] as List).map((item) {
+                    return ListTile(
+                      leading: Image.network(item['productImage']),
+                      title: Text(item['productName']),
+                      subtitle: Text(
+                          'Prix: ${item['price']} ${responseData['currency']}\nQuantité: ${item['quantity']}\nDate: ${item['date_created']}'),
+                    );
+                  }).toList(),
+                ],
+              ),
+              actions: <Widget>[
+                TextButton(
+                  child: Text('Fermer'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      } else {
+        throw Exception('Failed to load order details: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error fetching order details: $e');
       showDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text('Détails de la Commande ${responseData['order_id']}'),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text('Statut: ${responseData['status']}'),
-                Text('Email: ${responseData['email']}'), // Assurez-vous de la clé exacte
-                Text(
-                    'Total: ${responseData['total']} ${responseData['currency']}'),
-                Divider(),
-                Text('Articles:'),
-                ...(responseData['line_items'] as List).map((item) {
-                  return ListTile(
-                    leading: Image.network(item['productImage']),
-                    title: Text(item['productName']),
-                    subtitle: Text(
-                        'Prix: ${item['price']} ${responseData['currency']}\nQuantité: ${item['quantity']}\nDate: ${item['date_created']}'),
-                  );
-                }).toList(),
-              ],
-            ),
+            title: Text('Error'),
+            content: Text('Failed to fetch order details: $e'),
             actions: <Widget>[
               TextButton(
-                child: Text('Fermer'),
+                child: Text('OK'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
+  }
+
+ Future<void> deleteOrder(int orderId) async {
+  final url = Uri.parse('https://niefeko.com/wp-json/custom-routes/v1/customer/orders');
+
+  try {
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('token') ?? '';
+
+    final response = await http.post(
+      url,
+      headers: {
+        'Authorization': 'Bearer $token',
+        'Content-Type': 'application/json',
+      },
+      body: json.encode({'orderId': orderId}),
+    );
+
+    print('Delete response status: ${response.statusCode}');
+    print('Delete response body: ${response.body}');
+
+    if (response.statusCode == 200) {
+      setState(() {
+        orders.removeWhere((order) => order.orderId == orderId);
+      });
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Commande supprimée'),
+            content: Text('La commande $orderId a été supprimée avec succès.'),
+            actions: <Widget>[
+              TextButton(
+                child: Text('OK'),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
@@ -187,16 +264,16 @@ Future<void> fetchOrderDetails(int orderId) async {
         },
       );
     } else {
-      throw Exception('Failed to load order details: ${response.statusCode}');
+      throw Exception('Failed to delete order: ${response.statusCode}');
     }
   } catch (e) {
-    print('Error fetching order details: $e');
+    print('Error deleting order: $e');
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Error'),
-          content: Text('Failed to fetch order details: $e'),
+          title: Text('Erreur'),
+          content: Text('Erreur lors de la suppression de la commande: $e'),
           actions: <Widget>[
             TextButton(
               child: Text('OK'),
@@ -210,41 +287,6 @@ Future<void> fetchOrderDetails(int orderId) async {
     );
   }
 }
-
-  Future<void> deleteOrder(int orderId) async {
-    final url = Uri.parse(
-        'https://niefeko.com/wp-json/custom-routes/v1/customer/orders/$orderId');
-
-    try {
-      final prefs = await SharedPreferences.getInstance();
-      final token = prefs.getString('token') ?? '';
-
-      final response = await http.delete(
-        url,
-        headers: {'Authorization': 'Bearer $token'},
-      );
-
-      print('Delete response status: ${response.statusCode}');
-      print('Delete response body: ${response.body}');
-
-      if (response.statusCode == 200) {
-        setState(() {
-          orders.removeWhere((order) => order.orderId == orderId);
-        });
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Commande supprimée avec succès')),
-        );
-      } else {
-        throw Exception('Failed to delete order: ${response.statusCode}');
-      }
-    } catch (e) {
-      print('Error deleting order: $e');
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-            content: Text('Erreur lors de la suppression de la commande: $e')),
-      );
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
