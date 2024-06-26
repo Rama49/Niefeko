@@ -125,12 +125,13 @@ void addToCart(Product product) async {
             children: [
               IconButton(
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => FournisseurProduct(supplierId: suppliers.length, storeName: suppliers.toString()),
-                    ),
-                  );
+                  // Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(
+                  //     builder: (context) => FournisseurProduct(supplierId: suppliers.length, storeName: suppliers.toString()),
+                  //   ),
+                  // );
+                Navigator.pop(context);
                 },
                
                 icon: const Icon(Icons.arrow_back),
