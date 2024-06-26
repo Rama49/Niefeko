@@ -42,7 +42,7 @@ class OrderItem {
   final double price;
   final int quantity;
   final String productImage;
-  final String dateCreated; // Ajout de la date de création
+  final String Date; // Ajout de la date de création
 
   OrderItem({
     required this.productId,
@@ -50,7 +50,7 @@ class OrderItem {
     required this.price,
     required this.quantity,
     required this.productImage,
-    required this.dateCreated,
+    required this.Date,
   });
 
   factory OrderItem.fromJson(Map<String, dynamic> json) {
@@ -60,7 +60,7 @@ class OrderItem {
       price: double.parse(json['price'].toString()),
       quantity: int.parse(json['quantity'].toString()),
       productImage: json['imagePath'],
-      dateCreated: json[
+      Date: json[
           'date_created'], // Assurez-vous que 'date_created' correspond à la clé JSON
     );
   }
@@ -156,10 +156,23 @@ class _PanierPageState extends State<PanierPage> {
             : 'Non disponible';
 
         // Vérifiez si la date existe dans les données renvoyées
-        String Date = responseData['billing_address'] != null
-            ? responseData['billing_address']['date_modified'] ??
-                'Non disponible'
-            : 'Non disponible';
+       // Vérifiez si la date existe dans les données renvoyées
+String Date = responseData['date_created'] != null
+    ? responseData['date_created']
+    : 'Non disponible';
+
+String dateModified = responseData['date_modified'] != null
+    ? responseData['date_modified']
+    : 'Non disponible';
+
+String dateCompleted = responseData['date_completed'] != null
+    ? responseData['date_completed']
+    : 'Non disponible';
+
+print('Date Created: $Date');
+print('Date Modified: $dateModified');
+print('Date Completed: $dateCompleted');
+
 
         showDialog(
           context: context,
@@ -175,6 +188,8 @@ class _PanierPageState extends State<PanierPage> {
                   Text('Date: $Date'),
                   Text(
                       'Total: ${responseData['total']} ${responseData['currency']}'),
+                 Text(
+                          'Prix: ${responseData['price']} ${responseData['currency']}\nQuantité: ${responseData['quantity']}\nDate: ${responseData['date_created']}'),
                   Divider(),
                   Text('Articles:'),
                   ...(responseData['line_items'] as List).map((item) {
