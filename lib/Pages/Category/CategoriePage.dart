@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter_html/flutter_html.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:niefeko/Components/Category/product.dart';
+import 'package:niefeko/Components/Category/product.dart'; // Assurez-vous d'importer correctement Product depuis son emplacement réel
 import 'package:niefeko/Pages/CartPanier/CartPanier.dart';
 
 class CategoryPage extends StatefulWidget {
@@ -26,8 +26,95 @@ class _CategoryPageState extends State<CategoryPage> {
   void initState() {
     super.initState();
     products = {};
+    loadFavorites(); // Charger les favoris au démarrage
     fetchData();
     loadCartItems();
+  }
+
+  Future<void> loadFavorites() async {
+    final prefs = await SharedPreferences.getInstance();
+    favoriteItems = prefs.getStringList('favoriteItems')?.map((id) => int.parse(id))?.toList() ?? [];
+  }
+
+  Future<void> toggleFavorite(Product product) async {
+    final url = Uri.parse('https://niefeko.com/wp-json/custom-routes/v1/customer/favorits');
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('token') ?? '';
+
+    try {
+      final response = await http.post(
+        url,
+        body: json.encode({"id": product.id}),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        setState(() {
+          if (favoriteItems.contains(product.id)) {
+            favoriteItems.remove(product.id);
+            // Afficher une notification de suppression des favoris
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('${product.name} retiré des favoris'),
+                duration: Duration(seconds: 2),
+                action: SnackBarAction(
+                  label: 'Annuler',
+                  onPressed: () {
+                    // Annuler l'action si nécessaire
+                    toggleFavorite(product);
+                  },
+                ),
+              ),
+            );
+          } else {
+            favoriteItems.add(product.id);
+            // Afficher une notification d'ajout aux favoris
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('${product.name} ajouté aux favoris'),
+                duration: Duration(seconds: 2),
+                action: SnackBarAction(
+                  label: 'Annuler',
+                  onPressed: () {
+                    // Annuler l'action si nécessaire
+                    toggleFavorite(product);
+                  },
+                ),
+              ),
+            );
+          }
+        });
+
+        // Enregistrer les favoris mis à jour dans SharedPreferences
+        await prefs.setStringList('favoriteItems', favoriteItems.map((id) => id.toString()).toList());
+      } else {
+        print('Échec de la mise à jour des favoris: ${response.statusCode}');
+        throw Exception('Échec de la mise à jour des favoris');
+      }
+    } catch (e) {
+      print('Erreur lors de la mise à jour des favoris: $e');
+      // Afficher une boîte de dialogue en cas d'erreur
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Erreur'),
+            content: Text('Une erreur est survenue lors de la mise à jour des favoris.'),
+            actions: <Widget>[
+              TextButton(
+                child: Text('OK'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
   }
 
   Future<void> fetchData({bool loadMore = false}) async {
@@ -42,8 +129,7 @@ class _CategoryPageState extends State<CategoryPage> {
     }
 
     final response = await http.get(
-      Uri.parse(
-          'https://niefeko.com/wp-json/dokan/v1/stores/16/products?page=$currentPage&per_page=$productsPerPage'),
+      Uri.parse('https://niefeko.com/wp-json/dokan/v1/stores/16/products?page=$currentPage&per_page=$productsPerPage'),
     );
 
     if (response.statusCode == 200) {
@@ -123,75 +209,6 @@ class _CategoryPageState extends State<CategoryPage> {
         ),
       ),
     );
-  }
-
-  void toggleFavorite(Product product) async {
-    final url =
-        Uri.parse('https://niefeko.com/wp-json/custom-routes/v1/customer/favorits');
-
-    final prefs = await SharedPreferences.getInstance();
-    final token = prefs.getString('token') ?? ''; // Récupérez votre token d'une manière appropriée ici
-
-    try {
-      final response = await http.post(
-        url,
-        body: json.encode({"id": product.id}),
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer $token', // Ajoutez votre token ici
-        },
-      );
-
-      if (response.statusCode == 200) {
-        setState(() {
-          if (favoriteItems.contains(product.id)) {
-            favoriteItems.remove(product.id);
-            print('Identifiant du produit ${product.id} supprimé aux favoris.'); // Afficher l'ID du produit retiré des favoris
-            showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return AlertDialog(
-                  title: Text("Vous n'aimez plus ce produit"),
-                  content: Text('${product.name} a été retiré de vos favoris.'),
-                  actions: <Widget>[
-                    TextButton(
-                      child: Text('OK'),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                    ),
-                  ],
-                );
-              },
-            );
-          } else {
-            favoriteItems.add(product.id);
-            print('Identifiant du produit ${product.id} ajouté aux favoris.'); // Afficher l'ID du produit ajouté aux favoris
-            showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return AlertDialog(
-                  title: Text('Vous aimez ce produit'),
-                  content: Text('${product.name} a été ajouté à vos favoris.'),
-                  actions: <Widget>[
-                    TextButton(
-                      child: Text('OK'),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                    ),
-                  ],
-                );
-              },
-            );
-          }
-        });
-      } else {
-        print('Échec de la mise à jour des favoris: ${response.statusCode}');
-      }
-    } catch (e) {
-      print('Erreur lors de la mise à jour des favoris: $e');
-    }
   }
 
   @override
@@ -300,20 +317,24 @@ class _CategoryPageState extends State<CategoryPage> {
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     Center(
-                                      child: Image.network(
-                                        product.imagePath ?? '',
-                                        // Utilisation de l'URL d'image du produit, avec une vérification de nullabilité
-                                        height: 130,
-                                        width: 130,
-                                        errorBuilder: (context,
-                                        error, stackTrace) {
-                                          return Image.asset(
-                                            'assets/tshirt1.jpg',
-                                            height: 130,
-                                            width: 130,
-                                          );
-                                        },
-                                      ),
+                                      child: product.imagePath != null
+                                          ? Image.network(
+                                              product.imagePath!,
+                                              height: 130,
+                                              width: 130,
+                                              errorBuilder: (context
+                                    , error, stackTrace) =>
+                                              Image.asset(
+                                                'assets/tshirt1.jpg',
+                                                height: 130,
+                                                width: 130,
+                                              ),
+                                            )
+                                          : Image.asset(
+                                              'assets/tshirt1.jpg',
+                                              height: 130,
+                                              width: 130,
+                                            ),
                                     ),
                                     SizedBox(height: 8),
                                     Center(
@@ -349,22 +370,19 @@ class _CategoryPageState extends State<CategoryPage> {
                                             backgroundColor:
                                                 MaterialStateProperty.all<Color>(
                                                     const Color(0xFF612C7D)),
-                                            padding: MaterialStateProperty.all<
-                                                EdgeInsetsGeometry>(
+                                            padding:
+                                                MaterialStateProperty.all<EdgeInsetsGeometry>(
                                               EdgeInsets.symmetric(
                                                   horizontal: 40, vertical: 10),
                                             ),
-                                            shape: MaterialStateProperty.all<
-                                                OutlinedBorder>(
+                                            shape: MaterialStateProperty.all<OutlinedBorder>(
                                               RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(5),
+                                                borderRadius: BorderRadius.circular(5),
                                               ),
                                             ),
                                           ),
                                           child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
+                                            mainAxisAlignment: MainAxisAlignment.center,
                                             children: [
                                               const Text(
                                                 "Ajouter au panier",
@@ -373,8 +391,7 @@ class _CategoryPageState extends State<CategoryPage> {
                                                   color: Colors.white,
                                                 ),
                                               ),
-                                              Icon(Icons.shopping_cart,
-                                                  color: Colors.white),
+                                              Icon(Icons.shopping_cart, color: Colors.white),
                                             ],
                                           ),
                                         ),
@@ -392,9 +409,7 @@ class _CategoryPageState extends State<CategoryPage> {
                                   toggleFavorite(product);
                                 },
                                 child: Icon(
-                                  isFavorite
-                                      ? Icons.favorite
-                                      : Icons.favorite_border,
+                                  isFavorite ? Icons.favorite : Icons.favorite_border,
                                   color: isFavorite ? Colors.red : Colors.grey,
                                 ),
                               ),
