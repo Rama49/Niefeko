@@ -237,33 +237,31 @@ class _connexionState extends State<connexion> {
                         height: 10,
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(bottom: 5),
+                        padding: const EdgeInsets.only(top: 20, bottom: 5),
                         child: SizedBox(
                           width: double.infinity,
                           child: ElevatedButton(
-                            onPressed: _isLoading ? null : () {
+                            onPressed: () async {
                               if (_formKey.currentState!.validate()) {
-                                _signInWithEmailAndPassword();
+                               await _signInWithEmailAndPassword();
                               }
                             },
                             style: ElevatedButton.styleFrom(
-                              backgroundColor:
-                                  const Color.fromARGB(255, 255, 255, 255),
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 40, vertical: 10),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(5),
-                                side:
-                                    const BorderSide(color: Color(0xFF593070)),
-                              ),
+                            backgroundColor:
+                                const Color.fromARGB(255, 255, 255, 255),
+                            padding: const EdgeInsets.symmetric(vertical: 15),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(7),
+                              side: const BorderSide(color: Colors.white),
                             ),
+                          ),
                             child: _isLoading
                                 ? SizedBox(
                                     width: 20,
                                     height: 20,
                                     child: CircularProgressIndicator(
                                       valueColor: AlwaysStoppedAnimation<Color>(
-                                          Colors.black),
+                                          Color(0xFF612C7D)),
                                     ),
                                   )
                                 : const Text(
@@ -290,10 +288,9 @@ class _connexionState extends State<connexion> {
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: const Color(0xFF593070),
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 55, vertical: 10),
+                              padding: const EdgeInsets.symmetric(vertical: 15),
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(5),
+                                borderRadius: BorderRadius.circular(7),
                                 side: const BorderSide(color: Colors.white),
                               ),
                             ),

@@ -40,6 +40,7 @@ class _CartPanierState extends State<CartPanier> {
   }
 
   String getCurrentUserId() {
+    // Implement logic to retrieve the actual user ID based on your authentication logic
     return "userID";
   }
 
@@ -71,7 +72,7 @@ class _CartPanierState extends State<CartPanier> {
         Uri.parse('https://niefeko.com/wp-json/custom-routes/v1/customer/orders'),
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer $token', // Ajouter le jeton aux en-têtes
+          'Authorization': 'Bearer $token', // Add token to headers
         },
         body: json.encode({
           'billing': {
@@ -115,8 +116,9 @@ class _CartPanierState extends State<CartPanier> {
       );
 
       if (response.statusCode == 200) {
+        // Clear the cart items only after a successful order
         setState(() {
-          widget.cartItems.clear(); // Vider le panier
+          widget.cartItems.clear();
         });
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
@@ -254,37 +256,39 @@ class _CartPanierState extends State<CartPanier> {
                 ),
                 Center(
                   child: Container(
-                    margin: const EdgeInsets.symmetric(vertical: 16.0),
-                    child: ElevatedButton(
-                      onPressed: _isLoading
-                          ? null
-                          : () {
-                              sendOrder(context);
-                            },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: _isLoading
-                            ? Colors.grey
-                            : const Color(0xFF612C7D),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(7),
+                    margin: const EdgeInsets.symmetric(vertical: 30.0),
+                    child: ButtonTheme(
+                      minWidth: 400, // Fixed width of the button
+                      child: ElevatedButton(
+                        onPressed: _isLoading
+                            ? null
+                            : () {
+                                sendOrder(context);
+                              },
+                        style: ElevatedButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 15),
+                          backgroundColor: const Color(0xFF612C7D),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(7),
+                            side: const BorderSide(color: Color(0xFF612C7D)),
+                          ),
                         ),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(10.0),
                         child: _isLoading
-                            ? const SizedBox(
+                            ? SizedBox(
                                 width: 20,
                                 height: 20,
                                 child: CircularProgressIndicator(
                                   valueColor: AlwaysStoppedAnimation<Color>(
-                                      Colors.black),
-                                  strokeWidth: 2,
+                                    Colors.white,
+                                  ),
                                 ),
                               )
                             : const Text(
                                 'Valider le panier',
                                 style: TextStyle(
-                                    fontSize: 18, color: Colors.white),
+                                  fontSize: 16.0,
+                                  color: Colors.white,
+                                ),
                               ),
                       ),
                     ),
