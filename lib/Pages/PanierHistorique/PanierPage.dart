@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
+// ignore: depend_on_referenced_packages
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -88,7 +89,7 @@ class _PanierPageState extends State<PanierPage> {
     try {
       final prefs = await SharedPreferences.getInstance();
       final token = prefs.getString('token') ?? '';
-      print('Token: $token');
+      print('Tokenedaaaa: $token');
 
       final response = await http.get(
         url,
@@ -156,23 +157,22 @@ class _PanierPageState extends State<PanierPage> {
             : 'Non disponible';
 
         // Vérifiez si la date existe dans les données renvoyées
-       // Vérifiez si la date existe dans les données renvoyées
-String Date = responseData['date_created'] != null
-    ? responseData['date_created']
-    : 'Non disponible';
+        // Vérifiez si la date existe dans les données renvoyées
+        String Date = responseData['date_created'] != null
+            ? responseData['date_created']
+            : 'Non disponible';
 
-String dateModified = responseData['date_modified'] != null
-    ? responseData['date_modified']
-    : 'Non disponible';
+        String dateModified = responseData['date_modified'] != null
+            ? responseData['date_modified']
+            : 'Non disponible';
 
-String dateCompleted = responseData['date_completed'] != null
-    ? responseData['date_completed']
-    : 'Non disponible';
+        String dateCompleted = responseData['date_completed'] != null
+            ? responseData['date_completed']
+            : 'Non disponible';
 
-print('Date Created: $Date');
-print('Date Modified: $dateModified');
-print('Date Completed: $dateCompleted');
-
+        print('Date Created: $Date');
+        print('Date Modified: $dateModified');
+        print('Date Completed: $dateCompleted');
 
         showDialog(
           context: context,
@@ -188,8 +188,8 @@ print('Date Completed: $dateCompleted');
                   Text('Date: $Date'),
                   Text(
                       'Total: ${responseData['total']} ${responseData['currency']}'),
-                 Text(
-                          'Prix: ${responseData['price']} ${responseData['currency']}\nQuantité: ${responseData['quantity']}\nDate: ${responseData['date_created']}'),
+                  Text(
+                      'Prix: ${responseData['price']} ${responseData['currency']}\nQuantité: ${responseData['quantity']}\nDate: ${responseData['date_created']}'),
                   Divider(),
                   Text('Articles:'),
                   ...(responseData['line_items'] as List).map((item) {
@@ -238,35 +238,59 @@ print('Date Completed: $dateCompleted');
     }
   }
 
- Future<void> deleteOrder(int orderId) async {
-  final url = Uri.parse('https://niefeko.com/wp-json/custom-routes/v1/customer/orders');
+  Future<void> deleteOrder(int orderId) async {
+    final url = Uri.parse(
+        'https://niefeko.com/wp-json/custom-routes/v1/customer/orders');
 
-  try {
-    final prefs = await SharedPreferences.getInstance();
-    final token = prefs.getString('token') ?? '';
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString('token') ?? '';
 
-    final response = await http.post(
-      url,
-      headers: {
-        'Authorization': 'Bearer $token',
-        'Content-Type': 'application/json',
-      },
-      body: json.encode({'orderId': orderId}),
-    );
+      final response = await http.post(
+        url,
+        headers: {
+          'Authorization': 'Bearer $token',
+          'Content-Type': 'application/json',
+        },
+        body: json.encode({'orderId': orderId}),
+      );
 
-    print('Delete response status: ${response.statusCode}');
-    print('Delete response body: ${response.body}');
+      print('Delete response status: ${response.statusCode}');
+      print('Delete response body: ${response.body}');
 
-    if (response.statusCode == 200) {
-      setState(() {
-        orders.removeWhere((order) => order.orderId == orderId);
-      });
+      if (response.statusCode == 200) {
+        setState(() {
+          orders.removeWhere((order) => order.orderId == orderId);
+        });
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Commande supprimée'),
+              content:
+                  Text('La commande $orderId a été supprimée avec succès.'),
+              actions: <Widget>[
+                TextButton(
+                  child: Text('OK'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      } else {
+        throw Exception('Failed to delete order: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error deleting order: $e');
       showDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text('Commande supprimée'),
-            content: Text('La commande $orderId a été supprimée avec succès.'),
+            title: Text('Erreur'),
+            content: Text('Erreur lors de la suppression de la commande: $e'),
             actions: <Widget>[
               TextButton(
                 child: Text('OK'),
@@ -278,30 +302,8 @@ print('Date Completed: $dateCompleted');
           );
         },
       );
-    } else {
-      throw Exception('Failed to delete order: ${response.statusCode}');
     }
-  } catch (e) {
-    print('Error deleting order: $e');
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Erreur'),
-          content: Text('Erreur lors de la suppression de la commande: $e'),
-          actions: <Widget>[
-            TextButton(
-              child: Text('OK'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
   }
-}
 
   @override
   Widget build(BuildContext context) {
