@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:niefeko/Components/Category/product.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:niefeko/Components/Category/product.dart'; // Assurez-vous que le chemin est correct
 
 class CartPanier extends StatefulWidget {
   final List<Product> cartItems;
@@ -22,28 +23,56 @@ class CartPanier extends StatefulWidget {
 }
 
 class _CartPanierState extends State<CartPanier> {
+  String? token;
+  bool _isLoading = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadToken();
+  }
+
+  Future<void> _loadToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      token = prefs.getString('token');
+    });
+  }
+
   String getCurrentUserId() {
-    // Ici, vous devriez avoir une méthode pour récupérer l'ID de l'utilisateur connecté
-    // Cette méthode dépend de votre logique d'authentification
-    return "userID"; // Remplacez ceci par la méthode réelle pour obtenir l'ID de l'utilisateur
+    return "userID";
   }
 
   double getTotalPrice() {
     double total = 0.0;
     for (var product in widget.cartItems) {
-      total += product.price;
+      total += product.price * product.quantity;
     }
     return total;
   }
 
   Future<void> sendOrder(BuildContext context) async {
+    if (token == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Token non disponible'),
+        ),
+      );
+      return;
+    }
+    setState(() {
+      _isLoading = true;
+    });
+
     try {
       String userId = getCurrentUserId();
 
       final response = await http.post(
-        Uri.parse(
-            'https://niefeko.com/wp-json/custom-routes/v1/customer/orders'),
-        headers: {'Content-Type': 'application/json'},
+        Uri.parse('https://niefeko.com/wp-json/custom-routes/v1/customer/orders'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token', // Ajouter le jeton aux en-têtes
+        },
         body: json.encode({
           'billing': {
             'user_id': userId,
@@ -71,8 +100,8 @@ class _CartPanierState extends State<CartPanier> {
           },
           'line_items': widget.cartItems
               .map((product) => {
-                    'user_id': product.id,
-                    'quantity': 1,
+                    'product_id': product.id,
+                    'quantity': product.quantity,
                   })
               .toList(),
           'shipping_lines': [
@@ -86,14 +115,16 @@ class _CartPanierState extends State<CartPanier> {
       );
 
       if (response.statusCode == 200) {
+        setState(() {
+          widget.cartItems.clear(); // Vider le panier
+        });
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Commande passée avec succès!'),
           ),
         );
       } else {
-        throw Exception(
-            'Erreur lors de la validation du panier : ${response.reasonPhrase}');
+        throw Exception('Erreur lors de la validation du panier : ${response.reasonPhrase}');
       }
     } catch (error) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -101,10 +132,26 @@ class _CartPanierState extends State<CartPanier> {
           content: Text('Erreur lors de la validation du panier : $error'),
         ),
       );
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 
-  // Les autres méthodes restent inchangées
+  void increaseQuantity(Product product) {
+    setState(() {
+      product.quantity++;
+    });
+  }
+
+  void decreaseQuantity(Product product) {
+    setState(() {
+      if (product.quantity > 1) {
+        product.quantity--;
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -136,44 +183,59 @@ class _CartPanierState extends State<CartPanier> {
                             height: 50,
                             fit: BoxFit.cover,
                             errorBuilder: (context, error, stackTrace) {
-                              return Icon(Icons.error);
+                              return const Icon(Icons.error);
                             },
                           ),
                           title: Text(product.name),
                           subtitle: Text('${product.price} FCFA'),
-                          trailing: IconButton(
-                            icon: const Icon(Icons.delete),
-                            onPressed: () {
-                              showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return AlertDialog(
-                                    title:
-                                        const Text('Confirmer la suppression'),
-                                    content: const Text(
-                                        'Voulez-vous vraiment supprimer ce produit ?'),
-                                    actions: <Widget>[
-                                      TextButton(
-                                        child: const Text('Annuler'),
-                                        onPressed: () {
-                                          Navigator.of(context).pop();
-                                        },
-                                      ),
-                                      TextButton(
-                                        child: const Text('Supprimer'),
-                                        onPressed: () async {
-                                          await (context, product);
-                                          Navigator.of(context).pop();
-                                          setState(() {
-                                            widget.cartItems.remove(product);
-                                          });
-                                        },
-                                      ),
-                                    ],
+                          trailing: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              IconButton(
+                                icon: const Icon(Icons.remove),
+                                onPressed: () {
+                                  decreaseQuantity(product);
+                                },
+                              ),
+                              Text(product.quantity.toString()),
+                              IconButton(
+                                icon: const Icon(Icons.add),
+                                onPressed: () {
+                                  increaseQuantity(product);
+                                },
+                              ),
+                              IconButton(
+                                icon: const Icon(Icons.delete),
+                                onPressed: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: const Text('Confirmer la suppression'),
+                                        content: const Text('Voulez-vous vraiment supprimer ce produit ?'),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            child: const Text('Annuler'),
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                          ),
+                                          TextButton(
+                                            child: const Text('Supprimer'),
+                                            onPressed: () {
+                                              setState(() {
+                                                widget.cartItems.remove(product);
+                                              });
+                                              Navigator.of(context).pop();
+                                            },
+                                          ),
+                                        ],
+                                      );
+                                    },
                                   );
                                 },
-                              );
-                            },
+                              ),
+                            ],
                           ),
                         ),
                       );
@@ -194,21 +256,36 @@ class _CartPanierState extends State<CartPanier> {
                   child: Container(
                     margin: const EdgeInsets.symmetric(vertical: 16.0),
                     child: ElevatedButton(
-                      onPressed: () {
-                        sendOrder(context);
-                      },
+                      onPressed: _isLoading
+                          ? null
+                          : () {
+                              sendOrder(context);
+                            },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF612C7D),
+                        backgroundColor: _isLoading
+                            ? Colors.grey
+                            : const Color(0xFF612C7D),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(7),
                         ),
                       ),
-                      child: const Padding(
-                        padding: EdgeInsets.all(10.0),
-                        child: Text(
-                          'Valider le panier',
-                          style: TextStyle(fontSize: 18, color: Colors.white),
-                        ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: _isLoading
+                            ? const SizedBox(
+                                width: 20,
+                                height: 20,
+                                child: CircularProgressIndicator(
+                                  valueColor: AlwaysStoppedAnimation<Color>(
+                                      Colors.black),
+                                  strokeWidth: 2,
+                                ),
+                              )
+                            : const Text(
+                                'Valider le panier',
+                                style: TextStyle(
+                                    fontSize: 18, color: Colors.white),
+                              ),
                       ),
                     ),
                   ),

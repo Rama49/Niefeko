@@ -1,35 +1,42 @@
+import 'dart:convert';
+
 class Product {
-  late final String imagePath;
-  late final String name;
-  late final String description;
-  late final double price;
-  int quantity ;
+  final String imagePath;
+  final String name;
+  final String description;
+  final double price;
+  final int id;
+  int quantity; // Peut-être supprimé si non utilisé globalement.
 
   Product({
     required this.imagePath,
     required this.name,
     required this.description,
     required this.price,
-    this.quantity = 1, 
-    //required id,
+    required this.id,
+    this.quantity = 1,
   });
-
-  get id => null;
 
   Map<String, dynamic> toMap() {
     return {
+      "id": id,
       'imagePath': imagePath,
       'name': name,
       'description': description,
       'price': price,
     };
   }
+
   factory Product.fromJson(Map<String, dynamic> json) {
     return Product(
-     imagePath: json['images'][0]['src'] ?? '',
-     name: json['name'] ?? '',
-     description: json['description'] ?? '',
-     price: double.parse(json['price'] ?? '0.0'),
+      id: json['id'] ?? 0,
+      name: json['name'] ?? '',
+      description: json['description'] ?? '',
+      price: json['price'] != null ? double.parse(json['price'].toString()) : 0.0,
+      // Vérifiez si 'image' existe et contient 'url'
+      imagePath: json['images'] != null && json['images'].isNotEmpty && json['images'][0]['src'] != null
+          ? json['images'][0]['src']
+          : 'https://via.placeholder.com/150', // URL d'une image placeholder par défaut
     );
   }
 }
