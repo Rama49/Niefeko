@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:flutter_html/flutter_html.dart';
+import 'package:niefeko/Pages/Recherche/recherche.dart';
+//import 'package:flutter_html/flutter_html.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:niefeko/Components/Category/product.dart'; // Assurez-vous d'importer correctement Product depuis son emplacement réel
 import 'package:niefeko/Pages/CartPanier/CartPanier.dart';
+import 'package:niefeko/Pages/Category/detail.dart';
 
 class CategoryPage extends StatefulWidget {
   @override
@@ -21,6 +23,7 @@ class _CategoryPageState extends State<CategoryPage> {
   int cartItemCount = 0;
   int currentPage = 1;
   final int productsPerPage = 10;
+  List<Product> supplier = [];
 
   @override
   void initState() {
@@ -222,7 +225,11 @@ class _CategoryPageState extends State<CategoryPage> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
-            Navigator.pop(context);
+            //Navigator.pop(context);
+            Navigator.push(
+              context, MaterialPageRoute(
+                builder: (context)=> search()
+                ));
           },
         ),
         actions: [
@@ -311,6 +318,13 @@ class _CategoryPageState extends State<CategoryPage> {
                           children: [
                             Card(
                               elevation: 5,
+                               child: GestureDetector(
+                          onTap: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => Detail(product: product, storeName: supplier.toString(), productId: '',)
+                                ),
+                              ),
                               child: Padding(
                                 padding: const EdgeInsets.all(16.0),
                                 child: Column(
@@ -346,8 +360,8 @@ class _CategoryPageState extends State<CategoryPage> {
                                       ),
                                     ),
                                     SizedBox(height: 8),
-                                    Html(data: product.description),
-                                    SizedBox(height: 8),
+                                    // Html(data: product.description),
+                                    // SizedBox(height: 8),
                                     Center(
                                       child: Text(
                                         '${product.price} FCFA',
@@ -399,7 +413,7 @@ class _CategoryPageState extends State<CategoryPage> {
                                     ),
                                   ],
                                 ),
-                              ),
+                              ),)
                             ),
                             Positioned(
                               top: 8,
