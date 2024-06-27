@@ -4,6 +4,8 @@ import 'package:http/http.dart' as http;
 import 'package:niefeko/Components/Category/product.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+final GlobalKey<_pagefavorisState> pagefavorisKey = GlobalKey<_pagefavorisState>();
+
 class pagefavoris extends StatefulWidget {
   @override
   _pagefavorisState createState() => _pagefavorisState();

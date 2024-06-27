@@ -23,6 +23,7 @@ class InscriptionState extends State<Inscription> {
 
   bool _passwordObscureText = true;
   bool _confirmPasswordObscureText = true;
+  bool _isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -116,12 +117,14 @@ class InscriptionState extends State<Inscription> {
                     ),
                     const SizedBox(height: 15),
                     Padding(
-                      padding: const EdgeInsets.only(top: 20, bottom: 5),
+                      padding: const EdgeInsets.only(top: -15, bottom: 5),
                       child: SizedBox(
                         width: double.infinity,
                         child: ElevatedButton(
                           onPressed: () async {
-                            await registerUser();
+                            if (_formKey.currentState!.validate()) {
+                              await registerUser();
+                            }
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor:
@@ -132,11 +135,22 @@ class InscriptionState extends State<Inscription> {
                               side: const BorderSide(color: Colors.white),
                             ),
                           ),
-                          child: const Text(
-                            "S'inscrire",
-                            style: TextStyle(
-                                fontSize: 16, color: Color(0xFF593070)),
-                          ),
+                           child: _isLoading
+                                ? SizedBox(
+                                    width: 20,
+                                    height: 20,
+                                    child: CircularProgressIndicator(
+                                      valueColor: AlwaysStoppedAnimation<Color>(
+                                        Color(0xFF612C7D)),
+                                    ),
+                                  )
+                                : const Text(
+                                    "S'inscrire",
+                                    style: TextStyle(
+                                      fontSize: 16.0,
+                                      color: Color(0xFF593070),
+                                    ),
+                                  ),
                         ),
                       ),
                     ),
@@ -248,60 +262,51 @@ class InscriptionState extends State<Inscription> {
   }
 
   Future<void> registerUser() async {
-    if (_formKey.currentState!.validate()) {
-      try {
-        final url =
-            Uri.parse('https://niefeko.com/wp-json/jwt-auth/v1/register');
-        final response = await http.post(
-          url,
-          headers: <String, String>{
-            'Content-Type': 'application/json; charset=UTF-8',
-          },
-          body: jsonEncode(<String, String>{
-            'email': _emailController.text,
-            'lastname': _prenomController.text,
-            'firstname': _nomController.text,
-            'password': _passwordController.text,
-          }),
+    setState(() {
+      _isLoading = true; // Activer le chargement lors de la soumission du formulaire
+    });
+
+    try {
+      final url =
+          Uri.parse('https://niefeko.com/wp-json/jwt-auth/v1/register');
+      final response = await http.post(
+        url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, String>{
+          'email': _emailController.text,
+          'lastname': _prenomController.text,
+          'firstname': _nomController.text,
+          'password': _passwordController.text,
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        print("Inscription réussie avec succès");
+
+        Fluttertoast.showToast(
+          msg: "Inscription réussie avec succès",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.TOP,
+          timeInSecForIosWeb: 3,
+          backgroundColor: Colors.white,
+          textColor: Colors.purple,
+          fontSize: 16.0,
         );
 
-        if (response.statusCode == 200) {
-          print("Inscription réussie avec succès");
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const connexion()),
+        );
 
-          Fluttertoast.showToast(
-            msg: "Inscription réussie avec succès",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.TOP,
-            timeInSecForIosWeb: 3,
-            backgroundColor: Colors.white,
-            textColor: Colors.purple,
-            fontSize: 16.0,
-          );
-
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const connexion()),
-          );
-
-          _nomController.clear();
-          _prenomController.clear();
-          _emailController.clear();
-          _passwordController.clear();
-          _confirmPasswordController.clear();
-        } else {
-          print('Erreur lors de l\'inscription : ${response.statusCode}');
-          Fluttertoast.showToast(
-            msg: "Erreur lors de l'inscription",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.TOP,
-            timeInSecForIosWeb: 3,
-            backgroundColor: Colors.red,
-            textColor: Colors.white,
-            fontSize: 16.0,
-          );
-        }
-      } catch (e) {
-        print('Erreur lors de l\'inscription : $e');
+        _nomController.clear();
+        _prenomController.clear();
+        _emailController.clear();
+        _passwordController.clear();
+        _confirmPasswordController.clear();
+      } else {
+        print('Erreur lors de l\'inscription : ${response.statusCode}');
         Fluttertoast.showToast(
           msg: "Erreur lors de l'inscription",
           toastLength: Toast.LENGTH_SHORT,
@@ -312,6 +317,21 @@ class InscriptionState extends State<Inscription> {
           fontSize: 16.0,
         );
       }
+    } catch (e) {
+      print('Erreur lors de l\'inscription : $e');
+      Fluttertoast.showToast(
+        msg: "Erreur lors de l'inscription",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.TOP,
+        timeInSecForIosWeb: 3,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+    } finally {
+      setState(() {
+        _isLoading = false; // Désactiver le chargement à la fin du traitement
+      });
     }
   }
 

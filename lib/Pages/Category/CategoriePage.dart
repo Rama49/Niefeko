@@ -197,19 +197,26 @@ class _CategoryPageState extends State<CategoryPage> {
     );
   }
 
-  void openCart() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => CartPanier(
-          cartItems: cartItems,
-          user_firstname: "",
-          user_lastname: "",
-          user_email: "",
-        ),
+  void openCart() async {
+  // Naviguer vers la page du panier
+  await Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (context) => CartPanier(
+        cartItems: cartItems,
+        user_firstname: "",
+        user_lastname: "",
+        user_email: "",
       ),
-    );
-  }
+    ),
+  );
+
+  // Après avoir validé le panier, réinitialiser le contenu du panier
+  setState(() {
+    cartItems.clear(); // Vider la liste des produits dans le panier
+    cartItemCount = 0; // Réinitialiser le compteur du nombre d'articles dans le panier
+  });
+}
 
   @override
   Widget build(BuildContext context) {

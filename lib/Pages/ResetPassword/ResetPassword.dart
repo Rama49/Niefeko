@@ -10,8 +10,13 @@ class Resetpassword extends StatefulWidget {
 class _ResetpasswordState extends State<Resetpassword> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
+  bool _isLoading = false; // Nouvelle variable pour gérer l'état du chargement
 
   Future<void> _resetPassword() async {
+    setState(() {
+      _isLoading = true; // Activer le chargement lors de la soumission du formulaire
+    });
+
     if (_formKey.currentState!.validate()) {
       final String email = _emailController.text.trim();
 
@@ -53,6 +58,10 @@ class _ResetpasswordState extends State<Resetpassword> {
             content: Text("Erreur lors de la réinitialisation du mot de passe. Veuillez réessayer plus tard."),
           ),
         );
+      } finally {
+        setState(() {
+          _isLoading = false; // Désactiver le chargement à la fin du traitement
+        });
       }
     }
   }
@@ -93,24 +102,38 @@ class _ResetpasswordState extends State<Resetpassword> {
                   },
                 ),
                 const SizedBox(height: 20),
-                ElevatedButton(
-                  onPressed: _resetPassword,
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 20,
-                      vertical: 10,
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: _isLoading ? null : _resetPassword,
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 47,
+                        vertical: 15,
+                      ),
+                      backgroundColor: const Color(0xFF612C7D),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(7),
+                        side: const BorderSide(color: Color(0xFF612C7D)),
+                      ),
                     ),
-                    backgroundColor: const Color(0xFF612C7D),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(7),
-                    ),
-                  ),
-                  child: const Text(
-                    'Réinitialiser le mot de passe',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 18,
-                    ),
+                    child: _isLoading
+                        ? const SizedBox(
+                            width: 20,
+                            height: 20,
+                            child: CircularProgressIndicator(
+                              valueColor: AlwaysStoppedAnimation<Color>(
+                                Color(0xFF612C7D),
+                              ),
+                            ),
+                          )
+                        : const Text(
+                            "Réinitialiser votre mot de passe",
+                            style: TextStyle(
+                              fontSize: 16.0,
+                              color: Colors.white,
+                            ),
+                          ),
                   ),
                 ),
               ],
