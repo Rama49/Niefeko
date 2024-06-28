@@ -122,9 +122,7 @@ class _ResetpasswordState extends State<Resetpassword> {
                             width: 20,
                             height: 20,
                             child: CircularProgressIndicator(
-                              valueColor: AlwaysStoppedAnimation<Color>(
-                                Color(0xFF612C7D),
-                              ),
+                              valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                             ),
                           )
                         : const Text(

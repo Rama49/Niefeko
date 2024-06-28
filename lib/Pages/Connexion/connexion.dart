@@ -233,11 +233,11 @@ class _connexionState extends State<connexion> {
                           ),
                         ),
                       ),
-                      const SizedBox(
-                        height: 10,
-                      ),
+                      // const SizedBox(
+                      //   height: 10,
+                      // ),
                       Padding(
-                        padding: const EdgeInsets.only(top: 20, bottom: 5),
+                        padding: const EdgeInsets.only(bottom: 5),
                         child: SizedBox(
                           width: double.infinity,
                           child: ElevatedButton(

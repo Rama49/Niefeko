@@ -9,11 +9,12 @@ class ModifierMDP extends StatefulWidget {
 
 class _ModifierMDPState extends State<ModifierMDP> {
   final _formKey = GlobalKey<FormState>();
-  late String _email;
-  late String _newPassword;
-  late String _confirmNewPassword;
+  String _email = '';
+  String _newPassword = '';
+  String _confirmNewPassword = '';
   bool _newPasswordVisible = false;
   bool _confirmNewPasswordVisible = false;
+  bool _isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -64,8 +65,7 @@ class _ModifierMDPState extends State<ModifierMDP> {
                       if (_newPassword != _confirmNewPassword) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
-                            content:
-                                Text('Les mots de passe ne correspondent pas'),
+                            content: Text('Les mots de passe ne correspondent pas'),
                             duration: Duration(seconds: 2),
                           ),
                         );
@@ -76,19 +76,30 @@ class _ModifierMDPState extends State<ModifierMDP> {
                   },
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 20, vertical: 10),
+                      horizontal: 79,
+                      vertical: 15,
+                    ),
                     backgroundColor: const Color(0xFF612C7D),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(7),
+                      side: const BorderSide(color: Color(0xFF612C7D)),
                     ),
                   ),
-                  child: const Text(
-                    'Modifier',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 18,
-                    ),
-                  ),
+                  child: _isLoading
+                      ? const SizedBox(
+                          width: 20,
+                          height: 20,
+                          child: CircularProgressIndicator(
+                            valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                          ),
+                        )
+                      : const Text(
+                          "Modifier mot de passe",
+                          style: TextStyle(
+                            fontSize: 16.0,
+                            color: Colors.white,
+                          ),
+                        ),
                 ),
               ],
             ),
@@ -156,6 +167,10 @@ class _ModifierMDPState extends State<ModifierMDP> {
   }
 
   void _changePassword(BuildContext context) async {
+    setState(() {
+      _isLoading = true;
+    });
+
     if (_email.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -163,6 +178,9 @@ class _ModifierMDPState extends State<ModifierMDP> {
           duration: Duration(seconds: 2),
         ),
       );
+      setState(() {
+        _isLoading = false;
+      });
       return;
     }
 
@@ -193,8 +211,7 @@ class _ModifierMDPState extends State<ModifierMDP> {
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(
-                'Erreur lors de la modification du mot de passe: ${response.body}'),
+            content: Text('Erreur lors de la modification du mot de passe: ${response.body}'),
             duration: const Duration(seconds: 2),
           ),
         );
@@ -203,11 +220,14 @@ class _ModifierMDPState extends State<ModifierMDP> {
       print('Error: $error');
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content:
-              Text('Erreur lors de la modification du mot de passe: $error'),
+          content: Text('Erreur lors de la modification du mot de passe: $error'),
           duration: const Duration(seconds: 2),
         ),
       );
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 }

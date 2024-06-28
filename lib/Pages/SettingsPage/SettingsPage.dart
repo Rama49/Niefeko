@@ -107,60 +107,66 @@ class _SettingsPageState extends State<SettingsPage> {
             ),
           ),
           Padding(
-            padding:
-                const EdgeInsets.only(top: 20, bottom: 20, right: 16, left: 16),
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(7),
-              ),
-              child: ListTile(
-                title: const Text('Modifier le mot de passe',
-                    style: TextStyle(color: Color(0xFF612C7D))),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => ModifierMDP()),
-                  );
-                },
-              ),
-            ),
-          ),
-          Padding(
-            padding:
-                const EdgeInsets.only(top: 20, bottom: 20, right: 16, left: 16),
-            child: Container(
-              decoration: BoxDecoration(
-                color: const Color(0xFF612C7D),
-                borderRadius: BorderRadius.circular(7),
-                border: Border.all(color: Colors.white),
-              ),
-              child: ListTile(
-                title: const Text('Déconnexion',
-                    style: TextStyle(color: Colors.white)),
-                onTap: () async {
-                  try {
-                    final prefs = await SharedPreferences.getInstance();
-                    prefs.remove('token');
+  padding: const EdgeInsets.only(top: 20, bottom: 20, right: 16, left: 16),
+  child: Container(
+    decoration: BoxDecoration(
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(7),
+    ),
+    child: ListTile(
+      title: Center(
+        child: const Text(
+          'Modifier le mot de passe',
+          style: TextStyle(color: Color(0xFF612C7D)),
+        ),
+      ),
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => ModifierMDP()),
+        );
+      },
+    ),
+  ),
+),
+Padding(
+  padding: const EdgeInsets.only(bottom: 20, right: 16, left: 16),
+  child: Container(
+    decoration: BoxDecoration(
+      color: const Color(0xFF612C7D),
+      borderRadius: BorderRadius.circular(7),
+      border: Border.all(color: Colors.white),
+    ),
+    child: ListTile(
+      title: Center(
+        child: const Text(
+          'Déconnexion',
+          style: TextStyle(color: Colors.white),
+        ),
+      ),
+      onTap: () async {
+        try {
+          final prefs = await SharedPreferences.getInstance();
+          prefs.remove('token');
 
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const connexion()),
-                    );
-                  } catch (error) {
-                    print('Error during logout: $error');
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Erreur lors de la déconnexion'),
-                        duration: Duration(seconds: 2),
-                      ),
-                    );
-                  }
-                },
-              ),
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => const connexion()),
+          );
+        } catch (error) {
+          print('Error during logout: $error');
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Erreur lors de la déconnexion'),
+              duration: Duration(seconds: 2),
             ),
-          ),
+          );
+        }
+      },
+    ),
+  ),
+),
+
         ],
       ),
     );
