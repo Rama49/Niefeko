@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
-// ignore: depend_on_referenced_packages
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -30,8 +29,10 @@ class Order {
       orderId: json['order_id'],
       orderKey: json['order_key'],
       status: json['status'],
-      total: double.parse(json['total'].toString()),
-      currency: json['currency'],
+      total: json['total'] != null
+          ? double.tryParse(json['total'].toString()) ?? 0.0
+          : 0.0,
+      currency: json['currency'] ?? '',
       lineItems: itemsList,
     );
   }
@@ -42,27 +43,35 @@ class OrderItem {
   final String productName;
   final double price;
   final int quantity;
+  final String date;
   final String productImage;
-  final String Date; // Ajout de la date de création
+  final String status;
+  final String email;
+  final String dateCreated;
 
   OrderItem({
     required this.productId,
     required this.productName,
     required this.price,
     required this.quantity,
+    required this.date,
     required this.productImage,
-    required this.Date,
+    required this.status,
+    required this.email,
+    required this.dateCreated,
   });
 
   factory OrderItem.fromJson(Map<String, dynamic> json) {
     return OrderItem(
-      productId: json['product_id'],
-      productName: json['name'],
-      price: double.parse(json['price'].toString()),
-      quantity: int.parse(json['quantity'].toString()),
-      productImage: json['imagePath'],
-      Date: json[
-          'date_created'], // Assurez-vous que 'date_created' correspond à la clé JSON
+      productId: json['product_id'] ?? 0,
+      productName: json['name'] ?? 'Non disponible',
+      price: json['total'] != null ? double.tryParse(json['total'].toString()) ?? 0.0 : 0.0,
+      quantity: json['quantity'] != null ? int.tryParse(json['quantity'].toString()) ?? 0 : 0,
+      date: json['date_created'] ?? 'Non disponible',
+      productImage: json['image'] != null ? json['image']['url'] : 'assets/casque.png',
+      status: json['status'] ?? 'Non disponible',
+      email: json['billing_address'] != null ? json['billing_address']['email'] ?? 'Non disponible' : 'Non disponible',
+      dateCreated: json['date_created'] ?? 'Non disponible',
     );
   }
 }
@@ -149,31 +158,6 @@ class _PanierPageState extends State<PanierPage> {
       if (response.statusCode == 200) {
         final Map<String, dynamic> responseData = json.decode(response.body);
 
-        print('Response Data: $responseData'); // Ajout pour débogage
-
-        // Vérifiez si l'email existe dans les données renvoyées
-        String Email = responseData['billing_address'] != null
-            ? responseData['billing_address']['email'] ?? 'Non disponible'
-            : 'Non disponible';
-
-        // Vérifiez si la date existe dans les données renvoyées
-        // Vérifiez si la date existe dans les données renvoyées
-        String Date = responseData['date_created'] != null
-            ? responseData['date_created']
-            : 'Non disponible';
-
-        String dateModified = responseData['date_modified'] != null
-            ? responseData['date_modified']
-            : 'Non disponible';
-
-        String dateCompleted = responseData['date_completed'] != null
-            ? responseData['date_completed']
-            : 'Non disponible';
-
-        print('Date Created: $Date');
-        print('Date Modified: $dateModified');
-        print('Date Completed: $dateCompleted');
-
         showDialog(
           context: context,
           builder: (BuildContext context) {
@@ -184,20 +168,27 @@ class _PanierPageState extends State<PanierPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text('Statut: ${responseData['status']}'),
-                  Text('Email: $Email'),
-                  Text('Date: $Date'),
-                  Text(
-                      'Total: ${responseData['total']} ${responseData['currency']}'),
-                  Text(
-                      'Prix: ${responseData['price']} ${responseData['currency']}\nQuantité: ${responseData['quantity']}\nDate: ${responseData['date_created']}'),
+                  Text('Email: ${responseData['billing_address']['email']}'),
+                  Text('Date de création: ${responseData['date_created']}'),
                   Divider(),
                   Text('Articles:'),
                   ...(responseData['line_items'] as List).map((item) {
                     return ListTile(
-                      leading: Image.network(item['productImage']),
-                      title: Text(item['productName']),
-                      subtitle: Text(
-                          'Prix: ${item['price']} ${responseData['currency']}\nQuantité: ${item['quantity']}\nDate: ${item['date_created']}'),
+                      leading: item['image'] != null
+                          ? Image.network(item['image']['url'])
+                          : null,
+                      title: Text(item['name']),
+                      subtitle: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                              'Prix: ${item['total']} ${responseData['currency']}'),
+                          Text('Quantité: ${item['quantity']}'),
+                          Text('Date: ${item['date_created']}'),
+                          Text('Statut: ${responseData['status']}'),
+                          Text('Email: ${responseData['billing_address']['email']}'),
+                        ],
+                      ),
                     );
                   }).toList(),
                 ],
