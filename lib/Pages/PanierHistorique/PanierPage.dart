@@ -191,8 +191,7 @@ class _PanierPageState extends State<PanierPage> {
                           Text(
                               'Prix: ${item['total']} ${responseData['currency']}'),
                           Text('Quantité: ${item['quantity']}'),
-                          Text(
-                              'Date: ${responseData['date_created']}'),
+                          Text('Date: ${responseData['date_created']}'),
                           Text('Statut: ${responseData['status']}'),
                           Text(
                               'Email: ${responseData['billing_address']['email']}'),
@@ -238,20 +237,21 @@ class _PanierPageState extends State<PanierPage> {
     }
   }
 
-  Future<void> deleteOrder(int orderId) async {
+ Future<void> deleteOrder(int orderId) async {
     final url = Uri.parse(
-        'https://niefeko.com/wp-json/custom-routes/v1/customer/orders/$orderId');
+        'https://niefeko.com/wp-json/custom-routes/v1/customer/orders');
 
     try {
       final prefs = await SharedPreferences.getInstance();
       final token = prefs.getString('token') ?? '';
 
-      final response = await http.delete(
+      final response = await http.post(
         url,
         headers: {
           'Authorization': 'Bearer $token',
           'Content-Type': 'application/json',
         },
+        body: json.encode({'orderId': orderId}),
       );
 
       print('Delete response status: ${response.statusCode}');
