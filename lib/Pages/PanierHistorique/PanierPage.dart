@@ -191,7 +191,8 @@ class _PanierPageState extends State<PanierPage> {
                           Text(
                               'Prix: ${item['total']} ${responseData['currency']}'),
                           Text('Quantité: ${item['quantity']}'),
-                          Text('Date: ${item['date_created']}'),
+                          Text(
+                              'Date: ${responseData['date_created']}'),
                           Text('Statut: ${responseData['status']}'),
                           Text(
                               'Email: ${responseData['billing_address']['email']}'),
@@ -237,35 +238,58 @@ class _PanierPageState extends State<PanierPage> {
     }
   }
 
- Future<void> deleteOrder(int orderId) async {
-  final url = Uri.parse(
-      'https://niefeko.com/wp-json/custom-routes/v1/customer/orders/$orderId');
+  Future<void> deleteOrder(int orderId) async {
+    final url = Uri.parse(
+        'https://niefeko.com/wp-json/custom-routes/v1/customer/orders/$orderId');
 
-  try {
-    final prefs = await SharedPreferences.getInstance();
-    final token = prefs.getString('token') ?? '';
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString('token') ?? '';
 
-    final response = await http.delete(
-      url,
-      headers: {
-        'Authorization': 'Bearer $token',
-        'Content-Type': 'application/json',
-      },
-    );
+      final response = await http.delete(
+        url,
+        headers: {
+          'Authorization': 'Bearer $token',
+          'Content-Type': 'application/json',
+        },
+      );
 
-    print('Delete response status: ${response.statusCode}');
-    print('Delete response body: ${response.body}');
+      print('Delete response status: ${response.statusCode}');
+      print('Delete response body: ${response.body}');
 
-    if (response.statusCode == 200) {
-      setState(() {
-        orders.removeWhere((order) => order.orderId == orderId);
-      });
+      if (response.statusCode == 200) {
+        setState(() {
+          orders.removeWhere((order) => order.orderId == orderId);
+        });
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Commande supprimée'),
+              content:
+                  Text('La commande $orderId a été supprimée avec succès.'),
+              actions: <Widget>[
+                TextButton(
+                  child: Text('OK'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      } else {
+        throw Exception('Failed to delete order: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error deleting order: $e');
       showDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text('Commande supprimée'),
-            content: Text('La commande $orderId a été supprimée avec succès.'),
+            title: Text('Erreur'),
+            content: Text('Erreur lors de la suppression de la commande: $e'),
             actions: <Widget>[
               TextButton(
                 child: Text('OK'),
@@ -277,30 +301,8 @@ class _PanierPageState extends State<PanierPage> {
           );
         },
       );
-    } else {
-      throw Exception('Failed to delete order: ${response.statusCode}');
     }
-  } catch (e) {
-    print('Error deleting order: $e');
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Erreur'),
-          content: Text('Erreur lors de la suppression de la commande: $e'),
-          actions: <Widget>[
-            TextButton(
-              child: Text('OK'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
   }
-}
 
   @override
   Widget build(BuildContext context) {
@@ -349,5 +351,4 @@ class _PanierPageState extends State<PanierPage> {
                 ),
     );
   }
-
 }
