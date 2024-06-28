@@ -30,8 +30,7 @@ class _CategorieState extends State<Categorie> {
   }
 
   Future<void> fetchCategories() async {
-    final url = Uri.parse(
-        'https://niefeko.com/wp-json/custom-routes/v1/products/categories');
+    final url = Uri.parse('https://niefeko.com/wp-json/custom-routes/v1/products/categories');
 
     try {
       final response = await http.get(url);
@@ -41,8 +40,7 @@ class _CategorieState extends State<Categorie> {
           categories = List<Map<String, dynamic>>.from(data);
           // Ajouter les images pour chaque catégorie si elles ne sont pas fournies par l'API
           categories.forEach((category) {
-            final cleanedCategoryName =
-                _normalizeCategoryName(_decodeHtmlEntity(category['name']));
+            final cleanedCategoryName = _normalizeCategoryName(_decodeHtmlEntity(category['name']));
             if (!categoryImages.containsKey(cleanedCategoryName)) {
               categoryImages[cleanedCategoryName] = 'https://niefeko.com/wp-content/uploads/2024/06/Ensemble-Haut-Bleu-et-pantalon-.jpg';
             }
@@ -151,8 +149,7 @@ class _CategorieState extends State<Categorie> {
   }
 
   Widget _buildCategoryImage(String categoryName) {
-    final cleanedCategoryName =
-        _normalizeCategoryName(_decodeHtmlEntity(categoryName));
+    final cleanedCategoryName = _normalizeCategoryName(_decodeHtmlEntity(categoryName));
     final imagePath = categoryImages[cleanedCategoryName];
     return imagePath != null
         ? Image.asset(
@@ -162,13 +159,12 @@ class _CategorieState extends State<Categorie> {
             height: 70,
           )
         : Image.asset(
-            'assets/default_image.jpg',
+            'assets/casque.png',
             width: 70,
             height: 70,
           );
   }
 }
-
 
 class CategoryDetailPage extends StatefulWidget {
   final String categoryId;
@@ -195,8 +191,7 @@ class _CategoryDetailPageState extends State<CategoryDetailPage> {
   }
 
   Future<void> fetchProducts() async {
-    final url = Uri.parse(
-        'https://niefeko.com/wp-json/custom-routes/v1/products?category=${widget.categoryId}');
+    final url = Uri.parse('https://niefeko.com/wp-json/custom-routes/v1/products?category=${widget.categoryId}');
 
     try {
       final response = await http.get(url);
