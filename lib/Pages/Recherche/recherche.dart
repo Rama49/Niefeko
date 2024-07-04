@@ -19,6 +19,8 @@ class search extends StatefulWidget {
 }
 
 class _searchState extends State<search> {
+  final ScrollController _scrollController = ScrollController();
+
   get userId => "36";
 
   void removeFromCart(int index) {
@@ -63,9 +65,16 @@ class _searchState extends State<search> {
   }
 
   @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
+        controller: _scrollController,
         child: Column(
           children: [
             Container(
@@ -95,7 +104,6 @@ class _searchState extends State<search> {
                       fontSize: 25,
                     ),
                   ),
-                  const SizedBox(height: 20),
                   const SizedBox(height: 20),
                   CarouselSlider(
                     items: [
