@@ -166,52 +166,57 @@ class _PanierPageState extends State<PanierPage> {
         final Map<String, dynamic> responseData = json.decode(response.body);
 
         showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: Text('Détails de la Commande ${responseData['order_id']}'),
-              content: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('Statut: ${responseData['status']}'),
-                  Text('Email: ${responseData['billing_address']['email']}'),
-                  Text('Date de création: ${responseData['date_created']}'),
-                  Divider(),
-                  Text('Articles:'),
-                  ...(responseData['line_items'] as List).map((item) {
-                    return ListTile(
-                      leading: item['image'] != null
-                          ? Image.network(item['image']['url'])
-                          : null,
-                      title: Text(item['name']),
-                      subtitle: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                              'Prix: ${item['total']} ${responseData['currency']}'),
-                          Text('Quantité: ${item['quantity']}'),
-                          Text('Date: ${responseData['date_created']}'),
-                          Text('Statut: ${responseData['status']}'),
-                          Text(
-                              'Email: ${responseData['billing_address']['email']}'),
-                        ],
-                      ),
-                    );
-                  }).toList(),
-                ],
-              ),
-              actions: <Widget>[
-                TextButton(
-                  child: Text('Fermer'),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
+  context: context,
+  builder: (BuildContext context) {
+    return AlertDialog(
+      title: Text('Détails de la Commande ${responseData['order_id']}'),
+      content: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('Statut: ${responseData['status']}'),
+            Text('Email: ${responseData['billing_address']['email']}'),
+            Text('Date de création: ${responseData['date_created']}'),
+            Divider(),
+            Text('Articles:'),
+            ...(responseData['line_items'] as List).map((item) {
+              return ListTile(
+                leading: item['image'] != null
+                    ? Image.network(item['image']['url'])
+                    : null,
+                title: Text(item['name']),
+                subtitle: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Prix: ${item['total']} ${responseData['currency']}',
+                    ),
+                    Text('Quantité: ${item['quantity']}'),
+                    Text('Date: ${item['date_created']}'), // Utilisez la date de l'élément individuel
+                    Text('Statut: ${item['status']}'), // Utilisez le statut de l'élément individuel
+                    Text(
+                      'Email: ${responseData['billing_address']['email']}',
+                    ),
+                  ],
                 ),
-              ],
-            );
+              );
+            }).toList(),
+          ],
+        ),
+      ),
+      actions: <Widget>[
+        TextButton(
+          child: Text('Fermer'),
+          onPressed: () {
+            Navigator.of(context).pop();
           },
-        );
+        ),
+      ],
+    );
+  },
+);
+
       } else {
         throw Exception('Failed to load order details: ${response.statusCode}');
       }

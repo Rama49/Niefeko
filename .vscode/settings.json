@@ -11,5 +11,5 @@
     ],
     "java.compile.nullAnalysis.mode": "automatic",
     "java.configuration.updateBuildConfiguration": "interactive",
-    "commentTranslate.hover.enabled": true
+    "commentTranslate.hover.enabled": false
 }
