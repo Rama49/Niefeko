@@ -378,7 +378,7 @@ class _CategoryPageState extends State<CategoryPage> {
                                             fontWeight: FontWeight.bold),
                                       ),
                                     ),
-                                    SizedBox(height: 8),
+                                     SizedBox(height: 8),
                                     Padding(
                                       padding: const EdgeInsets.only(bottom: 5),
                                       child: SizedBox(
