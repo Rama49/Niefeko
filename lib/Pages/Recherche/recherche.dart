@@ -250,7 +250,7 @@ class _searchState extends State<search> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => PanierPage(userId: userId)),
+                          builder: (context) => PanierPage()),
                     );
                   },
                   icon: const Icon(Icons.shopping_cart, color: Colors.white),

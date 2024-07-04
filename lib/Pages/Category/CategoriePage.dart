@@ -14,14 +14,8 @@ class CategoryPage extends StatefulWidget {
 class _CategoryPageState extends State<CategoryPage> {
   late Map<int, Product> products;
   List<Product> filteredProducts = [];
-<<<<<<< HEAD
-  List<Product> cartItems =
-      []; // Liste pour stocker les produits ajoutés au panier
-  List<int> favoriteItems = []; // Liste pour stocker les produits favoris
-=======
   List<Product> cartItems = [];
   List<int> favoriteItems = [];
->>>>>>> ApiModifier
   bool isLoading = true;
   int cartItemCount = 0;
 
@@ -41,19 +35,9 @@ class _CategoryPageState extends State<CategoryPage> {
       final List<dynamic> responseData = json.decode(response.body);
       setState(() {
         for (var json in responseData) {
-<<<<<<< HEAD
-          final product = Product(
-            imagePath: json['images'][0]['src'] ?? '',
-            name: json['name'] ?? '',
-            description: json['description'] ?? '',
-            price: double.parse(json['price'] ?? '0.0'),
-          );
-          products[json['product.id']] = product;
-=======
           final product = Product.fromJson(json); // Utilisation de fromJson
           products[product.id] =
               product; // Utilisation de l'ID pour stocker le produit
->>>>>>> ApiModifier
         }
         filteredProducts = products.values.toList();
         isLoading = false;
@@ -84,11 +68,7 @@ class _CategoryPageState extends State<CategoryPage> {
 
 
   void addToCart(Product product) {
-<<<<<<< HEAD
-    print(product.id);
-=======
       print(product.id);
->>>>>>> ApiModifier
     setState(() {
       cartItems.add(product);
       cartItemCount = cartItems.length;
@@ -188,12 +168,7 @@ class _CategoryPageState extends State<CategoryPage> {
             children: [
               IconButton(
                 icon: Icon(Icons.shopping_cart, color: Colors.white),
-<<<<<<< HEAD
-                onPressed:
-                    openCart, // Ouvrir le panier avec les produits ajoutés
-=======
                 onPressed: openCart,
->>>>>>> ApiModifier
               ),
               Positioned(
                 right: 0,
@@ -204,12 +179,7 @@ class _CategoryPageState extends State<CategoryPage> {
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Text(
-<<<<<<< HEAD
-                    cartItemCount
-                        .toString(), // Afficher le nombre de produits dans le panier
-=======
                     cartItemCount.toString(),
->>>>>>> ApiModifier
                     style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
@@ -313,13 +283,8 @@ class _CategoryPageState extends State<CategoryPage> {
                                             borderRadius:
                                                 BorderRadius.circular(5),
                                           ),
-<<<<<<< HEAD
-                                          backgroundColor: const Color(
-                                              0xFF612C7D), // Couleur de fond du bouton
-=======
                                           backgroundColor:
                                               const Color(0xFF612C7D),
->>>>>>> ApiModifier
                                         ),
                                         child: Row(
                                           mainAxisAlignment:
