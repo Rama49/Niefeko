@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:niefeko/Components/Categories/categorie.dart';
 import 'package:niefeko/Components/Deals/deal.dart';
-//import 'package:niefeko/Components/produitcart/produitTest.dart';
 import 'package:niefeko/Components/produitcart/produit_Card.dart';
 import 'package:niefeko/Pages/Connexion/connexion.dart';
 import 'package:niefeko/Pages/Favoris/pagefavoris.dart';
@@ -11,36 +10,25 @@ import 'package:niefeko/Pages/PanierHistorique/PanierPage.dart';
 import 'package:niefeko/Pages/SettingsPage/SettingsPage.dart';
 import 'package:niefeko/Reutilisable/carteReu.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-//import 'package:niefeko/Components/Category/product.dart';
 
-// ignore: camel_case_types
 class search extends StatefulWidget {
-  // ignore: use_super_parameters
   const search({Key? key}) : super(key: key);
 
   @override
   State<search> createState() => _searchState();
 }
 
-// ignore: camel_case_types
 class _searchState extends State<search> {
   get userId => "36";
 
-  // List<Product> cartItems = [
-  //   Product(name: '', price: 0, description: '', imagePath: ''),
-  // ];
-
-  // Fonction removeFromCart pour illustrer
   void removeFromCart(int index) {
     setState(() {
       //cartItems.removeAt(index);
     });
   }
 
-  // ignore: unused_field
   bool _isLoggedOut = false;
 
-  // ignore: unused_element
   Future<void> _signOut() async {
     try {
       await FirebaseAuth.instance.signOut();
@@ -57,12 +45,10 @@ class _searchState extends State<search> {
         fontSize: 16.0,
       );
       Navigator.pushReplacement(
-        // ignore: use_build_context_synchronously
         context,
         MaterialPageRoute(builder: (context) => const connexion()),
       );
     } catch (e) {
-      // ignore: avoid_print
       print("Erreur lors de la déconnexion: $e");
       Fluttertoast.showToast(
         msg: "Erreur lors de la déconnexion: $e",
@@ -80,10 +66,8 @@ class _searchState extends State<search> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
-        scrollDirection: Axis.vertical,
         child: Column(
           children: [
-            // Section de recherche
             Container(
               decoration: const BoxDecoration(
                 color: Color(0xFF593070),
@@ -95,7 +79,7 @@ class _searchState extends State<search> {
               padding: EdgeInsets.only(
                 bottom: MediaQuery.of(context).padding.bottom != 0
                     ? MediaQuery.of(context).padding.bottom
-                    : 250, // Ajoutez le padding en bas
+                    : 250,
               ),
               height: MediaQuery.of(context).size.height / 3,
               child: Column(
@@ -111,37 +95,12 @@ class _searchState extends State<search> {
                       fontSize: 25,
                     ),
                   ),
-                  // ignore: sized_box_for_whitespace
-                  // Container(
-                  //   height: 40,
-                  //   padding: const EdgeInsets.only(right: 25, left: 25),
-                  //   child: TextField(
-                  //     // onChanged: searchProduct,
-                  //     decoration: InputDecoration(
-                  //       contentPadding: const EdgeInsets.symmetric(
-                  //         vertical: 3,
-                  //       ),
-                  //       filled: true,
-                  //       fillColor: Colors.white,
-                  //       border: OutlineInputBorder(
-                  //         borderRadius: BorderRadius.circular(8),
-                  //         borderSide: BorderSide.none,
-                  //       ),
-                  //       hintText: "Rechercher un produit",
-                  //       prefixIcon: const Icon(Icons.search),
-                  //       prefixIconColor: Colors.black,
-                  //     ),
-                  //   ),
-                  // ),
                   const SizedBox(height: 20),
                   const SizedBox(height: 20),
-
-                  // Carousel
                   CarouselSlider(
                     items: [
-                      //1st Image of Slider
                       carteReu(
-                        image: Image .asset(
+                        image: Image.asset(
                           "assets/Gommage-Makeda-removebg-preview.png",
                           fit: BoxFit.cover,
                         ),
@@ -149,7 +108,6 @@ class _searchState extends State<search> {
                         paragraph: "50%",
                         texte: "Trouvez ce que vous aimez, à prix malins !",
                       ),
-                      //2nd Image of Slider
                       carteReu(
                         image: Image.asset(
                           "assets/Gommage-Makeda-100g-removebg-preview.png",
@@ -159,7 +117,6 @@ class _searchState extends State<search> {
                         paragraph: "50%",
                         texte: "Trouvez ce que vous aimez, à prix malins !",
                       ),
-                      //3rd Image of Slider
                       carteReu(
                         image: Image.asset(
                           "assets/Detox-Intime-removebg-preview.png",
@@ -169,7 +126,6 @@ class _searchState extends State<search> {
                         paragraph: "50%",
                         texte: "Trouvez ce que vous aimez, à prix malins !",
                       ),
-                      //4th Image of Slider
                       carteReu(
                         image: Image.asset(
                           "assets/Gomme-Matify-Me-removebg-preview.png",
@@ -179,7 +135,6 @@ class _searchState extends State<search> {
                         paragraph: "50%",
                         texte: "Trouvez ce que vous aimez, à prix malins !",
                       ),
-                      //5th Image of Slider
                       carteReu(
                         image: Image.asset(
                           "assets/Lait-Valouté-Cacao-removebg-preview.png",
@@ -190,30 +145,29 @@ class _searchState extends State<search> {
                         texte: "Trouvez ce que vous aimez, à prix malins !",
                       ),
                     ],
-                    //Slider Container properties
                     options: CarouselOptions(
                       enlargeCenterPage: true,
                       autoPlay: true,
                       aspectRatio: 12 / 9,
                       autoPlayCurve: Curves.fastOutSlowIn,
                       enableInfiniteScroll: true,
-                      autoPlayAnimationDuration:
-                          const Duration(milliseconds: 800),
+                      autoPlayAnimationDuration: const Duration(milliseconds: 800),
                       viewportFraction: 0.8,
                     ),
                   ),
                 ],
               ),
             ),
-
-            // Votre Container contenant la catégorie
-            Column(
-              children: [
-                SizedBox(height: 120),
-                Categorie(),
-                deal(),
-                product(),
-              ],
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 16.0),
+              child: Column(
+                children: [
+                  SizedBox(height: 120),
+                  Categorie(),
+                  deal(),
+                  product(),
+                ],
+              ),
             ),
           ],
         ),
@@ -249,8 +203,7 @@ class _searchState extends State<search> {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(
-                          builder: (context) => PanierPage()),
+                      MaterialPageRoute(builder: (context) => PanierPage()),
                     );
                   },
                   icon: const Icon(Icons.shopping_cart, color: Colors.white),
@@ -268,8 +221,7 @@ class _searchState extends State<search> {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(
-                          builder: (context) => pagefavoris()),
+                      MaterialPageRoute(builder: (context) => pagefavoris()),
                     );
                   },
                   icon: const Icon(Icons.favorite, color: Colors.white),
