@@ -170,7 +170,7 @@ class _PanierPageState extends State<PanierPage> {
           builder: (BuildContext context) {
             return AlertDialog(
               title: Text('Détails de la Commande ${responseData['order_id']}'),
-              content: Column(
+              content: SingleChildScrollView(child: Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -201,6 +201,9 @@ class _PanierPageState extends State<PanierPage> {
                   }).toList(),
                 ],
               ),
+              ),
+               
+             
               actions: <Widget>[
                 TextButton(
                   child: Text('Fermer'),
